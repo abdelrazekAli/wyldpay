@@ -1,6 +1,8 @@
+import "../styles/contact.sass";
+
 export const Contact = () => {
   return (
-    <section className="order" id="order">
+    <section className="contact" id="contact">
       <div className="heading">
         <span>Let's Connect</span>
         <h3>this's all about payfood</h3>

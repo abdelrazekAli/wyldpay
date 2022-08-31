@@ -1,3 +1,4 @@
+import "../styles/cart.sass";
 import { CartBox } from "./CartBox";
 import { cartProducts } from "../dummyData";
 

@@ -1,4 +1,4 @@
-import "../styles/style.sass";
+import "../styles/header.sass";
 import { Cart } from "./Cart";
 import { useState } from "react";
 
@@ -16,7 +16,7 @@ export const Header = () => {
           <a href="#menu">Menu</a>
           <a href="#offers">Offers</a>
           <a href="#about">About</a>
-          <a href="#order">Contact</a>
+          <a href="#contact">Contact</a>
         </nav>
 
         <div className="icons">

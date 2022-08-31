@@ -1,3 +1,5 @@
+import "../styles/footer.sass";
+
 export const Footer = () => {
   return (
     <section className="footer">

@@ -1,0 +1,58 @@
+@use './base' as *
+
+.contact
+
+  .icons-container
+    @include grid(30rem)
+    margin-bottom: 2rem
+
+    .icons
+      border-radius: .5rem
+      padding: 2rem
+      text-align: center
+      background: $light-bg
+
+      img
+        height: 10rem
+
+      h3
+        font-size: 2rem
+        color: $black
+        margin-top: .5rem
+
+  form
+    background: $light-bg
+    padding: 2rem
+    border-radius: .5rem
+
+    .flex
+      display: flex
+      flex-wrap: wrap
+      justify-content: space-between
+
+      .inputBox
+        width: 49%
+        padding: .7rem 0
+
+      span
+        font-size: 1.7rem
+        color: $light-color
+
+      input, textarea
+        width: 100%
+        margin-top: .5rem
+        padding: 1rem 1.2rem
+        width: 100%
+        border-radius: .5rem
+        font-size: 1.6rem
+        text-transform: none
+        color: $black
+
+      textarea
+        height: 20rem
+        resize: none
+
+      .map
+        height: 100%
+        width: 100%
+        border-radius: .5rem

@@ -1,0 +1,42 @@
+@use './base' as *
+
+.slider
+  display: flex
+  align-items: center
+  flex-wrap: wrap-reverse
+  gap: 2rem
+  position: relative
+  overflow: hidden
+
+  .content
+    flex: 1 1 41rem
+
+    span
+      font-size: 2rem
+      color: $green
+
+    h3
+      font-size: 4rem
+      color: $black
+      padding-top: 1rem
+
+    p
+      font-size: 1.4rem
+      color: $light-color
+      line-height: 2
+      padding: 1rem 0
+
+  .image
+    flex: 1 1 41rem
+    margin: 2rem 0
+    pointer-events: none
+
+    .home-img
+      width: 100%
+      margin-top: 5rem
+
+  .home-parallax-img
+    position: absolute
+    top: -10rem
+    right: -10rem
+    width: 80vw

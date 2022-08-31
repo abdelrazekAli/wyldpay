@@ -1,3 +1,4 @@
+import "../styles/menu.sass";
 import { MainBox } from "./MainBox";
 import { mainProducts } from "../dummyData";
 

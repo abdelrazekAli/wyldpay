@@ -1,0 +1,154 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;300;400;500;600&display=swap')
+@import url('https://fonts.googleapis.com/css2?family=Satisfy&display=swap')
+
+*
+  font-family: 'Poppins', sans-serif
+  margin: 0
+  padding: 0
+  box-sizing: border-box
+  outline: none
+  border: none
+  text-decoration: none
+  text-transform: capitalize
+  transition: .2s linear
+
+$green: #27ae60
+$black: #130f40
+$white: #fff
+$light-color: #666
+$light-bg: #f7f7f7
+$border: .1rem solid rgba(0,0,0,.2)
+$box-shadow: 0 1rem 1rem rgba(0,0,0,.05)
+
+@mixin grid($val)
+  display: grid
+  grid-template-columns: repeat(auto-fit, minmax($val, 1fr))
+  gap: 1.5rem
+
+@mixin font($size)
+  font-family: 'Satisfy', cursive
+  font-size: $size
+  color: $green
+
+html
+  font-size: 62.5%
+  overflow-x: hidden
+  scroll-behavior: smooth
+  scroll-padding-top: 8.5rem
+
+  &::-webkit-scrollbar
+    width: 1rem
+
+  &::-webkit-scrollbar-track
+    background: $white
+
+  &::-webkit-scrollbar-thumb
+    background: $green
+    border-radius: 5rem
+
+*::selection
+  background: $green
+  color: $white
+
+section
+  padding: 2rem 9%
+
+.heading
+  text-align: center
+  padding-bottom: 2rem
+
+  span
+    font-family: "Satisfy", cursive
+    font-size: 3rem
+    color: #27ae60
+
+  h3
+    font-size: 3rem
+    color: $black
+
+.fs-4
+  font-size: 4rem !important
+
+.d-inline
+  display: inline !important
+
+.btn
+  display: inline-block
+  margin-top: 1rem
+  padding: .7rem 1.8rem
+  font-size: 1.7rem
+  cursor: pointer
+  color: $white
+  background: $green
+  border-radius: .5rem
+
+  &:hover
+    background: $black
+
+// Media queries
+// media queries 
+
+@media (max-width:991px)
+
+  html
+    font-size: 55%
+
+  .header
+    padding: 2rem
+
+  section
+    padding: 2rem
+
+@media (max-width:768px)
+
+  #menu-btn
+    display: inline-block
+
+  .header .navbar
+    position: absolute
+    top: 99%
+    left: 0
+    right: 0
+    background: $white
+    border-top: $border
+    border-bottom: $border
+    clip-path: polygon(0 0, 100% 0, 100% 0, 0 0)
+
+    &.active
+      clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%)
+
+    a
+      font-size: 2rem
+      margin: 2rem
+      display: block
+
+  .slider .home-parallax-img
+    top: 0
+    right: 0
+    width: 130%
+
+    .contact form .flex .inputBox
+      width: 100%
+
+  .display-none
+    display: none !important
+
+@media (max-width:450px)
+
+  html
+    font-size: 50%
+
+  .shopping-cart-container .cart-total
+
+    .box
+      text-align: center
+
+      .btn
+        width: 100%
+
+  .slider .content
+    h3
+      font-size: 3rem
+
+    p
+      font-size: 1.5rem

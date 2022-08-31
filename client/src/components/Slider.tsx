@@ -1,3 +1,4 @@
+import "../styles/slider.sass";
 import { useEffect, useRef } from "react";
 
 export const Slider = () => {
@@ -19,7 +20,7 @@ export const Slider = () => {
   });
 
   return (
-    <section className="home" id="home" ref={homeRef}>
+    <section className="slider" id="home" ref={homeRef}>
       <div className="content">
         <span>welcome payfood</span>
         <h3>different spices for the different tastes 😋</h3>
