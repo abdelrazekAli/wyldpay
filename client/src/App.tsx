@@ -1,5 +1,11 @@
+import { Home } from "./screens/Home";
+
 function App() {
-  return <div className="app">hello payfood</div>;
+  return (
+    <>
+      <Home />
+    </>
+  );
 }
 
 export default App;
