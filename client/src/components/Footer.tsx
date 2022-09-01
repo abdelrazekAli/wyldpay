@@ -6,20 +6,20 @@ export const Footer = () => {
       <div className="box-container">
         <div className="box">
           <h3>our menu</h3>
-          <a href="/">
-            <i className="fas fa-arrow-right"></i> pizza
+          <a href="#pizzas">
+            <i className="fas fa-arrow-right"></i> pizzas
           </a>
-          <a href="/">
-            <i className="fas fa-arrow-right"></i> burger
+          <a href="#burgers">
+            <i className="fas fa-arrow-right"></i> burgers
           </a>
-          <a href="/">
-            <i className="fas fa-arrow-right"></i> chicken
+          <a href="#chickens">
+            <i className="fas fa-arrow-right"></i> chickens
           </a>
-          <a href="/">
-            <i className="fas fa-arrow-right"></i> pasta
+          <a href="#lunch">
+            <i className="fas fa-arrow-right"></i> lunch
           </a>
-          <a href="/">
-            <i className="fas fa-arrow-right"></i> and more...
+          <a href="#drinks">
+            <i className="fas fa-arrow-right"></i> drinks
           </a>
         </div>
 

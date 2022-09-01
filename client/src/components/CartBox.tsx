@@ -11,7 +11,7 @@ export const CartBox = ({ product }: CartProductType) => {
         <input type="number" name="" value={product.quantity} id="" />
         <br />
         <span> price : </span>
-        <span className="price"> ${product.price} </span>
+        <span className="price"> ${product.price.toFixed(2)} </span>
       </div>
     </div>
   );

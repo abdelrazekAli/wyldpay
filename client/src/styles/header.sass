@@ -31,21 +31,47 @@
       &:hover
         color: $green
 
-  .icons div
-    height: 4.5rem
-    width: 4.5rem
-    line-height: 4.5rem
-    font-size: 2rem
-    background: $light-bg
-    color: $black
-    border-radius: .5rem
-    margin-left: .3rem
-    cursor: pointer
-    text-align: center
+  .icons
+    display: flex
+    gap: 5px
 
-    &:hover
+    .menu-custom, .cart-custom
+      height: 4.5rem
+      width: 4.5rem
+      line-height: 4.5rem
+      font-size: 2rem
+      background: $light-bg
+      color: $black
+      border-radius: .5rem
+      margin-left: .3rem
+      cursor: pointer
+      text-align: center
+
+      &:hover
+        color: $white
+        background: $green
+
+    .quantity
+      position: absolute
+      right: 0
+      bottom: 0
+      width: 1.5rem
+      font-size: 1.3rem
+      height: 1.5rem
+      border-radius: 50%
+      border: 1px solid
+      line-height: normal
+      display: flex
+      justify-content: center
+      align-items: center
+      background-color: $green
       color: $white
-      background: $green
+      padding: 8px
+      transform: translate(25%, 25%)
+
+      &:hover
+        color: $green
+        background-color: $white
 
   #menu-btn
     display: none

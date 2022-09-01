@@ -1,58 +1,97 @@
 import "../styles/menu.sass";
 import { MainBox } from "./MainBox";
+import { Category } from "./Category";
 import { mainProducts } from "../dummyData";
+import { CustomBox } from "./CustomBox";
 
 export const Menu = () => {
+  // Category filters
+  const filteredPizzas = mainProducts.filter((p) => {
+    return p.category === "pizzas";
+  });
+
+  const filteredBurgers = mainProducts.filter((p) => {
+    return p.category === "burgers";
+  });
+
+  const filteredChickens = mainProducts.filter((p) => {
+    return p.category === "chickens";
+  });
+
+  const filteredLunch = mainProducts.filter((p) => {
+    return p.category === "lunch";
+  });
+
+  const filteredDrinks = mainProducts.filter((p) => {
+    return p.category === "drinks";
+  });
+
   return (
     <div id="menu">
       <div className="heading">
         <span className="fs-4">our menu</span>
       </div>
-      <section className="category">
-        <a href="/" className="box">
-          <img src="./assets/images/cat-1.png" alt="" />
-          <h3>offers</h3>
-        </a>
-
-        <a href="/" className="box">
-          <img src="./assets/images/cat-2.png" alt="" />
-          <h3>pizza</h3>
-        </a>
-
-        <a href="/" className="box">
-          <img src="./assets/images/cat-3.png" alt="" />
-          <h3>burger</h3>
-        </a>
-
-        <a href="/" className="box">
-          <img src="./assets/images/cat-4.png" alt="" />
-          <h3>chicken</h3>
-        </a>
-
-        <a href="/" className="box">
-          <img src="./assets/images/cat-5.png" alt="" />
-          <h3>dinner</h3>
-        </a>
-
-        <a href="/" className="box">
-          <img src="./assets/images/cat-6.png" alt="" />
-          <h3>coffee</h3>
-        </a>
-      </section>
-
+      <Category />
       <section className="popular" id="popular">
-        <div className="heading">
-          <h3>our special drinks</h3>
+        <div className="heading" id="pizzas">
+          <h3>pizzas</h3>
+        </div>
+        <div className="box-container">
+          <CustomBox
+            product={{
+              id: 25,
+              img: "pizza-6.png",
+              name: "Greek Pizza",
+              price: 25,
+              category: "pizzas",
+            }}
+          />
+          {filteredPizzas.map((p) => (
+            <MainBox key={p.id} product={p} />
+          ))}
         </div>
 
+        <div className="heading mt-3" id="burgers">
+          <h3>burgers</h3>
+        </div>
         <div className="box-container">
-          {mainProducts.map((p) => (
+          {filteredBurgers.map((p) => (
+            <MainBox key={p.id} product={p} />
+          ))}
+        </div>
+
+        <div className="heading mt-3" id="chickens">
+          <h3>chickens</h3>
+        </div>
+        <div className="box-container">
+          {filteredChickens.map((p) => (
+            <MainBox key={p.id} product={p} />
+          ))}
+        </div>
+
+        <div className="heading mt-3" id="lunch">
+          <h3>lunch</h3>
+        </div>
+        <div className="box-container">
+          {filteredLunch.map((p) => (
+            <MainBox key={p.id} product={p} />
+          ))}
+        </div>
+
+        <div className="heading mt-3" id="drinks">
+          <h3>drinks</h3>
+        </div>
+        <div className="box-container">
+          {filteredDrinks.map((p) => (
             <MainBox key={p.id} product={p} />
           ))}
         </div>
       </section>
 
       <section className="banner" id="offers">
+        <div className="heading pb-0">
+          <h3>our special offers</h3>
+        </div>
         <div className="row-banner">
           <div className="content">
             <span>double cheese</span>
