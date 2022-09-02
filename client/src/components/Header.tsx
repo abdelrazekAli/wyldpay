@@ -1,10 +1,14 @@
-import "../styles/header.sass";
 import { Cart } from "./Cart";
+import "../styles/header.sass";
 import { useState } from "react";
+import { getTotalQuantiy } from "../redux/cart.slice";
+import { useAppSelector } from "../redux/store.hooks";
 
 export const Header = () => {
   const [nav, setNav] = useState(false);
   const [cart, setCart] = useState(false);
+  const cartTotalQuantity = useAppSelector(getTotalQuantiy);
+
   return (
     <>
       <header className="header">
@@ -12,10 +16,15 @@ export const Header = () => {
           <i className="fas fa-utensils"></i>payfood
         </a>
 
-        <nav className={`navbar ${nav && `active`}`}>
+        <nav
+          className={`navbar ${nav && `active`}`}
+          onClick={() => {
+            setCart(false);
+          }}
+        >
           <a href="#home">Home</a>
           <a href="#menu">Menu</a>
-          <a href="#offers">Offers</a>
+          <a href="#popular">popular</a>
           <a href="#about">About</a>
           <a href="#contact">Contact</a>
         </nav>
@@ -24,7 +33,10 @@ export const Header = () => {
           <div
             id="menu-btn"
             className="fas fa-bars menu-custom"
-            onClick={() => setNav(!nav)}
+            onClick={() => {
+              setNav(!nav);
+              setCart(false);
+            }}
           ></div>
           <div>
             <div
@@ -32,7 +44,9 @@ export const Header = () => {
               className="fas fa-shopping-cart cart-custom position-relative"
               onClick={() => setCart(!cart)}
             >
-              <div className="quantity">3</div>
+              {cartTotalQuantity > 0 && (
+                <div className="quantity">{cartTotalQuantity}</div>
+              )}
             </div>
           </div>
         </div>

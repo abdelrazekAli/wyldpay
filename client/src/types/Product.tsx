@@ -1,11 +1,13 @@
 export type ProductType = {
-  product: {
-    id: number;
-    img: string;
-    name: string;
-    price: number;
-    category: string;
-  };
+  id: number;
+  img: string;
+  name: string;
+  price: number;
+  category: string;
+};
+
+export type ProductPropType = {
+  product: ProductType;
 };
 
 type CartType = {
@@ -14,4 +16,4 @@ type CartType = {
   };
 };
 
-export type CartProductType = ProductType & CartType;
+export type CartProductType = ProductPropType & CartType;

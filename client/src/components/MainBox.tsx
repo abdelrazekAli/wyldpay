@@ -1,6 +1,7 @@
-import { ProductType } from "../types/Product";
+import { Counters } from "./Counters";
+import { ProductPropType } from "../types/Product";
 
-export const MainBox = ({ product }: ProductType) => {
+export const MainBox = ({ product }: ProductPropType) => {
   return (
     <div className="box">
       <div className="image">
@@ -8,11 +9,10 @@ export const MainBox = ({ product }: ProductType) => {
       </div>
       <div className="content">
         <h3>{product.name}</h3>
-
-        <div className="price">${product.price.toFixed(2)} </div>
-        <a href="/" className="btn">
-          add to cart
-        </a>
+        <div className="price-container">
+          <div className="price">${product.price.toFixed(2)}</div>
+          <Counters product={product} />
+        </div>
       </div>
     </div>
   );

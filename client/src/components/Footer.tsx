@@ -28,8 +28,8 @@ export const Footer = () => {
           <a href="/home">
             <i className="fas fa-arrow-right"></i> home
           </a>
-          <a href="#offers">
-            <i className="fas fa-arrow-right"></i> offers
+          <a href="#popular">
+            <i className="fas fa-arrow-right"></i> popular
           </a>
           <a href="#menu">
             <i className="fas fa-arrow-right"></i> menu

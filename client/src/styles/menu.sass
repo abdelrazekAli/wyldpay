@@ -57,6 +57,7 @@
 
       img
         height: 15rem
+        user-select: none
 
     .content
 
@@ -64,15 +65,38 @@
         font-size: 2rem
         color: $black
 
-      .stars
-        padding: 1rem 0
-        font-size: 1.7rem
+      .price-container
+        display: flex
+        justify-content: space-between
+        align-items: center
+        padding-top: 3rem
 
-        i
-          color: gold
+      .counter-container
+        display: flex
+        align-items: center
+        gap: 5px
 
-        span
-          color: $light-color
+      .counter
+        font-size: 2.5rem
+        color: $green,
+        line-height: 1,
+        border-radius: 4px
+        padding: 3px 7.5px
+        cursor: pointer
+        border: 1px solid $green
+        user-select: none
+
+        &:hover
+          color: $white
+          background-color: $green
+
+      .quantity
+        color: #1b003e
+        font-size: 1.6rem
+        width: 20px
+
+      .custom-padding
+        padding: 3px 9px
 
       .price
         font-size: 2rem
@@ -150,4 +174,3 @@
           font-size: 3rem
           color: $white
           padding-top: .5rem
-

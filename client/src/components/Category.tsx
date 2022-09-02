@@ -28,9 +28,9 @@ export const Category = () => {
           <img src="./assets/images/cat-6.png" alt="" />
           <h3>drinks</h3>
         </a>
-        <a href="#offers" className="box">
+        <a href="#popular" className="box">
           <img src="./assets/images/cat-1.png" alt="" />
-          <h3>offers</h3>
+          <h3>popular</h3>
         </a>
       </section>
     </>

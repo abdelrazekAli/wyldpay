@@ -2,29 +2,22 @@ import "../styles/menu.sass";
 import { MainBox } from "./MainBox";
 import { Category } from "./Category";
 import { mainProducts } from "../dummyData";
-import { CustomBox } from "./CustomBox";
 
 export const Menu = () => {
   // Category filters
-  const filteredPizzas = mainProducts.filter((p) => {
-    return p.category === "pizzas";
-  });
+  const filteredPizzas = mainProducts.filter((p) => p.category === "pizzas");
 
-  const filteredBurgers = mainProducts.filter((p) => {
-    return p.category === "burgers";
-  });
+  const filteredBurgers = mainProducts.filter((p) => p.category === "burgers");
 
-  const filteredChickens = mainProducts.filter((p) => {
-    return p.category === "chickens";
-  });
+  const filteredChickens = mainProducts.filter(
+    (p) => p.category === "chickens"
+  );
 
-  const filteredLunch = mainProducts.filter((p) => {
-    return p.category === "lunch";
-  });
+  const filteredLunch = mainProducts.filter((p) => p.category === "lunch");
 
-  const filteredDrinks = mainProducts.filter((p) => {
-    return p.category === "drinks";
-  });
+  const filteredDrinks = mainProducts.filter((p) => p.category === "drinks");
+
+  const filteredPopular = mainProducts.filter((p) => p.category === "popular");
 
   return (
     <div id="menu">
@@ -32,20 +25,11 @@ export const Menu = () => {
         <span className="fs-4">our menu</span>
       </div>
       <Category />
-      <section className="popular" id="popular">
-        <div className="heading" id="pizzas">
+      <section className="popular mb-3" id="pizzas">
+        <div className="heading">
           <h3>pizzas</h3>
         </div>
         <div className="box-container">
-          <CustomBox
-            product={{
-              id: 25,
-              img: "pizza-6.png",
-              name: "Greek Pizza",
-              price: 25,
-              category: "pizzas",
-            }}
-          />
           {filteredPizzas.map((p) => (
             <MainBox key={p.id} product={p} />
           ))}
@@ -86,9 +70,18 @@ export const Menu = () => {
             <MainBox key={p.id} product={p} />
           ))}
         </div>
+
+        <div className="heading mt-3" id="popular">
+          <h3>our popular foods</h3>
+        </div>
+        <div className="box-container">
+          {filteredPopular.map((p) => (
+            <MainBox key={p.id} product={p} />
+          ))}
+        </div>
       </section>
 
-      <section className="banner" id="offers">
+      {/* <section className="banner" id="offers">
         <div className="heading pb-0">
           <h3>our special offers</h3>
         </div>
@@ -135,7 +128,7 @@ export const Menu = () => {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* <section className="dishes bg-alt" id="menu">
         <div className="heading">
