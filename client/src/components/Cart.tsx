@@ -9,7 +9,7 @@ export const Cart = () => {
 
   return (
     <section className="shopping-cart-container active">
-      {cartProducts.length > 0 ? (
+      {cartProducts?.length > 0 ? (
         <>
           <div className="products-container">
             <h3 className="title">your foods</h3>

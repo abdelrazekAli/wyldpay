@@ -1,11 +1,21 @@
 import { useState } from "react";
-import { useAppDispatch } from "../redux/store.hooks";
 import { ProductType, ProductPropType } from "../types/Product";
-import { addToCart, decreseFromCart } from "../redux/cart.slice";
+import { useAppDispatch, useAppSelector } from "../redux/store.hooks";
+import {
+  getCartProducts,
+  addToCart,
+  decreseFromCart,
+} from "../redux/cart.slice";
 
 export const Counters = ({ product }: ProductPropType) => {
   const dispatch = useAppDispatch();
-  const [counter, setCounter] = useState(0);
+  const cartProducts = useAppSelector(getCartProducts);
+
+  const productQuantity =
+    cartProducts.find((p) => p.id === product.id)?.quantity || 0;
+
+  const [counter, setCounter] = useState(productQuantity);
+
   const [decreaseCounter, setDecreaseCounter] = useState(false);
 
   const addToCartHandler = (product: ProductType) => {
@@ -17,9 +27,11 @@ export const Counters = ({ product }: ProductPropType) => {
   };
 
   const incrementHanldler = () => {
-    setCounter(counter + 1);
-    addToCartHandler(product);
-    !decreaseCounter && setDecreaseCounter(!decreaseCounter);
+    if (counter < 99) {
+      setCounter(counter + 1);
+      addToCartHandler(product);
+      !decreaseCounter && setDecreaseCounter(!decreaseCounter);
+    }
   };
 
   const decrementHanldler = () => {
@@ -30,7 +42,7 @@ export const Counters = ({ product }: ProductPropType) => {
 
   return (
     <div className="counter-container">
-      {decreaseCounter && counter > 0 && (
+      {counter > 0 && (
         <>
           <div className="counter custom-padding" onClick={decrementHanldler}>
             -
