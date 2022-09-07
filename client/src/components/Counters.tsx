@@ -14,9 +14,9 @@ export const Counters = ({ product }: ProductPropType) => {
   const productQuantity =
     cartProducts.find((p) => p.id === product.id)?.quantity || 0;
 
-  const [counter, setCounter] = useState(productQuantity);
+  const [counter, setCounter] = useState<number>(productQuantity);
 
-  const [decreaseCounter, setDecreaseCounter] = useState(false);
+  const [decreaseCounter, setDecreaseCounter] = useState<boolean>(false);
 
   const addToCartHandler = (product: ProductType) => {
     dispatch(addToCart(product));

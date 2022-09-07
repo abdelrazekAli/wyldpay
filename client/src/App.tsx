@@ -1,11 +1,16 @@
 import { Home } from "./pages/Home";
 import { store } from "./redux/store";
 import { Provider } from "react-redux";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 function App() {
   return (
     <Provider store={store}>
-      <Home />
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Home />}></Route>
+        </Routes>
+      </BrowserRouter>
     </Provider>
   );
 }

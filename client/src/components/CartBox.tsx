@@ -4,9 +4,11 @@ import { useAppDispatch } from "../redux/store.hooks";
 
 export const CartBox = ({ product }: CartProductType) => {
   const dispatch = useAppDispatch();
+
   const RemoveFromCartHandler = (productId: number) => {
     dispatch(removeFromCart(productId));
   };
+
   return (
     <div className="box">
       <i

@@ -22,14 +22,14 @@ export const Slider = () => {
   return (
     <section className="slider" id="home" ref={homeRef}>
       <div className="content">
-        <span>welcome payfood</span>
-        <h3>different spices for the different tastes 😋</h3>
+        <span>Welcome payfood</span>
+        <h3>Different spices for the different tastes 😋</h3>
         <p>
-          you can order now and pay direct from the table with highest standards
+          You can order now and pay direct from the table with highest standards
           of service that help you up in seconds without any efforts.
         </p>
         <a href="#menu" className="btn">
-          order now
+          Order now
         </a>
       </div>
 

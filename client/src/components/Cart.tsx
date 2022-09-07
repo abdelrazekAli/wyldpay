@@ -1,18 +1,25 @@
 import "../styles/cart.sass";
+import { Payment } from "./Payment";
 import { CartBox } from "./CartBox";
+import { loadStripe } from "@stripe/stripe-js";
+import { Elements } from "@stripe/react-stripe-js";
 import { useAppSelector } from "../redux/store.hooks";
 import { getCartProducts, getTotalPrice } from "../redux/cart.slice";
 
+const stripePromise = loadStripe(
+  "pk_test_51LdvPDBRtbtj7sFC444B41pH4fmLBfO43mrGuaZUJMU9wTmFBMismkDsSo8mqvijs4RYG6eK3VELTCMawtUJ3Cfu004k3dFn30"
+);
+
 export const Cart = () => {
   const cartProducts = useAppSelector(getCartProducts);
-  const totalPrice = useAppSelector(getTotalPrice);
-
+  const subPrice = useAppSelector(getTotalPrice);
+  const totalPrice = subPrice + 0.1 * subPrice;
   return (
     <section className="shopping-cart-container active">
       {cartProducts?.length > 0 ? (
         <>
           <div className="products-container">
-            <h3 className="title">your foods</h3>
+            <h3 className="title">Your foods</h3>
 
             <div className="box-container">
               {cartProducts.map((p) => (
@@ -22,19 +29,17 @@ export const Cart = () => {
           </div>
 
           <div className="cart-total">
-            <h3 className="title"> order total </h3>
-
+            <h3 className="title">Payment</h3>
             <div className="box">
               <h3 className="subtotal">
-                subtotal : <span>${totalPrice}</span>
+                Subtotal : <span>${subPrice}</span>
               </h3>
               <h3 className="total">
-                total : <span>${totalPrice + 0.1 * totalPrice}</span>
+                Total : <span>${totalPrice}</span>
               </h3>
-
-              <a href="/" className="btn">
-                proceed to checkout
-              </a>
+              <Elements stripe={stripePromise}>
+                <Payment totalPrice={totalPrice} />
+              </Elements>
             </div>
           </div>
         </>

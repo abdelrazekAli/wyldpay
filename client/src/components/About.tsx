@@ -11,7 +11,7 @@ export const About = () => {
         <div className="heading d-inline">
           <span>why choose us?</span>
         </div>
-        <h3 className="title">what's make our food delicious!</h3>
+        <h3 className="title">What's make our food delicious!</h3>
         <p>
           The most basic way to make your food taste better is to use spices,
           herbs and seasonings to achieve the above purpose.
@@ -23,15 +23,15 @@ export const About = () => {
         <div className="icons-container">
           <div className="icons">
             <img src="./assets/images/serv-1.png" alt="" />
-            <h3>fast delivery</h3>
+            <h3>Fast delivery</h3>
           </div>
           <div className="icons">
             <img src="./assets/images/serv-2.png" alt="" />
-            <h3>fresh food</h3>
+            <h3>Fresh food</h3>
           </div>
           <div className="icons">
             <img src="./assets/images/serv-3.png" alt="" />
-            <h3>best quality</h3>
+            <h3>Best quality</h3>
           </div>
           <div className="icons">
             <img src="./assets/images/serv-4.png" alt="" />

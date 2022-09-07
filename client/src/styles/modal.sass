@@ -1,0 +1,45 @@
+@use './base' as *
+
+.modal
+  position: fixed
+  z-index: 1
+  padding-top: 100px
+  left: 0
+  top: 0
+  width: 100%
+  height: 100%
+  overflow: auto
+  background-color: rgba(0, 0, 0, 0.4)
+
+  &-content
+    background-color: #fefefe
+    margin: auto
+    padding: 30px
+    border: 1px solid #888
+    width: 40%
+    display: flex
+    justify-content: center
+    align-items: center
+    flex-direction: column
+    border-radius: 7px
+
+  &-content h3
+    font-size: 20px
+
+  &-close
+    color: $black
+    font-size: 30px
+    font-weight: bold
+    position: absolute
+    right: 0.6rem
+    top: 0rem
+
+.modal-close:hover,
+.modal-close:focus
+  color: $green
+  text-decoration: none
+  cursor: pointer
+
+@media (max-width: 768px)
+  .modal-content
+    width: 90%

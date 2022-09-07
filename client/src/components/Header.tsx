@@ -5,15 +5,15 @@ import { getTotalQuantiy } from "../redux/cart.slice";
 import { useAppSelector } from "../redux/store.hooks";
 
 export const Header = () => {
-  const [nav, setNav] = useState(false);
-  const [cart, setCart] = useState(false);
+  const [nav, setNav] = useState<boolean>(false);
+  const [cart, setCart] = useState<boolean>(false);
   const cartTotalQuantity = useAppSelector(getTotalQuantiy);
 
   return (
     <>
       <header className="header">
         <a href="/" className="logo">
-          <i className="fas fa-utensils"></i>payfood
+          <i className="fas fa-utensils"></i>Payfood
         </a>
 
         <nav
@@ -24,7 +24,7 @@ export const Header = () => {
         >
           <a href="#home">Home</a>
           <a href="#menu">Menu</a>
-          <a href="#popular">popular</a>
+          <a href="#popular">Popular</a>
           <a href="#about">About</a>
           <a href="#contact">Contact</a>
         </nav>
