@@ -6,9 +6,9 @@ import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 export const Payment = ({ totalPrice }: { totalPrice: number }) => {
   const stripe = useStripe();
   const elements = useElements();
-  const [paymentFailed, setPaymentFailed] = useState(false);
-  const [paymentLoading, setPaymentLoading] = useState(false);
-  const [paymentSuccess, setPaymentSuccess] = useState(false);
+  const [paymentFailed, setPaymentFailed] = useState<boolean>(false);
+  const [paymentLoading, setPaymentLoading] = useState<boolean>(false);
+  const [paymentSuccess, setPaymentSuccess] = useState<boolean>(false);
 
   const confirmPayment = async (e: { preventDefault: () => void }) => {
     e.preventDefault();

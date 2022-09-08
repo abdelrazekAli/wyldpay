@@ -52,7 +52,6 @@ export const Modal = ({ status }: ModalPropsType) => {
         break;
       default:
         setHideModal(true);
-
         break;
     }
   }, [status]);

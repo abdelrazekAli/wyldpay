@@ -6,9 +6,7 @@ import { Elements } from "@stripe/react-stripe-js";
 import { useAppSelector } from "../redux/store.hooks";
 import { getCartProducts, getTotalPrice } from "../redux/cart.slice";
 
-const stripePromise = loadStripe(
-  "pk_test_51LdvPDBRtbtj7sFC444B41pH4fmLBfO43mrGuaZUJMU9wTmFBMismkDsSo8mqvijs4RYG6eK3VELTCMawtUJ3Cfu004k3dFn30"
-);
+const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_KEY!);
 
 export const Cart = () => {
   const cartProducts = useAppSelector(getCartProducts);
