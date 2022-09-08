@@ -1,6 +1,6 @@
-import { CartProductType } from "../types/Product";
-import { removeFromCart } from "../redux/cart.slice";
-import { useAppDispatch } from "../redux/store.hooks";
+import { CartProductType } from "../../types/Product";
+import { removeFromCart } from "../../redux/cart.slice";
+import { useAppDispatch } from "../../redux/store.hooks";
 
 export const CartBox = ({ product }: CartProductType) => {
   const dispatch = useAppDispatch();

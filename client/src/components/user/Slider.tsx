@@ -1,4 +1,4 @@
-import "../styles/slider.sass";
+import "../../styles/slider.sass";
 import { useEffect, useRef } from "react";
 
 export const Slider = () => {

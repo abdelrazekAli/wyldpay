@@ -1,4 +1,4 @@
-import "../styles/category.sass";
+import "../../styles/category.sass";
 
 export const Category = () => {
   return (

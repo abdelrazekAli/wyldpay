@@ -1,4 +1,4 @@
-import "../styles/footer.sass";
+import "../../styles/footer.sass";
 
 export const Footer = () => {
   return (
@@ -73,11 +73,21 @@ export const Footer = () => {
 
       <div className="bottom">
         <div className="share">
-          <a href="/" className="fab fa-facebook-f"></a>
-          <a href="/" className="fab fa-twitter"></a>
-          <a href="/" className="fab fa-instagram"></a>
-          <a href="/" className="fab fa-linkedin"></a>
-          <a href="/" className="fab fa-pinterest"></a>
+          <a href="/" className="fab fa-facebook-f">
+            {" "}
+          </a>
+          <a href="/" className="fab fa-twitter">
+            {" "}
+          </a>
+          <a href="/" className="fab fa-instagram">
+            {" "}
+          </a>
+          <a href="/" className="fab fa-linkedin">
+            {" "}
+          </a>
+          <a href="/" className="fab fa-pinterest">
+            {" "}
+          </a>
         </div>
 
         <div className="credit">

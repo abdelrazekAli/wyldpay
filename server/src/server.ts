@@ -26,7 +26,6 @@ app.post("/payment/create", async (req: Request, res: Response) => {
 
 // For production
 app.use(express.static("./client/build"));
-
 app.get("*", (req, res) => {
   res.sendFile("index.html", {
     root: __dirname + "/client/build",

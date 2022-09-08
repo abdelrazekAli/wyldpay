@@ -1,6 +1,6 @@
 import axios from "axios";
-import { Modal } from "./Modal";
 import { useState } from "react";
+import { Modal } from "./Modal";
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 
 export const Payment = ({ totalPrice }: { totalPrice: number }) => {

@@ -1,4 +1,4 @@
-import "../styles/contact.sass";
+import "../../styles/contact.sass";
 
 export const Contact = () => {
   return (

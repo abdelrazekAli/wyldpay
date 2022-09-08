@@ -1,4 +1,4 @@
-import "../styles/about.sass";
+import "../../styles/about.sass";
 
 export const About = () => {
   return (

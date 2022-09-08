@@ -1,7 +1,7 @@
-import "../styles/menu.sass";
+import "../../styles/menu.sass";
 import { MainBox } from "./MainBox";
 import { Category } from "./Category";
-import { mainProducts } from "../dummyData";
+import { mainProducts } from "../../dummyData";
 
 export const Menu = () => {
   // Category filters

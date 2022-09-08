@@ -1,8 +1,8 @@
 import { Cart } from "./Cart";
-import "../styles/header.sass";
+import "../../styles/header.sass";
 import { useState } from "react";
-import { getTotalQuantiy } from "../redux/cart.slice";
-import { useAppSelector } from "../redux/store.hooks";
+import { getTotalQuantiy } from "../../redux/cart.slice";
+import { useAppSelector } from "../../redux/store.hooks";
 
 export const Header = () => {
   const [nav, setNav] = useState<boolean>(false);

@@ -1,5 +1,5 @@
-import "../styles/modal.sass";
-import { ModalPropsType } from "../types/ModalProps";
+import "../../styles/modal.sass";
+import { ModalPropsType } from "../../types/ModalProps";
 import { useState, useRef, useEffect, ReactNode } from "react";
 import { HashLoader, BeatLoader, BounceLoader } from "react-spinners";
 

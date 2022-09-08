@@ -1,10 +1,10 @@
-import "../styles/cart.sass";
+import "../../styles/cart.sass";
 import { Payment } from "./Payment";
 import { CartBox } from "./CartBox";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
-import { useAppSelector } from "../redux/store.hooks";
-import { getCartProducts, getTotalPrice } from "../redux/cart.slice";
+import { useAppSelector } from "../../redux/store.hooks";
+import { getCartProducts, getTotalPrice } from "../../redux/cart.slice";
 
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_KEY!);
 

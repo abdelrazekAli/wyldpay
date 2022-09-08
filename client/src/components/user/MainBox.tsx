@@ -1,5 +1,5 @@
 import { Counters } from "./Counters";
-import { ProductPropType } from "../types/Product";
+import { ProductPropType } from "../../types/Product";
 
 export const MainBox = ({ product }: ProductPropType) => {
   return (
