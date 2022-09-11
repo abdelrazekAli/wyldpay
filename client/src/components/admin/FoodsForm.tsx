@@ -61,25 +61,14 @@ export const FoodsForm = ({ onClick }: StepperProps) => {
             <div className="main-content">
               <h2>Add item</h2>
               <form onSubmit={handleSubmit}>
-                <input
-                  required
-                  type="text"
-                  placeholder="Item name"
-                  ref={name}
-                />
-                <input
-                  required
-                  type="number"
-                  placeholder="Item price"
-                  ref={price}
-                />
+                <input type="text" placeholder="Item name" ref={name} />
+                <input type="number" placeholder="Item price" ref={price} />
 
                 <label htmlFor="item-img" className="img-label">
                   <input
                     type="file"
                     accept="image/*"
                     hidden
-                    required
                     id="item-img"
                     name="image"
                     onChange={(e) => setItemImg(e.target.files![0])}

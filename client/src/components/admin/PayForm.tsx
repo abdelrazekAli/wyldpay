@@ -1,14 +1,28 @@
+import * as yup from "yup";
 import { useState } from "react";
 import { Modal } from "../user/Modal";
 import "../../styles/forms/payForm.sass";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { paymentSchema } from "../../validations/paymentSchema";
 
 export const PayForm = () => {
   const [hideModal, setHideModal] = useState<boolean>(true);
 
-  const handleSubmit = (e: { preventDefault: () => void }) => {
-    e.preventDefault();
+  const onSubmit = () => {
     setHideModal(false);
   };
+
+  // Inputs validation
+  type Props = yup.InferType<typeof paymentSchema>;
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<Props>({
+    resolver: yupResolver(paymentSchema),
+  });
 
   return (
     <div className="pay-form">
@@ -21,10 +35,33 @@ export const PayForm = () => {
           Add your banking details and choose how to handle <br /> the
           processing fees.
         </p>
-        <form onSubmit={handleSubmit}>
-          <input required type="text" placeholder="Bank routing number" />
-          <input required type="text" placeholder="Bank account number" />
-          <input required type="text" placeholder="Confirm account number" />
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <div className="input-group">
+            <input
+              type="number"
+              placeholder="Bank routing number"
+              {...register("routingNumber")}
+            />
+            <span className="error">{errors?.routingNumber?.message}</span>
+          </div>
+          <div className="input-group">
+            <input
+              type="number"
+              placeholder="Bank account number"
+              {...register("accountNumber")}
+            />
+            <span className="error">{errors?.accountNumber?.message}</span>
+          </div>
+          <div className="input-group">
+            <input
+              type="number"
+              placeholder="Confirm account number"
+              {...register("confirmAccountNumber")}
+            />
+            <span className="error">
+              {errors?.confirmAccountNumber?.message}
+            </span>
+          </div>
           <div className="check">
             <input type="checkbox" name="" />
             <span>

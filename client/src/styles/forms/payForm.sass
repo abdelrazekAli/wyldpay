@@ -25,17 +25,27 @@
                 display: flex
                 gap: 4rem
 
+            .input-group
+                margin: 0 0 1rem
+                width: 100%
+
+                .error
+                    color: #cc0000
+                    font-size: 1.3rem
+                    display: inline-block
+                    margin-top: .25rem
+
             input
                 outline: 0
                 background: $gray-bg
                 width: 100%
                 border: 0
-                margin: 0 0 1rem
                 padding: 15px
                 box-sizing: border-box
                 font-size: 1.5rem
                 border-radius: 3px
                 color: $black
+
         .check
             display: flex
             align-items: baseline
@@ -62,6 +72,14 @@
 
             .btn
                 width: 100%
+
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button
+            -webkit-appearance: none
+            margin: 0
+
+        input[type=number]
+            -moz-appearance: textfield
 
 @media (max-width:768px)
 

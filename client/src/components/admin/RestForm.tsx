@@ -19,8 +19,8 @@ export const RestForm = ({ onClick }: StepperProps) => {
         </p>
         <div className="content">
           <form onSubmit={handleSubmit}>
-            <input required type="text" placeholder="Type of food" />
-            <input required type="text" placeholder="Restaurant name" />
+            <input type="text" placeholder="Type of food" />
+            <input type="text" placeholder="Restaurant name" />
             <textarea
               name=""
               id=""
@@ -49,7 +49,7 @@ export const RestForm = ({ onClick }: StepperProps) => {
               </div>
             )}
 
-            <button type="submit" className="btn">
+            <button type="submit" className="btn" disabled={!logo}>
               Continue
             </button>
           </form>
