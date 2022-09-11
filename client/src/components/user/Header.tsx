@@ -13,7 +13,7 @@ export const Header = () => {
     <>
       <header className="header">
         <a href="/" className="logo">
-          <i className="fas fa-utensils"></i>Payfood
+          <i className="fas fa-utensils"></i>PayFood
         </a>
 
         <nav

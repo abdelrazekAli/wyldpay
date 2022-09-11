@@ -43,9 +43,9 @@ export const Payment = ({ totalPrice }: { totalPrice: number }) => {
 
   return (
     <div>
-      {paymentLoading && <Modal status="loading" />}
-      {paymentSuccess && <Modal status="success" />}
-      {paymentFailed && <Modal status="error" />}
+      {paymentLoading && <Modal status="loading" enableHide />}
+      {paymentSuccess && <Modal status="success" enableHide />}
+      {paymentFailed && <Modal status="error" enableHide />}
       <div>
         <div className="paymentContainer">
           <CardElement

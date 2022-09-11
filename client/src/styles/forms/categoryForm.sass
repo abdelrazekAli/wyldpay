@@ -1,0 +1,68 @@
+@use '.././base' as *
+
+.category-form
+    .container
+        max-width: 80%
+        padding-left: 15px
+        padding-right: 15px
+        margin-left: auto
+        margin-right: auto
+
+        h3,h4
+            color: $black
+
+        h3
+            font-size: 3rem
+            margin-bottom: 1.5rem
+
+        h4
+            font-size: 2.5rem
+            margin-top: 2rem
+            text-align: center
+
+        p
+            color: $light-color
+            font-size: 1.5rem
+            line-height: 1.5
+
+        .btn-container
+            display: flex
+            justify-content: flex-end
+            margin-bottom: 5rem
+
+            .btn
+                width: 25%
+
+    .category
+        h5
+            color: #666
+            font-size: 1.8rem
+
+        a
+            display: block
+
+        .box
+            cursor: pointer
+
+            &:hover
+                h5
+                    color: $white
+
+        .selected
+            color: $white
+            background-color: $green
+
+            h5
+                color: $white
+
+@media (max-width: 768px)
+    .category-form
+        .container
+            max-width: 95% !important
+
+        .category
+            grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr))
+
+        .btn-container
+            .btn
+                width: 50% !important

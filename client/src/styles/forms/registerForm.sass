@@ -1,0 +1,47 @@
+@use '.././base' as *
+
+.register-form
+    h3
+        font-size: 3rem
+        color: $black
+        margin-bottom: 1.5rem
+
+    p
+        color: $light-color
+        font-size: 1.5rem
+        line-height: 1.5
+
+    form
+        padding: 2rem 0
+
+        .input-break
+            display: flex
+            gap: 4rem
+
+        input
+            outline: 0
+            background: $gray-bg
+            width: 100%
+            border: 0
+            margin: 0 0 1rem
+            padding: 15px
+            box-sizing: border-box
+            font-size: 1.5rem
+            border-radius: 3px
+            color: $black
+
+        .btn-container
+            display: flex
+            justify-content: center
+
+            .btn
+                width: 40%
+
+        .flag-dropdown
+            border: none !important
+            background: $gray-bg
+
+        .selected-flag
+            &:hover,
+            &:focus
+                background-color: $gray-bg !important

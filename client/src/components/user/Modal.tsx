@@ -3,7 +3,7 @@ import { ModalPropsType } from "../../types/ModalProps";
 import { useState, useRef, useEffect, ReactNode } from "react";
 import { HashLoader, BeatLoader, BounceLoader } from "react-spinners";
 
-export const Modal = ({ status }: ModalPropsType) => {
+export const Modal = ({ status, enableHide }: ModalPropsType) => {
   const span = useRef(null);
   const modal = useRef(null);
   const [hideModal, setHideModal] = useState<boolean>(false);
@@ -12,7 +12,7 @@ export const Modal = ({ status }: ModalPropsType) => {
   // When the user clicks anywhere outside of the modal, close it
   window.onclick = (e) => {
     if (e.target === modal.current) {
-      setHideModal(!hideModal);
+      enableHide && setHideModal(!hideModal);
     }
   };
 
@@ -50,6 +50,15 @@ export const Modal = ({ status }: ModalPropsType) => {
           </div>
         );
         break;
+      case "signup":
+        setModalContent(
+          <div className="toastContainer">
+            <HashLoader color="#27ae60" />
+            <h3>All done!</h3>
+            <p>We will redirect you now to your dashboard</p>
+          </div>
+        );
+        break;
       default:
         setHideModal(true);
         break;
@@ -62,13 +71,15 @@ export const Modal = ({ status }: ModalPropsType) => {
         <div>
           <div ref={modal} id="myModal" className="modal">
             <div className="modal-content p-relative">
-              <span
-                ref={span}
-                onClick={() => setHideModal(true)}
-                className="modal-close"
-              >
-                &times;
-              </span>
+              {enableHide && (
+                <span
+                  ref={span}
+                  onClick={() => setHideModal(true)}
+                  className="modal-close"
+                >
+                  &times;
+                </span>
+              )}
               {modalContent}
             </div>
           </div>

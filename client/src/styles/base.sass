@@ -13,8 +13,11 @@
 
 $green: #27ae60
 $black: #130f40
+$red: #ef0046
 $white: #fff
 $light-color: #666
+$light-gray: #ebebf0
+$gray-bg: #f2f2f2
 $light-bg: #f7f7f7
 $border: .1rem solid rgba(0,0,0,.2)
 $box-shadow: 0 1rem 1rem rgba(0,0,0,.05)
@@ -35,15 +38,15 @@ html
   scroll-behavior: smooth
   scroll-padding-top: 8.5rem
 
-  &::-webkit-scrollbar
-    width: 1rem
+::-webkit-scrollbar
+  width: 1rem
 
-  &::-webkit-scrollbar-track
-    background: $white
+::-webkit-scrollbar-track
+  background: $white
 
-  &::-webkit-scrollbar-thumb
-    background: $green
-    border-radius: 5rem
+::-webkit-scrollbar-thumb
+  background: $green
+  border-radius: 5rem
 
 *::selection
   background: $green
@@ -91,10 +94,13 @@ section
 .position-relative
   position: relative
 
+.color-red
+  color: $red !important
+
 .btn
   display: inline-block
   margin-top: 1rem
-  padding: .7rem 1.8rem
+  padding: 1rem 1.8rem
   font-size: 1.7rem
   cursor: pointer
   color: $white
@@ -142,6 +148,10 @@ section
     width: 100% !important
 
 @media (max-width:768px)
+  form
+    .input-break
+      gap: 1rem !important
+
   .toastContainer
     h3
       font-size: 20px !important

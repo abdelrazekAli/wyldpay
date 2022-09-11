@@ -1,3 +1,4 @@
 export type ModalPropsType = {
-  status: "success" | "error" | "loading";
+  status: "success" | "error" | "loading" | "signup";
+  enableHide?: boolean;
 };

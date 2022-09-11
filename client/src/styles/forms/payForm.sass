@@ -1,0 +1,70 @@
+@use '.././base' as *
+
+.pay-form
+    .container
+        max-width: 50%
+        padding-left: 15px
+        padding-right: 15px
+        margin-left: auto
+        margin-right: auto
+
+        h3
+            font-size: 3rem
+            color: $black
+            margin-bottom: 1.5rem
+
+        p
+            color: $light-color
+            font-size: 1.5rem
+            line-height: 1.5
+
+        form
+            padding: 2rem 0
+
+            .input-break
+                display: flex
+                gap: 4rem
+
+            input
+                outline: 0
+                background: $gray-bg
+                width: 100%
+                border: 0
+                margin: 0 0 1rem
+                padding: 15px
+                box-sizing: border-box
+                font-size: 1.5rem
+                border-radius: 3px
+                color: $black
+        .check
+            display: flex
+            align-items: baseline
+            gap: 1rem
+            margin: 2rem 1rem 1rem 1rem
+
+            input[type="checkbox"]
+                width: fit-content
+                transform: scale(1.25)
+                cursor: pointer
+                transition: 0s !important
+
+                &:checked
+                    filter: hue-rotate(240deg)
+
+            span
+                color: $light-color
+                font-size: 1.5rem
+                line-height: 1.5
+
+        .btn-container
+            display: flex
+            justify-content: center
+
+            .btn
+                width: 100%
+
+@media (max-width:768px)
+
+    .pay-form
+        .container
+            max-width: 95% !important

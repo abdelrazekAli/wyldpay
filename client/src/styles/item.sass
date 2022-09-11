@@ -1,0 +1,62 @@
+@use './base' as *
+
+.items-container
+    margin-bottom: 2rem
+    display: flex
+    flex-wrap: wrap
+    gap: 2rem
+
+    .no-items
+        width: 100%
+        background-color: $light-bg
+        text-align: center
+        font-size: 1.5rem
+        padding: 2rem
+        color: $light-color
+        border-radius: 0.5rem
+        margin: 10rem 0
+
+    .box
+        border-radius: 5rem
+        position: relative
+        background: $light-bg
+        padding: 1.8rem 4rem
+        max-width: fit-content
+        text-align: center
+        display: flex
+        align-items: center
+
+        i
+            color: $green
+            font-size: 1.8rem
+            position: absolute
+            left: 10%
+            cursor: pointer
+
+        .image
+            margin: 1rem 0
+
+        img
+            height: 15rem
+            width: 15rem
+            object-fit: contain
+            user-select: none
+
+        .content
+
+        h4
+            font-size: 1.8rem !important
+            font-weight: 100
+            color: $black
+
+        .custom-padding
+            padding: 3px 9px
+
+        .price
+            font-size: 2rem
+            color: $black
+
+            span
+                font-size: 1.5rem
+                color: $light-color
+                text-decoration: line-through
