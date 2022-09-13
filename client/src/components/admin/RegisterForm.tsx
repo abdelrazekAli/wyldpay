@@ -1,20 +1,42 @@
+import axios from "axios";
 import * as yup from "yup";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import "react-phone-input-2/lib/style.css";
 import PhoneInput from "react-phone-input-2";
 import "../../styles/forms/registerForm.sass";
-import { userSchema } from "../../validations/userSchema";
+import { UserProps } from "../../types/UserProps";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { StepperProps } from "../../types/StepperProps";
+import { userSchema } from "../../validations/userSchema";
 
 export const RegisterForm = ({ onClick }: StepperProps) => {
   const [phone, setPhone] = useState<string | null>(null);
+  const [isLoading, setisLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
   const [phoneError, setPhoneError] = useState<string | null>(null);
 
-  const onSubmit = () => {
+  const onSubmit = async (data: UserProps) => {
     if (!phone) return setPhoneError("Phone number required");
-    onClick();
+
+    setisLoading(true);
+    delete data.confirmPassword;
+
+    try {
+      await axios.post("/api/v1/register", {
+        ...data,
+        phone: +phone,
+      });
+      onClick();
+    } catch (err: any) {
+      setisLoading(false);
+      if (err.response.status === 409) {
+        setError("Email is already used");
+      } else {
+        setError("Somthing went wrong!");
+      }
+      console.log(err);
+    }
   };
 
   // Inputs validation
@@ -34,7 +56,7 @@ export const RegisterForm = ({ onClick }: StepperProps) => {
       <p>
         Enter your information to activate <br /> your account.
       </p>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit((e) => onSubmit(e))}>
         <div className="input-break">
           <div className="input-group">
             <input
@@ -104,29 +126,38 @@ export const RegisterForm = ({ onClick }: StepperProps) => {
             <span className="error">{errors?.zip?.message}</span>
           </div>
         </div>
-        <div className="input-break">
-          <div className="input-group">
-            <input
-              type="email"
-              placeholder="Email address"
-              {...register("email")}
-            />
-            <span className="error">{errors?.email?.message}</span>
-          </div>
-          <div className="input-group">
-            <input
-              type="password"
-              placeholder="Password"
-              {...register("password")}
-            />
-            <span className="error">{errors?.password?.message}</span>
-          </div>
+        <div className="input-group">
+          <input
+            type="email"
+            placeholder="Email address"
+            {...register("email")}
+          />
+          <span className="error">{errors?.email?.message}</span>
+        </div>
+        <div className="input-group">
+          <input
+            type="password"
+            placeholder="Password"
+            {...register("password")}
+          />
+          <span className="error">{errors?.password?.message}</span>
+        </div>
+        <div className="input-group">
+          <input
+            type="password"
+            placeholder="Confirm password"
+            {...register("confirmPassword")}
+          />
+          <span className="error">{errors?.confirmPassword?.message}</span>
         </div>
         <div className="btn-container">
-          <button type="submit" className="btn">
-            Get started
+          <button type="submit" className="btn" disabled={isLoading}>
+            {isLoading ? "Loading..." : "Get started"}
           </button>
         </div>
+        {error && (
+          <span className="error d-block my-2 text-center fs-2">{error}</span>
+        )}
       </form>
     </div>
   );

@@ -1,13 +1,17 @@
 import cors from "cors";
 import express, { Application, Request, Response } from "express";
-
-require("dotenv").config();
+import { authRouter } from "./routes/auth.route";
+import "dotenv/config";
+import connect from "./utils/connect";
 const app: Application = express();
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
 // Middlewares
 app.use(express.json());
 app.use(cors());
+
+// API for auth
+app.use("/api/v1", authRouter);
 
 // API for PAYMENT
 
@@ -33,4 +37,7 @@ app.get("*", (req, res) => {
 });
 
 const port = process.env.PORT || 8000;
-app.listen(port, () => console.log("listening on the port", port));
+app.listen(port, async () => {
+  console.log("listening on the port", port);
+  await connect();
+});

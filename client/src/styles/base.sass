@@ -73,6 +73,9 @@ section
   padding-top: 2rem
   padding-bottom: 2rem
 
+.fs-2
+  font-size: 1.5rem !important
+
 .fs-4
   font-size: 4rem !important
 
@@ -81,6 +84,10 @@ section
 
 .mt-3
   margin-top: 3rem
+
+.my-2
+  margin-top: 2rem !important
+  margin-bottom: 2rem !important
 
 .pb-0
   padding-bottom: 0 !important
@@ -93,6 +100,12 @@ section
 
 .d-inline
   display: inline !important
+
+.d-block
+  display: block !important
+
+.text-center
+  text-align: center
 
 .position-relative
   position: relative
@@ -135,6 +148,34 @@ section
   &:hover
     cursor: not-allowed
     background-color: #27ae6080
+
+.custom-select
+  appearance: none
+  border: none
+  border-radius: 7px
+  outline: 0
+  background: #f2f2f2
+  width: 100%
+  border: 0
+  margin: 0 0 2rem
+  padding: 15px
+  font-size: 1.5rem
+  border-radius: 4px
+  cursor: pointer
+  color: #6d6d6d
+
+  &:focus-visible
+    outline: none
+
+.select-minimal
+  background-image: url('https://upload.wikimedia.org/wikipedia/commons/c/c7/Antu-go-down-24.svg')
+  background-repeat: no-repeat, repeat
+  background-position: right 1em top 50%, 0 0
+  background-size: 1.1em auto, 100%
+
+  &:-ms-expand
+    display: none
+
 // Media queries
 
 @media (max-width:991px)

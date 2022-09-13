@@ -38,29 +38,19 @@ export const PayForm = () => {
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="input-group">
             <input
-              type="number"
-              placeholder="Bank routing number"
-              {...register("routingNumber")}
+              type="text"
+              placeholder="Bank name"
+              {...register("bankName")}
             />
-            <span className="error">{errors?.routingNumber?.message}</span>
+            <span className="error">{errors?.bankName?.message}</span>
           </div>
           <div className="input-group">
-            <input
-              type="number"
-              placeholder="Bank account number"
-              {...register("accountNumber")}
-            />
-            <span className="error">{errors?.accountNumber?.message}</span>
+            <input type="text" placeholder="IBAN" {...register("iban")} />
+            <span className="error">{errors?.iban?.message}</span>
           </div>
           <div className="input-group">
-            <input
-              type="number"
-              placeholder="Confirm account number"
-              {...register("confirmAccountNumber")}
-            />
-            <span className="error">
-              {errors?.confirmAccountNumber?.message}
-            </span>
+            <input type="text" placeholder="BIC" {...register("bic")} />
+            <span className="error">{errors?.bic?.message}</span>
           </div>
           <div className="check">
             <input type="checkbox" name="" />

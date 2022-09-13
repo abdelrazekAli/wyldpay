@@ -1,29 +1,20 @@
 import * as yup from "yup";
 
 export const paymentSchema = yup.object({
-  routingNumber: yup
-    .number()
-    .typeError("Please enter Routing number")
-    .positive("Routing number must be a positive number")
-    .integer("Routing number should be an integer number")
-    .test(
-      "len",
-      "Please enter a valid Routing number",
-      (val) => val?.toString().length! >= 5 && val?.toString().length! < 34
-    ),
-  accountNumber: yup
-    .number()
-    .typeError("Please enter Account number")
-    .positive("Account number must be a positive number")
-    .integer("Account number should be an integer number")
-    .test(
-      "len",
-      "Please enter a valid Account number",
-      (val) => val?.toString().length! >= 5 && val?.toString().length! < 34
-    ),
+  bankName: yup
+    .string()
+    .required("Please enter bank name")
+    .min(2, "Please enter a valid bank name")
+    .max(100, "Please enter a valid bank name"),
+  iban: yup
+    .string()
+    .required("Please enter iban")
+    .min(5, "Please enter a valid iban")
+    .max(34, "Please enter a valid iban"),
 
-  confirmAccountNumber: yup
-    .number()
-    .typeError("Please confirm account number")
-    .oneOf([yup.ref("accountNumber"), null], "Account numbers not the same"),
+  bic: yup
+    .string()
+    .required("Please enter bic")
+    .min(4, "Please enter a valid bic")
+    .max(11, "Please enter a valid bic"),
 });

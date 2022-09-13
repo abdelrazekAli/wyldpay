@@ -21,6 +21,23 @@ export const RestForm = ({ onClick }: StepperProps) => {
           <form onSubmit={handleSubmit}>
             <input type="text" placeholder="Type of food" />
             <input type="text" placeholder="Restaurant name" />
+            <select
+              name="cars"
+              id="categories"
+              className="custom-select select-minimal"
+            >
+              <option value="" disabled selected hidden>
+                Preferred currency
+              </option>
+              <option value="eur">EUR</option>
+              <option value="usd">USD</option>
+              <option value="gbp">GBP</option>
+              <option value="aed">AED</option>
+              <option value="uah">UAH</option>
+              <option value="egp">EGP</option>
+              <option value="cad">CAD</option>
+              <option value="inr">INR</option>
+            </select>
             <textarea
               name=""
               id=""
