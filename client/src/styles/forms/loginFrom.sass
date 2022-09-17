@@ -1,0 +1,142 @@
+@use '.././base' as *
+
+.login-form
+    .container
+        max-width: 40%
+        padding-left: 15px
+        padding-right: 15px
+        margin-left: auto
+        margin-right: auto
+        margin-top: 6rem
+
+        h3
+            font-size: 3.5rem
+            color: $black
+            margin-bottom: 1.5rem
+
+        p
+            color: $light-color
+            font-size: 1.5rem
+            line-height: 1.5
+
+            a
+                color: $green
+                margin-left: 0.5rem
+
+        form
+            padding: 2rem 0
+
+            .input-break
+                display: flex
+                gap: 4rem
+
+            .input-group
+                margin: 0 0 1rem
+                width: 100%
+
+                .error
+                    color: #cc0000
+                    font-size: 1.3rem
+                    display: inline-block
+                    margin-top: .25rem
+
+            .pass-wrapper
+                position: relative
+
+                i
+                    position: absolute
+                    top: 38%
+                    right: 5%
+                    font-size: 1.3rem
+                    cursor: pointer
+                    color: $black
+
+                    &:hover
+                        color: $green
+
+            input
+                outline: 0
+                background: $gray-bg
+                width: 100%
+                border: 0
+                padding: 15px
+                box-sizing: border-box
+                font-size: 1.5rem
+                border-radius: 3px
+                color: $black
+
+        .error
+            color: #cc0000
+            font-size: 1.3rem
+            display: inline-block
+            margin-bottom: 0.5rem
+
+        .check
+            display: flex
+            align-items: center
+            gap: 1rem
+            margin: 0.5rem
+
+            input[type="checkbox"]
+                width: fit-content
+                transform: scale(1.25)
+                cursor: pointer
+                transition: 0s !important
+
+                &:checked
+                    filter: hue-rotate(240deg)
+
+            span
+                color: $light-color
+                font-size: 1.5rem
+                line-height: 1.5
+
+        .btn-container
+            display: flex
+            justify-content: center
+
+            .btn
+                width: 100%
+
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button
+            -webkit-appearance: none
+            margin: 0
+
+        input[type=number]
+            -moz-appearance: textfield
+
+        .parent-login-line
+            color: #666
+            display: flex
+            justify-content: center
+            font-size: 1.5rem
+
+        .parent-login-line .login-line
+            overflow: hidden
+            text-align: center
+            width: 100%
+
+        .parent-login-line .login-line:before,
+        .parent-login-line .login-line:after
+            background-color: $light-gray
+            content: ""
+            display: inline-block
+            height: 1px
+            position: relative
+            vertical-align: middle
+            width: 50%
+
+        .parent-login-line .login-line:before
+            right: 0.5em
+            margin-left: -50%
+
+        .parent-login-line .login-line:after
+            left: 0.5em
+            margin-right: -50%
+
+@media (max-width:768px)
+
+    .login-form
+        .container
+            max-width: 95% !important

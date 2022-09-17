@@ -12,8 +12,8 @@ import { userSchema } from "../../validations/userSchema";
 
 export const RegisterForm = ({ onClick }: StepperProps) => {
   const [phone, setPhone] = useState<string | null>(null);
-  const [isLoading, setisLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+  const [isLoading, setisLoading] = useState<boolean>(false);
   const [phoneError, setPhoneError] = useState<string | null>(null);
 
   const onSubmit = async (data: UserProps) => {
@@ -56,7 +56,7 @@ export const RegisterForm = ({ onClick }: StepperProps) => {
       <p>
         Enter your information to activate <br /> your account.
       </p>
-      <form onSubmit={handleSubmit((e) => onSubmit(e))}>
+      <form onSubmit={handleSubmit((data) => onSubmit(data))}>
         <div className="input-break">
           <div className="input-group">
             <input

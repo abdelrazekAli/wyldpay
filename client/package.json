@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@emailjs/browser": "^3.7.0",
     "@hookform/resolvers": "^2.9.7",
     "@reduxjs/toolkit": "^1.8.5",
     "@stripe/react-stripe-js": "^1.10.0",

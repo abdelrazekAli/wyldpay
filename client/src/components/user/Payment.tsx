@@ -14,7 +14,7 @@ export const Payment = ({ totalPrice }: { totalPrice: number }) => {
     e.preventDefault();
     setPaymentLoading(true);
     axios
-      .post("/payment/create", {
+      .post("/api/v1/payment/create", {
         amount: totalPrice,
       })
       .then((data) => {

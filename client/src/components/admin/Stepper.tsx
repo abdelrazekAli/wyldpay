@@ -9,8 +9,8 @@ import { CategoryForm } from "./CategoryForm";
 
 export const Stepper = () => {
   const [circle] = useState<number>(5);
-  const [active, setActive] = useState<number>(0);
   const [width, setWidth] = useState<number>(0);
+  const [active, setActive] = useState<number>(0);
 
   useEffect(() => {
     // Set progress width
@@ -35,19 +35,19 @@ export const Stepper = () => {
             {nodes}
           </div>
           {/* Registeration form */}
-          {active === 0 && (
+          {/* {active === 0 && (
             <RegisterForm onClick={() => setActive(active + 1)} />
-          )}
+          )} */}
         </div>
       </div>
       {/* Restaurant form */}
-      {active === 1 && <RestForm onClick={() => setActive(active + 1)} />}
+      {active === 0 && <RestForm onClick={() => setActive(active + 1)} />}
       {/* Categories form */}
-      {active === 2 && <CategoryForm onClick={() => setActive(active + 1)} />}
+      {active === 1 && <CategoryForm onClick={() => setActive(active + 1)} />}
       {/* Foods form */}
-      {active === 3 && <FoodsForm onClick={() => setActive(active + 1)} />}
+      {active === 2 && <FoodsForm onClick={() => setActive(active + 1)} />}
       {/* Payment form */}
-      {active === 4 && <PayForm />}
+      {active === 3 && <PayForm />}
     </>
   );
 };

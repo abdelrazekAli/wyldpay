@@ -5,7 +5,6 @@ import { CategoryType } from "../../types/Category";
 import { StepperProps } from "../../types/StepperProps";
 
 export const FoodsForm = ({ onClick }: StepperProps) => {
-  const span = useRef<HTMLSpanElement>(null!);
   const name = useRef<HTMLInputElement>(null!);
   const price = useRef<HTMLInputElement>(null!);
   const description = useRef<HTMLTextAreaElement>(null!);
@@ -52,7 +51,6 @@ export const FoodsForm = ({ onClick }: StepperProps) => {
         <div id="myModal" className="modal form-modal">
           <div className="modal-content p-relative custom-content">
             <span
-              ref={span}
               onClick={() => setFormVisible(!isFormVisible)}
               className="modal-close"
             >

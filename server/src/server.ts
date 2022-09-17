@@ -1,32 +1,20 @@
-import cors from "cors";
-import express, { Application, Request, Response } from "express";
-import { authRouter } from "./routes/auth.route";
 import "dotenv/config";
+import cors from "cors";
 import connect from "./utils/connect";
-const app: Application = express();
-const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
+import express, { Application } from "express";
+import { authRouter } from "./routes/auth.route";
+import { paymentRouter } from "./routes/payment.route";
 
 // Middlewares
+const app: Application = express();
 app.use(express.json());
 app.use(cors());
 
 // API for auth
 app.use("/api/v1", authRouter);
 
-// API for PAYMENT
-
-app.post("/payment/create", async (req: Request, res: Response) => {
-  const total = req.body.amount;
-
-  const payment = await stripe.paymentIntents.create({
-    amount: total * 100,
-    currency: "usd",
-  });
-
-  res.status(201).send({
-    clientSecret: payment.client_secret,
-  });
-});
+// API for payment
+app.use("/api/v1", paymentRouter);
 
 // For production
 app.use(express.static("./client/build"));

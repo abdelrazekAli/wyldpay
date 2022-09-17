@@ -5,7 +5,7 @@ export const Navbar = () => {
     <>
       <header className="header">
         <a href="/" className="logo">
-          <i className="fas fa-utensils"></i>PayFood
+          <i className="fas fa-utensils"></i>WyldPay
         </a>
       </header>
     </>

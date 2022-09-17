@@ -16,3 +16,25 @@ export const validateUser = (data: object) => {
   });
   return schema.validate(data).error;
 };
+
+export const validateLogin = (data: object) => {
+  const schema = joi.object({
+    email: joi.string().required().email().max(255),
+    password: joi.string().required().max(255),
+  });
+  return schema.validate(data).error;
+};
+
+export const validateSendResetPass = (data: object) => {
+  const schema = joi.object({
+    email: joi.string().required().email().max(255),
+  });
+  return schema.validate(data).error;
+};
+
+export const validateResetPass = (data: object) => {
+  const schema = joi.object({
+    password: joi.string().required().min(5).max(255),
+  });
+  return schema.validate(data).error;
+};

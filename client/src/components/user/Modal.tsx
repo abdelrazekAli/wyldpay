@@ -2,6 +2,7 @@ import "../../styles/modal.sass";
 import { ModalPropsType } from "../../types/ModalProps";
 import { useState, useRef, useEffect, ReactNode } from "react";
 import { HashLoader, BeatLoader, BounceLoader } from "react-spinners";
+import { Link } from "react-router-dom";
 
 export const Modal = ({ status, enableHide }: ModalPropsType) => {
   const span = useRef(null);
@@ -50,12 +51,40 @@ export const Modal = ({ status, enableHide }: ModalPropsType) => {
           </div>
         );
         break;
+
       case "signup":
         setModalContent(
           <div className="toastContainer">
             <HashLoader color="#27ae60" />
             <h3>All done!</h3>
             <p>We will redirect you now to your dashboard</p>
+          </div>
+        );
+        break;
+
+      case "password reset":
+        setModalContent(
+          <div className="toastContainer">
+            <HashLoader color="#27ae60" />
+            <h3>Password reset successfully!</h3>
+            <p>
+              You can{" "}
+              <Link to={"/admin/login"} className="color-green font-bold">
+                login now
+              </Link>{" "}
+              with your new password
+            </p>
+          </div>
+        );
+        break;
+      case "send link":
+        setModalContent(
+          <div className="toastContainer">
+            <BeatLoader color="#27ae60" />
+            <h3>link has been sent</h3>
+            <p>
+              We have send you a password reset link, Please check your mailbox.
+            </p>
           </div>
         );
         break;
