@@ -12,7 +12,7 @@ const restaurantSchema = new mongoose.Schema({
   name: { type: String, required: true },
   logo: { type: String, required: true },
   currency: { type: String, required: true },
-  categories: { type: Array },
+  categories: { type: Array, default: [] },
   userId: {
     type: mongoose.Types.ObjectId,
     ref: "user",

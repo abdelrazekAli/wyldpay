@@ -28,6 +28,14 @@ export const validateRestaurant = (data: object) => {
   return schema.validate(data).error;
 };
 
+export const validateCategories = (data: object) => {
+  const schema = joi.object({
+    categories: joi.array().required(),
+    restaurantId: joi.string().required().max(255),
+  });
+  return schema.validate(data).error;
+};
+
 export const validateLogin = (data: object) => {
   const schema = joi.object({
     email: joi.string().required().email().max(255),

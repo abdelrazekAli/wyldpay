@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 import { CategoryBox } from "./CategoryBox";
 import "../../styles/forms/categoryForm.sass";
 import { StepperProps } from "../../types/StepperProps";
+import axios from "axios";
 
 export const CategoryForm = ({ onClick }: StepperProps) => {
   const categories: string[] = [
@@ -34,6 +35,8 @@ export const CategoryForm = ({ onClick }: StepperProps) => {
   ];
 
   const categoryName = useRef<HTMLInputElement>(null!);
+  const [error, setError] = useState<string | null>(null);
+  const [isLoading, setisLoading] = useState<boolean>(false);
   const [isFormVisible, setFormVisible] = useState<boolean>(false);
   const [categoriesList, setCategoriesList] = useState(categoriesDestruct);
 
@@ -59,9 +62,21 @@ export const CategoryForm = ({ onClick }: StepperProps) => {
     ]);
   };
 
-  const handleSubmit = () => {
-    onClick();
+  const handleSubmit = async () => {
+    setisLoading(true);
+    const restaurantId = localStorage.getItem("restaurantId");
     localStorage.setItem("categories", JSON.stringify(filterCategories));
+    try {
+      await axios.put("/api/v1/restaurant/categories", {
+        categories: filterCategories,
+        restaurantId,
+      });
+      onClick();
+    } catch (err) {
+      console.log(err);
+      setisLoading(false);
+      setError("Somthing went wrong!");
+    }
   };
 
   return (
@@ -109,7 +124,7 @@ export const CategoryForm = ({ onClick }: StepperProps) => {
             >
               + Add item
             </button>
-          </div>{" "}
+          </div>
           <section className="category">
             {categoriesList.map((cate, i) => (
               <CategoryBox
@@ -119,10 +134,15 @@ export const CategoryForm = ({ onClick }: StepperProps) => {
               />
             ))}
           </section>
+          <div>
+            {error && (
+              <span className="color-error text-center fs-2 my-1">{error}</span>
+            )}
+          </div>
           <div className="btn-container">
             <button
               className="btn"
-              disabled={filterCategories.length === 0}
+              disabled={filterCategories.length === 0 || isLoading}
               onClick={handleSubmit}
             >
               Continue

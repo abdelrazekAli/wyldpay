@@ -19,7 +19,7 @@ export const RestForm = ({ onClick }: StepperProps) => {
     data.append("upload_preset", "uploads");
     try {
       const uploadRes = await axios.post(
-        "https://api.cloudinary.com/v1_1/wyldfood/image/upload",
+        process.env.REACT_APP_CLOUDINARY_LINK!,
         data
       );
       const { url } = uploadRes.data;

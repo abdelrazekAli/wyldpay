@@ -35,17 +35,17 @@ export const Stepper = () => {
             {nodes}
           </div>
           {/* Registeration form */}
-          {active === 3 && (
+          {active === 0 && (
             <RegisterForm onClick={() => setActive(active + 1)} />
           )}
         </div>
       </div>
       {/* Restaurant form */}
-      {active === 0 && <RestForm onClick={() => setActive(active + 1)} />}
+      {active === 1 && <RestForm onClick={() => setActive(active + 1)} />}
       {/* Categories form */}
-      {active === 1 && <CategoryForm onClick={() => setActive(active + 1)} />}
+      {active === 2 && <CategoryForm onClick={() => setActive(active + 1)} />}
       {/* Foods form */}
-      {active === 2 && <FoodsForm onClick={() => setActive(active + 1)} />}
+      {active === 3 && <FoodsForm onClick={() => setActive(active + 1)} />}
       {/* Payment form */}
       {active === 4 && <PayForm />}
     </>
