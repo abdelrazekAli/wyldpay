@@ -137,7 +137,7 @@ authRouter.post(
 
       // Check if email exist
       const user = await UserModel.findById(req.params.userId);
-      if (!user) return res.status(401).send("Invalid link or expired");
+      if (!user) return res.status(401).send("Invalid link or expired.");
 
       // Check if token vaild
       const token = await ResetTokenModel.findOne({

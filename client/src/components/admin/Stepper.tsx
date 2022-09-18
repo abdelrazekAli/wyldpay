@@ -1,7 +1,7 @@
 import { Circle } from "./Circle";
 import "../../styles/stepper.sass";
 import { PayForm } from "./PayForm";
-import { RestForm } from "./RestForm";
+import { RestForm } from "./RestaurantForm";
 import { FoodsForm } from "./FoodsForm";
 import { useState, useEffect } from "react";
 import { RegisterForm } from "./RegisterForm";
@@ -35,9 +35,9 @@ export const Stepper = () => {
             {nodes}
           </div>
           {/* Registeration form */}
-          {/* {active === 0 && (
+          {active === 3 && (
             <RegisterForm onClick={() => setActive(active + 1)} />
-          )} */}
+          )}
         </div>
       </div>
       {/* Restaurant form */}
@@ -47,7 +47,7 @@ export const Stepper = () => {
       {/* Foods form */}
       {active === 2 && <FoodsForm onClick={() => setActive(active + 1)} />}
       {/* Payment form */}
-      {active === 3 && <PayForm />}
+      {active === 4 && <PayForm />}
     </>
   );
 };

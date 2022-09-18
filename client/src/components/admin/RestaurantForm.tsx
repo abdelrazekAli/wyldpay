@@ -1,12 +1,45 @@
+import axios from "axios";
 import { useState } from "react";
-import "../../styles/forms/restForm.sass";
+import "../../styles/forms/restaurantForm.sass";
 import { StepperProps } from "../../types/StepperProps";
 
 export const RestForm = ({ onClick }: StepperProps) => {
+  const [name, setName] = useState<string | null>("");
+  const [file, setFile] = useState<string | Blob>("");
   const [logo, setLogo] = useState<null | File>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [isLoading, setisLoading] = useState<boolean>(false);
+  const [currency, setCurrency] = useState<string | null>("");
 
-  const handleSubmit = (e: { preventDefault: () => void }) => {
+  const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
+    setisLoading(true);
+    let data = new FormData();
+    data.append("file", file);
+    data.append("upload_preset", "uploads");
+    try {
+      const uploadRes = await axios.post(
+        "https://api.cloudinary.com/v1_1/wyldfood/image/upload",
+        data
+      );
+      const { url } = uploadRes.data;
+      const userId = localStorage.getItem("userId");
+
+      const restaurant = await axios.post("/api/v1/restaurant", {
+        name,
+        currency,
+        logo: url,
+        userId,
+      });
+
+      localStorage.setItem("restaurantId", restaurant.data._id);
+
+      setisLoading(false);
+    } catch (err) {
+      console.log(err);
+      setisLoading(false);
+      setError("Somthing went wrong!");
+    }
     onClick();
   };
 
@@ -20,11 +53,16 @@ export const RestForm = ({ onClick }: StepperProps) => {
         <div className="content">
           <form onSubmit={handleSubmit}>
             <input type="text" placeholder="Type of food" />
-            <input type="text" placeholder="Restaurant name" />
+            <input
+              type="text"
+              placeholder="Restaurant name"
+              onChange={(e) => setName(e.target.value)}
+            />
             <select
               name="cars"
               id="categories"
               className="custom-select select-minimal"
+              onChange={(e) => setCurrency(e.target.value)}
             >
               <option value="" disabled selected hidden>
                 Preferred currency
@@ -51,7 +89,10 @@ export const RestForm = ({ onClick }: StepperProps) => {
                 accept="image/*"
                 hidden
                 id="logo"
-                onChange={(e) => setLogo(e.target.files![0])}
+                onChange={(e) => {
+                  setLogo(e.target.files![0]);
+                  setFile(e.target.files![0]);
+                }}
               />
               <span>Upload logo</span>
               <i className="fas fa-upload" color="red"></i>
@@ -66,9 +107,16 @@ export const RestForm = ({ onClick }: StepperProps) => {
               </div>
             )}
 
-            <button type="submit" className="btn" disabled={!logo}>
-              Continue
+            <button
+              type="submit"
+              className="btn"
+              disabled={!logo || !name || !currency || isLoading}
+            >
+              {isLoading ? "Loading..." : "Continue"}
             </button>
+            {error && (
+              <span className="color-error text-center fs-2 my-1">{error}</span>
+            )}
           </form>
           <div className="imgs home-right">
             <img

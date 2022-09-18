@@ -53,7 +53,7 @@ export const ResetPassForm = () => {
 
   return (
     <div className="login-form">
-      {hideModal && <Modal status="password reset" enableHide={false} />}
+      {!hideModal && <Modal status="password reset" enableHide={false} />}
       <div className="container">
         <h3>Reset password</h3>
         <p>
@@ -64,7 +64,7 @@ export const ResetPassForm = () => {
         <form onSubmit={handleSubmit((data) => onSubmit(data))}>
           <div className="input-group">
             <input
-              type="text"
+              type="password"
               placeholder="Enter new password"
               {...register("password")}
               className="mb-1"
@@ -73,7 +73,7 @@ export const ResetPassForm = () => {
           </div>{" "}
           <div className="input-group">
             <input
-              type="text"
+              type="password"
               placeholder="Confirm new password"
               {...register("confirmPassword")}
               className="mb-1"
@@ -81,7 +81,7 @@ export const ResetPassForm = () => {
             <span className="error">{errors?.confirmPassword?.message}</span>
           </div>
           <div className="btn-container">
-            <button type="submit" className="btn">
+            <button type="submit" className="btn" disabled={isLoading}>
               {isLoading ? "Loading..." : "Reset password"}
             </button>
           </div>

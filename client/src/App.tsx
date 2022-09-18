@@ -8,6 +8,7 @@ import { Login } from "./pages/admin/Login";
 import { Signup } from "./pages/admin/Signup";
 import { ResetPass } from "./pages/admin/ResetPass";
 import { SendResetPass } from "./pages/admin/SendResetPass";
+import { Dashboard } from "./pages/admin/Dashboard";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
             path="/admin/send-reset-pass"
             element={<SendResetPass />}
           ></Route>
+          <Route path="/admin/dashboard" element={<Dashboard />}></Route>
         </Routes>
       </BrowserRouter>
     </Provider>

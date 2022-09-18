@@ -1,6 +1,8 @@
 import axios from "axios";
 import * as yup from "yup";
 import { useState } from "react";
+import { Modal } from "../user/Modal";
+import emailjs from "@emailjs/browser";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import "../../styles/forms/loginFrom.sass";
@@ -8,6 +10,8 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { sendResetPassSchema } from "../../validations/sendResetPassSchema";
 
 export const SendResetPassForm = () => {
+  const [hideModal, setHideModal] = useState<boolean>(true);
+
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setisLoading] = useState<boolean>(false);
 
@@ -28,14 +32,19 @@ export const SendResetPassForm = () => {
 
     try {
       let res = await axios.post("/api/v1/pass/send-reset", data);
-      // Send email with res data
+      const resetLink = `${process.env.REACT_APP_BASE_URL}/admin/reset-pass/${res.data._id}/${res.data.token}`;
+      await emailjs.send(
+        process.env.REACT_APP_EMAIL_SERVICE_ID!,
+        process.env.REACT_APP_EMAIL_TEMPLATE_ID!,
+        { email: data.email, resetLink: resetLink },
+        process.env.REACT_APP_EMAIL_PUPLIC_KEY!
+      );
+      setHideModal(false);
       setError(null);
       setisLoading(false);
-      console.log(res);
     } catch (err: any) {
       setisLoading(false);
-
-      let statusCode = err.response.status;
+      let statusCode = err.response?.status;
       if (statusCode === 401) {
         setError("Email is not registered yet");
       } else {
@@ -46,35 +55,39 @@ export const SendResetPassForm = () => {
   };
 
   return (
-    <div className="login-form">
-      <div className="container">
-        <h3>Reset password</h3>
-        <p>
-          Cancel?
-          <Link to={"/admin/login"}>Back to login</Link>
-        </p>
+    <>
+      {!hideModal && <Modal status="send link" enableHide={false} />}
 
-        <form onSubmit={handleSubmit((data) => onSubmit(data))}>
-          <div className="input-group">
-            <input
-              type="text"
-              placeholder="Enter your email address"
-              {...register("email")}
-              className="mb-1"
-            />
-            <span className="error">{errors?.email?.message}</span>
-          </div>
+      <div className="login-form">
+        <div className="container">
+          <h3>Reset password</h3>
+          <p>
+            Cancel?
+            <Link to={"/admin/login"}>Back to login</Link>
+          </p>
 
-          <div className="btn-container">
-            <button type="submit" className="btn">
-              {isLoading ? "Loading..." : "Send reset link"}
-            </button>
-          </div>
-        </form>
-        {error && (
-          <span className="error d-block text-center fs-2">{error}</span>
-        )}
+          <form onSubmit={handleSubmit((data) => onSubmit(data))}>
+            <div className="input-group">
+              <input
+                type="text"
+                placeholder="Enter your email address"
+                {...register("email")}
+                className="mb-1"
+              />
+              <span className="error">{errors?.email?.message}</span>
+            </div>
+
+            <div className="btn-container">
+              <button type="submit" className="btn" disabled={isLoading}>
+                {isLoading ? "Sending..." : "Send reset link"}
+              </button>
+            </div>
+          </form>
+          {error && (
+            <span className="error d-block text-center fs-2">{error}</span>
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 };

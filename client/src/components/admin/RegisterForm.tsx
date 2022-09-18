@@ -23,10 +23,11 @@ export const RegisterForm = ({ onClick }: StepperProps) => {
     delete data.confirmPassword;
 
     try {
-      await axios.post("/api/v1/register", {
+      let res = await axios.post("/api/v1/register", {
         ...data,
         phone: +phone,
       });
+      localStorage.setItem("userId", res.data._id);
       onClick();
     } catch (err: any) {
       setisLoading(false);

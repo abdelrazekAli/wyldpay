@@ -81,7 +81,7 @@ export const Modal = ({ status, enableHide }: ModalPropsType) => {
         setModalContent(
           <div className="toastContainer">
             <BeatLoader color="#27ae60" />
-            <h3>link has been sent</h3>
+            <h3>Link has been sent</h3>
             <p>
               We have send you a password reset link, Please check your mailbox.
             </p>

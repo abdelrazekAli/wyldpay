@@ -17,6 +17,17 @@ export const validateUser = (data: object) => {
   return schema.validate(data).error;
 };
 
+export const validateRestaurant = (data: object) => {
+  const schema = joi.object({
+    name: joi.string().required().max(255),
+    logo: joi.string().required().max(1000),
+    currency: joi.string().required().length(3).max(255),
+    categories: joi.array(),
+    userId: joi.string().required().max(255),
+  });
+  return schema.validate(data).error;
+};
+
 export const validateLogin = (data: object) => {
   const schema = joi.object({
     email: joi.string().required().email().max(255),

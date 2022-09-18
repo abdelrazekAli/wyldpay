@@ -4,17 +4,17 @@ import connect from "./utils/connect";
 import express, { Application } from "express";
 import { authRouter } from "./routes/auth.route";
 import { paymentRouter } from "./routes/payment.route";
+import { restaurantRouter } from "./routes/restaurant.route";
 
 // Middlewares
 const app: Application = express();
 app.use(express.json());
 app.use(cors());
 
-// API for auth
+// APIs
 app.use("/api/v1", authRouter);
-
-// API for payment
 app.use("/api/v1", paymentRouter);
+app.use("/api/v1/restaurant", restaurantRouter);
 
 // For production
 app.use(express.static("./client/build"));

@@ -20,9 +20,9 @@ const restaurantSchema = new mongoose.Schema({
   },
 });
 
-const RefreshTokenModel = mongoose.model<RestaurantProps>(
+const RestaurantModel = mongoose.model<RestaurantProps>(
   "Restaurant",
   restaurantSchema
 );
 
-export default RefreshTokenModel;
+export default RestaurantModel;

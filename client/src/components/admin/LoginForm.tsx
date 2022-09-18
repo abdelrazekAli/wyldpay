@@ -9,6 +9,7 @@ import { loginSchema } from "../../validations/loginSchema";
 
 export const LoginForm = () => {
   const [error, setError] = useState<string | null>(null);
+  const [username, setUsername] = useState<string | null>(null);
   const [isLoading, setisLoading] = useState<boolean>(false);
 
   // Show/Hide password
@@ -31,6 +32,7 @@ export const LoginForm = () => {
 
     try {
       let res = await axios.post("/api/v1/login", data);
+      window.location.replace("/admin/dashboard");
       setError(null);
       setisLoading(false);
       console.log(res);
@@ -91,8 +93,8 @@ export const LoginForm = () => {
             </Link>
           </div>
           <div className="btn-container">
-            <button type="submit" className="btn">
-              {isLoading ? "Loading..." : " Sign in"}
+            <button type="submit" className="btn" disabled={isLoading}>
+              {isLoading ? "Loading..." : "Sign in"}
             </button>
           </div>
         </form>
