@@ -1,16 +1,34 @@
+import axios from "axios";
 import * as yup from "yup";
 import { useState } from "react";
-import { Modal } from "../user/Modal";
-import "../../styles/forms/payForm.sass";
+import { Modal } from "../../user/Modal";
 import { useForm } from "react-hook-form";
+import "../../../styles/forms/payForm.sass";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { paymentSchema } from "../../validations/paymentSchema";
+import { paymentSchema } from "../../../validations/paymentSchema";
 
 export const PayForm = () => {
+  const [check, setCheck] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
   const [hideModal, setHideModal] = useState<boolean>(true);
+  const [isLoading, setisLoading] = useState<boolean>(false);
 
-  const onSubmit = () => {
-    setHideModal(false);
+  const onSubmit = async (data: object) => {
+    try {
+      setError(null);
+      const userId = localStorage.getItem("userId");
+      await axios.post("/api/v1/bank", {
+        ...data,
+        userId,
+        customerFees: check,
+      });
+      setHideModal(false);
+      setisLoading(false);
+    } catch (err) {
+      console.log(err);
+      setisLoading(false);
+      setError("Somthing went wrong!");
+    }
   };
 
   // Inputs validation
@@ -35,14 +53,10 @@ export const PayForm = () => {
           Add your banking details and choose how to handle <br /> the
           processing fees.
         </p>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit((data) => onSubmit(data))}>
           <div className="input-group">
-            <input
-              type="text"
-              placeholder="Bank name"
-              {...register("bankName")}
-            />
-            <span className="error">{errors?.bankName?.message}</span>
+            <input type="text" placeholder="Bank name" {...register("name")} />
+            <span className="error">{errors?.name?.message}</span>
           </div>
           <div className="input-group">
             <input type="text" placeholder="IBAN" {...register("iban")} />
@@ -53,16 +67,21 @@ export const PayForm = () => {
             <span className="error">{errors?.bic?.message}</span>
           </div>
           <div className="check">
-            <input type="checkbox" name="" />
+            <input type="checkbox" name="" onChange={() => setCheck(!check)} />
             <span>
               Check if you want to pass 2.9% + 29 cent charge fee to your
               customer.
             </span>
           </div>
           <div className="btn-container">
-            <button type="submit" className="btn">
-              Finish
+            <button type="submit" className="btn" disabled={isLoading}>
+              {isLoading ? "Loading..." : "Finish"}
             </button>
+          </div>
+          <div className="d-flex">
+            {error && (
+              <span className="color-error text-center fs-2 my-1">{error}</span>
+            )}
           </div>
         </form>
       </div>

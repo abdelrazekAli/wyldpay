@@ -1,8 +1,8 @@
-import { Item } from "./Item";
-import "../../styles/forms/foodsForm.sass";
+import { Item } from ".././Item";
+import "../../../styles/forms/foodsForm.sass";
 import { Key, useRef, useState } from "react";
-import { CategoryType } from "../../types/Category";
-import { StepperProps } from "../../types/StepperProps";
+import { CategoryType } from "../../../types/Category";
+import { StepperProps } from "../../../types/StepperProps";
 
 export const FoodsForm = ({ onClick }: StepperProps) => {
   const name = useRef<HTMLInputElement>(null!);

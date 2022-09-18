@@ -1,9 +1,9 @@
-import { Circle } from "./Circle";
-import "../../styles/stepper.sass";
+import { Circle } from "../Circle";
 import { PayForm } from "./PayForm";
-import { RestForm } from "./RestaurantForm";
+import "../../../styles/stepper.sass";
 import { FoodsForm } from "./FoodsForm";
 import { useState, useEffect } from "react";
+import { RestForm } from "./RestaurantForm";
 import { RegisterForm } from "./RegisterForm";
 import { CategoryForm } from "./CategoryForm";
 

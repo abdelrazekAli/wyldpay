@@ -1,5 +1,5 @@
 import { Navbar } from "../../components/admin/Navbar";
-import { Stepper } from "../../components/admin/Stepper";
+import { Stepper } from "../../components/admin/forms/Stepper";
 
 export const Signup = () => {
   return (

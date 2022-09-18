@@ -1,18 +1,17 @@
 import axios from "axios";
 import * as yup from "yup";
 import { useState } from "react";
-import { Modal } from "../user/Modal";
 import emailjs from "@emailjs/browser";
 import { Link } from "react-router-dom";
+import { Modal } from "../../user/Modal";
 import { useForm } from "react-hook-form";
-import "../../styles/forms/loginFrom.sass";
+import "../../../styles/forms/loginFrom.sass";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { sendResetPassSchema } from "../../validations/sendResetPassSchema";
+import { sendResetPassSchema } from "../../../validations/sendResetPassSchema";
 
 export const SendResetPassForm = () => {
-  const [hideModal, setHideModal] = useState<boolean>(true);
-
   const [error, setError] = useState<string | null>(null);
+  const [hideModal, setHideModal] = useState<boolean>(true);
   const [isLoading, setisLoading] = useState<boolean>(false);
 
   // Inputs validation

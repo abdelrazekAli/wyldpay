@@ -3,6 +3,7 @@ import cors from "cors";
 import connect from "./utils/connect";
 import express, { Application } from "express";
 import { authRouter } from "./routes/auth.route";
+import { bankRouter } from "./routes/bank.route";
 import { paymentRouter } from "./routes/payment.route";
 import { restaurantRouter } from "./routes/restaurant.route";
 
@@ -14,6 +15,7 @@ app.use(cors());
 // APIs
 app.use("/api/v1", authRouter);
 app.use("/api/v1", paymentRouter);
+app.use("/api/v1/bank", bankRouter);
 app.use("/api/v1/restaurant", restaurantRouter);
 
 // For production

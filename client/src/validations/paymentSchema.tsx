@@ -1,7 +1,7 @@
 import * as yup from "yup";
 
 export const paymentSchema = yup.object({
-  bankName: yup
+  name: yup
     .string()
     .required("Please enter bank name")
     .min(2, "Please enter a valid bank name")

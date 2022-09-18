@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
-import "../../styles/forms/restaurantForm.sass";
-import { StepperProps } from "../../types/StepperProps";
+import "../../../styles/forms/restaurantForm.sass";
+import { StepperProps } from "../../../types/StepperProps";
 
 export const RestForm = ({ onClick }: StepperProps) => {
   const [name, setName] = useState<string | null>("");
@@ -13,6 +13,7 @@ export const RestForm = ({ onClick }: StepperProps) => {
 
   const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
+    setError(null);
     setisLoading(true);
     let data = new FormData();
     data.append("file", file);

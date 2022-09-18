@@ -1,12 +1,12 @@
 import axios from "axios";
 import * as yup from "yup";
 import { useState } from "react";
-import { Modal } from "../user/Modal";
+import { Modal } from "../../user/Modal";
 import { useForm } from "react-hook-form";
-import "../../styles/forms/loginFrom.sass";
+import "../../../styles/forms/loginFrom.sass";
 import { Link, useParams } from "react-router-dom";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { resetPassSchema } from "../../validations/resetPassSchema";
+import { resetPassSchema } from "../../../validations/resetPassSchema";
 
 export const ResetPassForm = () => {
   const { userId, token } = useParams();

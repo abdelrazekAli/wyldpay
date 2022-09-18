@@ -3,9 +3,9 @@ import * as yup from "yup";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import "../../styles/forms/loginFrom.sass";
+import "../../../styles/forms/loginFrom.sass";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { loginSchema } from "../../validations/loginSchema";
+import { loginSchema } from "../../../validations/loginSchema";
 
 export const LoginForm = () => {
   const [error, setError] = useState<string | null>(null);

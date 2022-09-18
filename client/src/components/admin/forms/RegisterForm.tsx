@@ -4,11 +4,11 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import "react-phone-input-2/lib/style.css";
 import PhoneInput from "react-phone-input-2";
-import "../../styles/forms/registerForm.sass";
-import { UserProps } from "../../types/UserProps";
+import "../../../styles/forms/registerForm.sass";
+import { UserProps } from "../../../types/UserProps";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { StepperProps } from "../../types/StepperProps";
-import { userSchema } from "../../validations/userSchema";
+import { StepperProps } from "../../../types/StepperProps";
+import { userSchema } from "../../../validations/userSchema";
 
 export const RegisterForm = ({ onClick }: StepperProps) => {
   const [phone, setPhone] = useState<string | null>(null);
@@ -17,6 +17,7 @@ export const RegisterForm = ({ onClick }: StepperProps) => {
   const [phoneError, setPhoneError] = useState<string | null>(null);
 
   const onSubmit = async (data: UserProps) => {
+    setError(null);
     if (!phone) return setPhoneError("Phone number required");
 
     setisLoading(true);

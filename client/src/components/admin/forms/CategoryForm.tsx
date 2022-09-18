@@ -1,8 +1,8 @@
-import { useRef, useState } from "react";
-import { CategoryBox } from "./CategoryBox";
-import "../../styles/forms/categoryForm.sass";
-import { StepperProps } from "../../types/StepperProps";
 import axios from "axios";
+import { useRef, useState } from "react";
+import { CategoryBox } from ".././CategoryBox";
+import "../../../styles/forms/categoryForm.sass";
+import { StepperProps } from "../../../types/StepperProps";
 
 export const CategoryForm = ({ onClick }: StepperProps) => {
   const categories: string[] = [
@@ -63,6 +63,7 @@ export const CategoryForm = ({ onClick }: StepperProps) => {
   };
 
   const handleSubmit = async () => {
+    setError(null);
     setisLoading(true);
     const restaurantId = localStorage.getItem("restaurantId");
     localStorage.setItem("categories", JSON.stringify(filterCategories));
