@@ -26,7 +26,7 @@ export const RestForm = ({ onClick }: StepperProps) => {
       const { url } = uploadRes.data;
       const userId = localStorage.getItem("userId");
 
-      const restaurant = await axios.post("/api/v1/restaurant", {
+      const restaurant = await axios.post("/api/v1/restaurants", {
         name,
         currency,
         logo: url,

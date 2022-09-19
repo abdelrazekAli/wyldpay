@@ -5,6 +5,7 @@ import express, { Application } from "express";
 import { authRouter } from "./routes/auth.route";
 import { bankRouter } from "./routes/bank.route";
 import { paymentRouter } from "./routes/payment.route";
+import { itemRouter } from "./routes/item.route";
 import { restaurantRouter } from "./routes/restaurant.route";
 
 // Middlewares
@@ -15,8 +16,9 @@ app.use(cors());
 // APIs
 app.use("/api/v1", authRouter);
 app.use("/api/v1", paymentRouter);
-app.use("/api/v1/bank", bankRouter);
-app.use("/api/v1/restaurant", restaurantRouter);
+app.use("/api/v1/items", itemRouter);
+app.use("/api/v1/banks", bankRouter);
+app.use("/api/v1/restaurants", restaurantRouter);
 
 // For production
 app.use(express.static("./client/build"));

@@ -17,7 +17,7 @@ export const PayForm = () => {
     try {
       setError(null);
       const userId = localStorage.getItem("userId");
-      await axios.post("/api/v1/bank", {
+      await axios.post("/api/v1/banks", {
         ...data,
         userId,
         customerFees: check,

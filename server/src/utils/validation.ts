@@ -1,4 +1,7 @@
 import joi from "joi";
+import { Types } from "mongoose";
+import ItemModel from "../models/item.model";
+import RestaurantModel from "../models/restaurant.model";
 
 // User validation
 export const validateUser = (data: object) => {
@@ -24,6 +27,18 @@ export const validateRestaurant = (data: object) => {
     currency: joi.string().required().length(3).max(255),
     categories: joi.array(),
     userId: joi.string().required().max(255),
+  });
+  return schema.validate(data).error;
+};
+
+export const validateItem = (data: object) => {
+  const schema = joi.object({
+    name: joi.string().required().max(255),
+    img: joi.string().required().max(1000),
+    price: joi.number().required(),
+    category: joi.string().required().max(255),
+    desc: joi.string().max(1000),
+    restId: joi.string().required().max(255),
   });
   return schema.validate(data).error;
 };
@@ -67,4 +82,30 @@ export const validateResetPass = (data: object) => {
     password: joi.string().required().min(5).max(255),
   });
   return schema.validate(data).error;
+};
+
+// Check restaurant Id
+export const checkRestId = async (id: string) => {
+  if (!id) return "Restaurant id is required";
+  else {
+    if (Types.ObjectId.isValid(id)) {
+      let restaurant = await RestaurantModel.findById(id).populate({
+        path: "userId",
+      });
+      return restaurant === null
+        ? `There is no restaurant with this id: ${id}`
+        : restaurant;
+    } else return `Restaurant id: ${id} is not valid`;
+  }
+};
+
+// Check item Id
+export const checkItemId = async (id: string) => {
+  if (!id) return "Item id is required";
+  else {
+    if (Types.ObjectId.isValid(id)) {
+      let item = await ItemModel.findById(id);
+      return item === null ? `There is no item with this id: ${id}` : item;
+    } else return `Item id: ${id} is not valid`;
+  }
 };

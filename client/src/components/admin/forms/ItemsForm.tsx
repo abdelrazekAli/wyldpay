@@ -1,49 +1,91 @@
-import { Item } from ".././Item";
-import "../../../styles/forms/foodsForm.sass";
-import { Key, useRef, useState } from "react";
+import { Item } from "../Item";
+import "../../../styles/forms/itemsForm.sass";
+import { Key, useEffect, useState } from "react";
 import { CategoryType } from "../../../types/Category";
 import { StepperProps } from "../../../types/StepperProps";
+import axios from "axios";
 
-export const FoodsForm = ({ onClick }: StepperProps) => {
-  const name = useRef<HTMLInputElement>(null!);
-  const price = useRef<HTMLInputElement>(null!);
-  const description = useRef<HTMLTextAreaElement>(null!);
-
+export const ItemsForm = ({ onClick }: StepperProps) => {
+  const [name, setName] = useState<string | null>("");
+  const [file, setFile] = useState<string | Blob>("");
+  const [price, setPrice] = useState<number | null>(null);
   const [itemImg, setItemImg] = useState<null | File>(null);
   const [select, setSelect] = useState<CategoryType | null>(null);
+  const [description, setDescription] = useState<string | null>("");
+
+  const [error, setError] = useState<string | null>(null);
+  const [isLoading, setisLoading] = useState<boolean>(false);
   const [isFormVisible, setFormVisible] = useState<boolean>(false);
 
+  const restId = localStorage.getItem("restaurantId");
   const categories = JSON.parse(localStorage.getItem("categories")!);
 
   const [items, setItems] = useState<
-    { id: number; name: string; price: number; category: string; img: File }[]
+    {
+      _id: string;
+      name: string;
+      price: number;
+      img: string;
+      category: string;
+      desc: string;
+      restId: string;
+    }[]
   >([]);
 
-  function getRandomIntInclusive(min: number, max: number) {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min + 1) + min);
-  }
-
-  const handleSubmit = (e: { preventDefault: () => void }) => {
-    e.preventDefault();
-    const newItem = {
-      id: getRandomIntInclusive(100, 1000),
-      img: itemImg!,
-      name: name.current.value,
-      price: +price.current.value,
-      category: select?.value!,
+  useEffect(() => {
+    const fetchItems = async () => {
+      const res = await axios.get(`/api/v1/items/restaurant/${restId}`);
+      setItems(res.data);
     };
-    setItems((arr) => [...arr, newItem]);
-    setFormVisible(!isFormVisible);
+    fetchItems();
+  }, [restId]);
+
+  const handleSubmit = async (e: { preventDefault: () => void }) => {
+    e.preventDefault();
+    setError(null);
+    setisLoading(true);
+
+    let data = new FormData();
+    data.append("file", file);
+    data.append("upload_preset", "uploads");
+    try {
+      const uploadRes = await axios.post(
+        process.env.REACT_APP_CLOUDINARY_LINK!,
+        data
+      );
+      const { url } = uploadRes.data;
+
+      const res = await axios.post("/api/v1/items", {
+        name,
+        price,
+        img: url,
+        category: select?.value,
+        desc: description,
+        restId,
+      });
+
+      setItems([...items, res.data]);
+
+      setFormVisible(!isFormVisible);
+      setisLoading(false);
+    } catch (err) {
+      console.log(err);
+      setisLoading(false);
+      setError("Somthing went wrong!");
+    }
   };
 
-  const handleDelete = (id: number) => {
-    const filterItems = items.filter((i) => i.id !== id);
+  const handleDelete = async (itemId: string) => {
+    const filterItems = items.filter((i) => i._id !== itemId);
     setItems(filterItems);
+    try {
+      await axios.delete(`/api/v1/items/id/${itemId}`);
+    } catch (err) {
+      console.log(err);
+      setisLoading(false);
+      setError("Somthing went wrong!");
+    }
   };
-
-  const handleContinue = () => {};
 
   return (
     <>
@@ -59,9 +101,16 @@ export const FoodsForm = ({ onClick }: StepperProps) => {
             <div className="main-content">
               <h2>Add item</h2>
               <form onSubmit={handleSubmit}>
-                <input type="text" placeholder="Item name" ref={name} />
-                <input type="number" placeholder="Item price" ref={price} />
-
+                <input
+                  type="text"
+                  placeholder="Item name"
+                  onChange={(e) => setName(e.target.value)}
+                />
+                <input
+                  type="number"
+                  placeholder="Item price"
+                  onChange={(e) => setPrice(+e.target.value)}
+                />
                 <label htmlFor="item-img" className="img-label">
                   <input
                     type="file"
@@ -69,7 +118,10 @@ export const FoodsForm = ({ onClick }: StepperProps) => {
                     hidden
                     id="item-img"
                     name="image"
-                    onChange={(e) => setItemImg(e.target.files![0])}
+                    onChange={(e) => {
+                      setItemImg(e.target.files![0]);
+                      setFile(e.target.files![0]);
+                    }}
                   />
                   <span>Upload image</span>
                   <i className="fas fa-upload" color="red"></i>
@@ -84,22 +136,26 @@ export const FoodsForm = ({ onClick }: StepperProps) => {
                   </div>
                 )}
                 <textarea
-                  ref={description}
                   id=""
                   cols={30}
                   rows={3}
                   placeholder="Item decription"
+                  onChange={(e) => setDescription(e.target.value)}
                 ></textarea>
                 <button
-                  disabled={!itemImg}
+                  disabled={
+                    !name || !price || !description || !itemImg || isLoading
+                  }
                   type="submit"
                   className="btn"
-                  onClick={handleContinue}
                 >
-                  Continue
+                  {isLoading ? "Loading..." : "Add"}
                 </button>
               </form>
             </div>
+            {error && (
+              <span className="color-error text-center fs-2 my-1">{error}</span>
+            )}
           </div>
         </div>
       )}
@@ -141,8 +197,8 @@ export const FoodsForm = ({ onClick }: StepperProps) => {
                 (i) =>
                   select?.value === i.category && (
                     <Item
-                      product={i}
-                      key={i.id}
+                      item={i}
+                      key={i._id}
                       onDelete={(id) => handleDelete(id)}
                     />
                   )

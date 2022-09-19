@@ -1,22 +1,24 @@
 import "../../styles/item.sass";
 
 export const Item = ({
-  product,
+  item,
   onDelete,
 }: {
-  product: {
-    id: number;
+  item: {
+    _id: string;
     name: string;
     price: number;
+    img: string;
     category: string;
-    img: File;
+    desc: string;
+    restId: string;
   };
-  onDelete: (id: number) => void;
+  onDelete: (itemId: string) => void;
 }) => {
   return (
     <div className="box">
-      <i className="fa fa-trash" onClick={() => onDelete(product.id)}></i>
-      <h4>{product.name}</h4>
+      <i className="fa fa-trash" onClick={() => onDelete(item._id)}></i>
+      <h4>{item.name}</h4>
       {/* <div className="image">
         <img src={URL.createObjectURL(product.img)} alt="" />
       </div> */}

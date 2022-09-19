@@ -15,7 +15,7 @@ const restaurantSchema = new mongoose.Schema({
   categories: { type: Array, default: [] },
   userId: {
     type: mongoose.Types.ObjectId,
-    ref: "user",
+    ref: "User",
     required: true,
   },
 });
