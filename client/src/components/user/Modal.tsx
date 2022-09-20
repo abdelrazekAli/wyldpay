@@ -57,7 +57,12 @@ export const Modal = ({ status, enableHide }: ModalPropsType) => {
           <div className="toastContainer">
             <HashLoader color="#27ae60" />
             <h3>All done!</h3>
-            <p>We will redirect you now to your dashboard</p>
+            <p>
+              You can login to your dashboard now from{" "}
+              <Link to={"/admin/login"} className="color-green font-bold">
+                here
+              </Link>
+            </p>
           </div>
         );
         break;

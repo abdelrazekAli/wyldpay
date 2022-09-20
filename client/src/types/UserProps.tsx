@@ -10,3 +10,11 @@ export type UserProps = {
   password: string;
   confirmPassword?: string;
 };
+
+export type RegisteredUserProps = {
+  _id?: string;
+  firstName?: string;
+  email?: string;
+  accessToken?: string;
+  refreshToken?: string;
+};

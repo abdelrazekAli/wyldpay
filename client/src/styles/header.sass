@@ -81,3 +81,56 @@
     0%
       transform: translateY(5rem)
       opacity: 0
+
+  .dropdown
+    display: flex
+    justify-content: space-between
+    align-items: center
+
+    img
+      width: 30px
+      height: 30px
+      border-radius: 50%
+      vertical-align: middle
+
+    & .dropbtn
+      font-size: 1.8rem
+      border: none
+      outline: none
+      color: $black
+      padding-left: 10px
+      background-color: inherit
+      font-family: inherit
+      margin: 0
+      cursor: pointer
+
+      i
+        margin-left: 8px
+
+    &-content
+      display: none
+      position: absolute
+      background-color: $white
+      min-width: 15rem
+      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2)
+      z-index: 1
+      top: 5rem
+      padding: 0.5rem 0.3rem 0.65rem 0.3rem
+
+    &-content a, span
+      color: black
+      padding: 12px 16px
+      text-decoration: none
+      display: block
+      text-align: left
+      font-size: 1.5rem
+      color: $black
+      cursor: pointer
+
+    &-content a:hover
+      background-color: $green
+      color: #fff !important
+      box-shadow: 0 4px 20px 0 rgb(0 0 0 / 14%), 0 7px 10px -5px rgb(0 123 255 / 40%)
+
+    &:hover .dropdown-content
+      display: block

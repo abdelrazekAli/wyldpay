@@ -32,6 +32,7 @@ export const ItemsForm = ({ onClick }: StepperProps) => {
     }[]
   >([]);
 
+  // Fetch items
   useEffect(() => {
     const fetchItems = async () => {
       const res = await axios.get(`/api/v1/items/restaurant/${restId}`);
@@ -40,6 +41,7 @@ export const ItemsForm = ({ onClick }: StepperProps) => {
     fetchItems();
   }, [restId]);
 
+  // Handle add item
   const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
     setError(null);
@@ -75,6 +77,7 @@ export const ItemsForm = ({ onClick }: StepperProps) => {
     }
   };
 
+  // Handle delete item
   const handleDelete = async (itemId: string) => {
     const filterItems = items.filter((i) => i._id !== itemId);
     setItems(filterItems);
@@ -191,7 +194,7 @@ export const ItemsForm = ({ onClick }: StepperProps) => {
           </div>
           <div className="items-container">
             {items.length === 0 ? (
-              <div className="no-items">No items yet added</div>
+              <div className="no-items">No items added yet</div>
             ) : (
               items.map(
                 (i) =>

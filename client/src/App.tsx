@@ -1,36 +1,55 @@
 import { store } from "./redux/store";
 import { Provider } from "react-redux";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { getUser } from "./redux/user.slice";
+import { useAppSelector } from "../src/redux/store.hooks";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 // Import pages
 import { Home } from "./pages/user/Home";
 import { Login } from "./pages/admin/Login";
 import { Signup } from "./pages/admin/Signup";
 import { ResetPass } from "./pages/admin/ResetPass";
-import { SendResetPass } from "./pages/admin/SendResetPass";
 import { Dashboard } from "./pages/admin/Dashboard";
+import { SendResetPass } from "./pages/admin/SendResetPass";
 
-function App() {
-  return (
-    <Provider store={store}>
+function AppWraper() {
+  const App = () => {
+    const user = useAppSelector(getUser);
+    console.log(user);
+    return (
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Home />}></Route>
-          <Route path="/admin/login" element={<Login />}></Route>
-          <Route path="/admin/signup" element={<Signup />}></Route>
           <Route
             path="/admin/reset-pass/:userId/:token"
             element={<ResetPass />}
-          ></Route>
-          <Route
-            path="/admin/send-reset-pass"
-            element={<SendResetPass />}
-          ></Route>
-          <Route path="/admin/dashboard" element={<Dashboard />}></Route>
+          />
+          <Route path="/admin/send-reset-pass" element={<SendResetPass />} />
+          <Route path="/" element={<Home />} />
+          <Route path="*" element={<Navigate to="/admin/login" replace />} />
+          {user ? (
+            <>
+              <Route path="/admin/dashboard" element={<Dashboard />} />
+              <Route
+                path="*"
+                element={<Navigate to="/admin/dashboard" replace />}
+              />
+            </>
+          ) : (
+            <>
+              <Route path="/admin/login" element={<Login />} />
+              <Route path="/admin/signup" element={<Signup />} />
+            </>
+          )}
         </Routes>
       </BrowserRouter>
+    );
+  };
+
+  return (
+    <Provider store={store}>
+      <App />
     </Provider>
   );
 }
 
-export default App;
+export default AppWraper;

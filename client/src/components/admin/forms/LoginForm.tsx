@@ -4,13 +4,21 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import "../../../styles/forms/loginFrom.sass";
+import { login } from "../../../redux/user.slice";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useAppDispatch } from "../../../redux/store.hooks";
+import { RegisteredUserProps } from "../../../types/UserProps";
 import { loginSchema } from "../../../validations/loginSchema";
 
 export const LoginForm = () => {
+  const dispatch = useAppDispatch();
   const [error, setError] = useState<string | null>(null);
-  const [username, setUsername] = useState<string | null>(null);
   const [isLoading, setisLoading] = useState<boolean>(false);
+
+  // Login handler
+  const loginHandler = (userData: RegisteredUserProps) => {
+    dispatch(login(userData));
+  };
 
   // Show/Hide password
   const [hidePass, setHidePass] = useState<boolean>(true);
@@ -32,6 +40,7 @@ export const LoginForm = () => {
 
     try {
       let res = await axios.post("/api/v1/login", data);
+      loginHandler(res.data);
       window.location.replace("/admin/dashboard");
       setError(null);
       setisLoading(false);

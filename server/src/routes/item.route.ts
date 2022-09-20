@@ -62,7 +62,6 @@ itemRouter.put("/id/:itemId", async (req: Request, res: Response) => {
 
 // Delete item by id
 itemRouter.delete("/id/:itemId", async (req: Request, res: Response) => {
-  console.log("first");
   try {
     let item;
     const { itemId } = req.params;
