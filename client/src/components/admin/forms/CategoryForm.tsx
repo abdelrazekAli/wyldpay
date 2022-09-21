@@ -68,7 +68,7 @@ export const CategoryForm = ({ onClick }: StepperProps) => {
     const restaurantId = localStorage.getItem("restaurantId");
     localStorage.setItem("categories", JSON.stringify(filterCategories));
     try {
-      await axios.put("/api/v1/restaurant/categories", {
+      await axios.put("/api/v1/restaurants/categories", {
         categories: filterCategories,
         restaurantId,
       });

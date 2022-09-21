@@ -1,0 +1,134 @@
+@use '.././base' as *
+
+.profile-form
+    display: grid
+    grid-template-columns: 1fr 1fr
+    gap: 60px
+    max-width: 60%
+    margin: 5rem auto
+
+    h3
+        font-size: 3rem
+        color: $black
+        margin-bottom: 1.5rem
+
+    p
+        color: $light-color
+        font-size: 1.5rem
+        line-height: 1.5
+        margin-bottom: 1.5rem
+
+    form
+        padding: 2rem 0
+
+        .input-break
+            display: flex
+            gap: 4rem
+
+        .input-group
+            margin: 0 0 2rem
+            width: 100%
+
+            label
+                font-size: 1.5rem
+                margin-bottom: 1rem
+                display: inline-block
+                color: #666
+
+    .error
+        color: #cc0000
+        font-size: 1.3rem
+        display: inline-block
+        margin-top: .25rem
+
+    input
+        outline: 0
+        background: $gray-bg
+        width: 100%
+        border: 0
+        padding: 15px
+        box-sizing: border-box
+        font-size: 1.5rem
+        border-radius: 3px
+        color: $black
+
+        .btn-container
+            display: flex
+            justify-content: center
+
+            .btn
+                width: 40%
+
+    .input-group
+        margin: 0 0 2rem
+        width: 100%
+
+    label
+        font-size: 1.5rem
+        margin-bottom: 1rem
+        display: inline-block
+        color: #666
+
+    .img-box
+        display: flex
+        margin: 0 0 3rem
+        background-color: $gray-bg
+        width: 100%
+        height: 13.5rem
+        display: flex
+        justify-content: center
+        align-items: center
+        border-radius: 3px
+        cursor: pointer
+
+        img
+            width: 18rem
+            height: 18rem
+            object-fit: contain
+            user-select: none
+            cursor: pointer
+
+    .pass-box
+        display: flex
+        padding: 15px
+        margin: 0 0 2rem
+        background-color: $gray-bg
+        width: 100%
+        height: 5rem
+        display: flex
+        justify-content: flex-start
+        align-items: center
+        border-radius: 3px
+
+        a
+            color: $green
+            font-size: 1.5rem
+            font-weight: 600
+            cursor: pointer
+
+    .flag-dropdown
+        border: none !important
+        background: $gray-bg
+
+    .selected-flag
+        &:hover,
+        &:focus
+            background-color: $gray-bg !important
+
+@media (max-width:768px)
+    .profile-form
+        max-width: 95%
+        gap: 3rem
+
+        p
+            margin-bottom: 1rem
+
+        .mb-6
+            margin-bottom: 2rem !important
+
+        .img-box
+            width: 100%
+            height: 10rem
+
+            img
+                width: 15rem

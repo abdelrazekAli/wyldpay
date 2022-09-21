@@ -4,8 +4,9 @@ import connect from "./utils/connect";
 import express, { Application } from "express";
 import { authRouter } from "./routes/auth.route";
 import { bankRouter } from "./routes/bank.route";
-import { paymentRouter } from "./routes/payment.route";
 import { itemRouter } from "./routes/item.route";
+import { userRouter } from "./routes/user.route";
+import { paymentRouter } from "./routes/payment.route";
 import { restaurantRouter } from "./routes/restaurant.route";
 
 // Middlewares
@@ -16,6 +17,7 @@ app.use(cors());
 // APIs
 app.use("/api/v1", authRouter);
 app.use("/api/v1", paymentRouter);
+app.use("/api/v1/users", userRouter);
 app.use("/api/v1/items", itemRouter);
 app.use("/api/v1/banks", bankRouter);
 app.use("/api/v1/restaurants", restaurantRouter);

@@ -2,10 +2,10 @@ import axios from "axios";
 import * as yup from "yup";
 import { useState } from "react";
 import emailjs from "@emailjs/browser";
-import { Link } from "react-router-dom";
 import { Modal } from "../../user/Modal";
 import { useForm } from "react-hook-form";
 import "../../../styles/forms/loginFrom.sass";
+import { Link, useLocation } from "react-router-dom";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { sendResetPassSchema } from "../../../validations/sendResetPassSchema";
 
@@ -13,6 +13,7 @@ export const SendResetPassForm = () => {
   const [error, setError] = useState<string | null>(null);
   const [hideModal, setHideModal] = useState<boolean>(true);
   const [isLoading, setisLoading] = useState<boolean>(false);
+  const email = useLocation().state;
 
   // Inputs validation
   type Props = yup.InferType<typeof sendResetPassSchema>;
@@ -60,16 +61,24 @@ export const SendResetPassForm = () => {
       <div className="login-form">
         <div className="container">
           <h3>Reset password</h3>
-          <p>
-            Cancel?
-            <Link to={"/admin/login"}>Back to login</Link>
-          </p>
+          {!email ? (
+            <p>
+              Cancel?
+              <Link to={"/admin/login"}>Back to login</Link>
+            </p>
+          ) : (
+            <p>
+              Cancel?
+              <Link to={"/admin/profile"}>Back to profile</Link>
+            </p>
+          )}
 
           <form onSubmit={handleSubmit((data) => onSubmit(data))}>
             <div className="input-group">
               <input
                 type="text"
                 placeholder="Enter your email address"
+                value={email ? String(email) : ""}
                 {...register("email")}
                 className="mb-1"
               />

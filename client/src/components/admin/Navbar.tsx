@@ -30,8 +30,8 @@ export const Navbar = () => {
               <i className="fa fa-caret-down"></i>
             </button>
             <div className="dropdown-content">
-              <a href="/">Link 1</a>
-              <a href="/">Link 2</a>
+              <Link to="/admin/profile">Profile</Link>
+              <Link to="/">Link 2</Link>
               <span onClick={logoutHandler} className="color-red">
                 Logout
               </span>

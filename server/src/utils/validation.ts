@@ -2,12 +2,13 @@ import joi from "joi";
 import { Types } from "mongoose";
 import ItemModel from "../models/item.model";
 import RestaurantModel from "../models/restaurant.model";
+import UserModel from "../models/user.model";
 
 // User validation
 export const validateUser = (data: object) => {
   const schema = joi.object({
     email: joi.string().required().email().max(255),
-    password: joi.string().required().min(5).max(255),
+    password: joi.string().min(5).max(255),
     firstName: joi.string().required(),
     lastName: joi.string().required(),
     phone: joi.number().required(),
@@ -51,6 +52,14 @@ export const validateCategories = (data: object) => {
   return schema.validate(data).error;
 };
 
+export const validateLogo = (data: object) => {
+  const schema = joi.object({
+    _id: joi.string().required().max(255),
+    logo: joi.string().required().max(1000),
+  });
+  return schema.validate(data).error;
+};
+
 export const validateBank = (data: object) => {
   const schema = joi.object({
     name: joi.string().required().max(255),
@@ -82,6 +91,21 @@ export const validateResetPass = (data: object) => {
     password: joi.string().required().min(5).max(255),
   });
   return schema.validate(data).error;
+};
+
+// Check user Id
+export const checkUserId = async (id: string) => {
+  if (!id) return "User id is required";
+  else {
+    if (Types.ObjectId.isValid(id)) {
+      let user = await UserModel.findById(id, {
+        password: 0,
+        createdAt: 0,
+        updatedAt: 0,
+      });
+      return user === null ? `There is no user with this id: ${id}` : user;
+    } else return `User id: ${id} is not valid`;
+  }
 };
 
 // Check restaurant Id

@@ -8,14 +8,15 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { Home } from "./pages/user/Home";
 import { Login } from "./pages/admin/Login";
 import { Signup } from "./pages/admin/Signup";
-import { ResetPass } from "./pages/admin/ResetPass";
+import { Profile } from "./pages/admin/Profile";
 import { Dashboard } from "./pages/admin/Dashboard";
+import { ResetPass } from "./pages/admin/ResetPass";
 import { SendResetPass } from "./pages/admin/SendResetPass";
 
 function AppWraper() {
   const App = () => {
     const user = useAppSelector(getUser);
-    console.log(user);
+
     return (
       <BrowserRouter>
         <Routes>
@@ -25,10 +26,10 @@ function AppWraper() {
           />
           <Route path="/admin/send-reset-pass" element={<SendResetPass />} />
           <Route path="/" element={<Home />} />
-          <Route path="*" element={<Navigate to="/admin/login" replace />} />
           {user ? (
             <>
               <Route path="/admin/dashboard" element={<Dashboard />} />
+              <Route path="/admin/profile" element={<Profile />} />
               <Route
                 path="*"
                 element={<Navigate to="/admin/dashboard" replace />}
@@ -40,6 +41,7 @@ function AppWraper() {
               <Route path="/admin/signup" element={<Signup />} />
             </>
           )}
+          <Route path="*" element={<Navigate to="/admin/login" replace />} />
         </Routes>
       </BrowserRouter>
     );
