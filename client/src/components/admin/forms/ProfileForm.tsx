@@ -103,12 +103,12 @@ export const ProfileForm = () => {
   return (
     <>
       {error && (
-        <span className="error color-error  d-block mt-4 text-center fs-2">
+        <span className="error color-error  d-block mt-4 text-center fs-3">
           {error}
         </span>
       )}
       {success && (
-        <span className="font-bold color-green  d-block mt-4 text-center fs-2">
+        <span className="font-bold color-green  d-block mt-4 text-center fs-3">
           {success}
         </span>
       )}
@@ -116,7 +116,7 @@ export const ProfileForm = () => {
       <div className="profile-form">
         <div className="column">
           <h3>Profile</h3>
-          <p>Keep your information up-to-date.</p>
+          <p className="d-none-mobile">Keep your information up-to-date.</p>
           <form
             id="profile-form"
             onSubmit={handleSubmit((data) => onSubmit(data))}

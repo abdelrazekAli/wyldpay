@@ -32,6 +32,7 @@ export const EditBankForm = () => {
     try {
       setError(null);
       setSuccess(null);
+      setisLoading(true);
       await axios.put("/api/v1/banks", {
         ...data,
         userId: _id,
@@ -67,12 +68,12 @@ export const EditBankForm = () => {
   return (
     <div className="bank-form">
       {error && (
-        <span className="error color-error d-block mt-4 text-center fs-2">
+        <span className="error color-error d-block mt-4 text-center fs-3">
           {error}
         </span>
       )}
       {success && (
-        <span className="mb--2 font-bold color-green  d-block mt-4 text-center fs-2">
+        <span className="mb-1 font-bold color-green  d-block mt-4 text-center fs-3">
           {success}
         </span>
       )}

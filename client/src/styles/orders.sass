@@ -1,0 +1,59 @@
+@use './base' as *
+
+.orders-table
+    margin-top: 6rem
+
+    .container
+        max-width: 80%
+        padding-left: 15px
+        padding-right: 15px
+        margin-left: auto
+        margin-right: auto
+
+        table
+            color: $light-color
+            font-size: 1.5rem
+            line-height: 1.5
+            border-collapse: collapse
+
+            th, tr
+                text-align: center
+                border-bottom: 1px solid #eee
+
+            td, th
+                padding: 1rem
+                max-width: 20rem
+
+        .main-content
+            display: flex
+            justify-content: space-between
+            align-items: center
+            margin-top: 2.5rem
+            margin-bottom: 2.5rem
+
+        h3,h4
+            color: $black
+
+        h3
+            font-size: 3rem
+            margin-bottom: 1.5rem
+
+        h4
+            font-size: 2.5rem
+            text-align: center
+
+@media (max-width: 768px)
+    .orders-table
+        margin-top: 3rem
+
+        .container
+            max-width: 95% !important
+
+            td, th
+                padding: 1rem
+                max-width: none !important
+
+        .responsiveTable tbody tr
+            border: 1px solid #eee
+            border-radius: 7px
+            margin-bottom: 2rem

@@ -1,6 +1,8 @@
 import axios from "axios";
 import { Item } from "../Item";
-import "../../../styles/forms/itemsForm.sass";
+import "../../../styles/item.sass";
+import "../../../styles/category.sass";
+import "../../../styles/forms/menuForm.sass";
 import { ItemType } from "../../../types/Item";
 import { Key, useEffect, useState } from "react";
 import { getUser } from "../../../redux/user.slice";
@@ -228,7 +230,7 @@ export const MenuForm = () => {
           <h3>Menu</h3>
           <p>Select category and then add your food items.</p>
           <div className="main-content">
-            <h4>Categories</h4>
+            <h4 className="d-none-mobile">Categories</h4>
             <div className="btns-flex">
               <button
                 className="btn mr-2"

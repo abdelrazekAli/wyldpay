@@ -31,6 +31,8 @@ export const Navbar = () => {
             </button>
             <div className="dropdown-content">
               <Link to="/admin/menu">Menu</Link>
+              <Link to="/admin/orders">Orders</Link>
+              {/* <Link to="/">App</Link> */}
               <Link to="/admin/profile">Profile</Link>
               <span onClick={logoutHandler} className="color-red">
                 Logout

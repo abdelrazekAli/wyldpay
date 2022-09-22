@@ -77,8 +77,9 @@ export const SendResetPassForm = () => {
             <div className="input-group">
               <input
                 type="text"
+                required
                 placeholder="Enter your email address"
-                value={email ? String(email) : ""}
+                defaultValue={email ? String(email) : ""}
                 {...register("email")}
                 className="mb-1"
               />

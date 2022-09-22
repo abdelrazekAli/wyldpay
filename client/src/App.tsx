@@ -8,12 +8,13 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { Home } from "./pages/user/Home";
 import { Login } from "./pages/admin/Login";
 import { Signup } from "./pages/admin/Signup";
+import { Orders } from "./pages/admin/Orders";
 import { Profile } from "./pages/admin/Profile";
+import { EditMenu } from "./pages/admin/EditMenu";
 import { EditBank } from "./pages/admin/EditBank";
 import { Dashboard } from "./pages/admin/Dashboard";
 import { ResetPass } from "./pages/admin/ResetPass";
 import { SendResetPass } from "./pages/admin/SendResetPass";
-import { EditMenu } from "./pages/admin/EditMenu";
 
 function AppWraper() {
   const App = () => {
@@ -33,10 +34,11 @@ function AppWraper() {
               <Route path="/admin/dashboard" element={<Dashboard />} />
               <Route path="/admin/profile" element={<Profile />} />
               <Route path="/admin/menu" element={<EditMenu />} />
+              <Route path="/admin/orders" element={<Orders />} />
               <Route path="/admin/bank" element={<EditBank />} />
               <Route
                 path="*"
-                element={<Navigate to="/admin/dashboard" replace />}
+                element={<Navigate to="/admin/profile" replace />}
               />
             </>
           ) : (
