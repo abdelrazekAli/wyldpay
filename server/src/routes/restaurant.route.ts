@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { Request, Response } from "express";
 import {
+  checkRestId,
   checkUserId,
   validateCategories,
   validateLogo,
@@ -59,6 +60,29 @@ restaurantRouter.post("/", async (req: Request, res: Response) => {
     res.status(500).json(err);
   }
 });
+
+// get resaturant categories
+restaurantRouter.get(
+  "/categories/:restaurantId",
+  async (req: Request, res: Response) => {
+    try {
+      let restaurant,
+        { restaurantId } = req.params;
+
+      // Check restaurant id
+      const checkResult = await checkRestId(restaurantId);
+      typeof checkResult === "string"
+        ? res.status(400).send(checkResult)
+        : (restaurant = checkResult);
+
+      // Response
+      res.status(200).json(restaurant?.categories);
+    } catch (err) {
+      console.log(err);
+      res.status(500).json(err);
+    }
+  }
+);
 
 // update resaturant categories
 restaurantRouter.put("/categories", async (req: Request, res: Response) => {

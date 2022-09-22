@@ -1,7 +1,7 @@
 import "../../styles/header.sass";
+import { Link } from "react-router-dom";
 import { getUser, logout } from "../../redux/user.slice";
 import { useAppDispatch, useAppSelector } from "../../redux/store.hooks";
-import { Link } from "react-router-dom";
 
 export const Navbar = () => {
   const dispatch = useAppDispatch();
@@ -30,8 +30,8 @@ export const Navbar = () => {
               <i className="fa fa-caret-down"></i>
             </button>
             <div className="dropdown-content">
+              <Link to="/admin/menu">Menu</Link>
               <Link to="/admin/profile">Profile</Link>
-              <Link to="/">Link 2</Link>
               <span onClick={logoutHandler} className="color-red">
                 Logout
               </span>

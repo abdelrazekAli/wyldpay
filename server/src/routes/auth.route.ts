@@ -12,6 +12,7 @@ import {
   validateSendResetPass,
   validateUser,
 } from "../utils/validation";
+import RestaurantModel from "../models/restaurant.model";
 
 export const authRouter = Router();
 
@@ -78,11 +79,17 @@ authRouter.post("/login", async (req: Request, res: Response) => {
     });
     await newToken.save();
 
+    // Get user restaurant id
+    const restaurant = await RestaurantModel.findOne({
+      userId: user._id,
+    }).select("_id");
+
     // Set headers and response
     res.header("auth-token", accessToken).json({
       _id: user._id,
       firstName: user.firstName,
       email: user.email,
+      restaurantId: restaurant?._id,
       accessToken: accessToken,
       refreshToken: refreshToken,
     });

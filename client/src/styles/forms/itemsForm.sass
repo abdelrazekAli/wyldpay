@@ -1,6 +1,8 @@
 @use '.././base' as *
 
-.foods-form
+.menu-form
+    margin-top: 6rem
+
     .container
         max-width: 80%
         padding-left: 15px
@@ -17,6 +19,8 @@
 
             .btn
                 margin-top: 0
+                padding: 1.25rem 1.8rem !important
+                width: 17rem !important
 
         h3,h4
             color: $black
@@ -134,9 +138,18 @@
         resize: none
 
 @media (max-width: 768px)
-    .foods-form
+    .menu-form
+        margin-top: 3rem
+
         .container
             max-width: 95% !important
+
+        .btns-flex
+            display: flex
+            gap: 2rem
+
+        h4
+            display: none
 
         .category
             grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr))

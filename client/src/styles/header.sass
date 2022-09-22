@@ -108,7 +108,10 @@
         margin-left: 8px
 
     &-content
-      display: none
+      opacity: 0
+      visibility: hidden
+      transition-delay: .1s
+      display: block
       position: absolute
       background-color: $white
       min-width: 15rem
@@ -133,4 +136,5 @@
       box-shadow: 0 4px 20px 0 rgb(0 0 0 / 14%), 0 7px 10px -5px rgb(0 123 255 / 40%)
 
     &:hover .dropdown-content
-      display: block
+      opacity: 1
+      visibility: visible

@@ -13,6 +13,7 @@ import { EditBank } from "./pages/admin/EditBank";
 import { Dashboard } from "./pages/admin/Dashboard";
 import { ResetPass } from "./pages/admin/ResetPass";
 import { SendResetPass } from "./pages/admin/SendResetPass";
+import { EditMenu } from "./pages/admin/EditMenu";
 
 function AppWraper() {
   const App = () => {
@@ -31,6 +32,7 @@ function AppWraper() {
             <>
               <Route path="/admin/dashboard" element={<Dashboard />} />
               <Route path="/admin/profile" element={<Profile />} />
+              <Route path="/admin/menu" element={<EditMenu />} />
               <Route path="/admin/bank" element={<EditBank />} />
               <Route
                 path="*"

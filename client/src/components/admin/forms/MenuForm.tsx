@@ -3,37 +3,51 @@ import { Item } from "../Item";
 import "../../../styles/forms/itemsForm.sass";
 import { ItemType } from "../../../types/Item";
 import { Key, useEffect, useState } from "react";
+import { getUser } from "../../../redux/user.slice";
 import { CategoryType } from "../../../types/Category";
-import { StepperProps } from "../../../types/StepperProps";
+import { useAppSelector } from "../../../redux/store.hooks";
 
-export const ItemsForm = ({ onClick }: StepperProps) => {
-  const [name, setName] = useState<string | null>("");
+export const MenuForm = () => {
+  const { restaurantId } = useAppSelector(getUser);
   const [file, setFile] = useState<string | Blob>("");
   const [price, setPrice] = useState<number | null>(null);
   const [itemImg, setItemImg] = useState<null | File>(null);
+  const [itemname, setItemName] = useState<string | null>("");
   const [select, setSelect] = useState<CategoryType | null>(null);
   const [description, setDescription] = useState<string | null>("");
+  const [categoryName, setCategoryName] = useState<string | null>("");
+  const [categories, setCategories] = useState<CategoryType[] | null>();
 
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setisLoading] = useState<boolean>(false);
-  const [isFormVisible, setFormVisible] = useState<boolean>(false);
-
-  const restaurantId = localStorage.getItem("restaurantId");
-  const categories = JSON.parse(localStorage.getItem("categories")!);
+  const [isItemFormVisible, setItemFormVisible] = useState<boolean>(false);
+  const [isCategoryFormVisible, setCategoryFormVisible] =
+    useState<boolean>(false);
 
   const [items, setItems] = useState<ItemType[]>([]);
 
-  // Fetch items
   useEffect(() => {
+    // Fetch items
     const fetchItems = async () => {
       const res = await axios.get(`/api/v1/items/restaurant/${restaurantId}`);
       setItems(res.data);
     };
+
+    // Fetch categories
+    const fetchCategories = async () => {
+      const res = await axios.get(
+        `/api/v1/restaurants/categories/${restaurantId}`
+      );
+      setCategories(res.data);
+      console.log(res.data);
+    };
+
     fetchItems();
+    fetchCategories();
   }, [restaurantId]);
 
   // Handle add item
-  const handleSubmit = async (e: { preventDefault: () => void }) => {
+  const handleAddItem = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
     setError(null);
     setisLoading(true);
@@ -49,7 +63,7 @@ export const ItemsForm = ({ onClick }: StepperProps) => {
       const { url } = uploadRes.data;
 
       const res = await axios.post("/api/v1/items", {
-        name,
+        name: itemname,
         price,
         img: url,
         category: select?.value,
@@ -59,7 +73,7 @@ export const ItemsForm = ({ onClick }: StepperProps) => {
 
       setItems([...items, res.data]);
 
-      setFormVisible(!isFormVisible);
+      setItemFormVisible(!isItemFormVisible);
       setisLoading(false);
     } catch (err) {
       console.log(err);
@@ -69,7 +83,7 @@ export const ItemsForm = ({ onClick }: StepperProps) => {
   };
 
   // Handle delete item
-  const handleDelete = async (itemId: string) => {
+  const handleDeleteItem = async (itemId: string) => {
     const filterItems = items.filter((i) => i._id !== itemId);
     setItems(filterItems);
     try {
@@ -81,24 +95,50 @@ export const ItemsForm = ({ onClick }: StepperProps) => {
     }
   };
 
+  // Handle add category
+  const handleAddCategory = async (e: { preventDefault: () => void }) => {
+    e.preventDefault();
+    setError(null);
+    setisLoading(true);
+
+    const newCategories: CategoryType[] = [
+      ...categories!,
+      { value: categoryName!, selected: true },
+    ];
+
+    try {
+      await axios.put("/api/v1/restaurants/categories", {
+        categories: newCategories,
+        restaurantId,
+      });
+      setisLoading(false);
+      setCategories(newCategories);
+      setCategoryFormVisible(false);
+    } catch (err) {
+      console.log(err);
+      setisLoading(false);
+      setError("Somthing went wrong!");
+    }
+  };
+
   return (
     <>
-      {isFormVisible && (
+      {isItemFormVisible && (
         <div id="myModal" className="modal form-modal">
           <div className="modal-content p-relative custom-content">
             <span
-              onClick={() => setFormVisible(!isFormVisible)}
+              onClick={() => setItemFormVisible(!isItemFormVisible)}
               className="modal-close"
             >
               &times;
             </span>
             <div className="main-content">
               <h2>Add item</h2>
-              <form onSubmit={handleSubmit}>
+              <form onSubmit={handleAddItem}>
                 <input
                   type="text"
                   placeholder="Item name"
-                  onChange={(e) => setName(e.target.value)}
+                  onChange={(e) => setItemName(e.target.value)}
                 />
                 <input
                   type="number"
@@ -138,7 +178,7 @@ export const ItemsForm = ({ onClick }: StepperProps) => {
                 ></textarea>
                 <button
                   disabled={
-                    !name || !price || !description || !itemImg || isLoading
+                    !itemname || !price || !description || !itemImg || isLoading
                   }
                   type="submit"
                   className="btn"
@@ -153,22 +193,62 @@ export const ItemsForm = ({ onClick }: StepperProps) => {
           </div>
         </div>
       )}
-      <div className="foods-form">
+      {isCategoryFormVisible && (
+        <div id="myModal" className="modal form-modal">
+          <div className="modal-content p-relative custom-content">
+            <span
+              onClick={() => setCategoryFormVisible(!isCategoryFormVisible)}
+              className="modal-close"
+            >
+              &times;
+            </span>
+            <div className="main-content">
+              <h2>Add category</h2>
+              <form onSubmit={(e) => handleAddCategory(e)}>
+                <input
+                  type="text"
+                  placeholder="Category name"
+                  className="mb-1"
+                  onChange={(e) => setCategoryName(e.target.value)}
+                />
+                <button
+                  disabled={!categoryName || isLoading}
+                  type="submit"
+                  className="btn"
+                >
+                  {isLoading ? "Loading..." : "Add"}
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      )}
+      <div className="menu-form ">
         <div className="container">
-          <h3>Time to create your food options!</h3>
-          <p>First select category and then add your food items.</p>
+          <h3>Menu</h3>
+          <p>Select category and then add your food items.</p>
           <div className="main-content">
             <h4>Categories</h4>
-            <button
-              disabled={!select}
-              className="btn"
-              onClick={() => {
-                setFormVisible(!isFormVisible);
-                setItemImg(null);
-              }}
-            >
-              + Add item
-            </button>
+            <div className="btns-flex">
+              <button
+                className="btn mr-2"
+                onClick={() => {
+                  setCategoryFormVisible(!isItemFormVisible);
+                }}
+              >
+                + Add category
+              </button>
+              <button
+                disabled={!select}
+                className="btn"
+                onClick={() => {
+                  setItemFormVisible(!isCategoryFormVisible);
+                  setItemImg(null);
+                }}
+              >
+                + Add item
+              </button>
+            </div>
           </div>
           <div className="category">
             {categories?.map((cate: CategoryType, i: Key) => (
@@ -193,20 +273,11 @@ export const ItemsForm = ({ onClick }: StepperProps) => {
                     <Item
                       item={i}
                       key={i._id}
-                      onDelete={(id) => handleDelete(id)}
+                      onDelete={(id) => handleDeleteItem(id)}
                     />
                   )
               )
             )}
-          </div>
-          <div className="btn-container">
-            <button
-              className="btn"
-              onClick={onClick}
-              disabled={items.length === 0}
-            >
-              Continue
-            </button>
           </div>
         </div>
       </div>

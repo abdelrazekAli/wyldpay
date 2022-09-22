@@ -11,7 +11,7 @@ export const Item = ({
     img: string;
     category: string;
     desc: string;
-    restId: string;
+    restaurantId: string;
   };
   onDelete: (itemId: string) => void;
 }) => {
