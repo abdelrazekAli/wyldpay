@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { Request, Response } from "express";
-import UserModel, { UserProps } from "../models/user.model";
+import UserModel from "../models/user.model";
 import { checkUserId, validateUser } from "../utils/validation";
 
 export const userRouter = Router();

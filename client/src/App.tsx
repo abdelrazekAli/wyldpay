@@ -9,6 +9,7 @@ import { Home } from "./pages/user/Home";
 import { Login } from "./pages/admin/Login";
 import { Signup } from "./pages/admin/Signup";
 import { Profile } from "./pages/admin/Profile";
+import { EditBank } from "./pages/admin/EditBank";
 import { Dashboard } from "./pages/admin/Dashboard";
 import { ResetPass } from "./pages/admin/ResetPass";
 import { SendResetPass } from "./pages/admin/SendResetPass";
@@ -30,6 +31,7 @@ function AppWraper() {
             <>
               <Route path="/admin/dashboard" element={<Dashboard />} />
               <Route path="/admin/profile" element={<Profile />} />
+              <Route path="/admin/bank" element={<EditBank />} />
               <Route
                 path="*"
                 element={<Navigate to="/admin/dashboard" replace />}

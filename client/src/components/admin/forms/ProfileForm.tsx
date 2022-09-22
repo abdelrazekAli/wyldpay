@@ -117,7 +117,10 @@ export const ProfileForm = () => {
         <div className="column">
           <h3>Profile</h3>
           <p>Keep your information up-to-date.</p>
-          <form id="test" onSubmit={handleSubmit((data) => onSubmit(data))}>
+          <form
+            id="profile-form"
+            onSubmit={handleSubmit((data) => onSubmit(data))}
+          >
             <div className="input-group">
               <label htmlFor="firstName">First name</label>
               <input id="firstName" type="text" {...register("firstName")} />
@@ -173,9 +176,9 @@ export const ProfileForm = () => {
         <div className="column ">
           <div className="btn-container justify-content-end mb-6">
             <button
-              className="btn"
+              className="btn w-15"
               type="submit"
-              form="test"
+              form="profile-form"
               disabled={isLoading}
             >
               {isLoading ? "Loading..." : "Save edits"}
@@ -244,11 +247,7 @@ export const ProfileForm = () => {
           </div>
           <label>Bank</label>
           <div className="pass-box">
-            <Link
-              to={"/admin/send-reset-pass"}
-              state={userData?.email}
-              className="color-green font-bold"
-            >
+            <Link to={"/admin/bank"} className="color-green font-bold">
               Update bank info
             </Link>
           </div>
