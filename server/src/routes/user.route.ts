@@ -55,8 +55,6 @@ userRouter.put("/:userId", async (req: Request, res: Response) => {
       { new: true }
     ).select("-password -createdAt -updatedAt");
 
-    // const {password , ...other} = updatedUser
-
     // Response
     res.status(200).json(updatedUser);
   } catch (err) {

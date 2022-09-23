@@ -86,6 +86,14 @@ export const validateSendResetPass = (data: object) => {
   return schema.validate(data).error;
 };
 
+export const validateApplyCoupon = (data: object) => {
+  const schema = joi.object({
+    timestamp: joi.date().required(),
+    restId: joi.string().required().max(255),
+  });
+  return schema.validate(data).error;
+};
+
 export const validateResetPass = (data: object) => {
   const schema = joi.object({
     password: joi.string().required().min(5).max(255),
@@ -93,7 +101,20 @@ export const validateResetPass = (data: object) => {
   return schema.validate(data).error;
 };
 
-// Check user Id
+export const validateCoupon = (data: object) => {
+  const schema = joi.object({
+    name: joi.string().required().max(255),
+    type: joi.string().valid("percentage", "amount").required(),
+    value: joi.number().required().max(10000),
+    startDate: joi.date().required(),
+    endDate: joi.date().required(),
+    limit: joi.number().required().max(10000),
+    usage: joi.number().max(10000),
+    restId: joi.string().required().max(255),
+  });
+  return schema.validate(data).error;
+};
+
 export const checkUserId = async (id: string) => {
   if (!id) return "User id is required";
   else {
@@ -108,7 +129,6 @@ export const checkUserId = async (id: string) => {
   }
 };
 
-// Check restaurant Id
 export const checkRestId = async (id: string) => {
   if (!id) return "Restaurant id is required";
   else {
@@ -123,7 +143,6 @@ export const checkRestId = async (id: string) => {
   }
 };
 
-// Check item Id
 export const checkItemId = async (id: string) => {
   if (!id) return "Item id is required";
   else {

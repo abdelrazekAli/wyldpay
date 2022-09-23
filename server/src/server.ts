@@ -8,6 +8,7 @@ import { itemRouter } from "./routes/item.route";
 import { userRouter } from "./routes/user.route";
 import { paymentRouter } from "./routes/payment.route";
 import { restaurantRouter } from "./routes/restaurant.route";
+import { couponRouter } from "./routes/coupon.route";
 
 // Middlewares
 const app: Application = express();
@@ -20,6 +21,7 @@ app.use("/api/v1", paymentRouter);
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/items", itemRouter);
 app.use("/api/v1/banks", bankRouter);
+app.use("/api/v1/coupons", couponRouter);
 app.use("/api/v1/restaurants", restaurantRouter);
 
 // For production
