@@ -16,6 +16,8 @@ export type RegisteredUserProps = {
   _id?: string;
   firstName?: string;
   email?: string;
+  restaurantId?: string;
+  currency?: string;
   accessToken?: string;
   refreshToken?: string;
 };

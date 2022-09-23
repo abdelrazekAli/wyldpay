@@ -40,8 +40,9 @@ export const LoginForm = () => {
 
     try {
       let res = await axios.post("/api/v1/login", data);
+      console.log(res.data);
       loginHandler(res.data);
-      window.location.replace("/admin/profile");
+      // window.location.replace("/admin/profile");
       setError(null);
       setisLoading(false);
       console.log(res);

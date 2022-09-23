@@ -1,6 +1,6 @@
 @use './base' as *
 
-.orders-table
+.coupons-table
     margin-top: 6rem
 
     .container
@@ -9,6 +9,10 @@
         padding-right: 15px
         margin-left: auto
         margin-right: auto
+
+        .btn-container
+            display: flex
+            justify-content: flex-end
 
         table
             color: $light-color
@@ -23,6 +27,24 @@
             td, th
                 padding: 1rem
                 max-width: 20rem
+
+            .delete-btn
+                display: inline-block
+                padding: 1rem 1.8rem
+                font-size: 1.5rem
+                cursor: pointer
+                color: $red
+                background: #ffe5e9
+                border-radius: 0.5rem
+
+                &:hover
+                    color: #ffe5e9
+                    background: $red
+
+            i
+                color: $red
+                font-size: 1.8rem
+                cursor: pointer
 
         .main-content
             display: flex
@@ -43,7 +65,7 @@
             text-align: center
 
 @media (max-width: 768px)
-    .orders-table
+    .coupons-table
         margin-top: 3rem
 
         .container

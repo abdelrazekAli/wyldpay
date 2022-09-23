@@ -82,7 +82,7 @@ authRouter.post("/login", async (req: Request, res: Response) => {
     // Get user restaurant id
     const restaurant = await RestaurantModel.findOne({
       userId: user._id,
-    }).select("_id");
+    }).select("_id currency");
 
     // Set headers and response
     res.header("auth-token", accessToken).json({
@@ -90,6 +90,7 @@ authRouter.post("/login", async (req: Request, res: Response) => {
       firstName: user.firstName,
       email: user.email,
       restaurantId: restaurant?._id,
+      currency: restaurant?.currency,
       accessToken: accessToken,
       refreshToken: refreshToken,
     });

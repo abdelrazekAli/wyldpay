@@ -9,6 +9,7 @@ import { Home } from "./pages/user/Home";
 import { Login } from "./pages/admin/Login";
 import { Signup } from "./pages/admin/Signup";
 import { Orders } from "./pages/admin/Orders";
+import { Coupons } from "./pages/admin/Coupons";
 import { Profile } from "./pages/admin/Profile";
 import { EditMenu } from "./pages/admin/EditMenu";
 import { EditBank } from "./pages/admin/EditBank";
@@ -35,6 +36,7 @@ function AppWraper() {
               <Route path="/admin/profile" element={<Profile />} />
               <Route path="/admin/menu" element={<EditMenu />} />
               <Route path="/admin/orders" element={<Orders />} />
+              <Route path="/admin/coupons" element={<Coupons />} />
               <Route path="/admin/bank" element={<EditBank />} />
               <Route
                 path="*"

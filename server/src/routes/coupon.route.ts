@@ -65,7 +65,7 @@ couponRouter.post("/", async (req: Request, res: Response) => {
 // Apply coupon
 couponRouter.post("/:couponName", async (req: Request, res: Response) => {
   try {
-    const { restId, timestamp } = req.body,
+    const { restId } = req.body,
       { couponName } = req.params;
 
     // Validate req body
@@ -79,11 +79,7 @@ couponRouter.post("/:couponName", async (req: Request, res: Response) => {
       name: couponName,
     });
 
-    if (
-      !coupon ||
-      !(timestamp > +coupon.startDate && timestamp < +coupon.endDate)
-    )
-      return res.status(409).send("Coupon is not valid");
+    if (!coupon) return res.status(409).send("Coupon is not valid");
     else if (coupon.usage === coupon.limit)
       return res.status(409).send("Coupon limit is out");
 
@@ -103,23 +99,15 @@ couponRouter.post("/:couponName", async (req: Request, res: Response) => {
 });
 
 // Delete coupon
-couponRouter.delete("/:couponName", async (req: Request, res: Response) => {
+couponRouter.delete("/:couponId", async (req: Request, res: Response) => {
   try {
-    const { restId } = req.body,
-      { couponName } = req.params;
+    const { couponId } = req.params;
 
-    // Check coupon
-    const coupon = await CouponModel.findOne({
-      restId: restId,
-      name: couponName,
-    });
-
-    if (!coupon) return res.status(409).send("Coupon is not exist");
-
-    await coupon.delete();
+    // Delete coupon
+    await CouponModel.deleteOne({ _id: couponId });
 
     // Response
-    res.status(200).json(`Coupon ${couponName} deleted successfully`);
+    res.status(200).json(`Coupon deleted successfully`);
   } catch (err) {
     console.log(err);
     res.status(500).json(err);

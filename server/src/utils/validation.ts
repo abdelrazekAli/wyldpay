@@ -88,7 +88,6 @@ export const validateSendResetPass = (data: object) => {
 
 export const validateApplyCoupon = (data: object) => {
   const schema = joi.object({
-    timestamp: joi.date().required(),
     restId: joi.string().required().max(255),
   });
   return schema.validate(data).error;
@@ -106,8 +105,6 @@ export const validateCoupon = (data: object) => {
     name: joi.string().required().max(255),
     type: joi.string().valid("percentage", "amount").required(),
     value: joi.number().required().max(10000),
-    startDate: joi.date().required(),
-    endDate: joi.date().required(),
     limit: joi.number().required().max(10000),
     usage: joi.number().max(10000),
     restId: joi.string().required().max(255),

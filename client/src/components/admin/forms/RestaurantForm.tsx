@@ -60,8 +60,8 @@ export const RestForm = ({ onClick }: StepperProps) => {
               onChange={(e) => setName(e.target.value)}
             />
             <select
-              name="cars"
-              id="categories"
+              name="currencies"
+              id="currencies"
               className="custom-select select-minimal"
               onChange={(e) => setCurrency(e.target.value)}
             >
