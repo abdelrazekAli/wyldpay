@@ -5,6 +5,7 @@ import { useAppSelector } from "../src/redux/store.hooks";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 // Import pages
+import { QR } from "./pages/admin/QR";
 import { Home } from "./pages/user/Home";
 import { Login } from "./pages/admin/Login";
 import { Signup } from "./pages/admin/Signup";
@@ -38,6 +39,7 @@ function AppWraper() {
               <Route path="/admin/orders" element={<Orders />} />
               <Route path="/admin/coupons" element={<Coupons />} />
               <Route path="/admin/bank" element={<EditBank />} />
+              <Route path="/admin/tables" element={<QR />} />
               <Route
                 path="*"
                 element={<Navigate to="/admin/dashboard" replace />}
