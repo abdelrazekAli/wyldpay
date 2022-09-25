@@ -1,0 +1,64 @@
+@use './base' as *
+
+.qr-table
+    margin-top: 6rem
+
+    .container
+        max-width: 80%
+        padding-left: 15px
+        padding-right: 15px
+        margin-left: auto
+        margin-right: auto
+
+        .content
+            display: flex
+            justify-content: space-between
+            align-items: center
+            margin-top: 2.5rem
+            margin-bottom: 2.5rem
+
+        .btn-container
+            display: flex
+            justify-content: flex-end
+
+        .qr-content
+            display: flex
+            flex-direction: column
+            justify-content: center
+            align-items: center
+            margin: 5rem auto
+
+        .main-content
+            display: flex
+            justify-content: space-between
+            align-items: center
+            margin-top: 2.5rem
+            margin-bottom: 2.5rem
+
+        p
+            color: $light-color
+            font-size: 1.5rem
+            line-height: 1.5
+
+        h3,h4
+            color: $black
+
+        h3
+            font-size: 3rem
+            margin-bottom: 2.5rem
+
+        h4
+            font-size: 2.5rem
+            text-align: center
+
+.qr-main-content
+    display: flex
+    flex-direction: column
+    margin: 1rem
+
+@media (max-width: 768px)
+    .qr-table
+        margin-top: 3rem
+
+        .container
+            max-width: 95% !important

@@ -41,7 +41,6 @@ export const MenuForm = () => {
         `/api/v1/restaurants/categories/${restaurantId}`
       );
       setCategories(res.data);
-      console.log(res.data);
     };
 
     fetchItems();

@@ -16,9 +16,14 @@ export const Navbar = () => {
   return (
     <>
       <header className="header">
-        <a href="/" className="logo">
-          <i className="fas fa-utensils"></i>WyldPay
-        </a>
+        <Link to="/admin/dashboard" className="logo">
+          {/* <i className="fas fa-utensils"></i>WyldPay */}
+          <img
+            src="../../assets/images/logo-blue.png"
+            alt=""
+            style={{ width: "13rem" }}
+          />
+        </Link>
         {user && (
           <div className="dropdown">
             {/* <img
@@ -34,7 +39,7 @@ export const Navbar = () => {
               <Link to="/admin/menu">Menu</Link>
               <Link to="/admin/orders">Orders</Link>
               <Link to="/admin/coupons">Coupons</Link>
-              {/* <Link to="/">App</Link> */}
+              <Link to="/admin/tables">Tables QR</Link>
               <span onClick={logoutHandler} className="color-red">
                 Logout
               </span>

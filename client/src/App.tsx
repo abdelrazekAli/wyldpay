@@ -29,7 +29,7 @@ function AppWraper() {
             element={<ResetPass />}
           />
           <Route path="/admin/send-reset-pass" element={<SendResetPass />} />
-          <Route path="/" element={<Home />} />
+          <Route path="/menu/:restId/:tableId" element={<Home />} />
           {user ? (
             <>
               <Route path="/admin/dashboard" element={<Dashboard />} />
@@ -40,7 +40,7 @@ function AppWraper() {
               <Route path="/admin/bank" element={<EditBank />} />
               <Route
                 path="*"
-                element={<Navigate to="/admin/profile" replace />}
+                element={<Navigate to="/admin/dashboard" replace />}
               />
             </>
           ) : (

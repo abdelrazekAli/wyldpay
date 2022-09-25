@@ -22,7 +22,7 @@ export const Modal = ({ status, enableHide }: ModalPropsType) => {
       case "success":
         setModalContent(
           <div className="toastContainer">
-            <HashLoader color="#27ae60" />
+            <HashLoader color="#061A40" />
             <h3>Thanks!</h3>
             <p>We have received your order</p>
           </div>
@@ -45,7 +45,7 @@ export const Modal = ({ status, enableHide }: ModalPropsType) => {
       case "loading":
         setModalContent(
           <div className="toastContainer">
-            <BeatLoader color="#27ae60" />
+            <BeatLoader color="#4479FB" />
             <h3>We're placing your order</h3>
             <p>Please hold for a moment</p>
           </div>
@@ -55,7 +55,7 @@ export const Modal = ({ status, enableHide }: ModalPropsType) => {
       case "signup":
         setModalContent(
           <div className="toastContainer">
-            <HashLoader color="#27ae60" />
+            <HashLoader color="#4479FB" />
             <h3>All done!</h3>
             <p>
               You can login to your dashboard now from{" "}
@@ -70,7 +70,7 @@ export const Modal = ({ status, enableHide }: ModalPropsType) => {
       case "password reset":
         setModalContent(
           <div className="toastContainer">
-            <HashLoader color="#27ae60" />
+            <HashLoader color="#4479FB" />
             <h3>Password reset successfully!</h3>
             <p>
               You can{" "}
@@ -85,7 +85,7 @@ export const Modal = ({ status, enableHide }: ModalPropsType) => {
       case "send link":
         setModalContent(
           <div className="toastContainer">
-            <BeatLoader color="#27ae60" />
+            <BeatLoader color="#4479FB" />
             <h3>Link has been sent</h3>
             <p>
               We have send you a password reset link, Please check your mailbox.

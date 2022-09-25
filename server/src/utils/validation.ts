@@ -71,6 +71,23 @@ export const validateBank = (data: object) => {
   return schema.validate(data).error;
 };
 
+export const validatePaymentsMethods = (data: object) => {
+  let method = joi
+    .object()
+    .required()
+    .keys({
+      name: joi.string().required().valid("stripe", "paypal"),
+      publicKey: joi.string().required().max(1000),
+      secretKey: joi.string().required().max(1000),
+    });
+
+  const schema = joi.object({
+    paymentsMethods: joi.array().items(method).required(),
+    userId: joi.string().required().max(255),
+  });
+  return schema.validate(data).error;
+};
+
 export const validateLogin = (data: object) => {
   const schema = joi.object({
     email: joi.string().required().email().max(255),

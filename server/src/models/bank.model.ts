@@ -4,6 +4,8 @@ export type BankProps = {
   name: string;
   iban: string;
   bic: string;
+  customerFees: Boolean;
+  paymentsMethods: { name: string; publicKey: string; secretKey: string }[];
   userId: ObjectId;
 };
 
@@ -13,6 +15,10 @@ const bankSchema = new mongoose.Schema(
     iban: { type: String, required: true },
     bic: { type: String, required: true },
     customerFees: { type: Boolean, required: true, default: false },
+    paymentsMethods: {
+      type: [{ name: String, publicKey: String, secretKey: String }],
+      default: [],
+    },
     userId: {
       type: mongoose.Types.ObjectId,
       ref: "user",

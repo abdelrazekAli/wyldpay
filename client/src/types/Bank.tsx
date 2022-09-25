@@ -3,4 +3,5 @@ export type BankProps = {
   iban: string;
   bic: string;
   customerFees: boolean;
+  paymentsMethods?: [];
 };

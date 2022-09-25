@@ -21,6 +21,7 @@ export const EditBankForm = () => {
     const fetchItems = async () => {
       // Fetch bank data
       const res = await axios.get(`/api/v1/banks/${_id}`);
+      console.log(res.data);
       setBankData(res.data);
       setCheck(res.data.customerFees);
     };
@@ -28,11 +29,14 @@ export const EditBankForm = () => {
   }, [_id]);
 
   // Handle submit
-  const onSubmit = async (data: object) => {
+  const onSubmit = async (data: BankProps) => {
     try {
       setError(null);
       setSuccess(null);
       setisLoading(true);
+
+      delete data.paymentsMethods;
+
       await axios.put("/api/v1/banks", {
         ...data,
         userId: _id,
@@ -77,9 +81,9 @@ export const EditBankForm = () => {
           {success}
         </span>
       )}
-      <div className="btn-container">
+      <div className="btn-container btn-custom-container">
         <button
-          form="bank-form"
+          form="edit-bank"
           type="submit"
           className="btn"
           disabled={isLoading}
@@ -90,7 +94,10 @@ export const EditBankForm = () => {
       <div className="container">
         <h3>Banking info</h3>
 
-        <form id="bank-form" onSubmit={handleSubmit((data) => onSubmit(data))}>
+        <form
+          id="edit-bank"
+          onSubmit={handleSubmit((data: any) => onSubmit(data))}
+        >
           <div className="input-group">
             <label htmlFor="bankName">Bank name</label>
             <input id="bankName" type="text" {...register("name")} />

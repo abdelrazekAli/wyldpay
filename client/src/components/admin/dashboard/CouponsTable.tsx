@@ -25,7 +25,6 @@ export const CouponsTable = () => {
     const fetchCoupons = async () => {
       const res = await axios.get(`/api/v1/coupons/${restaurantId}`);
       setCoupons(res.data);
-      console.log(res.data);
     };
     fetchCoupons();
   }, [restaurantId]);
@@ -48,10 +47,13 @@ export const CouponsTable = () => {
       setCoupons([...coupons!, res.data]);
       setFormVisible(!isFormVisible);
       setisLoading(false);
-    } catch (err) {
-      console.log(err);
+    } catch (err: any) {
       setisLoading(false);
-      setError("Somthing went wrong!");
+      if (err.response.status === 409) {
+        setError("Coupon name is already used.");
+      } else {
+        setError("Somthing went wrong!");
+      }
     }
   };
 
@@ -133,7 +135,6 @@ export const CouponsTable = () => {
         <div className="container">
           <div className="btn-container">
             <button
-              form="bank-form"
               type="submit"
               className="btn"
               onClick={() => {
@@ -144,6 +145,7 @@ export const CouponsTable = () => {
             </button>
           </div>
           <h3>Coupons</h3>
+
           <Table>
             <Thead>
               <Tr>
@@ -180,6 +182,12 @@ export const CouponsTable = () => {
               ))}
             </Tbody>
           </Table>
+
+          {coupons?.length === 0 && (
+            <div className="justify-content-center">
+              <div className="no-items">No coupons added yet</div>
+            </div>
+          )}
         </div>
       </div>
     </>

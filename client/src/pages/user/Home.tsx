@@ -19,7 +19,7 @@ export const Home = () => {
           fontFamily: "Satisfy",
           textAlign: "center",
           margin: "5rem",
-          color: "#27ae60",
+          color: "#4479FB",
           fontSize: "5rem",
         }}
       >

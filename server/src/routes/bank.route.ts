@@ -1,7 +1,11 @@
 import { Router } from "express";
 import { Request, Response } from "express";
 import BankModel from "../models/bank.model";
-import { checkUserId, validateBank } from "../utils/validation";
+import {
+  checkUserId,
+  validateBank,
+  validatePaymentsMethods,
+} from "../utils/validation";
 
 export const bankRouter = Router();
 
@@ -74,6 +78,36 @@ bankRouter.put("/", async (req: Request, res: Response) => {
 
     // Response
     res.status(200).json("Bank updated successfully");
+  } catch (err) {
+    console.log(err);
+    res.status(500).json(err);
+  }
+});
+
+// Update payments methods by user id
+bankRouter.put("/methods", async (req: Request, res: Response) => {
+  const { userId } = req.body;
+  try {
+    // Validate req body
+    let validationResult = validatePaymentsMethods(req.body);
+    if (validationResult)
+      return res.status(400).send(validationResult.details[0].message);
+
+    // Check user id
+    const checkResult = await checkUserId(userId);
+    if (typeof checkResult === "string")
+      return res.status(400).send(checkResult);
+
+    // Update bank
+    await BankModel.updateOne(
+      { userId },
+      {
+        $set: req.body,
+      }
+    );
+
+    // Response
+    res.status(200).json("Payments methods updated successfully");
   } catch (err) {
     console.log(err);
     res.status(500).json(err);

@@ -11,8 +11,8 @@
   text-decoration: none
   transition: .2s linear
 
-$green: #27ae60
-$black: #130f40
+$main-color: #4479FB
+$black: #4479FB
 $red: #ef0046
 $white: #fff
 $light-color: #666
@@ -30,7 +30,7 @@ $box-shadow: 0 1rem 1rem rgba(0,0,0,.05)
 @mixin font($size)
   font-family: 'Satisfy', cursive
   font-size: $size
-  color: $green
+  color: $main-color
 
 html
   font-size: 62.5%
@@ -45,11 +45,11 @@ html
   background: $white
 
 ::-webkit-scrollbar-thumb
-  background: $green
+  background: $main-color
   border-radius: 5rem
 
 *::selection
-  background: $green
+  background: $main-color
   color: $white
 
 section
@@ -168,6 +168,10 @@ section
   display: flex
   justify-content: flex-end !important
 
+.justify-content-center
+  display: flex
+  justify-content: center !important
+
 .color-red
   color: $red !important
 
@@ -175,7 +179,7 @@ section
   color: #cc0000 !important
 
 .color-green
-  color: $green !important
+  color: $main-color !important
 
 .btn
   display: inline-block
@@ -184,11 +188,11 @@ section
   font-size: 1.7rem
   cursor: pointer
   color: $white
-  background: $green
+  background: $main-color
   border-radius: .5rem
 
   &:hover
-    background: $black
+    background: #0e4fee
 
 .toastContainer
   display: flex
@@ -208,10 +212,10 @@ section
 
 :disabled
   cursor: not-allowed
-  background-color: #27ae6080
+  background-color: #4479fb80
   &:hover
     cursor: not-allowed
-    background-color: #27ae6080
+    background-color: #4479fb80
 
 .custom-select
   appearance: none

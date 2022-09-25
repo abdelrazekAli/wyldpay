@@ -1,0 +1,182 @@
+@use './base' as *
+
+.welcome-wrapper
+    width: 100%
+    padding-left: 1.7rem
+    padding-right: 1.7rem
+    padding-top: 8rem
+    margin-bottom: 5rem
+
+    .grid-cols-2
+        width: 100%
+        height: 100%
+        display: grid
+        grid-template-columns: repeat(2, 1fr)
+        gap: 4rem
+
+    .grid-item-1
+        padding-top: 5rem
+        padding-left: 1.5rem
+
+    .main-heading
+        font-weight: 300
+        font-size: 40px
+        line-height: 55px
+
+    .main-heading span
+        color: $main-color
+
+    .info-text
+        margin-top: 2.5rem
+        font-size: 19px
+        line-height: 28px
+        color: #666
+
+    .btn_wrapper
+        margin-top: 5rem
+        display: flex
+        width: 100%
+
+    .btn
+        width: 110px
+        height: 50px
+        background-color: $main-color
+        display: block
+        font-size: 16px
+        color: #fff
+        text-transform: capitalize
+        border-radius: 7px
+        letter-spacing: 1px
+        transition: 0.4s
+
+        &:hover
+            transform: translateY(-3px)
+            background-color: var(#0e4fee)
+
+    .view_more_btn
+        width: 180px
+        height: 55px
+        display: flex
+        align-items: center
+        justify-content: center
+        font-size: 16px
+        letter-spacing: 0
+        color: #fff
+        font-weight: 500
+        margin-right: 10px
+        box-shadow: 0 0.5rem 1.5rem rgba(22, 28, 45, 0.1)
+
+        & i
+            margin-left: 1rem
+            font-size: 14px
+
+        &:hover
+            transition: box-shadow 0.25s ease, transform 0.25s ease
+
+    .documentation_btn
+        width: 150px
+        height: 55px
+        font-size: 16px
+        font-weight: 500
+        color: #fff
+        letter-spacing: 0
+        background-color: #e1e7fc
+        color: #0e2a86
+        box-shadow: 0 0.5rem 1.5rem rgba(22, 28, 45, 0.1)
+
+        &:hover
+            background-color: #d7ddf1
+            transition: box-shadow 0.25s ease, transform 0.25s ease
+
+    .grid-item-2
+        width: 100%
+        height: 100%
+
+    .team_img_wrapper
+        width: 500px
+        max-width: 100%
+        height: 440px
+
+        & img
+            width: 100%
+            height: 100%
+            object-fit: contain
+
+    .grid-col-item
+        height: 100%
+
+    .icon
+        width: 100%
+        line-height: 40px
+
+    & svg
+        width: 30px
+        height: 30px
+        color: #6b85d8
+
+    .container
+        width: 100%
+
+@media (min-width: 1040px)
+    .welcome-wrapper
+        .container
+            width: 1040px
+            margin: 0 auto
+
+// @media (max-width: 768px)
+// .welcome-wrapper
+//     padding: 0 0.7rem
+
+//     .grid-item-1
+//         padding-left: 0rem
+
+//     .main-heading
+//         font-size: 35px
+
+//     .view_more_btn
+//         width: 140px
+//         height: 55px
+//         font-size: 13.5px
+//         margin-right: 1rem
+
+@media (max-width: 991px)
+    .welcome-wrapper
+        padding-top: 3rem
+
+        .grid-cols-2
+            grid-template-columns: repeat(auto-fit, minmax(100%, 1fr))
+
+        .grid-item-1
+            order: 2
+            display: flex
+            flex-direction: column
+            align-items: center
+            justify-content: center
+            padding-top: 0
+
+        .main-heading
+            font-size: 32px
+            text-align: center
+            line-height: 40px
+
+        .info-text
+            font-size: 16px
+            text-align: center
+            padding: 0.7rem
+
+        .btn_wrapper
+            width: 100%
+            display: flex
+            align-items: center
+            justify-content: center
+
+        .grid-item-2
+            order: 1
+            display: flex
+            flex-direction: column
+            align-items: center
+            justify-content: center
+
+        .team_img_wrapper
+            width: 350px
+            height: 350px
