@@ -44,6 +44,17 @@ export const validateItem = (data: object) => {
   return schema.validate(data).error;
 };
 
+export const validateOrder = (data: object) => {
+  const schema = joi.object({
+    items: joi.array().required(),
+    price: joi.number().required(),
+    notes: joi.string().max(10000),
+    tableNum: joi.number().required(),
+    restId: joi.string().required().max(255),
+  });
+  return schema.validate(data).error;
+};
+
 export const validateCategories = (data: object) => {
   const schema = joi.object({
     categories: joi.array().required(),

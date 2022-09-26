@@ -5,7 +5,7 @@ export type BankProps = {
   iban: string;
   bic: string;
   customerFees: Boolean;
-  paymentsMethods: { name: string; publicKey: string; secretKey: string }[];
+  paymentsMethods?: { name: string; publicKey: string; secretKey: string }[];
   userId: ObjectId;
 };
 
