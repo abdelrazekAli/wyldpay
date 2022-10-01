@@ -7,12 +7,12 @@ import {
   decreseFromCart,
 } from "../../redux/cart.slice";
 
-export const Counters = ({ product }: ProductPropType) => {
+export const MainItemCounters = ({ product }: ProductPropType) => {
   const dispatch = useAppDispatch();
   const cartProducts = useAppSelector(getCartProducts);
 
   const productQuantity =
-    cartProducts.find((p) => p.id === product.id)?.quantity || 0;
+    cartProducts.find((p) => p._id === product._id)?.quantity || 0;
 
   const [counter, setCounter] = useState<number>(productQuantity);
 
@@ -36,22 +36,32 @@ export const Counters = ({ product }: ProductPropType) => {
 
   const decrementHanldler = () => {
     setCounter(counter - 1);
-    decreseFromCartHandler(product.id);
+    decreseFromCartHandler(product._id);
     counter === 0 && setDecreaseCounter(!decreaseCounter);
   };
 
   return (
-    <div className="counter-container">
-      {counter > 0 && (
-        <>
-          <div className="counter custom-padding" onClick={decrementHanldler}>
-            -
-          </div>
-          <div className="quantity">{counter}</div>
-        </>
-      )}
-      <div className="counter" onClick={incrementHanldler}>
-        +
+    <div className="counters-container">
+      <div className="counters-wrapper">
+        {counter > 0 && (
+          <>
+            <button className="counter" onClick={decrementHanldler}>
+              <img
+                className="counter-img"
+                src={`../../assets/images/minus.svg`}
+                alt=""
+              />
+            </button>
+            <h4 className="quantity">{counter}</h4>
+          </>
+        )}
+        <button className="counter" onClick={incrementHanldler}>
+          <img
+            className="counter-img"
+            src={`../../assets/images/plus.svg`}
+            alt=""
+          />
+        </button>
       </div>
     </div>
   );

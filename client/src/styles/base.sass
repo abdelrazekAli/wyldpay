@@ -12,6 +12,7 @@
   transition: .2s linear
 
 $main-color: #4479FB
+$second-color: #061A40
 $black: #4479FB
 $red: #ef0046
 $white: #fff
@@ -243,6 +244,19 @@ section
 
   &:-ms-expand
     display: none
+
+.mobile-wrapper
+  display: flex
+  flex-direction: column
+
+  .mobile-wrapper-container
+    display: flex
+    flex-direction: column
+    flex: 1
+    min-height: 100vh
+    max-width: 100%
+    width: 460px
+    margin: 0 auto
 
 // Media queries
 

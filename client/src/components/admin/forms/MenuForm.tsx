@@ -1,7 +1,6 @@
 import axios from "axios";
 import { Item } from "../Item";
 import "../../../styles/item.sass";
-import "../../../styles/category.sass";
 import "../../../styles/forms/menuForm.sass";
 import { ItemType } from "../../../types/Item";
 import { Key, useEffect, useState } from "react";

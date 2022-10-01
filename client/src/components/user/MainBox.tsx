@@ -1,4 +1,4 @@
-import { Counters } from "./Counters";
+import { MainItemCounters } from "../menu/MainItemCounters";
 import { ProductPropType } from "../../types/Product";
 
 export const MainBox = ({ product }: ProductPropType) => {
@@ -11,7 +11,7 @@ export const MainBox = ({ product }: ProductPropType) => {
         <h3>{product.name}</h3>
         <div className="price-container">
           <div className="price">${product.price.toFixed(2)}</div>
-          <Counters product={product} />
+          <MainItemCounters product={product} />
         </div>
       </div>
     </div>

@@ -1,4 +1,4 @@
-import "../../styles/header.sass";
+import "../../styles/menu/header.sass";
 import { Link } from "react-router-dom";
 import { getUser, logout } from "../../redux/user.slice";
 import { useAppDispatch, useAppSelector } from "../../redux/store.hooks";

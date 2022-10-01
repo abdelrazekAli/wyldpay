@@ -1,0 +1,136 @@
+@use '../base' as *
+
+.item-details-wrapper
+  position: relative
+  padding-bottom: 14px
+
+  .item-details
+    background-position: center
+    background-size: cover
+    background-repeat: no-repeat
+    aspect-ratio: auto 16/9
+    margin-bottom: 28px
+
+    .back-icon
+      position: absolute
+      width: 42px
+      height: 42px
+      left: 3rem
+      top: 3rem
+      background: #FFFFFF
+      border-radius: 10px
+      display: flex
+      justify-content: center
+      align-items: center
+      cursor: pointer
+      transition: all .5s ease
+
+      &:hover
+        background-color: $second-color
+        color: #fff
+
+        i
+          color: #fff
+
+      i
+        font-size: 2rem
+        color: #5F5F5F
+
+  .content
+    margin: 3rem 2.5rem
+
+    .heading-1
+      color: rgba(0, 0, 0, 0.9)
+      font-size: 2.25rem
+
+    .heading-2
+      font-size: 2rem
+
+    .description
+      color: rgba(0, 0, 0, 0.25)
+      font-size: 13px
+      line-height: 20px
+      margin: 1rem 0
+
+    .ingredients
+      border: 1px solid #bfbfbf
+      padding: 1.25rem 2rem
+      display: flex
+      justify-content: space-between
+      align-items: center
+      border-radius: 5px
+      font-size: 1.5rem
+      margin: 2rem 0
+      cursor: pointer
+
+    .order
+      padding: 1.25rem 2rem
+      text-align: center
+      border-radius: 5px
+      font-size: 1.5rem
+      margin: 4rem 0
+      cursor: pointer
+      background-color: $second-color
+      color: $white
+      transition: all .2s ease
+
+      &:hover
+        background-color: #4479FB
+
+    .details
+      margin-left: 1rem
+
+      div
+        margin: 1rem 0
+        font-size: 13px
+        line-height: 20px
+        color: $second-color
+
+        i
+          color: $second-color
+          margin-right: 0.5rem
+
+    .price-counters-wrapper
+      display: flex
+      justify-content: space-between
+      align-items: center
+      padding: 2.5rem 0
+
+      .price
+        color: $second-color
+        font-size: 1.8rem
+        font-weight: bold
+
+      .counters-container
+        z-index: 1
+
+      .counters-wrapper
+        position: relative
+        display: inline-flex
+        align-items: center
+        border-radius: 100px
+
+        .counter
+          color: $white
+          border-radius: 50%
+          padding: 5px
+          cursor: pointer
+          background-color: $second-color
+          user-select: none
+          transition: all .2s ease
+
+          &:hover
+            background-color: #4479FB
+
+          .counter-img
+            width: 2rem
+
+        .quantity
+          color: #000
+          font-size: 1.6rem
+          width: 3rem
+          text-align: center
+          padding-top: 1px
+
+        .custom-padding
+          padding: 3px 9px

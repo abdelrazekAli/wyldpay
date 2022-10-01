@@ -12,7 +12,7 @@ const cartSlice = createSlice({
   reducers: {
     addToCart: (state, action: PayloadAction<ProductType>) => {
       const productIndex = state?.findIndex(
-        (product) => product.id === action.payload.id
+        (product) => product._id === action.payload._id
       );
 
       if (productIndex !== -1 && state[productIndex]) {
@@ -25,14 +25,14 @@ const cartSlice = createSlice({
     },
 
     decreseFromCart: (state, action: PayloadAction<number>) => {
-      const product = state?.find((product) => product.id === action.payload);
+      const product = state?.find((product) => product._id === action.payload);
 
       const productIndex = state.findIndex(
-        (product) => product.id === action.payload
+        (product) => product._id === action.payload
       );
 
       if (product?.quantity === 1) {
-        return state?.filter((product) => product.id !== action.payload);
+        return state?.filter((product) => product._id !== action.payload);
       } else {
         state[productIndex].quantity -= 1;
       }
@@ -42,7 +42,7 @@ const cartSlice = createSlice({
 
     removeFromCart: (state, action: PayloadAction<number>) => {
       const filterState = state.filter(
-        (product) => product.id !== action.payload
+        (product) => product._id !== action.payload
       );
 
       localStorage.setItem("cart", JSON.stringify(filterState));

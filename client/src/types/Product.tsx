@@ -1,9 +1,10 @@
 export type ProductType = {
-  id: number;
+  _id: number;
   img: string;
   name: string;
   price: number;
   category: string;
+  desc: string;
 };
 
 export type ProductPropType = {

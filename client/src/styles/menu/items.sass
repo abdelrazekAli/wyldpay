@@ -1,0 +1,85 @@
+@use '../base' as *
+
+.menu-items
+    .heading-1
+        color: rgba(0, 0, 0, 0.9)
+        font-size: 2rem
+        margin: 3rem 1rem
+
+    .menu-item
+        display: flex
+        align-content: stretch
+        gap: 21px
+        margin: 2rem 2rem 1rem 1rem
+        padding-bottom: 2rem
+        border-bottom: 1px solid rgba(0, 0, 0, 0.15)
+
+        .menu-item-texts
+            cursor: pointer
+
+            h2
+                color: rgba(0, 0, 0, 0.75)
+                font-size: 18px
+                line-height: 27px
+
+            p
+                color: rgba(0, 0, 0, 0.25)
+                font-size: 13px
+                line-height: 20px
+                margin: 0.5rem 0
+
+            span
+                color: rgba(0, 0, 0, 0.75)
+                font-size: 18px
+                font-weight: bold
+                line-height: 27px
+
+        .menu-item-img-wrapper
+            flex: 1 0 auto
+            position: relative
+            align-self: self-start
+
+            .menu-item-img
+                width: 105px
+                max-height: 119px
+                display: block
+                max-width: 100%
+                border-radius: 7px
+
+    .counters-container
+        position: absolute
+        z-index: 1
+        right: -12px
+        top: 100px
+
+        .counters-wrapper
+            position: relative
+            display: inline-flex
+            align-items: center
+            border-radius: 100px
+            background: #fff
+            box-shadow: 0 0 0 1px #0000000d, 0 10px 15px -3px #0000001a, 0 4px 6px -2px #0000000d
+
+            .counter
+                color: $white
+                border-radius: 50%
+                padding: 5px
+                cursor: pointer
+                background-color: $second-color
+                user-select: none
+
+                &:hover
+                    background-color: #4479FB
+
+                .counter-img
+                    width: 2rem
+
+            .quantity
+                color: #000
+                font-size: 1.6rem
+                width: 3rem
+                text-align: center
+                padding-top: 1px
+
+            .custom-padding
+                padding: 3px 9px

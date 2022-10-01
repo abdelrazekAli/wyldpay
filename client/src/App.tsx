@@ -6,16 +6,17 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 // Import pages
 import { QR } from "./pages/admin/QR";
-import { Home } from "./pages/user/Home";
 import { Login } from "./pages/admin/Login";
 import { Signup } from "./pages/admin/Signup";
 import { Orders } from "./pages/admin/Orders";
 import { Coupons } from "./pages/admin/Coupons";
 import { Profile } from "./pages/admin/Profile";
+import { MainMenu } from "./pages/user/MainMenu";
 import { EditMenu } from "./pages/admin/EditMenu";
 import { EditBank } from "./pages/admin/EditBank";
 import { Dashboard } from "./pages/admin/Dashboard";
 import { ResetPass } from "./pages/admin/ResetPass";
+import { ItemDetails } from "./pages/user/ItemDetails";
 import { SendResetPass } from "./pages/admin/SendResetPass";
 
 function AppWraper() {
@@ -30,7 +31,11 @@ function AppWraper() {
             element={<ResetPass />}
           />
           <Route path="/admin/send-reset-pass" element={<SendResetPass />} />
-          <Route path="/menu/:restId/:tableId" element={<Home />} />
+          <Route path="/menu/:restId/:tableId" element={<MainMenu />} />
+          <Route
+            path="/menu/:restId/:tableId/item/:itemId"
+            element={<ItemDetails />}
+          />
           {user ? (
             <>
               <Route path="/admin/dashboard" element={<Dashboard />} />

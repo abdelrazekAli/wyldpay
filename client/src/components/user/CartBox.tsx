@@ -13,7 +13,7 @@ export const CartBox = ({ product }: CartProductType) => {
     <div className="box">
       <i
         className="fas fa-times"
-        onClick={() => RemoveFromCartHandler(product.id)}
+        onClick={() => RemoveFromCartHandler(product._id)}
       ></i>
       <img src={`./assets/images/${product.img}`} alt="" />
       <div className="content">
