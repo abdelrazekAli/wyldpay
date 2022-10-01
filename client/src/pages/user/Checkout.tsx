@@ -1,3 +1,11 @@
+import { Orders } from "../../components/menu/Orders";
+
 export const Checkout = () => {
-  return <div>Checkout</div>;
+  return (
+    <div className="mobile-wrapper">
+      <div className="mobile-wrapper-container">
+        <Orders />
+      </div>
+    </div>
+  );
 };

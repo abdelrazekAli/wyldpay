@@ -2,48 +2,26 @@ import "../../styles/menu/itemDetails.sass";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useState } from "react";
 import { ProductType } from "../../types/Product";
-import { useAppDispatch, useAppSelector } from "../../redux/store.hooks";
-import {
-  getCartProducts,
-  addToCart,
-  decreseFromCart,
-} from "../../redux/cart.slice";
+import { useAppDispatch } from "../../redux/store.hooks";
+import { addToCart } from "../../redux/cart.slice";
 
 export const MainItemDetails = () => {
   const navigate = useNavigate(),
     product = useLocation().state as ProductType;
-  const [details, setDetails] = useState<boolean>(false);
 
   const dispatch = useAppDispatch();
-  const cartProducts = useAppSelector(getCartProducts);
-
-  const productQuantity =
-    cartProducts.find((p) => p._id === product._id)?.quantity || 0;
-
-  const [counter, setCounter] = useState<number>(productQuantity);
-
-  const [decreaseCounter, setDecreaseCounter] = useState<boolean>(false);
+  const [counter, setCounter] = useState<number>(1);
+  const [details, setDetails] = useState<boolean>(false);
 
   const addToCartHandler = (product: ProductType) => {
     dispatch(addToCart(product));
   };
 
-  const decreseFromCartHandler = (productId: number) => {
-    dispatch(decreseFromCart(productId));
-  };
-
-  const incrementHanldler = () => {
-    if (counter < 99) {
-      setCounter(counter + 1);
+  const submitHandler = () => {
+    navigate(-1);
+    for (let i = 0; i < counter; i++) {
       addToCartHandler(product);
-      !decreaseCounter && setDecreaseCounter(!decreaseCounter);
     }
-  };
-
-  const decrementHanldler = () => {
-    setCounter(counter - 1);
-    decreseFromCartHandler(product._id);
-    counter === 0 && setDecreaseCounter(!decreaseCounter);
   };
 
   return (
@@ -51,7 +29,7 @@ export const MainItemDetails = () => {
       <div
         className="item-details"
         style={{
-          backgroundImage: `url(../../../../assets/images/item-details.svg)`,
+          backgroundImage: `url(../../../../assets/images/item-details.png)`,
         }}
       >
         <div className="back-icon" onClick={() => navigate(-1)}>
@@ -65,16 +43,24 @@ export const MainItemDetails = () => {
           <div className="counters-container">
             <div className="counters-wrapper">
               <>
-                <button className="counter" onClick={decrementHanldler}>
+                <button
+                  className="counter"
+                  onClick={() => setCounter(counter - 1)}
+                  disabled={counter === 0}
+                >
                   <img
                     className="counter-img"
                     src={`../../../../assets/images/minus.svg`}
                     alt=""
                   />
                 </button>
-                <h4 className="quantity">{counter === 0 ? 1 : counter}</h4>
+                <h4 className="quantity">{counter}</h4>
               </>
-              <button className="counter" onClick={incrementHanldler}>
+              <button
+                className="counter"
+                onClick={() => setCounter(counter + 1)}
+                disabled={counter >= 99}
+              >
                 <img
                   className="counter-img"
                   src={`../../../../assets/images/plus.svg`}
@@ -106,9 +92,14 @@ export const MainItemDetails = () => {
             </div>
           </div>
         )}
-        <div className="order" onClick={() => navigate(-1)}>
-          Add {counter === 0 ? 1 : counter} to order -{" "}
-          {counter === 0 ? 1 * product.price : counter * product.price}
+        <div className="order" onClick={submitHandler}>
+          Add {counter} to order -{" "}
+          <span className="font-bold">
+            €
+            {counter === 0
+              ? 1 * product.price
+              : (counter * product.price).toFixed(2)}
+          </span>
         </div>
       </div>
     </div>

@@ -1,0 +1,21 @@
+        <svg
+          viewBox="0 0 21 21"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          class="atom-icon"
+          data-v-10ef0357=""
+          style="width: 21px; min-width: 21px; height: 21px; min-height: 21px; color: #fff;"
+        >
+          <path
+            fill-rule="evenodd"
+            clip-rule="evenodd"
+            d="M10.75 3c.414 0 .75.53.75 1.184v12.632c0 .654-.336 1.184-.75 1.184s-.75-.53-.75-1.184V4.184C10 3.53 10.336 3 10.75 3Z"
+            fill="#fff"
+          ></path>
+          <path
+            fill-rule="evenodd"
+            clip-rule="evenodd"
+            d="M3 10.75c0-.414.53-.75 1.184-.75h12.632c.654 0 1.184.336 1.184.75s-.53.75-1.184.75H4.184C3.53 11.5 3 11.164 3 10.75Z"
+            fill="#fff"
+          ></path>
+        </svg>

@@ -1,19 +1,21 @@
 import "../../styles/menu/header.sass";
 import { getTotalQuantiy } from "../../redux/cart.slice";
 import { useAppSelector } from "../../redux/store.hooks";
+import { useNavigate } from "react-router-dom";
 
 export const MainHeader = () => {
-  const cartTotalQuantity = useAppSelector(getTotalQuantiy);
+  const navigate = useNavigate(),
+    cartTotalQuantity = useAppSelector(getTotalQuantiy);
 
   return (
     <div className="header-wrapper">
       <div
         className="menu-header"
         style={{
-          backgroundImage: `url(../../assets/images/simple-background.svg)`,
+          backgroundImage: `url(../../assets/images/simple-background.png)`,
         }}
       >
-        <div className="cart-icon">
+        <div className="cart-icon" onClick={() => navigate(`./checkout`)}>
           <div className="content">
             <img src="../../assets/images/cart-bag.svg" alt="" />
             {cartTotalQuantity > 0 && (

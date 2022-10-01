@@ -12,6 +12,7 @@ import { Orders } from "./pages/admin/Orders";
 import { Coupons } from "./pages/admin/Coupons";
 import { Profile } from "./pages/admin/Profile";
 import { MainMenu } from "./pages/user/MainMenu";
+import { Checkout } from "./pages/user/Checkout";
 import { EditMenu } from "./pages/admin/EditMenu";
 import { EditBank } from "./pages/admin/EditBank";
 import { Dashboard } from "./pages/admin/Dashboard";
@@ -35,6 +36,10 @@ function AppWraper() {
           <Route
             path="/menu/:restId/:tableId/item/:itemId"
             element={<ItemDetails />}
+          />
+          <Route
+            path="/menu/:restId/:tableId/checkout"
+            element={<Checkout />}
           />
           {user ? (
             <>

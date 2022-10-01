@@ -18,8 +18,11 @@ export const MainItem = ({ product }: ProductPropType) => {
         <div>
           <img
             className="menu-item-img"
-            src={`../../assets/images/simple-item-img.svg`}
+            src={`../../assets/images/simple-item-img.png`}
             alt=""
+            onClick={() =>
+              navigate(`./item/${product._id}`, { state: product })
+            }
           />
         </div>
         <MainItemCounters product={product} />

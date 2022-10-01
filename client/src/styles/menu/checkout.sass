@@ -1,0 +1,147 @@
+@use '../base' as *
+
+.checkout
+    margin-top: 3rem
+    padding-bottom: 10rem
+
+    .heading-1
+        color: rgba(0, 0, 0, 0.9)
+        font-size: 2.25rem
+        margin: 3rem 2rem
+
+    .back-icon
+        width: 42px
+        height: 42px
+        background: #FFFFFF
+        border-radius: 10px
+        display: flex
+        justify-content: center
+        align-items: center
+        cursor: pointer
+        transition: all .5s ease
+        margin-left: 1.5rem
+
+        &:hover
+            background-color: $second-color
+            color: #fff
+
+            i
+                color: #fff
+
+        i
+            font-size: 2rem
+            color: #5F5F5F
+
+    .no-items
+        background-color: $light-bg
+        text-align: center
+        font-size: 1.5rem
+        padding: 2rem
+        color: $light-color
+        border-radius: 0.5rem
+        margin: 40% 2rem
+
+    .order-btn-wrapper
+        position: fixed
+        bottom: 0
+        width: 460px
+        max-width: 100%
+        background-color: #fff
+        padding: 0 3rem
+        display: flex
+        justify-content: center
+
+        .order-btn
+            padding: 1.25rem 2rem
+            text-align: center
+            border-radius: 5px
+            font-size: 1.6rem
+            width: 100%
+            margin: 4rem 0
+            cursor: pointer
+            background-color: $second-color
+            color: $white
+            transition: all .2s ease
+            font-weight: bold
+
+            &:hover
+                background-color: #4479FB
+
+    .order-item
+        display: flex
+        align-content: stretch
+        gap: 21px
+        margin: 2rem
+        padding-bottom: 2rem
+        border-bottom: 1px solid rgba(0, 0, 0, 0.15)
+
+        .order-item-texts
+
+            h2
+                color: rgba(0, 0, 0, 0.75)
+                font-size: 18px
+                line-height: 27px
+
+            p
+                color: rgba(0, 0, 0, 0.25)
+                font-size: 13px
+                line-height: 20px
+                margin: 0.5rem 0
+
+        .order-item-img-wrapper
+            flex: 1 0 auto
+            position: relative
+            align-self: self-start
+
+            .order-item-img
+                width: 105px
+                max-height: 119px
+                display: block
+                max-width: 100%
+                border-radius: 7px
+
+        .counters-price-wrapper
+            display: flex
+            flex-direction: column
+            justify-content: space-between
+            align-items: flex-end
+
+            span
+                color: rgba(0, 0, 0, 0.75)
+                font-size: 18px
+                font-weight: bold
+                line-height: 27px
+
+        .counters-container
+
+            .counters-wrapper
+                position: relative
+                display: inline-flex
+                align-items: center
+
+                .counter
+                    color: $white
+                    border-radius: 4px
+                    padding: 5px
+                    cursor: pointer
+                    background-color: #4479FB
+                    user-select: none
+                    display: flex
+                    justify-content: center
+                    align-items: center
+
+                    &:hover
+                        background-color: $second-color
+
+                    .counter-img
+                        width: 2rem
+
+                .quantity
+                    color: #000
+                    font-size: 1.6rem
+                    width: 3rem
+                    text-align: center
+                    padding-top: 1px
+
+                .custom-padding
+                    padding: 3px 9px

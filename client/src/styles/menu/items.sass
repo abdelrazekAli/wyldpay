@@ -4,14 +4,14 @@
     .heading-1
         color: rgba(0, 0, 0, 0.9)
         font-size: 2rem
-        margin: 3rem 1rem
+        margin: 3rem 2rem
 
     .menu-item
         display: flex
         align-content: stretch
         gap: 21px
         margin: 2rem 2rem 1rem 1rem
-        padding-bottom: 2rem
+        padding: 0 1rem 2rem 1rem
         border-bottom: 1px solid rgba(0, 0, 0, 0.15)
 
         .menu-item-texts
@@ -45,6 +45,7 @@
                 display: block
                 max-width: 100%
                 border-radius: 7px
+                cursor: pointer
 
     .counters-container
         position: absolute
@@ -67,6 +68,9 @@
                 cursor: pointer
                 background-color: $second-color
                 user-select: none
+                display: flex
+                justify-content: center
+                align-items: center
 
                 &:hover
                     background-color: #4479FB
