@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import { SummaryItem } from "./SummaryItem";
 import "../../styles/menu/orderSummary.sass";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAppSelector } from "../../redux/store.hooks";
 import { getCartProducts, getTotalPrice } from "../../redux/cart.slice";
 
@@ -120,7 +120,7 @@ export const OrderSummary = () => {
                 Add discount code
               </div>
               <div className="icon">
-                <img src="../../../assets/images/discount-open.svg" alt="" />
+                <img src="../../../assets/images/open-right.svg" alt="" />
               </div>
             </div>
             <div className="order-btn-wrapper">
@@ -148,7 +148,9 @@ export const OrderSummary = () => {
                   Total price: <span>€{totalPrice()}</span>
                 </div>
               </div>
-              <div className="order-btn">Order now</div>
+              <Link to={"../menu/restId/tableNum/order/success"}>
+                <div className="order-btn">Order now</div>
+              </Link>
             </div>
           </>
         ) : (

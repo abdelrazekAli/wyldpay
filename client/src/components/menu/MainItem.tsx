@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { MainItemCounters } from "./MainItemCounters";
 import { ProductPropType } from "../../types/Product";
+import { truncate } from "../../utils/stringTruncate";
 
 export const MainItem = ({ product }: ProductPropType) => {
   let navigate = useNavigate();
@@ -11,7 +12,7 @@ export const MainItem = ({ product }: ProductPropType) => {
         onClick={() => navigate(`./item/${product._id}`, { state: product })}
       >
         <h2 className="capitalize">{product.name}</h2>
-        <p>{product.desc}</p>
+        <p>{truncate(product.desc, 100)}</p>
         <span>€{product.price.toFixed(2)}</span>
       </div>
       <div className="menu-item-img-wrapper">

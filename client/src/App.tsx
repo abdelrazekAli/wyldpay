@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 // Import pages
 import { QR } from "./pages/admin/QR";
+import { Order } from "./pages/user/Order";
 import { Login } from "./pages/admin/Login";
 import { Signup } from "./pages/admin/Signup";
 import { Orders } from "./pages/admin/Orders";
@@ -18,8 +19,8 @@ import { EditBank } from "./pages/admin/EditBank";
 import { Dashboard } from "./pages/admin/Dashboard";
 import { ResetPass } from "./pages/admin/ResetPass";
 import { ItemDetails } from "./pages/user/ItemDetails";
+import { OrderSuccess } from "./pages/user/OrderSuccess";
 import { SendResetPass } from "./pages/admin/SendResetPass";
-import { Order } from "./pages/user/Order";
 
 function AppWraper() {
   const App = () => {
@@ -42,16 +43,20 @@ function AppWraper() {
           <Route
             path="/menu/:restId/:tableId/checkout"
             element={<Checkout />}
+          />{" "}
+          <Route
+            path="/menu/:restId/:tableId/order/success"
+            element={<OrderSuccess />}
           />
           {user ? (
             <>
-              <Route path="/admin/dashboard" element={<Dashboard />} />
-              <Route path="/admin/profile" element={<Profile />} />
+              <Route path="/admin/tables" element={<QR />} />
+              <Route path="/admin/bank" element={<EditBank />} />
               <Route path="/admin/menu" element={<EditMenu />} />
               <Route path="/admin/orders" element={<Orders />} />
               <Route path="/admin/coupons" element={<Coupons />} />
-              <Route path="/admin/bank" element={<EditBank />} />
-              <Route path="/admin/tables" element={<QR />} />
+              <Route path="/admin/profile" element={<Profile />} />
+              <Route path="/admin/dashboard" element={<Dashboard />} />
               <Route
                 path="*"
                 element={<Navigate to="/admin/dashboard" replace />}

@@ -1,3 +1,5 @@
+import { useState } from "react";
+import { truncate } from "../../utils/stringTruncate";
 import { useAppDispatch } from "../../redux/store.hooks";
 import { ProductPropType, ProductType } from "../../types/Product";
 import {
@@ -5,20 +7,9 @@ import {
   decreseFromCart,
   removeFromCart,
 } from "../../redux/cart.slice";
-import { useState } from "react";
 
 export const OrderItem = ({ product }: ProductPropType) => {
   const dispatch = useAppDispatch();
-
-  const truncate = (str: string, maxLength: number) => {
-    let trimmedString = str.substring(0, maxLength);
-    return (
-      trimmedString.substring(
-        0,
-        Math.min(trimmedString.length, trimmedString.lastIndexOf(" "))
-      ) + "..."
-    );
-  };
 
   const [counter, setCounter] = useState<number>(product.quantity!);
 
