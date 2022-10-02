@@ -5,6 +5,7 @@ export type ProductType = {
   price: number;
   category: string;
   desc: string;
+  quantity?: number;
 };
 
 export type ProductPropType = {

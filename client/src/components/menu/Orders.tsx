@@ -1,13 +1,12 @@
 import "../../styles/menu/checkout.sass";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAppSelector } from "../../redux/store.hooks";
-import { getCartProducts, getTotalPrice } from "../../redux/cart.slice";
+import { getCartProducts } from "../../redux/cart.slice";
 import { OrderItem } from "./OrderItem";
 
 export const Orders = () => {
   const navigate = useNavigate();
   const cartProducts = useAppSelector(getCartProducts);
-  const subPrice = useAppSelector(getTotalPrice);
 
   return (
     <div className="checkout">
@@ -20,10 +19,11 @@ export const Orders = () => {
           {cartProducts.map((product, i) => (
             <OrderItem product={product} key={i} />
           ))}
-
-          <div className="order-btn-wrapper">
-            <div className="order-btn">Checkout</div>
-          </div>
+          <Link to={"../menu/restId/tableNum/order"}>
+            <div className="order-btn-wrapper">
+              <div className="order-btn">Checkout</div>
+            </div>
+          </Link>
         </>
       ) : (
         <div className="no-items">No order items added yet</div>

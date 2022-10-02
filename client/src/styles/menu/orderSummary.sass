@@ -1,0 +1,328 @@
+@use '../base' as *
+
+.order-summary
+    margin-top: 3rem
+    padding-bottom: 15rem
+    user-select: none
+
+    .heading-1
+        color: rgba(0, 0, 0, 0.9)
+        font-size: 2.25rem
+        margin: 3rem 2rem
+
+    .heading-2
+        color: rgba(0, 0, 0, 0.9)
+        font-size: 2rem
+        margin: 3rem 3rem 0
+
+    .heading-p
+        color: rgba(0,0,0,0.25)
+        font-size: 1.5rem
+        margin: 2rem 3rem
+
+    .back-icon
+        width: 42px
+        height: 42px
+        background: #FFFFFF
+        border-radius: 10px
+        display: flex
+        justify-content: center
+        align-items: center
+        cursor: pointer
+        transition: all .5s ease
+        margin-left: 1.5rem
+
+        &:hover
+            background-color: $second-color
+            color: #fff
+
+            i
+                color: #fff
+
+        i
+            font-size: 2rem
+            color: #5F5F5F
+
+    .modal
+        background: rgba(0, 0, 0, 0.70)
+
+    .form-modal
+
+        h2
+            color: $second-color
+            font-size: 2rem
+
+        input
+            background: none
+            border: 1px solid #bfbfbf
+            border-radius: 5px
+            padding: 10px
+
+    .no-items
+        background-color: $light-bg
+        text-align: center
+        font-size: 1.5rem
+        padding: 2rem
+        color: $light-color
+        border-radius: 0.5rem
+        margin: 40% 2rem
+
+    .order-btn-wrapper
+        position: fixed
+        bottom: 0
+        width: 460px
+        max-width: 100%
+        height: 140px
+        background-color: #fff
+        padding: 0 3rem
+        display: flex
+        flex-direction: column
+        justify-content: center
+        box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.25)
+        border-radius: 30px 30px 0px 0px
+
+        .row
+            display: flex
+            justify-content: space-between
+            align-items: center
+            padding-top: 4rem
+
+            .total-price
+                font-size: 1.5rem
+                color: rgba(0, 0, 0, 0.75)
+
+                span
+                    font-weight: bold
+                    color: $second-color
+
+            .payment
+                color: rgba(0, 0, 0, 0.5)
+                display: flex
+                align-items: center
+                gap: 1.5rem
+
+                .payment-icon
+                    background-color: #1B1B1B
+                    border-radius: 3px
+                    width: 40px
+                    height: 25px
+                    display: flex
+                    justify-content: center
+                    align-items: center
+
+                .options
+                    .dropdown
+                        padding-top: 3px
+                        .dropbtn
+                            color: #000
+                            padding-left: 0
+
+                        .dropdown-content
+                            top: -12rem
+
+                            span
+                                color: #000
+
+                                &:hover
+                                    color: #fff
+                                    background-color: $second-color
+
+        .order-btn
+            padding: 1.25rem 2rem
+            text-align: center
+            border-radius: 5px
+            font-size: 1.6rem
+            width: 100%
+            margin: 2.5rem 0
+            cursor: pointer
+            background-color: $second-color
+            color: $white
+            transition: all .2s ease
+            font-weight: bold
+
+            &:hover
+                background-color: #4479FB
+
+    .order-item
+        display: flex
+        align-content: stretch
+        align-items: center
+        justify-content: space-around
+        margin: 2rem
+        gap: 3rem
+        padding-bottom: 1rem
+
+        .order-item-texts
+
+            h2
+                color: rgba(0, 0, 0, 0.75)
+                font-size: 18px
+                line-height: 27px
+
+        .order-item-img-wrapper
+            position: relative
+            align-self: self-start
+
+            .order-item-img
+                width: 60px
+                max-height: 60px
+                display: block
+                max-width: 100%
+                border-radius: 7px
+
+        .counters-price-wrapper
+            display: flex
+            flex-direction: column
+            justify-content: space-between
+            align-items: flex-end
+
+            span
+                color: rgba(0, 0, 0, 0.75)
+                font-size: 18px
+                font-weight: bold
+                line-height: 27px
+
+    .order-summary
+        display: flex
+        align-items: center
+        gap: 4rem
+        justify-content: space-around
+        margin: 2rem
+        padding-bottom: 1rem
+
+        .order-item-texts
+
+            h2
+                color: rgba(0, 0, 0, 0.75)
+                font-size: 18px
+                line-height: 27px
+
+        .order-item-icon-wrapper
+            background-color: $second-color
+            width: 60px
+            height: 60px
+            border-radius: 7px
+            display: flex
+            justify-content: center
+            align-items: center
+
+        .counters-price-wrapper
+            display: flex
+            flex-direction: column
+            justify-content: space-between
+            align-items: flex-end
+
+            span
+                color: $second-color
+                font-size: 18px
+                font-weight: bold
+                line-height: 27px
+
+    .tips
+        margin: 2rem 3rem
+
+        .row
+            display: flex
+            justify-content: space-between
+            align-items: center
+            gap: 2rem
+
+            .tip
+                padding: 0.8rem 3rem
+                border: 1px solid #bfbfbf
+                border-radius: 5px
+                text-align: center
+                cursor: pointer
+                flex: 1
+
+                &:hover
+                    background-color: $second-color
+                    border: 1px solid $second-color
+
+                    .tip-percentage,
+                    .tip-price
+                        color: $white
+
+            .selected-tip
+                background-color: $second-color
+                border: 1px solid $second-color
+
+                .tip-percentage,
+                .tip-price
+                    color: $white !important
+
+            .tip-percentage
+                color: rgb(0,0,0,0.5)
+                font-size: 1.2rem
+                margin-top: 5px
+
+            .tip-price
+                color: rgb(0,0,0,0.75)
+                font-size: 1.7rem
+
+        .no-tip
+            display: flex
+            justify-content: center
+            align-items: center
+            padding: 1.5rem 3rem
+            border: 1px solid #bfbfbf
+            border-radius: 5px
+            text-align: center
+            width: 100%
+            margin-top: 2rem
+            color: rgb(0,0,0,0.75)
+            font-size: 1.7rem
+            cursor: pointer
+
+            &:hover
+                background-color: $second-color
+                color: $white
+                border: 1px solid $second-color
+
+        .selected-no-tip
+            background-color: $second-color
+            color: $white
+            border: 1px solid $second-color
+
+    .discount-wrapper
+        display: flex
+        justify-content: space-between
+        align-items: center
+        padding: 1.2rem 2rem
+        border: 1px solid #061A40
+        border-radius: 5px
+        text-align: center
+        color: rgb(0,0,0,0.75)
+        font-size: 1.7rem
+        cursor: pointer
+        margin: 3rem 3rem 5rem
+
+        .text
+            display: flex
+            justify-content: space-between
+            align-items: center
+            gap: 2rem
+            color: $second-color
+
+        .icon
+            background-color: $second-color
+            border-radius: 50%
+            padding: 0.5rem
+            display: flex
+            justify-content: center
+            align-items: center
+
+            img
+                width: 2rem
+
+    .modal-content
+
+        input
+            color: rgba(0, 0, 0, 0.75)
+
+        .btn
+            background-color: $second-color
+            font-weight: bold
+
+            &:hover
+                background-color: #4479FB

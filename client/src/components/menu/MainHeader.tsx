@@ -27,6 +27,17 @@ export const MainHeader = () => {
           <img src={`../../assets/images/simple-logo.svg`} alt="" />
         </div>
       </div>
+      {cartTotalQuantity > 0 && (
+        <div
+          className="order-btn-wrapper"
+          onClick={() => navigate(`./checkout`)}
+        >
+          <div className="order-btn">
+            View order
+            <div className="quantity">{cartTotalQuantity}</div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

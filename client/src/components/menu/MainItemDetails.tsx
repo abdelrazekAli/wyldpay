@@ -46,7 +46,7 @@ export const MainItemDetails = () => {
                 <button
                   className="counter"
                   onClick={() => setCounter(counter - 1)}
-                  disabled={counter === 0}
+                  disabled={counter === 1}
                 >
                   <img
                     className="counter-img"

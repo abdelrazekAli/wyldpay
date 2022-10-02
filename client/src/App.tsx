@@ -19,6 +19,7 @@ import { Dashboard } from "./pages/admin/Dashboard";
 import { ResetPass } from "./pages/admin/ResetPass";
 import { ItemDetails } from "./pages/user/ItemDetails";
 import { SendResetPass } from "./pages/admin/SendResetPass";
+import { Order } from "./pages/user/Order";
 
 function AppWraper() {
   const App = () => {
@@ -36,7 +37,8 @@ function AppWraper() {
           <Route
             path="/menu/:restId/:tableId/item/:itemId"
             element={<ItemDetails />}
-          />
+          />{" "}
+          <Route path="/menu/:restId/:tableId/order" element={<Order />} />
           <Route
             path="/menu/:restId/:tableId/checkout"
             element={<Checkout />}

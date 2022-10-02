@@ -1,8 +1,6 @@
+import { useAppDispatch } from "../../redux/store.hooks";
 import { ProductPropType, ProductType } from "../../types/Product";
-import { useAppDispatch, useAppSelector } from "../../redux/store.hooks";
 import {
-  getCartProducts,
-  getTotalPrice,
   addToCart,
   decreseFromCart,
   removeFromCart,
@@ -11,8 +9,6 @@ import { useState } from "react";
 
 export const OrderItem = ({ product }: ProductPropType) => {
   const dispatch = useAppDispatch();
-  const cartProducts = useAppSelector(getCartProducts);
-  const subPrice = useAppSelector(getTotalPrice);
 
   const truncate = (str: string, maxLength: number) => {
     let trimmedString = str.substring(0, maxLength);
@@ -24,10 +20,7 @@ export const OrderItem = ({ product }: ProductPropType) => {
     );
   };
 
-  const productQuantity =
-    cartProducts.find((p) => p._id === product._id)?.quantity || 0;
-
-  const [counter, setCounter] = useState<number>(productQuantity);
+  const [counter, setCounter] = useState<number>(product.quantity!);
 
   const [decreaseCounter, setDecreaseCounter] = useState<boolean>(false);
 
