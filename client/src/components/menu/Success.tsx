@@ -1,6 +1,207 @@
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
 import "../../styles/menu/orderSuccess.sass";
-
 export const Success = () => {
+  const downloadInvoice = () => {
+    const doc = new jsPDF();
+
+    autoTable(doc, {
+      body: [
+        [
+          {
+            content: "Restaurant name",
+            styles: {
+              halign: "left",
+              fontSize: 20,
+              textColor: "#ffffff",
+            },
+          },
+          {
+            content: "Receipt",
+            styles: {
+              halign: "right",
+              fontSize: 20,
+              textColor: "#ffffff",
+            },
+          },
+        ],
+      ],
+      theme: "plain",
+      styles: {
+        fillColor: "#3366ff",
+      },
+    });
+
+    autoTable(doc, {
+      body: [
+        [
+          {
+            content: `Table#: 5 \nDate: ${new Date().toLocaleDateString()} \nReference: INV0001 `,
+            styles: {
+              halign: "left",
+            },
+          },
+        ],
+      ],
+      theme: "plain",
+    });
+
+    // autoTable(doc, {
+    //   body: [
+    //     [
+    //       {
+    //         content:
+    //           "Billed to:" +
+    //           "\nJohn Doe" +
+    //           "\nBilling Address line 1" +
+    //           "\nBilling Address line 2" +
+    //           "\nZip code - City" +
+    //           "\nCountry",
+    //         styles: {
+    //           halign: "left",
+    //         },
+    //       },
+    //       {
+    //         content:
+    //           "Shipping address:" +
+    //           "\nJohn Doe" +
+    //           "\nShipping Address line 1" +
+    //           "\nShipping Address line 2" +
+    //           "\nZip code - City" +
+    //           "\nCountry",
+    //         styles: {
+    //           halign: "left",
+    //         },
+    //       },
+    //       {
+    //         content:
+    //           "From:" +
+    //           "\nCompany name" +
+    //           "\nShipping Address line 1" +
+    //           "\nShipping Address line 2" +
+    //           "\nZip code - City" +
+    //           "\nCountry",
+    //         styles: {
+    //           halign: "right",
+    //         },
+    //       },
+    //     ],
+    //   ],
+    //   theme: "plain",
+    // });
+
+    // autoTable(doc, {
+    //   body: [
+    //     [
+    //       {
+    //         content: "Amount due:",
+    //         styles: {
+    //           halign: "right",
+    //           fontSize: 14,
+    //         },
+    //       },
+    //     ],
+    //     [
+    //       {
+    //         content: "€4000",
+    //         styles: {
+    //           halign: "right",
+    //           fontSize: 20,
+    //           textColor: "#3366ff",
+    //         },
+    //       },
+    //     ],
+    //   ],
+    //   theme: "plain",
+    // });
+
+    // autoTable(doc, {
+    //   body: [
+    //     [
+    //       {
+    //         content: "Products & Services",
+    //         styles: {
+    //           halign: "left",
+    //           fontSize: 14,
+    //         },
+    //       },
+    //     ],
+    //   ],
+    //   theme: "plain",
+    // });
+
+    autoTable(doc, {
+      head: [["Items", "Quantity", "Price", "Amount"]],
+      body: [
+        ["Margherita Pizza", "1", "€50", "€50"],
+        ["Cheese Burger", "3", "€25", "€75"],
+        ["Fried Chicken", "2", "€30", "€60"],
+        ["Orange Juice", "2", "€10", "€20"],
+      ],
+      theme: "striped",
+      headStyles: {
+        fillColor: "#3366ff",
+      },
+    });
+
+    autoTable(doc, {
+      body: [
+        [
+          {
+            content: "Subtotal:",
+            styles: {
+              halign: "right",
+            },
+          },
+          {
+            content: "€205",
+            styles: {
+              halign: "right",
+            },
+          },
+        ],
+        [
+          {
+            content: "Total tax:",
+            styles: {
+              halign: "right",
+            },
+          },
+          {
+            content: "€20.5",
+            styles: {
+              halign: "right",
+            },
+          },
+        ],
+        [
+          {
+            content: "Total amount:",
+            styles: {
+              halign: "right",
+              textColor: "#3366ff",
+              fontStyle: "bold",
+            },
+          },
+          {
+            content: "€225.5",
+            styles: {
+              halign: "right",
+              textColor: "#3366ff",
+              fontStyle: "bold",
+            },
+          },
+        ],
+      ],
+      theme: "plain",
+      styles: {
+        fontSize: 12,
+      },
+    });
+
+    return doc.save("invoice");
+  };
+
   return (
     <div className="order-success">
       <div className="success-icon">
@@ -47,7 +248,7 @@ export const Success = () => {
           </a>
         </div>
       </div>
-      <div className="invoice-btn-wrapper">
+      <div className="invoice-btn-wrapper" onClick={downloadInvoice}>
         <div className="invoice-btn">Download Invoice</div>
       </div>
     </div>
