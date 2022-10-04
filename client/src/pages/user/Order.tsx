@@ -1,4 +1,4 @@
-import { OrderSummary } from "../../components/menu/OrderSummary";
+import { OrderSummary } from "../../components/user/orders/OrderSummary";
 
 export const Order = () => {
   return (

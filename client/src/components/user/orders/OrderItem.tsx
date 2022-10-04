@@ -1,12 +1,12 @@
 import { useState } from "react";
-import { truncate } from "../../utils/stringTruncate";
-import { useAppDispatch } from "../../redux/store.hooks";
-import { ProductPropType, ProductType } from "../../types/Product";
+import { truncate } from "../../../utils/stringTruncate";
+import { useAppDispatch } from "../../../redux/store.hooks";
+import { ProductPropType, ProductType } from "../../../types/Product";
 import {
   addToCart,
   decreseFromCart,
   removeFromCart,
-} from "../../redux/cart.slice";
+} from "../../../redux/cart.slice";
 
 export const OrderItem = ({ product }: ProductPropType) => {
   const dispatch = useAppDispatch();

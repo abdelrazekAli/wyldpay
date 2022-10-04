@@ -1,4 +1,4 @@
-import { Success } from "../../components/menu/Success";
+import { Success } from "../../components/user/orders/OrderSuccess";
 
 export const OrderSuccess = () => {
   return (

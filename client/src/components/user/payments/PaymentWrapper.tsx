@@ -1,5 +1,10 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { loadStripe } from "@stripe/stripe-js";
+import { StripePayment } from "./StripePayment";
+import { Elements } from "@stripe/react-stripe-js";
+
+const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_KEY!);
 
 export const PaymentWrapper = ({ totalPrice }: { totalPrice: number }) => {
   const [paymentSelected, setPaymentSelected] = useState<number>(0);
@@ -72,9 +77,16 @@ export const PaymentWrapper = ({ totalPrice }: { totalPrice: number }) => {
           Total price: <span>€{totalPrice}</span>
         </div>
       </div>
-      <Link to={"../menu/restId/tableNum/order/success"}>
-        <div className="order-btn">Order now</div>
-      </Link>
+      {paymentSelected === 1 && (
+        <Elements stripe={stripePromise}>
+          <StripePayment totalPrice={totalPrice} />
+        </Elements>
+      )}
+      {paymentSelected !== 1 && (
+        <button>
+          <div className="order-btn">Order now</div>
+        </button>
+      )}
     </div>
   );
 };

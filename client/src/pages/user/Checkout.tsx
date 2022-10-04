@@ -1,4 +1,4 @@
-import { Orders } from "../../components/menu/Orders";
+import { Orders } from "../../components/user/orders/Orders";
 
 export const Checkout = () => {
   return (

@@ -1,10 +1,17 @@
-import "../../styles/menu/orderSuccess.sass";
-import { getCartProducts } from "../../redux/cart.slice";
-import { useAppSelector } from "../../redux/store.hooks";
-import { downloadReceipt } from "../../utils/orderReceipt";
+import { useEffect } from "react";
+import "../../../styles/menu/orderSuccess.sass";
+import { getCartProducts, getTotalPrice } from "../../../redux/cart.slice";
+import { useAppSelector } from "../../../redux/store.hooks";
+import { downloadReceipt } from "../../../utils/orderReceipt";
 
 export const Success = () => {
+  let subPrice = useAppSelector(getTotalPrice);
   const cartProducts = useAppSelector(getCartProducts);
+
+  useEffect(() => {
+    // Set scroll to top
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <div className="order-success">
@@ -54,7 +61,7 @@ export const Success = () => {
       </div>
       <div
         className="invoice-btn-wrapper"
-        onClick={() => downloadReceipt(cartProducts)}
+        onClick={() => downloadReceipt(cartProducts, subPrice)}
       >
         <div className="invoice-btn">Download Invoice</div>
       </div>

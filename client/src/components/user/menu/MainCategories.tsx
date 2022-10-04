@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-scroll";
-import "../../styles/menu/categories.sass";
-import { CategoryType } from "../../types/Category";
+import "../../../styles/menu/categories.sass";
+import { CategoryType } from "../../../types/Category";
 
 export const MainCategories = ({
   categories,

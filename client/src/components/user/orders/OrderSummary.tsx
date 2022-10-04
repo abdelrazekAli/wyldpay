@@ -1,10 +1,10 @@
 import { useRef, useState } from "react";
-import { SummaryItem } from "./SummaryItem";
-import "../../styles/menu/orderSummary.sass";
 import { useNavigate } from "react-router-dom";
-import { PaymentWrapper } from "./PaymentWrapper";
-import { useAppSelector } from "../../redux/store.hooks";
-import { getCartProducts, getTotalPrice } from "../../redux/cart.slice";
+import "../../../styles/menu/orderSummary.sass";
+import { SummaryItem } from "../menu/SummaryItem";
+import { PaymentWrapper } from "../payments/PaymentWrapper";
+import { useAppSelector } from "../../../redux/store.hooks";
+import { getCartProducts, getTotalPrice } from "../../../redux/cart.slice";
 
 export const OrderSummary = () => {
   const navigate = useNavigate();

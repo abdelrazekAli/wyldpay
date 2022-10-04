@@ -1,8 +1,8 @@
 import { MainItem } from "./MainItem";
-import "../../styles/menu/items.sass";
 import { Element } from "react-scroll";
-import { ProductType } from "../../types/Product";
-import { CategoryType } from "../../types/Category";
+import "../../../styles/menu/items.sass";
+import { ProductType } from "../../../types/Product";
+import { CategoryType } from "../../../types/Category";
 
 export const MainItems = ({
   categories,

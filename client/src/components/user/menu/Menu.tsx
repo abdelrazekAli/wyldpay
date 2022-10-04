@@ -1,7 +1,7 @@
-import "../../styles/menu/menu.sass";
+import "../../../styles/menu/menu.sass";
 import { MainItems } from "./MainItems";
 import { MainHeader } from "./MainHeader";
-import { mainProducts } from "../../dummyData";
+import { mainProducts } from "../../../dummyData";
 import { MainCategories } from "./MainCategories";
 
 export const Menu = () => {

@@ -1,4 +1,4 @@
-import { Menu } from "../../components/menu/Menu";
+import { Menu } from "../../components/user/menu/Menu";
 
 export const MainMenu = () => {
   return (

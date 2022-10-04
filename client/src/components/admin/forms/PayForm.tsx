@@ -1,7 +1,7 @@
 import axios from "axios";
 import * as yup from "yup";
 import { useState } from "react";
-import { Modal } from "../../user/Modal";
+import { Modal } from "../../Modal";
 import { useForm } from "react-hook-form";
 import "../../../styles/forms/payForm.sass";
 import { yupResolver } from "@hookform/resolvers/yup";

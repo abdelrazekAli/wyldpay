@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { MainItemCounters } from "./MainItemCounters";
-import { ProductPropType } from "../../types/Product";
-import { truncate } from "../../utils/stringTruncate";
+import { ProductPropType } from "../../../types/Product";
+import { truncate } from "../../../utils/stringTruncate";
 
 export const MainItem = ({ product }: ProductPropType) => {
   let navigate = useNavigate();

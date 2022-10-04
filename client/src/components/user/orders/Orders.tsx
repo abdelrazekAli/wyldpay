@@ -1,7 +1,7 @@
-import "../../styles/menu/checkout.sass";
+import "../../../styles/menu/checkout.sass";
 import { Link, useNavigate } from "react-router-dom";
-import { useAppSelector } from "../../redux/store.hooks";
-import { getCartProducts } from "../../redux/cart.slice";
+import { useAppSelector } from "../../../redux/store.hooks";
+import { getCartProducts } from "../../../redux/cart.slice";
 import { OrderItem } from "./OrderItem";
 
 export const Orders = () => {

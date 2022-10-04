@@ -1,4 +1,4 @@
-import { ProductPropType } from "../../types/Product";
+import { ProductPropType } from "../../../types/Product";
 
 export const SummaryItem = ({ product }: ProductPropType) => {
   return (

@@ -1,20 +1,22 @@
 import axios from "axios";
 import { useState } from "react";
-import { Modal } from "./Modal";
+import { Modal } from "../../Modal";
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
+import { useNavigate } from "react-router-dom";
 
-export const Payment = ({ totalPrice }: { totalPrice: number }) => {
+export const StripePayment = ({ totalPrice }: { totalPrice: number }) => {
   const stripe = useStripe();
   const elements = useElements();
+  const navigate = useNavigate();
   const [paymentFailed, setPaymentFailed] = useState<boolean>(false);
   const [paymentLoading, setPaymentLoading] = useState<boolean>(false);
-  const [paymentSuccess, setPaymentSuccess] = useState<boolean>(false);
 
   const confirmPayment = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
+    setPaymentFailed(false);
     setPaymentLoading(true);
     axios
-      .post("/api/v1/payment/create", {
+      .post("/api/v1/payment/stripe/create", {
         amount: totalPrice,
       })
       .then((data) => {
@@ -26,7 +28,7 @@ export const Payment = ({ totalPrice }: { totalPrice: number }) => {
       })
       .then((result) => {
         if (result?.paymentIntent) {
-          setPaymentSuccess(true);
+          navigate("success");
           setPaymentLoading(false);
         } else {
           setPaymentFailed(true);
@@ -36,7 +38,6 @@ export const Payment = ({ totalPrice }: { totalPrice: number }) => {
       .catch((err) => {
         console.log(err);
         setPaymentLoading(false);
-        setPaymentSuccess(false);
         setPaymentFailed(true);
       });
   };
@@ -44,17 +45,16 @@ export const Payment = ({ totalPrice }: { totalPrice: number }) => {
   return (
     <div>
       {paymentLoading && <Modal status="loading" enableHide />}
-      {paymentSuccess && <Modal status="success" enableHide />}
       {paymentFailed && <Modal status="error" enableHide />}
-      <div>
-        <div className="paymentContainer">
+      <div className="stripe-payment">
+        <div className="stripe-payment-container">
           <CardElement
             options={{
               hidePostalCode: true,
+              hideIcon: true,
               style: {
                 base: {
-                  iconColor: "#130f40",
-                  color: "green",
+                  color: "#061A40",
                   fontSize: "1.1rem",
                 },
               },
@@ -65,9 +65,9 @@ export const Payment = ({ totalPrice }: { totalPrice: number }) => {
         <button
           disabled={paymentLoading}
           onClick={confirmPayment}
-          className="btn"
+          className="order-btn"
         >
-          Place Order
+          Order now
         </button>
       </div>
     </div>

@@ -1,11 +1,11 @@
 import { useState } from "react";
-import { ProductType, ProductPropType } from "../../types/Product";
-import { useAppDispatch, useAppSelector } from "../../redux/store.hooks";
+import { ProductType, ProductPropType } from "../../../types/Product";
+import { useAppDispatch, useAppSelector } from "../../../redux/store.hooks";
 import {
   getCartProducts,
   addToCart,
   decreseFromCart,
-} from "../../redux/cart.slice";
+} from "../../../redux/cart.slice";
 
 export const MainItemCounters = ({ product }: ProductPropType) => {
   const dispatch = useAppDispatch();

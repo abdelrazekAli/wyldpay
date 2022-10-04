@@ -1,9 +1,9 @@
-import "../../styles/menu/itemDetails.sass";
-import { useNavigate, useLocation } from "react-router-dom";
 import { useState } from "react";
-import { ProductType } from "../../types/Product";
-import { useAppDispatch } from "../../redux/store.hooks";
-import { addToCart } from "../../redux/cart.slice";
+import "../../../styles/menu/itemDetails.sass";
+import { ProductType } from "../../../types/Product";
+import { addToCart } from "../../../redux/cart.slice";
+import { useAppDispatch } from "../../../redux/store.hooks";
+import { useNavigate, useLocation } from "react-router-dom";
 
 export const MainItemDetails = () => {
   const navigate = useNavigate(),

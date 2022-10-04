@@ -2,7 +2,10 @@ import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import { ProductType } from "../types/Product";
 
-export const downloadReceipt = (cartProducts: ProductType[]) => {
+export const downloadReceipt = (
+  cartProducts: ProductType[],
+  subPrice: number
+) => {
   let tableRows: any = [];
 
   cartProducts.forEach((p) =>
@@ -42,7 +45,7 @@ export const downloadReceipt = (cartProducts: ProductType[]) => {
     body: [
       [
         {
-          content: `Table No#: 5 \nDate: ${new Date().toLocaleDateString()} \nInvoice No#: INV0001  \nVAT No#: 14/2111/00417`,
+          content: `Table No#: 5 \nInvoice No#: INV0001  \nVAT No#: 14/2111/00417 \nDate: ${new Date().toLocaleString()}`,
           styles: {
             halign: "left",
           },
@@ -89,7 +92,7 @@ export const downloadReceipt = (cartProducts: ProductType[]) => {
           },
         },
         {
-          content: "€205",
+          content: `€${subPrice}`,
           styles: {
             halign: "right",
           },
@@ -103,7 +106,7 @@ export const downloadReceipt = (cartProducts: ProductType[]) => {
           },
         },
         {
-          content: "€20.5",
+          content: `0`,
           styles: {
             halign: "right",
           },
@@ -119,7 +122,7 @@ export const downloadReceipt = (cartProducts: ProductType[]) => {
           },
         },
         {
-          content: "€225.5",
+          content: `€${subPrice}`,
           styles: {
             halign: "right",
             textColor: "#3366ff",
