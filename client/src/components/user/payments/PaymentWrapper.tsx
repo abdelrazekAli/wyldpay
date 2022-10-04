@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
 import { loadStripe } from "@stripe/stripe-js";
 import { StripePayment } from "./StripePayment";
 import { Elements } from "@stripe/react-stripe-js";
