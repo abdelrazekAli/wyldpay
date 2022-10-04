@@ -1,7 +1,18 @@
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import "../../styles/menu/orderSuccess.sass";
+import { getCartProducts } from "../../redux/cart.slice";
+import { useAppSelector } from "../../redux/store.hooks";
+
 export const Success = () => {
+  let tableRows: any = [];
+  const cartProducts = useAppSelector(getCartProducts);
+
+  cartProducts.forEach((p) =>
+    tableRows?.push([p.name, p.quantity, p.price, p.quantity * p.price])
+  );
+
+  console.log(tableRows);
   const downloadInvoice = () => {
     const doc = new jsPDF();
 
@@ -36,7 +47,7 @@ export const Success = () => {
       body: [
         [
           {
-            content: `Table#: 5 \nDate: ${new Date().toLocaleDateString()} \nReference: INV0001 `,
+            content: `Table No#: 5 \nDate: ${new Date().toLocaleDateString()} \nInvoice No#: INV0001  \nVAT No#: 14/2111/00417`,
             styles: {
               halign: "left",
             },
@@ -46,98 +57,27 @@ export const Success = () => {
       theme: "plain",
     });
 
-    // autoTable(doc, {
-    //   body: [
-    //     [
-    //       {
-    //         content:
-    //           "Billed to:" +
-    //           "\nJohn Doe" +
-    //           "\nBilling Address line 1" +
-    //           "\nBilling Address line 2" +
-    //           "\nZip code - City" +
-    //           "\nCountry",
-    //         styles: {
-    //           halign: "left",
-    //         },
-    //       },
-    //       {
-    //         content:
-    //           "Shipping address:" +
-    //           "\nJohn Doe" +
-    //           "\nShipping Address line 1" +
-    //           "\nShipping Address line 2" +
-    //           "\nZip code - City" +
-    //           "\nCountry",
-    //         styles: {
-    //           halign: "left",
-    //         },
-    //       },
-    //       {
-    //         content:
-    //           "From:" +
-    //           "\nCompany name" +
-    //           "\nShipping Address line 1" +
-    //           "\nShipping Address line 2" +
-    //           "\nZip code - City" +
-    //           "\nCountry",
-    //         styles: {
-    //           halign: "right",
-    //         },
-    //       },
-    //     ],
-    //   ],
-    //   theme: "plain",
-    // });
-
-    // autoTable(doc, {
-    //   body: [
-    //     [
-    //       {
-    //         content: "Amount due:",
-    //         styles: {
-    //           halign: "right",
-    //           fontSize: 14,
-    //         },
-    //       },
-    //     ],
-    //     [
-    //       {
-    //         content: "€4000",
-    //         styles: {
-    //           halign: "right",
-    //           fontSize: 20,
-    //           textColor: "#3366ff",
-    //         },
-    //       },
-    //     ],
-    //   ],
-    //   theme: "plain",
-    // });
-
-    // autoTable(doc, {
-    //   body: [
-    //     [
-    //       {
-    //         content: "Products & Services",
-    //         styles: {
-    //           halign: "left",
-    //           fontSize: 14,
-    //         },
-    //       },
-    //     ],
-    //   ],
-    //   theme: "plain",
-    // });
+    autoTable(doc, {
+      body: [
+        [
+          {
+            content:
+              "\nAddress line 1" +
+              "\nAddress line 2" +
+              "\nZip code - City" +
+              "\nState",
+            styles: {
+              halign: "left",
+            },
+          },
+        ],
+      ],
+      theme: "plain",
+    });
 
     autoTable(doc, {
       head: [["Items", "Quantity", "Price", "Amount"]],
-      body: [
-        ["Margherita Pizza", "1", "€50", "€50"],
-        ["Cheese Burger", "3", "€25", "€75"],
-        ["Fried Chicken", "2", "€30", "€60"],
-        ["Orange Juice", "2", "€10", "€20"],
-      ],
+      body: tableRows,
       theme: "striped",
       headStyles: {
         fillColor: "#3366ff",
@@ -205,7 +145,7 @@ export const Success = () => {
   return (
     <div className="order-success">
       <div className="success-icon">
-        <img src="../../../../assets/images/payment-success.png" alt="" />
+        <img src="../../../../assets/images/payment-success-sm.png" alt="" />
       </div>
       <h1 className="heading-1">
         We've received your order <br /> and we'll prepare it right away

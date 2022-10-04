@@ -38,7 +38,7 @@ export const validateItem = (data: object) => {
     img: joi.string().required().max(1000),
     price: joi.number().required(),
     category: joi.string().required().max(255),
-    desc: joi.string().max(1000),
+    desc: joi.string().required().max(1000),
     restId: joi.string().required().max(255),
   });
   return schema.validate(data).error;

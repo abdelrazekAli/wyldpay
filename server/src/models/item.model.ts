@@ -15,7 +15,7 @@ const itemSchema = new mongoose.Schema(
     price: { type: Number, required: true },
     img: { type: String, required: true },
     category: { type: String, required: true },
-    desc: { type: String },
+    desc: { type: String, required: true },
     restId: {
       type: mongoose.Types.ObjectId,
       ref: "restaurant",

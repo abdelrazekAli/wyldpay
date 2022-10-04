@@ -12,6 +12,8 @@ export const OrderSummary = () => {
   const discountName = useRef<HTMLInputElement>(null!);
   const cartProducts = useAppSelector(getCartProducts);
   const [isFormVisible, setFormVisible] = useState<boolean>(false);
+  const [paymentSelected, setPaymentSelected] = useState<number>(0);
+  const [isDropDownVisible, setDropDownVisible] = useState<boolean>(false);
 
   const handleDiscount = (e: { preventDefault: () => void }) => {
     e.preventDefault();
@@ -126,21 +128,70 @@ export const OrderSummary = () => {
             <div className="order-btn-wrapper">
               <div className="row">
                 <div className="payment">
-                  <div className="payment-icon">
-                    <img src="../../../assets/images/apple-pay.svg" alt="" />
-                  </div>
+                  {paymentSelected === 0 && (
+                    <div className="payment-icon">
+                      <img
+                        src="../../../assets/images/apple-pay.svg"
+                        alt=""
+                        width={40}
+                      />
+                    </div>
+                  )}
+                  {paymentSelected === 1 && (
+                    <div className="payment-icon">
+                      <img
+                        src="../../../assets/images/visa-dark.svg"
+                        alt=""
+                        width={40}
+                      />
+                    </div>
+                  )}
+                  {paymentSelected === 2 && (
+                    <div className="payment-icon">
+                      <img
+                        src="../../../assets/images/paypal-dark.svg"
+                        width={40}
+                        alt=""
+                      />
+                    </div>
+                  )}
+                  {paymentSelected === 3 && (
+                    <div className="payment-icon">
+                      <img src="../../../assets/images/crypto-sm.png" alt="" />
+                    </div>
+                  )}
                   <div className="options">
                     <div>Payment</div>
                     <div className="dropdown">
-                      <button className="dropbtn">
-                        Apple pay<i className="fa fa-caret-down"></i>
+                      <button
+                        className="dropbtn"
+                        onClick={() => setDropDownVisible(!isDropDownVisible)}
+                      >
+                        {paymentSelected === 0 && "Apple pay"}
+                        {paymentSelected === 1 && "Visa"}
+                        {paymentSelected === 2 && "PayPal"}
+                        {paymentSelected === 3 && "Crypto"}
+                        <i className="fa fa-caret-down"></i>
                       </button>
-                      <div className="dropdown-content">
-                        <span>Apple pay</span>
-                        <span>Visa</span>
-                        <span>PayPal</span>
-                        <span>Crypto</span>
-                      </div>
+                      {isDropDownVisible && (
+                        <div
+                          className="dropdown-content"
+                          onClick={() => setDropDownVisible(!isDropDownVisible)}
+                        >
+                          <span onClick={() => setPaymentSelected(0)}>
+                            Apple pay
+                          </span>
+                          <span onClick={() => setPaymentSelected(1)}>
+                            Visa
+                          </span>
+                          <span onClick={() => setPaymentSelected(2)}>
+                            PayPal
+                          </span>
+                          <span onClick={() => setPaymentSelected(3)}>
+                            Crypto
+                          </span>
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
