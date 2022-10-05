@@ -124,7 +124,7 @@ export const OrderSummary = () => {
                 <img src="../../../assets/images/open-right.svg" alt="" />
               </div>
             </div>
-            <PaymentWrapper totalPrice={totalPrice()} />
+            <PaymentWrapper totalPrice={totalPrice()} tip={tip} />
           </>
         ) : (
           <div className="no-items">No order items added yet</div>

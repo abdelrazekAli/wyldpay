@@ -5,7 +5,13 @@ import { Elements } from "@stripe/react-stripe-js";
 
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_KEY!);
 
-export const PaymentWrapper = ({ totalPrice }: { totalPrice: number }) => {
+export const PaymentWrapper = ({
+  totalPrice,
+  tip,
+}: {
+  totalPrice: number;
+  tip: number | null;
+}) => {
   const [paymentSelected, setPaymentSelected] = useState<number>(0);
   const [isDropDownVisible, setDropDownVisible] = useState<boolean>(false);
 
@@ -78,11 +84,11 @@ export const PaymentWrapper = ({ totalPrice }: { totalPrice: number }) => {
       </div>
       {paymentSelected === 1 && (
         <Elements stripe={stripePromise}>
-          <StripePayment totalPrice={totalPrice} />
+          <StripePayment totalPrice={totalPrice} tip={tip} />
         </Elements>
       )}
       {paymentSelected !== 1 && (
-        <button>
+        <button className="bg-none">
           <div className="order-btn">Order now</div>
         </button>
       )}

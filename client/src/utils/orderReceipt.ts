@@ -4,9 +4,13 @@ import { ProductType } from "../types/Product";
 
 export const downloadReceipt = (
   cartProducts: ProductType[],
-  subPrice: number
+  subPrice: number,
+  tip: number | null
 ) => {
   let tableRows: any = [];
+
+  let tipAmount: number = +((subPrice * tip!) / 100).toFixed(2);
+  let totalPriceAfterTip: number = tipAmount + subPrice;
 
   cartProducts.forEach((p) =>
     tableRows?.push([p.name, p.quantity!, p.price, p.quantity! * p.price])
@@ -98,9 +102,23 @@ export const downloadReceipt = (
           },
         },
       ],
+      // [
+      //   {
+      //     content: "Tip:",
+      //     styles: {
+      //       halign: "right",
+      //     },
+      //   },
+      //   {
+      //     content: tip ? `€${tipAmount}` : 0,
+      //     styles: {
+      //       halign: "right",
+      //     },
+      //   },
+      // ],
       [
         {
-          content: "Total tax:",
+          content: "Total 20% tax:",
           styles: {
             halign: "right",
           },
@@ -122,6 +140,7 @@ export const downloadReceipt = (
           },
         },
         {
+          // content: tip ? `€${totalPriceAfterTip}` : `€${subPrice}`,
           content: `€${subPrice}`,
           styles: {
             halign: "right",

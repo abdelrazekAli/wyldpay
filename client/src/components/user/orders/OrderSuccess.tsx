@@ -1,11 +1,13 @@
 import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import "../../../styles/menu/orderSuccess.sass";
 import { getCartProducts, getTotalPrice } from "../../../redux/cart.slice";
 import { useAppSelector } from "../../../redux/store.hooks";
 import { downloadReceipt } from "../../../utils/orderReceipt";
 
 export const Success = () => {
-  let subPrice = useAppSelector(getTotalPrice);
+  const tip = useLocation().state as number | null;
+  let subPrice = useAppSelector(getTotalPrice).toFixed(2);
   const cartProducts = useAppSelector(getCartProducts);
 
   useEffect(() => {
@@ -61,7 +63,7 @@ export const Success = () => {
       </div>
       <div
         className="invoice-btn-wrapper"
-        onClick={() => downloadReceipt(cartProducts, subPrice)}
+        onClick={() => downloadReceipt(cartProducts, +subPrice, tip)}
       >
         <div className="invoice-btn">Download Invoice</div>
       </div>
