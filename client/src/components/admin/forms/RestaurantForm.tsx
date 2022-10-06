@@ -4,37 +4,55 @@ import "../../../styles/forms/restaurantForm.sass";
 import { StepperProps } from "../../../types/StepperProps";
 
 export const RestForm = ({ onClick }: StepperProps) => {
+  const userId = localStorage.getItem("userId");
   const [name, setName] = useState<string | null>("");
-  const [file, setFile] = useState<string | Blob>("");
   const [logo, setLogo] = useState<null | File>(null);
+  const [vatNum, setVatNum] = useState<string | null>("");
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setisLoading] = useState<boolean>(false);
+  const [logoFile, setLogoFile] = useState<string | Blob>("");
   const [currency, setCurrency] = useState<string | null>("");
+  const [background, setBackground] = useState<null | File>(null);
+  const [backgroundFile, setBackgroundFile] = useState<string | Blob>("");
 
+  // Handle form submit
   const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
     setError(null);
     setisLoading(true);
-    let data = new FormData();
-    data.append("file", file);
-    data.append("upload_preset", "uploads");
+
+    let logoForm = new FormData();
+    logoForm.append("file", logoFile);
+    logoForm.append("upload_preset", "uploads");
+
+    let backgroundForm = new FormData();
+    backgroundForm.append("file", backgroundFile);
+    backgroundForm.append("upload_preset", "uploads");
+
     try {
-      const uploadRes = await axios.post(
+      const uploadLogoRes = await axios.post(
         process.env.REACT_APP_CLOUDINARY_LINK!,
-        data
+        logoForm
       );
-      const { url } = uploadRes.data;
-      const userId = localStorage.getItem("userId");
+      const { url: logoURL } = uploadLogoRes.data;
+
+      const uploadBackgroundRes = await axios.post(
+        process.env.REACT_APP_CLOUDINARY_LINK!,
+        backgroundForm
+      );
+      const { url: backgroundURL } = uploadBackgroundRes.data;
 
       const restaurant = await axios.post("/api/v1/restaurants", {
         name,
+        vatNum,
         currency,
-        logo: url,
+        logo: logoURL,
+        background: backgroundURL,
         userId,
       });
+      console.log(restaurant);
 
       localStorage.setItem("restaurantId", restaurant.data._id);
-
       setisLoading(false);
     } catch (err) {
       console.log(err);
@@ -53,11 +71,15 @@ export const RestForm = ({ onClick }: StepperProps) => {
         </p>
         <div className="content">
           <form onSubmit={handleSubmit}>
-            <input type="text" placeholder="Type of food" />
             <input
               type="text"
               placeholder="Restaurant name"
               onChange={(e) => setName(e.target.value)}
+            />
+            <input
+              type="text"
+              placeholder="VAT number"
+              onChange={(e) => setVatNum(e.target.value)}
             />
             <select
               name="currencies"
@@ -92,16 +114,39 @@ export const RestForm = ({ onClick }: StepperProps) => {
                 id="logo"
                 onChange={(e) => {
                   setLogo(e.target.files![0]);
-                  setFile(e.target.files![0]);
+                  setLogoFile(e.target.files![0]);
                 }}
               />
               <span>Upload logo</span>
               <i className="fas fa-upload" color="red"></i>
             </label>
             {logo && (
-              <div className="box">
+              <div className="box mb-1">
                 <img
                   src={URL.createObjectURL(logo)}
+                  alt="img"
+                  className="img-obj"
+                />
+              </div>
+            )}
+            <label htmlFor="background" className="img-label">
+              <input
+                type="file"
+                accept="image/*"
+                hidden
+                id="background"
+                onChange={(e) => {
+                  setBackground(e.target.files![0]);
+                  setBackgroundFile(e.target.files![0]);
+                }}
+              />
+              <span>Upload background</span>
+              <i className="fas fa-upload" color="red"></i>
+            </label>
+            {background && (
+              <div className="box mb-1">
+                <img
+                  src={URL.createObjectURL(background)}
                   alt="img"
                   className="img-obj"
                 />
@@ -111,7 +156,14 @@ export const RestForm = ({ onClick }: StepperProps) => {
             <button
               type="submit"
               className="btn"
-              disabled={!logo || !name || !currency || isLoading}
+              disabled={
+                !logo ||
+                !background ||
+                !name ||
+                !vatNum ||
+                !currency ||
+                isLoading
+              }
             >
               {isLoading ? "Loading..." : "Continue"}
             </button>
