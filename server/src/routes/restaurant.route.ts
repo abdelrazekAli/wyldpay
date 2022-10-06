@@ -4,8 +4,8 @@ import {
   checkRestId,
   checkUserId,
   validateCategories,
-  validateLogo,
   validateRestaurant,
+  validateRestaurantUpdate,
 } from "../utils/validation";
 import RestaurantModel from "../models/restaurant.model";
 
@@ -84,6 +84,30 @@ restaurantRouter.get(
   }
 );
 
+// update resaturant data
+restaurantRouter.put("/", async (req: Request, res: Response) => {
+  try {
+    // Validate req body
+    let validationResult = validateRestaurantUpdate(req.body);
+    if (validationResult)
+      return res.status(400).send(validationResult.details[0].message);
+
+    // Update logo
+    await RestaurantModel.updateOne(
+      { _id: req.body._id },
+      {
+        $set: req.body,
+      }
+    );
+
+    // Response
+    res.status(200).json("resaturant updated successfully");
+  } catch (err) {
+    console.log(err);
+    res.status(500).json(err);
+  }
+});
+
 // update resaturant categories
 restaurantRouter.put("/categories", async (req: Request, res: Response) => {
   try {
@@ -102,30 +126,6 @@ restaurantRouter.put("/categories", async (req: Request, res: Response) => {
 
     // Response
     res.status(200).json(resaturant);
-  } catch (err) {
-    console.log(err);
-    res.status(500).json(err);
-  }
-});
-
-// update resaturant logo
-restaurantRouter.put("/logo", async (req: Request, res: Response) => {
-  try {
-    // Validate req body
-    let validationResult = validateLogo(req.body);
-    if (validationResult)
-      return res.status(400).send(validationResult.details[0].message);
-
-    // Update logo
-    await RestaurantModel.updateOne(
-      { _id: req.body._id },
-      {
-        logo: req.body.logo,
-      }
-    );
-
-    // Response
-    res.status(200).json("resaturant updated successfully");
   } catch (err) {
     console.log(err);
     res.status(500).json(err);

@@ -1,8 +1,8 @@
 import joi from "joi";
 import { Types } from "mongoose";
+import UserModel from "../models/user.model";
 import ItemModel from "../models/item.model";
 import RestaurantModel from "../models/restaurant.model";
-import UserModel from "../models/user.model";
 
 // User validation
 export const validateUser = (data: object) => {
@@ -25,6 +25,8 @@ export const validateRestaurant = (data: object) => {
   const schema = joi.object({
     name: joi.string().required().max(255),
     logo: joi.string().required().max(1000),
+    background: joi.string().required().max(1000),
+    vatNum: joi.string().required().max(255),
     currency: joi.string().required().length(3).max(255),
     categories: joi.array(),
     userId: joi.string().required().max(255),
@@ -63,10 +65,13 @@ export const validateCategories = (data: object) => {
   return schema.validate(data).error;
 };
 
-export const validateLogo = (data: object) => {
+export const validateRestaurantUpdate = (data: object) => {
   const schema = joi.object({
     _id: joi.string().required().max(255),
+    name: joi.string().required().max(255),
     logo: joi.string().required().max(1000),
+    background: joi.string().required().max(1000),
+    vatNum: joi.string().required().max(255),
   });
   return schema.validate(data).error;
 };

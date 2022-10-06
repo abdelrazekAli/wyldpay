@@ -5,7 +5,7 @@ export const paymentRouter = Router();
 
 // API for PAYMENT
 paymentRouter.post(
-  "/api/v1/payment/create",
+  "/payment/stripe/create",
   async (req: Request, res: Response) => {
     const total = req.body.amount;
     const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
