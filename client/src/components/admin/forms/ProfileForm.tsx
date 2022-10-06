@@ -8,6 +8,7 @@ import PhoneInput from "react-phone-input-2";
 import "../../../styles/forms/profileForm.sass";
 import { UserProps } from "../../../types/UserProps";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { PaymentMethodsForm } from "./PaymentMethodsForm";
 import { RestaurantProps } from "../../../types/Restaurant";
 import { updateUserSchema } from "../../../validations/userSchema";
 import { getUser, updateUsername } from "../../../redux/user.slice";
@@ -16,28 +17,36 @@ import { useAppDispatch, useAppSelector } from "../../../redux/store.hooks";
 export const ProfileForm = () => {
   const dispatch = useAppDispatch();
   const { _id } = useAppSelector(getUser);
-  const [file, setFile] = useState<string | Blob>("");
+
+  const [phone, setPhone] = useState<string>("");
+  const [vatNum, setVatNum] = useState<string>("");
   const [logo, setLogo] = useState<null | File>(null);
-  const [phone, setPhone] = useState<string | null>(null);
-  const [publicKey, setPublicKey] = useState<string | null>(null);
-  const [secretKey, setSecretKey] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState<string | null>(null);
-  const [isLoading, setisLoading] = useState<boolean>(false);
+  const [logoBlob, setLogoBlob] = useState<string | Blob>("");
+  const [background, setBackground] = useState<null | File>(null);
+  const [backgroundBlob, setBackgroundBlob] = useState<string | Blob>("");
+
   const [userData, setUserData] = useState<UserProps | null>(null);
-  const [isFormVisible, setFormVisible] = useState<boolean>(false);
-  const [phoneError, setPhoneError] = useState<string | null>(null);
   const [restaurant, setRestaurant] = useState<RestaurantProps | null>(null);
 
+  const [error, setError] = useState<string | null>(null);
+  const [isLoading, setisLoading] = useState<boolean>(false);
+  const [success, setSuccess] = useState<string | null>(null);
+  const [vatError, setVatError] = useState<string | null>(null);
+  const [phoneError, setPhoneError] = useState<string | null>(null);
+  const [isPaymentFormVisible, setPaymentFormVisible] =
+    useState<boolean>(false);
+  const [isLinksFormVisible, setLinksFormVisible] = useState<boolean>(false);
+
+  // Fetch data from
   useEffect(() => {
-    const fetchItems = async () => {
-      // Fetch user data
+    const fetchData = async () => {
       const res = await axios.get(`/api/v1/restaurants/${_id}`);
       setRestaurant(res.data);
+      setVatNum(res.data.vatNum);
       setUserData(res.data.userId);
       setPhone(res.data.userId.phone);
     };
-    fetchItems();
+    fetchData();
   }, [_id]);
 
   // Inputs validation
@@ -54,6 +63,7 @@ export const ProfileForm = () => {
     resolver: yupResolver(updateUserSchema),
   });
 
+  // Reset user data for validation
   useEffect(() => {
     reset(userData!);
   }, [reset, userData]);
@@ -62,32 +72,49 @@ export const ProfileForm = () => {
   const editProfile = async (data: UserProps) => {
     setError(null);
     setSuccess(null);
+    if (!vatNum) return setVatError("VAT number required");
     if (!phone) return setPhoneError("Phone number required");
 
     setisLoading(true);
     delete data.confirmPassword;
     dispatch(updateUsername(data.firstName));
+
     try {
-      if (file) {
-        let formData = new FormData();
-        formData.append("file", file);
-        formData.append("upload_preset", "uploads");
-
-        const uploadRes = await axios.post(
-          process.env.REACT_APP_CLOUDINARY_LINK!,
-          formData
-        );
-        const { url } = uploadRes.data;
-
-        await axios.put(`/api/v1/restaurants/logo`, {
-          _id: restaurant?._id,
-          logo: url,
-        });
-      }
-
+      // Update user data
       await axios.put(`/api/v1/users/${_id}`, {
         ...data,
         phone: +phone,
+      });
+
+      // Update restaurant data
+      let logoUploadRes, backgroundUploadRes;
+      if (logoBlob) {
+        let logoFormData = new FormData();
+        logoFormData.append("file", logoBlob);
+        logoFormData.append("upload_preset", "uploads");
+
+        logoUploadRes = await axios.post(
+          process.env.REACT_APP_CLOUDINARY_LINK!,
+          logoFormData
+        );
+      }
+
+      if (backgroundBlob) {
+        let backgroundFormData = new FormData();
+        backgroundFormData.append("file", backgroundBlob);
+        backgroundFormData.append("upload_preset", "uploads");
+
+        backgroundUploadRes = await axios.post(
+          process.env.REACT_APP_CLOUDINARY_LINK!,
+          backgroundFormData
+        );
+      }
+
+      await axios.put(`/api/v1/restaurants`, {
+        _id: restaurant?._id,
+        logo: logoUploadRes?.data.url,
+        vatNum,
+        background: backgroundUploadRes?.data.url,
       });
 
       setSuccess("Profile updated successfully!");
@@ -101,28 +128,6 @@ export const ProfileForm = () => {
         setError("Somthing went wrong!");
       }
       console.log(err);
-    }
-  };
-
-  // Handle update payments methods
-  const editPaymentMethods = async (e: { preventDefault: () => void }) => {
-    e.preventDefault();
-    setError(null);
-    setisLoading(true);
-
-    try {
-      await axios.put("/api/v1/banks/methods", {
-        paymentsMethods: [
-          { name: "stripe", publicKey: publicKey, secretKey: secretKey },
-        ],
-        userId: _id,
-      });
-      setFormVisible(!isFormVisible);
-      setisLoading(false);
-    } catch (err) {
-      console.log(err);
-      setisLoading(false);
-      setError("Somthing went wrong!");
     }
   };
 
@@ -140,49 +145,8 @@ export const ProfileForm = () => {
       )}
 
       <div className="profile-form">
-        {isFormVisible && (
-          <div id="myModal" className="modal form-modal">
-            <div className="modal-content p-relative custom-content">
-              <span
-                onClick={() => setFormVisible(!isFormVisible)}
-                className="modal-close"
-              >
-                &times;
-              </span>
-              <div className="main-content">
-                <h2>Payment methods</h2>
-                <div className="card">
-                  <div className="img">
-                    <img src="../../assets/images/stripe-logo.png" alt="" />
-                  </div>
-                </div>
-                <form onSubmit={editPaymentMethods}>
-                  <input
-                    type="text"
-                    placeholder="Public key"
-                    onChange={(e) => setPublicKey(e.target.value)}
-                  />
-                  <input
-                    type="password"
-                    placeholder="Secret key"
-                    onChange={(e) => setSecretKey(e.target.value)}
-                  />
-                  <button
-                    disabled={!publicKey || !secretKey}
-                    type="submit"
-                    className="btn"
-                  >
-                    {isLoading ? "Loading..." : "Save"}
-                  </button>
-                </form>
-              </div>
-              {error && (
-                <span className="color-error text-center fs-2 my-1">
-                  {error}
-                </span>
-              )}
-            </div>
-          </div>
+        {isPaymentFormVisible && (
+          <PaymentMethodsForm hideForm={() => setPaymentFormVisible(false)} />
         )}
         <div className="column">
           <h3>Profile</h3>
@@ -204,7 +168,6 @@ export const ProfileForm = () => {
             </div>
             <div className="input-group">
               <label htmlFor="businessName">Business name</label>
-
               <input
                 id="businessName"
                 type="text"
@@ -241,9 +204,46 @@ export const ProfileForm = () => {
               <input id="zip" type="text" {...register("zip")} />
               <span className="error">{errors?.zip?.message}</span>
             </div>
+            <div className="input-group">
+              <label htmlFor="email">Email</label>
+
+              <input id="email" type="email" {...register("email")} />
+              <span className="error">{errors?.email?.message}</span>
+            </div>
+            <div className="input-group">
+              <label htmlFor="phone">Phone number</label>
+              <PhoneInput
+                inputProps={{
+                  style: {
+                    outline: 0,
+                    width: "100%",
+                    height: "100%",
+                    border: "none",
+                    background: "#f2f2f2",
+                    fontSize: "1.5rem",
+                  },
+                }}
+                specialLabel={""}
+                preferredCountries={["de"]}
+                value={String(userData?.phone)}
+                onChange={(value) => {
+                  setPhone(value);
+                  setPhoneError(null);
+                }}
+              />
+              {phoneError && <span className="error">{phoneError}</span>}
+            </div>
+            <label>Password</label>
+            <Link
+              to={"/admin/send-reset-pass"}
+              state={userData?.email}
+              className="color-green font-bold fs-2 cursor-pointer"
+            >
+              <div className="fixed-box">Send reset link</div>
+            </Link>
           </form>
         </div>
-        <div className="column ">
+        <div className="column">
           <div className="btn-container justify-content-end mb-6">
             <button
               className="btn w-15"
@@ -264,10 +264,10 @@ export const ProfileForm = () => {
                 id="logo"
                 onChange={(e) => {
                   setLogo(e.target.files![0]);
-                  setFile(e.target.files![0]);
+                  setLogoBlob(e.target.files![0]);
                 }}
               />
-              {file ? (
+              {logoBlob ? (
                 <img
                   src={URL.createObjectURL(logo!)}
                   alt="img"
@@ -278,40 +278,46 @@ export const ProfileForm = () => {
               )}
             </label>
           </div>
-          <div className="input-group">
-            <label htmlFor="email">Email</label>
+          <label>Background</label>
+          <div className="img-box">
+            <label htmlFor="background" className="mb-0">
+              <input
+                type="file"
+                accept="image/*"
+                hidden
+                id="background"
+                onChange={(e) => {
+                  setBackground(e.target.files![0]);
+                  setBackgroundBlob(e.target.files![0]);
+                }}
+              />
+              {backgroundBlob ? (
+                <img
+                  src={URL.createObjectURL(background!)}
+                  alt="img"
+                  className="img-obj"
+                />
+              ) : (
+                <img src={restaurant?.background} alt="" />
+              )}
+            </label>
+          </div>
 
-            <input id="email" type="email" {...register("email")} />
-            <span className="error">{errors?.email?.message}</span>
-          </div>
           <div className="input-group">
-            <label htmlFor="phone">Phone number</label>
-            <PhoneInput
-              inputProps={{
-                style: {
-                  outline: 0,
-                  width: "100%",
-                  height: "100%",
-                  border: "none",
-                  background: "#f2f2f2",
-                  fontSize: "1.5rem",
-                },
+            <label htmlFor="vat">VAT number</label>
+
+            <input
+              id="vat"
+              type="text"
+              value={vatNum!}
+              onChange={(e) => {
+                setVatNum(e.target.value);
+                setVatError(null);
               }}
-              specialLabel={""}
-              preferredCountries={["de"]}
-              value={String(userData?.phone)}
-              onChange={(value) => setPhone(value)}
             />
-            {phoneError && <span className="error">{phoneError}</span>}
+            {vatError && <span className="error">{vatError}</span>}
           </div>
-          <label>Password</label>
-          <Link
-            to={"/admin/send-reset-pass"}
-            state={userData?.email}
-            className="color-green font-bold fs-2 cursor-pointer"
-          >
-            <div className="fixed-box">Send reset link</div>
-          </Link>
+
           <label>Bank</label>
           <Link
             to={"/admin/bank"}
@@ -322,7 +328,7 @@ export const ProfileForm = () => {
           <label>Payment methods</label>
           <div
             className="fixed-box cursor-pointer"
-            onClick={() => setFormVisible(!isFormVisible)}
+            onClick={() => setPaymentFormVisible(!isPaymentFormVisible)}
           >
             <span className="color-green font-bold fs-2  ">
               Update payment methods

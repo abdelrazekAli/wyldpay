@@ -1,7 +1,8 @@
 export type RestaurantProps = {
   _id: string;
-  name: string;
+  vatNum: string;
   logo: string;
+  background: string;
   currency: string;
   categories: { value: string }[];
   userId: string;
