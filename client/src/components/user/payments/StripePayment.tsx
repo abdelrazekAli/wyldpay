@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Modal } from "../../Modal";
+import { Modal } from "../layouts/Modal";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";

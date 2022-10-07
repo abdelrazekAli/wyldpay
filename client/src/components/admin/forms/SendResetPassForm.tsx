@@ -2,7 +2,7 @@ import axios from "axios";
 import * as yup from "yup";
 import { useState } from "react";
 import emailjs from "@emailjs/browser";
-import { Modal } from "../../Modal";
+import { Modal } from "../../user/layouts/Modal";
 import { useForm } from "react-hook-form";
 import "../../../styles/forms/loginFrom.sass";
 import { Link, useLocation } from "react-router-dom";

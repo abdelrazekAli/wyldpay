@@ -1,6 +1,6 @@
-import "../styles/modal.sass";
+import "../../../styles/modal.sass";
 import { Link } from "react-router-dom";
-import { ModalPropsType } from "../types/ModalProps";
+import { ModalPropsType } from "../../../types/ModalProps";
 import { useState, useRef, useEffect, ReactNode } from "react";
 import { HashLoader, BeatLoader, BounceLoader } from "react-spinners";
 
