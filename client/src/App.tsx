@@ -1,6 +1,8 @@
+import { useEffect } from "react";
 import { store } from "./redux/store";
 import { Provider } from "react-redux";
 import { getUser } from "./redux/user.slice";
+import { checkUser } from "./utils/checkUser";
 import { useAppSelector } from "../src/redux/store.hooks";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
@@ -25,6 +27,9 @@ import { SendResetPass } from "./pages/admin/SendResetPass";
 function AppWraper() {
   const App = () => {
     const user = useAppSelector(getUser);
+    useEffect(() => {
+      user && checkUser(user._id);
+    }, [user]);
 
     return (
       <BrowserRouter>
@@ -38,12 +43,12 @@ function AppWraper() {
           <Route
             path="/menu/:restId/:tableId/item/:itemId"
             element={<ItemDetails />}
-          />{" "}
+          />
           <Route path="/menu/:restId/:tableId/order" element={<Order />} />
           <Route
             path="/menu/:restId/:tableId/checkout"
             element={<Checkout />}
-          />{" "}
+          />
           <Route
             path="/menu/:restId/:tableId/order/success"
             element={<OrderSuccess />}

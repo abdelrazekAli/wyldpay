@@ -6,13 +6,16 @@
   overflow-x: auto
   flex-flow: row nowrap
   padding: 1px
-  margin-left: 0.5rem
+  margin: 0 0.5rem
 
   &::-webkit-scrollbar
     height: 0px
 
   .category-item
-    margin: 1rem 2rem 0rem 1rem
+    margin: 1rem 0rem 0rem 1rem
+    padding: 1rem
+    border: 1px solid #e6e6e6
+    border-radius: 7px
     font-size: 1.6rem
     user-select: none
     color: rgba(0, 0, 0, 0.5)
@@ -20,8 +23,10 @@
     text-transform: capitalize
 
   .active
-    color: rgba(0, 0, 0, 1)
-    border-bottom: 1px solid #000
+    color: #fff
+    background-color: $second-color
+    // color: rgba(0, 0, 0, 1)
+    // border-bottom: 1px solid #000
     padding-bottom: 0.5rem
 
 .menu-categories-fixed
