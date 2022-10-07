@@ -1,4 +1,4 @@
-import { StepperCircle } from "../StepperCircle";
+import { StepperCircle } from "../layouts/StepperCircle";
 import { PayForm } from "./PayForm";
 import "../../../styles/stepper.sass";
 import { ItemsForm } from "./ItemsForm";

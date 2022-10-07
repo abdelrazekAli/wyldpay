@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { CategoryType } from "../../types/Category";
+import { CategoryType } from "../../../types/Category";
 
 type Props = {
   cate: CategoryType;

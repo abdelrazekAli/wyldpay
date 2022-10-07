@@ -1,4 +1,4 @@
-import { Navbar } from "../../components/admin/Navbar";
+import { Navbar } from "../../components/admin/layouts/Navbar";
 import { CouponsTable } from "../../components/admin/dashboard/CouponsTable";
 
 export const Coupons = () => {

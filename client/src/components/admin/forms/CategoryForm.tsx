@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useRef, useState } from "react";
-import { CategoryBox } from ".././CategoryBox";
 import "../../../styles/forms/categoryForm.sass";
+import { CategoryBox } from "../layouts/CategoryBox";
 import { StepperProps } from "../../../types/StepperProps";
 
 export const CategoryForm = ({ onClick }: StepperProps) => {

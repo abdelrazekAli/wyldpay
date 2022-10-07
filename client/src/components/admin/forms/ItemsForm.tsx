@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Item } from "../Item";
+import { ItemBox } from "../layouts/ItemBox";
 import "../../../styles/forms/foodsForm.sass";
 import { ItemType } from "../../../types/Item";
 import { Key, useEffect, useState } from "react";
@@ -190,7 +190,7 @@ export const ItemsForm = ({ onClick }: StepperProps) => {
               items.map(
                 (i) =>
                   select?.value === i.category && (
-                    <Item
+                    <ItemBox
                       item={i}
                       key={i._id}
                       onDelete={(id) => handleDelete(id)}

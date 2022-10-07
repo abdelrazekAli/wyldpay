@@ -1,6 +1,6 @@
-import "../../styles/item.sass";
+import "../../../styles/item.sass";
 
-export const Item = ({
+export const ItemBox = ({
   item,
   onDelete,
 }: {

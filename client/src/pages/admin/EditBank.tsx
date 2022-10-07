@@ -1,4 +1,4 @@
-import { Navbar } from "../../components/admin/Navbar";
+import { Navbar } from "../../components/admin/layouts/Navbar";
 import { EditBankForm } from "../../components/admin/forms/EditBankForm";
 
 export const EditBank = () => {

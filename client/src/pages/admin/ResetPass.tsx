@@ -1,4 +1,4 @@
-import { Navbar } from "../../components/admin/Navbar";
+import { Navbar } from "../../components/admin/layouts/Navbar";
 import { ResetPassForm } from "../../components/admin/forms/ResetPassForm";
 
 export const ResetPass = () => {

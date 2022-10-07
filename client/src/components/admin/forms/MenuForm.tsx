@@ -1,7 +1,7 @@
 import axios from "axios";
-import { Item } from "../Item";
 import "../../../styles/item.sass";
 import "../../../styles/forms/menuForm.sass";
+import { ItemBox } from "../layouts/ItemBox";
 import { ItemType } from "../../../types/Item";
 import { Key, useEffect, useState } from "react";
 import { getUser } from "../../../redux/user.slice";
@@ -270,7 +270,7 @@ export const MenuForm = () => {
               items.map(
                 (i) =>
                   select?.value === i.category && (
-                    <Item
+                    <ItemBox
                       item={i}
                       key={i._id}
                       onDelete={(id) => handleDeleteItem(id)}

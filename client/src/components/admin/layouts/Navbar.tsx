@@ -1,7 +1,7 @@
-import "../../styles/menu/header.sass";
 import { Link } from "react-router-dom";
-import { getUser, logout } from "../../redux/user.slice";
-import { useAppDispatch, useAppSelector } from "../../redux/store.hooks";
+import "../../../styles/menu/header.sass";
+import { getUser, logout } from "../../../redux/user.slice";
+import { useAppDispatch, useAppSelector } from "../../../redux/store.hooks";
 
 export const Navbar = () => {
   const dispatch = useAppDispatch();

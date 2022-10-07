@@ -1,4 +1,4 @@
-import { Navbar } from "../../components/admin/Navbar";
+import { Navbar } from "../../components/admin/layouts/Navbar";
 import { TablesQR } from "../../components/admin/dashboard/TablesQR";
 
 export const QR = () => {
