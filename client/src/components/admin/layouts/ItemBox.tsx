@@ -17,7 +17,10 @@ export const ItemBox = ({
 }) => {
   return (
     <div className="box">
-      <i className="fa fa-trash" onClick={() => onDelete(item._id)}></i>
+      <i
+        className="fa fa-trash delete-item"
+        onClick={() => onDelete(item._id)}
+      ></i>
       <h4>{item.name}</h4>
       {/* <div className="image">
         <img src={URL.createObjectURL(product.img)} alt="" />

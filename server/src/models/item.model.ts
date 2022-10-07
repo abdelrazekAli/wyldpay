@@ -6,6 +6,7 @@ export type ItemProps = {
   img: string;
   category: string;
   desc: string;
+  ingredients: string;
   restId: ObjectId;
 };
 
@@ -16,6 +17,7 @@ const itemSchema = new mongoose.Schema(
     img: { type: String, required: true },
     category: { type: String, required: true },
     desc: { type: String, required: true },
+    ingredients: { type: String, required: true },
     restId: {
       type: mongoose.Types.ObjectId,
       ref: "restaurant",

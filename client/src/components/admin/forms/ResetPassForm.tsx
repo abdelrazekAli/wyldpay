@@ -1,9 +1,9 @@
 import axios from "axios";
 import * as yup from "yup";
 import { useState } from "react";
-import { Modal } from "../../user/layouts/Modal";
 import { useForm } from "react-hook-form";
 import "../../../styles/forms/loginFrom.sass";
+import { Modal } from "../../user/layouts/Modal";
 import { Link, useParams } from "react-router-dom";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { resetPassSchema } from "../../../validations/resetPassSchema";

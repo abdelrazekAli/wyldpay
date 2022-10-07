@@ -1,4 +1,3 @@
-import { StepperCircle } from "../layouts/StepperCircle";
 import { PayForm } from "./PayForm";
 import "../../../styles/stepper.sass";
 import { ItemsForm } from "./ItemsForm";
@@ -6,6 +5,7 @@ import { useState, useEffect } from "react";
 import { RestForm } from "./RestaurantForm";
 import { RegisterForm } from "./RegisterForm";
 import { CategoryForm } from "./CategoryForm";
+import { StepperCircle } from "../layouts/StepperCircle";
 
 export const Stepper = () => {
   const [circle] = useState<number>(5);

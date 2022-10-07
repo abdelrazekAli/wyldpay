@@ -71,7 +71,6 @@ userRouter.put("/:userId", async (req: Request, res: Response) => {
 userRouter.put("/links/:userId", async (req: Request, res: Response) => {
   let user;
   const { userId } = req.params;
-  console.log(req.body);
 
   try {
     // Validate req body
