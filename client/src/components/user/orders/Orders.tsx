@@ -1,11 +1,13 @@
+import { OrderItem } from "./OrderItem";
 import "../../../styles/menu/checkout.sass";
 import { Link, useNavigate } from "react-router-dom";
 import { useAppSelector } from "../../../redux/store.hooks";
 import { getCartProducts } from "../../../redux/cart.slice";
-import { OrderItem } from "./OrderItem";
+import { useEffect, useState } from "react";
 
 export const Orders = () => {
   const navigate = useNavigate();
+  const [notesValue, setNotesValue] = useState("");
   const cartProducts = useAppSelector(getCartProducts);
 
   return (
@@ -19,6 +21,19 @@ export const Orders = () => {
           {cartProducts.map((product, i) => (
             <OrderItem product={product} key={i} />
           ))}
+          <div className="notes">
+            <div className="icon-text">
+              <i className="far fa-comment"></i>
+              Order notes
+            </div>
+            <textarea
+              value={notesValue}
+              onChange={(e) => setNotesValue(e.target.value)}
+              id=""
+              rows={2}
+              placeholder="Leave a notes about your order..."
+            ></textarea>
+          </div>
           <Link to={"../menu/restId/tableNum/order"}>
             <div className="order-btn-wrapper">
               <div className="order-btn">Checkout</div>
