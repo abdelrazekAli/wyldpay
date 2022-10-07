@@ -11,6 +11,7 @@ export type UserProps = {
   zip: string;
   businessName: string;
   businessAddress: string;
+  socialLinks?: { name: string; value: string }[];
 };
 
 const userSchema = new mongoose.Schema(
@@ -25,6 +26,10 @@ const userSchema = new mongoose.Schema(
     zip: { type: String, required: true },
     businessName: { type: String, required: true },
     businessAddress: { type: String, required: true },
+    socialLinks: {
+      type: [{ name: String, value: String }],
+      default: [],
+    },
   },
   {
     timestamps: true,

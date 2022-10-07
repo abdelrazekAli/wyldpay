@@ -4,7 +4,6 @@ import UserModel from "../models/user.model";
 import ItemModel from "../models/item.model";
 import RestaurantModel from "../models/restaurant.model";
 
-// User validation
 export const validateUser = (data: object) => {
   const schema = joi.object({
     email: joi.string().required().email().max(255),
@@ -21,9 +20,22 @@ export const validateUser = (data: object) => {
   return schema.validate(data).error;
 };
 
+export const validateUpdateUserLinks = (data: object) => {
+  let link = joi.object().keys({
+    name: joi
+      .string()
+      .required()
+      .valid("google", "instagram", "telegram", "youtube", "twitter"),
+    value: joi.string().required().max(1000),
+  });
+  const schema = joi.object({
+    socialLinks: joi.array().required().items(link),
+  });
+  return schema.validate(data).error;
+};
+
 export const validateRestaurant = (data: object) => {
   const schema = joi.object({
-    name: joi.string().required().max(255),
     logo: joi.string().required().max(1000),
     background: joi.string().required().max(1000),
     vatNum: joi.string().required().max(255),
@@ -68,10 +80,9 @@ export const validateCategories = (data: object) => {
 export const validateRestaurantUpdate = (data: object) => {
   const schema = joi.object({
     _id: joi.string().required().max(255),
-    name: joi.string().required().max(255),
-    logo: joi.string().required().max(1000),
-    background: joi.string().required().max(1000),
-    vatNum: joi.string().required().max(255),
+    logo: joi.string().max(1000),
+    background: joi.string().max(1000),
+    vatNum: joi.string().max(255),
   });
   return schema.validate(data).error;
 };

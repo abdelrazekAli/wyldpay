@@ -92,7 +92,7 @@ restaurantRouter.put("/", async (req: Request, res: Response) => {
     if (validationResult)
       return res.status(400).send(validationResult.details[0].message);
 
-    // Update logo
+    // Update resaturant
     await RestaurantModel.updateOne(
       { _id: req.body._id },
       {

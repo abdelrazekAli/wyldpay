@@ -1,4 +1,4 @@
-import { Circle } from "../Circle";
+import { StepperCircle } from "../StepperCircle";
 import { PayForm } from "./PayForm";
 import "../../../styles/stepper.sass";
 import { ItemsForm } from "./ItemsForm";
@@ -23,7 +23,7 @@ export const Stepper = () => {
   // Set progress nodes
   const nodes: React.ReactElement[] = [];
   for (let i = 0; i < circle; i++) {
-    nodes.push(<Circle active={i <= active ? true : false} key={i} />);
+    nodes.push(<StepperCircle active={i <= active ? true : false} key={i} />);
   }
 
   return (

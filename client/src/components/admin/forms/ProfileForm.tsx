@@ -6,6 +6,7 @@ import "react-phone-input-2/lib/style.css";
 import { useEffect, useState } from "react";
 import PhoneInput from "react-phone-input-2";
 import "../../../styles/forms/profileForm.sass";
+import { SocialLinksForm } from "./SocialLinksForm";
 import { UserProps } from "../../../types/UserProps";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { PaymentMethodsForm } from "./PaymentMethodsForm";
@@ -18,15 +19,15 @@ export const ProfileForm = () => {
   const dispatch = useAppDispatch();
   const { _id } = useAppSelector(getUser);
 
-  const [phone, setPhone] = useState<string>("");
   const [vatNum, setVatNum] = useState<string>("");
+  const [phoneNum, setPhoneNum] = useState<string>("");
+  const [userData, setUserData] = useState<UserProps | null>(null);
+  const [restaurant, setRestaurant] = useState<RestaurantProps | null>(null);
+
   const [logo, setLogo] = useState<null | File>(null);
   const [logoBlob, setLogoBlob] = useState<string | Blob>("");
   const [background, setBackground] = useState<null | File>(null);
   const [backgroundBlob, setBackgroundBlob] = useState<string | Blob>("");
-
-  const [userData, setUserData] = useState<UserProps | null>(null);
-  const [restaurant, setRestaurant] = useState<RestaurantProps | null>(null);
 
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setisLoading] = useState<boolean>(false);
@@ -44,7 +45,7 @@ export const ProfileForm = () => {
       setRestaurant(res.data);
       setVatNum(res.data.vatNum);
       setUserData(res.data.userId);
-      setPhone(res.data.userId.phone);
+      setPhoneNum(res.data.userId.phone);
     };
     fetchData();
   }, [_id]);
@@ -73,7 +74,7 @@ export const ProfileForm = () => {
     setError(null);
     setSuccess(null);
     if (!vatNum) return setVatError("VAT number required");
-    if (!phone) return setPhoneError("Phone number required");
+    if (!phoneNum) return setPhoneError("Phone number required");
 
     setisLoading(true);
     delete data.confirmPassword;
@@ -83,7 +84,7 @@ export const ProfileForm = () => {
       // Update user data
       await axios.put(`/api/v1/users/${_id}`, {
         ...data,
-        phone: +phone,
+        phone: +phoneNum,
       });
 
       // Update restaurant data
@@ -147,6 +148,10 @@ export const ProfileForm = () => {
       <div className="profile-form">
         {isPaymentFormVisible && (
           <PaymentMethodsForm hideForm={() => setPaymentFormVisible(false)} />
+        )}
+
+        {isLinksFormVisible && (
+          <SocialLinksForm hideForm={() => setLinksFormVisible(false)} />
         )}
         <div className="column">
           <h3>Profile</h3>
@@ -227,20 +232,12 @@ export const ProfileForm = () => {
                 preferredCountries={["de"]}
                 value={String(userData?.phone)}
                 onChange={(value) => {
-                  setPhone(value);
+                  setPhoneNum(value);
                   setPhoneError(null);
                 }}
               />
               {phoneError && <span className="error">{phoneError}</span>}
             </div>
-            <label>Password</label>
-            <Link
-              to={"/admin/send-reset-pass"}
-              state={userData?.email}
-              className="color-green font-bold fs-2 cursor-pointer"
-            >
-              <div className="fixed-box">Send reset link</div>
-            </Link>
           </form>
         </div>
         <div className="column">
@@ -302,7 +299,6 @@ export const ProfileForm = () => {
               )}
             </label>
           </div>
-
           <div className="input-group">
             <label htmlFor="vat">VAT number</label>
 
@@ -317,7 +313,6 @@ export const ProfileForm = () => {
             />
             {vatError && <span className="error">{vatError}</span>}
           </div>
-
           <label>Bank</label>
           <Link
             to={"/admin/bank"}
@@ -334,6 +329,23 @@ export const ProfileForm = () => {
               Update payment methods
             </span>
           </div>
+          <label>Social links</label>
+          <div
+            className="fixed-box cursor-pointer"
+            onClick={() => setLinksFormVisible(!isLinksFormVisible)}
+          >
+            <span className="color-green font-bold fs-2  ">
+              Update social links
+            </span>
+          </div>
+          <label>Password</label>
+          <Link
+            to={"/admin/send-reset-pass"}
+            state={userData?.email}
+            className="color-green font-bold fs-2 cursor-pointer"
+          >
+            <div className="fixed-box">Send reset link</div>
+          </Link>
         </div>
       </div>
     </>

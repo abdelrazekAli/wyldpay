@@ -1,7 +1,6 @@
 import mongoose, { ObjectId } from "mongoose";
 
 export type RestaurantProps = {
-  name: string;
   logo: string;
   background: string;
   currency: string;
@@ -12,7 +11,6 @@ export type RestaurantProps = {
 
 const restaurantSchema = new mongoose.Schema(
   {
-    name: { type: String, required: true },
     logo: { type: String, required: true },
     background: { type: String, required: true },
     currency: { type: String, required: true },

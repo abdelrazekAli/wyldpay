@@ -1,7 +1,11 @@
 import { Router } from "express";
 import { Request, Response } from "express";
 import UserModel from "../models/user.model";
-import { checkUserId, validateUser } from "../utils/validation";
+import {
+  checkUserId,
+  validateUpdateUserLinks,
+  validateUser,
+} from "../utils/validation";
 
 export const userRouter = Router();
 
@@ -57,6 +61,39 @@ userRouter.put("/:userId", async (req: Request, res: Response) => {
 
     // Response
     res.status(200).json(updatedUser);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json(err);
+  }
+});
+
+// Update user social links by id
+userRouter.put("/links/:userId", async (req: Request, res: Response) => {
+  let user;
+  const { userId } = req.params;
+  console.log(req.body);
+
+  try {
+    // Validate req body
+    let validationResult = validateUpdateUserLinks(req.body);
+    if (validationResult)
+      return res.status(400).send(validationResult.details[0].message);
+
+    // Check user id
+    const checkResult = await checkUserId(userId);
+    typeof checkResult === "string"
+      ? res.status(400).send(checkResult)
+      : (user = checkResult);
+
+    // Update user
+    const updatedLinks = await UserModel.findByIdAndUpdate(
+      userId,
+      { socialLinks: req.body.socialLinks },
+      { new: true }
+    ).select("socialLinks");
+
+    // Response
+    res.status(200).json(updatedLinks);
   } catch (err) {
     console.log(err);
     res.status(500).json(err);
