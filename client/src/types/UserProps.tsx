@@ -10,6 +10,7 @@ export type UserProps = {
   zip: string;
   password?: string;
   confirmPassword?: string;
+  socialLinks?: { name: string; value: string }[];
 };
 
 export type RegisteredUserProps = {

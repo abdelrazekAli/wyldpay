@@ -78,7 +78,7 @@ export const ProfileForm = () => {
 
     setisLoading(true);
     delete data.confirmPassword;
-    dispatch(updateUsername(data.firstName));
+    delete data.socialLinks;
 
     try {
       // Update user data
@@ -118,8 +118,9 @@ export const ProfileForm = () => {
         background: backgroundUploadRes?.data.url,
       });
 
-      setSuccess("Profile updated successfully!");
       setisLoading(false);
+      dispatch(updateUsername(data.firstName));
+      setSuccess("Profile updated successfully!");
     } catch (err: any) {
       setisLoading(false);
       setSuccess(null);
