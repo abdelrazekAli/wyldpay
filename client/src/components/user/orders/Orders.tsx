@@ -1,9 +1,9 @@
+import { useState } from "react";
 import { OrderItem } from "./OrderItem";
 import "../../../styles/menu/checkout.sass";
 import { Link, useNavigate } from "react-router-dom";
 import { useAppSelector } from "../../../redux/store.hooks";
 import { getCartProducts } from "../../../redux/cart.slice";
-import { useEffect, useState } from "react";
 
 export const Orders = () => {
   const navigate = useNavigate();

@@ -4,6 +4,7 @@ import { MainHeader } from "./MainHeader";
 import { mainProducts } from "../../../dummyData";
 import { MainCategories } from "./MainCategories";
 import { Footer } from "./Footer";
+import { ViewOrderBtn } from "./ViewOrderBtn";
 
 export const Menu = () => {
   // Will be fetched from API by restaurantId
@@ -21,6 +22,7 @@ export const Menu = () => {
       <MainHeader />
       <MainCategories categories={categories} />
       <MainItems items={mainProducts} categories={categories} />
+      <ViewOrderBtn />
       <Footer />
     </>
   );
