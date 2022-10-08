@@ -1,4 +1,5 @@
 import axios from "axios";
+import "../../../styles/payments.sass";
 import { Modal } from "../layouts/Modal";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -55,17 +56,18 @@ export const StripePayment = ({
       })
       .then((result) => {
         if (result?.paymentIntent) {
-          navigate("success", { state: tip });
           setPaymentLoading(false);
+          navigate("success", { state: tip });
         } else {
           setPaymentFailed(true);
           setPaymentLoading(false);
+          setError("Something went wrong!");
         }
       })
       .catch((err) => {
-        console.log(err);
-        setPaymentLoading(false);
         setPaymentFailed(true);
+        setPaymentLoading(false);
+        setError("Something went wrong!");
       });
   };
 

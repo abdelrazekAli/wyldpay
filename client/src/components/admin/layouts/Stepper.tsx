@@ -1,11 +1,11 @@
-import { PayForm } from "./PayForm";
 import "../../../styles/stepper.sass";
-import { ItemsForm } from "./ItemsForm";
+import { PayForm } from "../forms/PayForm";
 import { useState, useEffect } from "react";
-import { RestForm } from "./RestaurantForm";
-import { RegisterForm } from "./RegisterForm";
-import { CategoryForm } from "./CategoryForm";
-import { StepperCircle } from "../layouts/StepperCircle";
+import { ItemsForm } from "../forms/ItemsForm";
+import { StepperCircle } from "./StepperCircle";
+import { RestForm } from "../forms/RestaurantForm";
+import { RegisterForm } from "../forms/RegisterForm";
+import { CategoryForm } from "../forms/CategoryForm";
 
 export const Stepper = () => {
   const [circle] = useState<number>(5);

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { loadStripe } from "@stripe/stripe-js";
+import { PaypalPayment } from "./PaypalPayment";
 import { StripePayment } from "./StripePayment";
 import { Elements } from "@stripe/react-stripe-js";
 
@@ -87,7 +88,10 @@ export const PaymentWrapper = ({
           <StripePayment totalPrice={totalPrice} tip={tip} />
         </Elements>
       )}
-      {paymentSelected !== 1 && (
+      {paymentSelected === 2 && (
+        <PaypalPayment totalPrice={totalPrice} tip={tip} />
+      )}
+      {(paymentSelected === 0 || paymentSelected === 3) && (
         <button className="bg-none">
           <div className="order-btn">Order now</div>
         </button>

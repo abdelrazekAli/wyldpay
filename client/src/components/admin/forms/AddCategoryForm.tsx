@@ -1,6 +1,5 @@
 import axios from "axios";
 import { useState } from "react";
-import { ItemType } from "../../../types/Item";
 import { CategoryType } from "../../../types/Category";
 
 export const AddCategoryForm = ({
