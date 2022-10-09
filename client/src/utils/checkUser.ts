@@ -1,5 +1,3 @@
-//this function will be called beforee render app to check that user account is still activated or not
-
 import axios from "axios";
 
 export const checkUser = async (userId: string) => {

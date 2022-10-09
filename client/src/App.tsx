@@ -28,6 +28,7 @@ function AppWraper() {
   const App = () => {
     const user = useAppSelector(getUser);
     useEffect(() => {
+      //check that user account is still activated or not
       user && checkUser(user._id);
     }, [user]);
 

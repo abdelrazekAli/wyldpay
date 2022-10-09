@@ -6,9 +6,7 @@ type CartProductType = ProductType & { quantity: number };
 
 const cartSlice = createSlice({
   name: "cart",
-  initialState: JSON.parse(
-    localStorage.getItem("cart") || "[]"
-  ) as CartProductType[],
+  initialState: [] as CartProductType[],
   reducers: {
     addToCart: (state, action: PayloadAction<ProductType>) => {
       const productIndex = state?.findIndex(
@@ -20,8 +18,6 @@ const cartSlice = createSlice({
       } else {
         state?.push({ ...action.payload, quantity: 1 });
       }
-
-      localStorage.setItem("cart", JSON.stringify(state));
     },
 
     decreseFromCart: (state, action: PayloadAction<number>) => {
@@ -36,16 +32,12 @@ const cartSlice = createSlice({
       } else {
         state[productIndex].quantity -= 1;
       }
-
-      localStorage.setItem("cart", JSON.stringify(state));
     },
 
     removeFromCart: (state, action: PayloadAction<number>) => {
       const filterState = state.filter(
         (product) => product._id !== action.payload
       );
-
-      localStorage.setItem("cart", JSON.stringify(filterState));
 
       return filterState;
     },

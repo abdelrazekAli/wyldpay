@@ -13,6 +13,9 @@ export const Success = () => {
   useEffect(() => {
     // Set scroll to top
     window.scrollTo(0, 0);
+
+    // Clear localstorage cart
+    localStorage.removeItem("cart");
   }, []);
 
   return (
