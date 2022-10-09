@@ -13,7 +13,11 @@ paymentRouter.post(
     if (validationResult)
       return res.status(400).send(validationResult.details[0].message);
 
-    const { currency, secretKey, amount } = req.body;
+    const { currency, secretKey, amount } = req.body as {
+      currency: string;
+      secretKey: string;
+      amount: number;
+    };
 
     const stripe = require("stripe")(secretKey);
     try {

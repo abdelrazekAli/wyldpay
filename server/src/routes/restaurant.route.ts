@@ -7,7 +7,7 @@ import {
   validateRestaurant,
   validateRestaurantUpdate,
 } from "../utils/validation";
-import RestaurantModel from "../models/restaurant.model";
+import RestaurantModel, { RestaurantProps } from "../models/restaurant.model";
 
 export const restaurantRouter = Router();
 
@@ -21,7 +21,7 @@ restaurantRouter.get("/:userId", async (req: Request, res: Response) => {
     if (typeof checkResult === "string")
       return res.status(400).send(checkResult);
 
-    const restaurant = await RestaurantModel.findOne(
+    const restaurant = (await RestaurantModel.findOne(
       {
         userId: userId,
       },
@@ -29,7 +29,7 @@ restaurantRouter.get("/:userId", async (req: Request, res: Response) => {
     ).populate({
       path: "userId",
       select: "-_id -password -updatedAt -createdAt -__v",
-    });
+    })) as RestaurantProps;
 
     // Response
     res.status(200).json(restaurant);
@@ -49,9 +49,8 @@ restaurantRouter.post("/", async (req: Request, res: Response) => {
 
     // Create new resaturant
     const newRestaurant = new RestaurantModel(req.body);
-
     // Save resaturant
-    const resaturant = await newRestaurant.save();
+    const resaturant = (await newRestaurant.save()) as RestaurantProps;
 
     // Response
     res.status(200).json(resaturant);

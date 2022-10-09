@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { Request, Response } from "express";
-import BankModel from "../models/bank.model";
+import BankModel, { BankProps } from "../models/bank.model";
 import {
   checkUserId,
   validateBank,
@@ -20,9 +20,9 @@ bankRouter.get("/:userId", async (req: Request, res: Response) => {
       return res.status(400).send(checkResult);
 
     // get bank
-    const bank = await BankModel.findOne({
+    const bank = (await BankModel.findOne({
       userId,
-    }).select("-_id -userId");
+    }).select("-_id -userId")) as BankProps;
 
     // Response
     res.status(200).json(bank);
@@ -44,7 +44,7 @@ bankRouter.post("/", async (req: Request, res: Response) => {
     const newBank = new BankModel(req.body);
 
     // Save bank
-    const bank = await newBank.save();
+    const bank = (await newBank.save()) as BankProps;
 
     // Response
     res.status(200).json(bank);

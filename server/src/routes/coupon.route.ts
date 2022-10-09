@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { Request, Response } from "express";
-import CouponModel from "../models/coupon.model";
+import CouponModel, { CouponProps } from "../models/coupon.model";
 import {
   checkRestId,
   validateApplyCoupon,
@@ -18,12 +18,12 @@ couponRouter.get("/:restId", async (req: Request, res: Response) => {
     const checkResult = await checkRestId(restId);
     if (checkResult === "string") return res.status(400).send(checkResult);
 
-    const coupons = await CouponModel.find(
+    const coupons = (await CouponModel.find(
       {
         restId,
       },
       { __v: 0 }
-    );
+    )) as CouponProps[];
 
     // Response
     res.status(200).json(coupons);
@@ -52,7 +52,7 @@ couponRouter.post("/", async (req: Request, res: Response) => {
     const newCoupon = new CouponModel(req.body);
 
     // Save coupon
-    const coupon = await newCoupon.save();
+    const coupon = (await newCoupon.save()) as CouponProps;
 
     // Response
     res.status(200).json(coupon);
@@ -84,11 +84,11 @@ couponRouter.post("/:couponName", async (req: Request, res: Response) => {
       return res.status(409).send("Coupon limit is out");
 
     // Update coupon usage
-    const updatedCoupon = await CouponModel.findByIdAndUpdate(
+    const updatedCoupon = (await CouponModel.findByIdAndUpdate(
       coupon._id,
       { usage: coupon.usage + 1 },
       { new: true }
-    );
+    )) as CouponProps;
 
     // Response
     res.status(200).json(updatedCoupon);

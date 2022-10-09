@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { Request, Response } from "express";
-import ItemModel from "../models/item.model";
+import ItemModel, { ItemProps } from "../models/item.model";
 import { checkItemId, checkRestId, validateItem } from "../utils/validation";
 
 export const itemRouter = Router();
@@ -17,7 +17,7 @@ itemRouter.post("/", async (req: Request, res: Response) => {
     const newItem = new ItemModel(req.body);
 
     // Save item
-    const item = await newItem.save();
+    const item = (await newItem.save()) as ItemProps;
 
     // Response
     res.status(200).json(item);
@@ -46,11 +46,11 @@ itemRouter.put("/id/:itemId", async (req: Request, res: Response) => {
       : (item = checkResult);
 
     // Update item
-    const updatedItem = await ItemModel.findByIdAndUpdate(
+    const updatedItem = (await ItemModel.findByIdAndUpdate(
       itemId,
       { $set: req.body },
       { new: true }
-    );
+    )) as ItemProps;
 
     // Response
     res.status(200).json(updatedItem);
@@ -95,7 +95,7 @@ itemRouter.get("/restaurant/:restId", async (req: Request, res: Response) => {
       return res.status(400).send(checkResult);
 
     // Find items by restaurant id
-    const items = await ItemModel.find({ restId: restId });
+    const items = (await ItemModel.find({ restId: restId })) as ItemProps[];
 
     // Response
     res.status(200).json(items);

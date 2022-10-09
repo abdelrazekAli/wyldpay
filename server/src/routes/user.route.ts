@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { Request, Response } from "express";
-import UserModel from "../models/user.model";
+import UserModel, { UserProps } from "../models/user.model";
 import {
   checkUserId,
   validateUpdateUserLinks,
@@ -53,11 +53,11 @@ userRouter.put("/:userId", async (req: Request, res: Response) => {
     }
 
     // Update user
-    const updatedUser = await UserModel.findByIdAndUpdate(
+    const updatedUser = (await UserModel.findByIdAndUpdate(
       userId,
       { $set: req.body },
       { new: true }
-    ).select("-password -createdAt -updatedAt");
+    ).select("-password -createdAt -updatedAt")) as UserProps;
 
     // Response
     res.status(200).json(updatedUser);
