@@ -5,7 +5,7 @@ import { PaypalPayment } from "./PaypalPayment";
 import { StripePayment } from "./StripePayment";
 import { Elements } from "@stripe/react-stripe-js";
 
-const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_KEY!);
+const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_CLIENT_KEY!);
 
 export const PaymentWrapper = ({
   totalPrice,

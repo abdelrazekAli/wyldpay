@@ -20,12 +20,12 @@ app.use(cors());
 
 // APIs
 app.use("/api/v1", authRouter);
-app.use("/api/v1", paymentRouter);
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/items", itemRouter);
 app.use("/api/v1/banks", bankRouter);
 app.use("/api/v1/orders", orderRouter);
 app.use("/api/v1/coupons", couponRouter);
+app.use("/api/v1/payments", paymentRouter);
 app.use("/api/v1/restaurants", restaurantRouter);
 
 // For production

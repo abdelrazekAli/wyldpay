@@ -44,11 +44,13 @@ export const StripePayment = ({
     setPaymentFailed(false);
     setPaymentLoading(true);
     axios
-      .post("/api/v1/payment/stripe/create", {
+      .post("/api/v1/payments/stripe/create-payment-intent", {
         amount: totalPrice,
+        currency: "eur",
+        secretKey: process.env.REACT_APP_STRIPE_SECRET_KEY,
       })
-      .then((data) => {
-        return stripe?.confirmCardPayment(data.data.clientSecret, {
+      .then((res) => {
+        return stripe?.confirmCardPayment(res.data.clientSecret, {
           payment_method: {
             card: elements?.getElement(CardElement)!,
           },

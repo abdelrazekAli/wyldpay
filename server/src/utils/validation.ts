@@ -150,6 +150,18 @@ export const validateCoupon = (data: object) => {
   return schema.validate(data).error;
 };
 
+export const validateStripePaymentIntent = (data: object) => {
+  const schema = joi.object({
+    amount: joi.number().required().max(100000),
+    currency: joi
+      .string()
+      .valid("eur", "usd", "uah", "aed", "gbp", "egp")
+      .required(),
+    secretKey: joi.string().required().max(1000),
+  });
+  return schema.validate(data).error;
+};
+
 export const checkUserId = async (id: string) => {
   if (!id) return "User id is required";
   else {

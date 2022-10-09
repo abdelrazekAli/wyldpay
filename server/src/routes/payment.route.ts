@@ -1,22 +1,33 @@
 import { Router } from "express";
 import { Request, Response } from "express";
+import { validateStripePaymentIntent } from "../utils/validation";
 
 export const paymentRouter = Router();
 
-// API for PAYMENT
+// API for create stripe payment intent
 paymentRouter.post(
-  "/payment/stripe/create",
+  "/stripe/create-payment-intent",
   async (req: Request, res: Response) => {
-    const total = req.body.amount;
-    const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
+    // Validate req body
+    let validationResult = validateStripePaymentIntent(req.body);
+    if (validationResult)
+      return res.status(400).send(validationResult.details[0].message);
 
-    const payment = await stripe.paymentIntents.create({
-      amount: total * 100,
-      currency: "usd",
-    });
+    const { currency, secretKey, amount } = req.body;
 
-    res.status(201).send({
-      clientSecret: payment.client_secret,
-    });
+    const stripe = require("stripe")(secretKey);
+    try {
+      const { client_secret } = await stripe.paymentIntents.create({
+        amount: amount * 100,
+        currency,
+      });
+
+      res.status(200).send({
+        clientSecret: client_secret,
+      });
+    } catch (err) {
+      console.log(err);
+      res.status(500).json(err);
+    }
   }
 );
