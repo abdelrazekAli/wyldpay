@@ -17,7 +17,10 @@ const bankSchema = new mongoose.Schema(
     customerFees: { type: Boolean, required: true, default: false },
     paymentsMethods: {
       type: [{ name: String, publicKey: String, secretKey: String }],
-      default: [],
+      default: [
+        { name: "stripe", publicKey: "", secretKey: "" },
+        { name: "paypal", publicKey: "", secretKey: "" },
+      ],
     },
     userId: {
       type: mongoose.Types.ObjectId,

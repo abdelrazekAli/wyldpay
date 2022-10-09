@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { ApplePayment } from "./ApplePayment";
 import { loadStripe } from "@stripe/stripe-js";
 import { PaypalPayment } from "./PaypalPayment";
 import { StripePayment } from "./StripePayment";
@@ -20,7 +21,7 @@ export const PaymentWrapper = ({
     <div className="order-btn-wrapper">
       <div className="row">
         <div className="payment">
-          {paymentSelected === 0 && (
+          {paymentSelected === 3 && (
             <div className="payment-icon">
               <img
                 src="../../../assets/images/apple-pay.svg"
@@ -29,7 +30,7 @@ export const PaymentWrapper = ({
               />
             </div>
           )}
-          {paymentSelected === 1 && (
+          {paymentSelected === 0 && (
             <div className="payment-icon">
               <img
                 src="../../../assets/images/visa-dark.svg"
@@ -38,7 +39,7 @@ export const PaymentWrapper = ({
               />
             </div>
           )}
-          {paymentSelected === 2 && (
+          {paymentSelected === 1 && (
             <div className="payment-icon">
               <img
                 src="../../../assets/images/paypal-dark.svg"
@@ -47,7 +48,7 @@ export const PaymentWrapper = ({
               />
             </div>
           )}
-          {paymentSelected === 3 && (
+          {paymentSelected === 2 && (
             <div className="payment-icon">
               <img src="../../../assets/images/crypto-sm.png" alt="" />
             </div>
@@ -59,10 +60,10 @@ export const PaymentWrapper = ({
                 className="dropbtn"
                 onClick={() => setDropDownVisible(!isDropDownVisible)}
               >
-                {paymentSelected === 0 && "Apple pay"}
-                {paymentSelected === 1 && "Visa"}
-                {paymentSelected === 2 && "PayPal"}
-                {paymentSelected === 3 && "Crypto"}
+                {paymentSelected === 0 && "Visa"}
+                {paymentSelected === 1 && "PayPal"}
+                {paymentSelected === 2 && "Crypto"}
+                {paymentSelected === 3 && "Apple pay"}
                 <i className="fa fa-caret-down"></i>
               </button>
               {isDropDownVisible && (
@@ -70,10 +71,10 @@ export const PaymentWrapper = ({
                   className="dropdown-content"
                   onClick={() => setDropDownVisible(!isDropDownVisible)}
                 >
-                  <span onClick={() => setPaymentSelected(0)}>Apple pay</span>
-                  <span onClick={() => setPaymentSelected(1)}>Visa</span>
-                  <span onClick={() => setPaymentSelected(2)}>PayPal</span>
-                  <span onClick={() => setPaymentSelected(3)}>Crypto</span>
+                  <span onClick={() => setPaymentSelected(0)}>Visa</span>
+                  <span onClick={() => setPaymentSelected(1)}>PayPal</span>
+                  <span onClick={() => setPaymentSelected(2)}>Crypto</span>
+                  <span onClick={() => setPaymentSelected(3)}>Apple pay</span>
                 </div>
               )}
             </div>
@@ -83,15 +84,20 @@ export const PaymentWrapper = ({
           Total price: <span>€{totalPrice}</span>
         </div>
       </div>
-      {paymentSelected === 1 && (
+      {/* {paymentSelected === 0 && (
+        <Elements stripe={stripePromise}>
+          <ApplePayment totalPrice={totalPrice} tip={tip} />
+        </Elements>
+      )} */}
+      {paymentSelected === 0 && (
         <Elements stripe={stripePromise}>
           <StripePayment totalPrice={totalPrice} tip={tip} />
         </Elements>
       )}
-      {paymentSelected === 2 && (
+      {paymentSelected === 1 && (
         <PaypalPayment totalPrice={totalPrice} tip={tip} />
       )}
-      {(paymentSelected === 0 || paymentSelected === 3) && (
+      {(paymentSelected === 2 || paymentSelected === 3) && (
         <button className="bg-none">
           <div className="order-btn">Order now</div>
         </button>

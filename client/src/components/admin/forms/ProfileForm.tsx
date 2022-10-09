@@ -6,10 +6,11 @@ import "react-phone-input-2/lib/style.css";
 import { useEffect, useState } from "react";
 import PhoneInput from "react-phone-input-2";
 import "../../../styles/forms/profileForm.sass";
+import { PaypalKeysForm } from "./PaypalKeysForm";
+import { StripeKeysForm } from "./StripeKeysForm";
 import { SocialLinksForm } from "./SocialLinksForm";
 import { UserProps } from "../../../types/UserProps";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { PaymentMethodsForm } from "./PaymentMethodsForm";
 import { RestaurantProps } from "../../../types/Restaurant";
 import { updateUserSchema } from "../../../validations/userSchema";
 import { getUser, updateUsername } from "../../../redux/user.slice";
@@ -34,9 +35,10 @@ export const ProfileForm = () => {
   const [success, setSuccess] = useState<string | null>(null);
   const [vatError, setVatError] = useState<string | null>(null);
   const [phoneError, setPhoneError] = useState<string | null>(null);
-  const [isPaymentFormVisible, setPaymentFormVisible] =
-    useState<boolean>(false);
+
   const [isLinksFormVisible, setLinksFormVisible] = useState<boolean>(false);
+  const [isPaypalFormVisible, setPaypalFormVisible] = useState<boolean>(false);
+  const [isStripeFormVisible, setStripeFormVisible] = useState<boolean>(false);
 
   // Fetch data from
   useEffect(() => {
@@ -147,8 +149,11 @@ export const ProfileForm = () => {
       )}
 
       <div className="profile-form">
-        {isPaymentFormVisible && (
-          <PaymentMethodsForm hideForm={() => setPaymentFormVisible(false)} />
+        {isStripeFormVisible && (
+          <StripeKeysForm hideForm={() => setStripeFormVisible(false)} />
+        )}
+        {isPaypalFormVisible && (
+          <PaypalKeysForm hideForm={() => setPaypalFormVisible(false)} />
         )}
 
         {isLinksFormVisible && (
@@ -211,12 +216,6 @@ export const ProfileForm = () => {
               <span className="error">{errors?.zip?.message}</span>
             </div>
             <div className="input-group">
-              <label htmlFor="email">Email</label>
-
-              <input id="email" type="email" {...register("email")} />
-              <span className="error">{errors?.email?.message}</span>
-            </div>
-            <div className="input-group">
               <label htmlFor="phone">Phone number</label>
               <PhoneInput
                 inputProps={{
@@ -239,6 +238,20 @@ export const ProfileForm = () => {
               />
               {phoneError && <span className="error">{phoneError}</span>}
             </div>
+            <div className="input-group">
+              <label htmlFor="email">Email</label>
+
+              <input id="email" type="email" {...register("email")} />
+              <span className="error">{errors?.email?.message}</span>
+            </div>
+            <label>Password</label>
+            <Link
+              to={"/admin/send-reset-pass"}
+              state={userData?.email}
+              className="color-green font-bold fs-2 cursor-pointer"
+            >
+              <div className="fixed-box">Send reset link</div>
+            </Link>
           </form>
         </div>
         <div className="column">
@@ -314,22 +327,6 @@ export const ProfileForm = () => {
             />
             {vatError && <span className="error">{vatError}</span>}
           </div>
-          <label>Bank</label>
-          <Link
-            to={"/admin/bank"}
-            className="color-green font-bold fs-2 cursor-pointer"
-          >
-            <div className="fixed-box">Update bank info</div>
-          </Link>
-          <label>Payment methods</label>
-          <div
-            className="fixed-box cursor-pointer"
-            onClick={() => setPaymentFormVisible(!isPaymentFormVisible)}
-          >
-            <span className="color-green font-bold fs-2  ">
-              Update payment methods
-            </span>
-          </div>
           <label>Social links</label>
           <div
             className="fixed-box cursor-pointer"
@@ -339,14 +336,37 @@ export const ProfileForm = () => {
               Update social links
             </span>
           </div>
-          <label>Password</label>
+          <label>Bank</label>
           <Link
-            to={"/admin/send-reset-pass"}
-            state={userData?.email}
+            to={"/admin/bank"}
             className="color-green font-bold fs-2 cursor-pointer"
           >
-            <div className="fixed-box">Send reset link</div>
+            <div className="fixed-box">Update bank info</div>
           </Link>
+          <label>Stripe credentials</label>
+          <div
+            className="fixed-box cursor-pointer"
+            onClick={() => setStripeFormVisible(!isStripeFormVisible)}
+          >
+            <span className="color-green font-bold fs-2  ">
+              Update stripe keys
+            </span>
+          </div>
+          <label>PayPal credentials</label>
+          <div
+            className="fixed-box cursor-pointer"
+            onClick={() => setPaypalFormVisible(!isPaypalFormVisible)}
+          >
+            <span className="color-green font-bold fs-2  ">
+              Update paypal keys
+            </span>
+          </div>
+          <label>Crypto credentials</label>
+          <div className="fixed-box cursor-pointer">
+            <span className="color-green font-bold fs-2  ">
+              Update crypto keys
+            </span>
+          </div>
         </div>
       </div>
     </>

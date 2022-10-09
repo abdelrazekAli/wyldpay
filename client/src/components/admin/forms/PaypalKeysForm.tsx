@@ -3,7 +3,7 @@ import { useState } from "react";
 import { getUser } from "../../../redux/user.slice";
 import { useAppSelector } from "../../../redux/store.hooks";
 
-export const PaymentMethodsForm = ({ hideForm }: { hideForm: () => void }) => {
+export const PaypalKeysForm = ({ hideForm }: { hideForm: () => void }) => {
   const { _id } = useAppSelector(getUser);
 
   const [publicKey, setPublicKey] = useState<string | null>(null);
@@ -12,17 +12,17 @@ export const PaymentMethodsForm = ({ hideForm }: { hideForm: () => void }) => {
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setisLoading] = useState<boolean>(false);
 
-  // Handle update payments methods
-  const editPaymentMethods = async (e: { preventDefault: () => void }) => {
+  // Handle update payment keys
+  const editPaymentKeys = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
     setError(null);
     setisLoading(true);
 
     try {
       await axios.put("/api/v1/banks/methods", {
-        paymentsMethods: [
-          { name: "stripe", publicKey: publicKey, secretKey: secretKey },
-        ],
+        name: "paypal",
+        publicKey: publicKey,
+        secretKey: secretKey,
         userId: _id,
       });
       hideForm();
@@ -41,13 +41,12 @@ export const PaymentMethodsForm = ({ hideForm }: { hideForm: () => void }) => {
           &times;
         </span>
         <div className="main-content">
-          <h2>Payment methods</h2>
           <div className="card">
             <div className="img">
-              <img src="../../assets/images/stripe-logo.png" alt="" />
+              <img src="../../assets/images/paypal-logo.png" alt="" />
             </div>
           </div>
-          <form onSubmit={editPaymentMethods}>
+          <form onSubmit={editPaymentKeys}>
             <input
               type="text"
               placeholder="Public key"

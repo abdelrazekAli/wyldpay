@@ -4,7 +4,7 @@ import BankModel from "../models/bank.model";
 import {
   checkUserId,
   validateBank,
-  validatePaymentsMethods,
+  validatePaymentkeys,
 } from "../utils/validation";
 
 export const bankRouter = Router();
@@ -89,7 +89,7 @@ bankRouter.put("/methods", async (req: Request, res: Response) => {
   const { userId } = req.body;
   try {
     // Validate req body
-    let validationResult = validatePaymentsMethods(req.body);
+    let validationResult = validatePaymentkeys(req.body);
     if (validationResult)
       return res.status(400).send(validationResult.details[0].message);
 
@@ -102,8 +102,12 @@ bankRouter.put("/methods", async (req: Request, res: Response) => {
     await BankModel.updateOne(
       { userId },
       {
-        $set: req.body,
-      }
+        $set: {
+          "paymentsMethods.$[elem].publicKey": req.body.publicKey,
+          "paymentsMethods.$[elem].secretKey": req.body.secretKey,
+        },
+      },
+      { arrayFilters: [{ "elem.name": req.body.name }] }
     );
 
     // Response
