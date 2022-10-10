@@ -48,7 +48,6 @@ export const RestForm = ({ onClick }: StepperProps) => {
         background: backgroundURL,
         userId,
       });
-      console.log(restaurant);
 
       localStorage.setItem("restaurantId", restaurant.data._id);
       setisLoading(false);

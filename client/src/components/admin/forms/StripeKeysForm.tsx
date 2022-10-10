@@ -4,7 +4,7 @@ import { getUser } from "../../../redux/user.slice";
 import { useAppSelector } from "../../../redux/store.hooks";
 
 export const StripeKeysForm = ({ hideForm }: { hideForm: () => void }) => {
-  const { _id } = useAppSelector(getUser);
+  const { accessToken } = useAppSelector(getUser);
 
   const [publicKey, setPublicKey] = useState<string | null>(null);
   const [secretKey, setSecretKey] = useState<string | null>(null);
@@ -19,12 +19,19 @@ export const StripeKeysForm = ({ hideForm }: { hideForm: () => void }) => {
     setisLoading(true);
 
     try {
-      await axios.put("/api/v1/banks/methods", {
-        name: "stripe",
-        publicKey: publicKey,
-        secretKey: secretKey,
-        userId: _id,
-      });
+      await axios.put(
+        "/api/v1/banks/methods",
+        {
+          name: "stripe",
+          publicKey: publicKey,
+          secretKey: secretKey,
+        },
+        {
+          headers: {
+            "auth-token": accessToken,
+          },
+        }
+      );
       hideForm();
       setisLoading(false);
     } catch (err) {

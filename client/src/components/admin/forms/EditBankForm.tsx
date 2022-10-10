@@ -10,7 +10,7 @@ import { useAppSelector } from "../../../redux/store.hooks";
 import { paymentSchema } from "../../../validations/paymentSchema";
 
 export const EditBankForm = () => {
-  const { _id } = useAppSelector(getUser);
+  const { accessToken } = useAppSelector(getUser);
   const [check, setCheck] = useState<boolean>();
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setisLoading] = useState<boolean>(false);
@@ -20,13 +20,17 @@ export const EditBankForm = () => {
   useEffect(() => {
     const fetchItems = async () => {
       // Fetch bank data
-      const res = await axios.get(`/api/v1/banks/${_id}`);
-      console.log(res.data);
+      const res = await axios.get(`/api/v1/banks`, {
+        headers: {
+          "auth-token": accessToken,
+        },
+      });
+
       setBankData(res.data);
       setCheck(res.data.customerFees);
     };
     fetchItems();
-  }, [_id]);
+  }, []);
 
   // Handle submit
   const onSubmit = async (data: BankProps) => {
@@ -37,11 +41,18 @@ export const EditBankForm = () => {
 
       delete data.paymentsMethods;
 
-      await axios.put("/api/v1/banks", {
-        ...data,
-        userId: _id,
-        customerFees: check,
-      });
+      await axios.put(
+        "/api/v1/banks",
+        {
+          ...data,
+          customerFees: check,
+        },
+        {
+          headers: {
+            "auth-token": accessToken,
+          },
+        }
+      );
 
       setSuccess("Bank info updated successfully!");
       setisLoading(false);

@@ -9,7 +9,7 @@ import { Table, Thead, Tbody, Tr, Th, Td } from "react-super-responsive-table";
 import "react-super-responsive-table/dist/SuperResponsiveTableStyle.css";
 
 export const CouponsTable = () => {
-  const { restaurantId, currency } = useAppSelector(getUser);
+  const { currency, accessToken } = useAppSelector(getUser);
   const [coupons, setCoupons] = useState<CouponType[] | null>();
   const [couponName, setCouponName] = useState<string | null>(null);
   const [couponType, setCouponType] = useState<string | null>(null);
@@ -23,11 +23,15 @@ export const CouponsTable = () => {
   useEffect(() => {
     // Fetch coupons
     const fetchCoupons = async () => {
-      const res = await axios.get(`/api/v1/coupons/${restaurantId}`);
+      const res = await axios.get(`/api/v1/coupons`, {
+        headers: {
+          "auth-token": accessToken,
+        },
+      });
       setCoupons(res.data);
     };
     fetchCoupons();
-  }, [restaurantId]);
+  }, []);
 
   // Handle add coupon
   const handleSubmit = async (e: { preventDefault: () => void }) => {
@@ -36,13 +40,20 @@ export const CouponsTable = () => {
     setisLoading(true);
 
     try {
-      const res = await axios.post("/api/v1/coupons", {
-        name: couponName,
-        type: couponType,
-        value: couponValue,
-        limit: couponLimit,
-        restId: restaurantId,
-      });
+      const res = await axios.post(
+        "/api/v1/coupons",
+        {
+          name: couponName,
+          type: couponType,
+          value: couponValue,
+          limit: couponLimit,
+        },
+        {
+          headers: {
+            "auth-token": accessToken,
+          },
+        }
+      );
 
       setCoupons([...coupons!, res.data]);
       setFormVisible(!isFormVisible);
@@ -62,7 +73,11 @@ export const CouponsTable = () => {
     const filterCoupons = coupons?.filter((i) => i._id !== couponId);
     setCoupons(filterCoupons);
     try {
-      await axios.delete(`/api/v1/coupons/${couponId}`);
+      await axios.delete(`/api/v1/coupons/${couponId}`, {
+        headers: {
+          "auth-token": accessToken,
+        },
+      });
     } catch (err) {
       console.log(err);
       setisLoading(false);

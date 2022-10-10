@@ -6,14 +6,15 @@ import { useAppSelector } from "../../../redux/store.hooks";
 
 export const TablesQR = () => {
   const { restaurantId } = useAppSelector(getUser);
-  const [isFormVisible, setFormVisible] = useState<boolean>(false);
   const [tableNum, setTableNum] = useState<number | null>(null);
+  const [isFormVisible, setFormVisible] = useState<boolean>(false);
 
   const downloadQR = () => {
     const canvas: any = document.getElementById("myqr")!;
     const pngUrl = canvas
       ?.toDataURL("image/png")
       .replace("image/png", "image/octet-stream");
+
     let downloadLink = document.createElement("a");
     downloadLink.href = pngUrl;
     downloadLink.download = `table-${tableNum}-QR.png`;

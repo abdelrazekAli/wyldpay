@@ -9,6 +9,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useAppDispatch } from "../../../redux/store.hooks";
 import { RegisteredUserProps } from "../../../types/UserProps";
 import { loginSchema } from "../../../validations/loginSchema";
+import "../../../utils/axiosInterceptor";
 
 export const LoginForm = () => {
   const dispatch = useAppDispatch();
@@ -37,6 +38,7 @@ export const LoginForm = () => {
   const onSubmit = async (data: { email: string; password: string }) => {
     setError(null);
     setisLoading(true);
+    localStorage.clear();
 
     try {
       let res = await axios.post("/api/v1/login", data);

@@ -1,9 +1,9 @@
 import axios from "axios";
 import * as yup from "yup";
 import { useState } from "react";
-import { Modal } from "../../user/layouts/Modal";
 import { useForm } from "react-hook-form";
 import "../../../styles/forms/payForm.sass";
+import { Modal } from "../../user/layouts/Modal";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { paymentSchema } from "../../../validations/paymentSchema";
 

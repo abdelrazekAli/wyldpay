@@ -3,6 +3,7 @@ import { store } from "./redux/store";
 import { Provider } from "react-redux";
 import { getUser } from "./redux/user.slice";
 import { checkUser } from "./utils/checkUser";
+import axiosInterceptor from "./utils/axiosInterceptor";
 import { useAppSelector } from "../src/redux/store.hooks";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 

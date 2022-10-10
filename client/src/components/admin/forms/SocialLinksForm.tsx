@@ -4,7 +4,7 @@ import { getUser } from "../../../redux/user.slice";
 import { useAppSelector } from "../../../redux/store.hooks";
 
 export const SocialLinksForm = ({ hideForm }: { hideForm: () => void }) => {
-  const { _id } = useAppSelector(getUser);
+  const { _id, accessToken } = useAppSelector(getUser);
 
   const [google, setGoogle] = useState<string>("https://g.page/");
   const [youtube, setYoutube] = useState<string>("https://youtube.com/");
@@ -38,16 +38,24 @@ export const SocialLinksForm = ({ hideForm }: { hideForm: () => void }) => {
     setisLoading(true);
 
     try {
-      let res = await axios.put(`/api/v1/users/links/${_id}`, {
-        socialLinks: [
-          { name: "google", value: google },
-          { name: "youtube", value: youtube },
-          { name: "twitter", value: twitter },
-          { name: "telegram", value: telegram },
-          { name: "instagram", value: instagram },
-        ],
-      });
-      console.log(res.data);
+      await axios.put(
+        `/api/v1/users/links`,
+        {
+          socialLinks: [
+            { name: "google", value: google },
+            { name: "youtube", value: youtube },
+            { name: "twitter", value: twitter },
+            { name: "telegram", value: telegram },
+            { name: "instagram", value: instagram },
+          ],
+        },
+        {
+          headers: {
+            "auth-token": accessToken,
+          },
+        }
+      );
+
       hideForm();
       setisLoading(false);
     } catch (err) {

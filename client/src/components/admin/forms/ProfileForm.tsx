@@ -18,7 +18,7 @@ import { useAppDispatch, useAppSelector } from "../../../redux/store.hooks";
 
 export const ProfileForm = () => {
   const dispatch = useAppDispatch();
-  const { _id } = useAppSelector(getUser);
+  const { _id, accessToken } = useAppSelector(getUser);
 
   const [vatNum, setVatNum] = useState<string>("");
   const [phoneNum, setPhoneNum] = useState<string>("");
@@ -84,10 +84,18 @@ export const ProfileForm = () => {
 
     try {
       // Update user data
-      await axios.put(`/api/v1/users/${_id}`, {
-        ...data,
-        phone: +phoneNum,
-      });
+      await axios.put(
+        `/api/v1/users`,
+        {
+          ...data,
+          phone: +phoneNum,
+        },
+        {
+          headers: {
+            "auth-token": accessToken,
+          },
+        }
+      );
 
       // Update restaurant data
       let logoUploadRes, backgroundUploadRes;
@@ -113,12 +121,19 @@ export const ProfileForm = () => {
         );
       }
 
-      await axios.put(`/api/v1/restaurants`, {
-        _id: restaurant?._id,
-        logo: logoUploadRes?.data.url,
-        vatNum,
-        background: backgroundUploadRes?.data.url,
-      });
+      await axios.put(
+        `/api/v1/restaurants`,
+        {
+          logo: logoUploadRes?.data.url,
+          vatNum,
+          background: backgroundUploadRes?.data.url,
+        },
+        {
+          headers: {
+            "auth-token": accessToken,
+          },
+        }
+      );
 
       setisLoading(false);
       dispatch(updateUsername(data.firstName));
