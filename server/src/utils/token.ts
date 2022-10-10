@@ -1,8 +1,11 @@
 import jwt from "jsonwebtoken";
 import { Types } from "mongoose";
 
-export const generateToken = (userData: { _id: Types.ObjectId }) => {
+export const generateToken = (userData: {
+  _id: Types.ObjectId;
+  restaurantId?: Types.ObjectId;
+}) => {
   return jwt.sign(userData, process.env.JWT_TOKEN_SECRET!, {
-    expiresIn: "15m",
+    expiresIn: "1m",
   });
 };

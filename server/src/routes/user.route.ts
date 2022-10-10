@@ -6,15 +6,16 @@ import {
   validateUpdateUserLinks,
   validateUser,
 } from "../utils/validation";
+import { verifyAuth } from "../middlewares/token.auth.middleware";
 
 export const userRouter = Router();
 
 // Get user by id
 userRouter.get("/:userId", async (req: Request, res: Response) => {
-  try {
-    let user;
-    const { userId } = req.params;
+  let user;
+  const { userId } = req.params;
 
+  try {
     // Check user id
     const checkResult = await checkUserId(userId);
     typeof checkResult === "string"
@@ -30,16 +31,16 @@ userRouter.get("/:userId", async (req: Request, res: Response) => {
 });
 
 // Update user by id
-userRouter.put("/:userId", async (req: Request, res: Response) => {
+userRouter.put("/", verifyAuth, async (req: Request, res: Response) => {
   let user;
-  const { userId } = req.params;
+  const userId = req.user._id;
+
+  // Validate req body
+  let validationResult = validateUser(req.body);
+  if (validationResult)
+    return res.status(400).send(validationResult.details[0].message);
 
   try {
-    // Validate req body
-    let validationResult = validateUser(req.body);
-    if (validationResult)
-      return res.status(400).send(validationResult.details[0].message);
-
     // Check user id
     const checkResult = await checkUserId(userId);
     typeof checkResult === "string"
@@ -68,16 +69,16 @@ userRouter.put("/:userId", async (req: Request, res: Response) => {
 });
 
 // Update user social links by id
-userRouter.put("/links/:userId", async (req: Request, res: Response) => {
+userRouter.put("/links/", verifyAuth, async (req: Request, res: Response) => {
   let user;
-  const { userId } = req.params;
+  const userId = req.user._id;
+
+  // Validate req body
+  let validationResult = validateUpdateUserLinks(req.body);
+  if (validationResult)
+    return res.status(400).send(validationResult.details[0].message);
 
   try {
-    // Validate req body
-    let validationResult = validateUpdateUserLinks(req.body);
-    if (validationResult)
-      return res.status(400).send(validationResult.details[0].message);
-
     // Check user id
     const checkResult = await checkUserId(userId);
     typeof checkResult === "string"

@@ -41,7 +41,7 @@ export const validateRestaurant = (data: object) => {
     vatNum: joi.string().required().max(255),
     currency: joi.string().required().length(3).max(255),
     categories: joi.array(),
-    userId: joi.string().required().max(255),
+    userId: joi.string().max(255),
   });
   return schema.validate(data).error;
 };
@@ -80,7 +80,6 @@ export const validateCategories = (data: object) => {
 
 export const validateRestaurantUpdate = (data: object) => {
   const schema = joi.object({
-    _id: joi.string().required().max(255),
     logo: joi.string().max(1000),
     background: joi.string().max(1000),
     vatNum: joi.string().max(255),
@@ -94,7 +93,7 @@ export const validateBank = (data: object) => {
     iban: joi.string().required().min(5).max(34),
     bic: joi.string().required().min(4).max(11),
     customerFees: joi.boolean(),
-    userId: joi.string().required().max(255),
+    userId: joi.string().max(255),
   });
   return schema.validate(data).error;
 };
@@ -104,7 +103,6 @@ export const validatePaymentkeys = (data: object) => {
     name: joi.string().required().valid("stripe", "paypal"),
     publicKey: joi.string().required().max(1000),
     secretKey: joi.string().required().max(1000),
-    userId: joi.string().required().max(255),
   });
   return schema.validate(data).error;
 };
@@ -145,7 +143,6 @@ export const validateCoupon = (data: object) => {
     value: joi.number().required().max(10000),
     limit: joi.number().required().max(10000),
     usage: joi.number().max(10000),
-    restId: joi.string().required().max(255),
   });
   return schema.validate(data).error;
 };

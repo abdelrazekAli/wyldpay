@@ -20,6 +20,6 @@ const tokenSchema = new mongoose.Schema({
   },
 });
 
-const ResetTokenModel = mongoose.model<TokenProps>("ResetToken", tokenSchema);
+const TokenModel = mongoose.model<TokenProps>("ResetToken", tokenSchema);
 
-export default ResetTokenModel;
+export default TokenModel;

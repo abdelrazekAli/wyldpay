@@ -2,21 +2,22 @@ import { Router } from "express";
 import { Request, Response } from "express";
 import OrderModel from "../models/order.model";
 import { checkRestId, validateOrder } from "../utils/validation";
+import { verifyAuth } from "../middlewares/token.auth.middleware";
 
 export const orderRouter = Router();
 
 // Get all restaurant orders by restaurant id
-orderRouter.get("/:restId", async (req: Request, res: Response) => {
-  try {
-    const { restId } = req.params;
+orderRouter.get("/", verifyAuth, async (req: Request, res: Response) => {
+  const { restaurantId } = req.user;
 
+  try {
     // Check restaurant id
-    const checkResult = await checkRestId(restId);
+    const checkResult = (await checkRestId(restaurantId)) as string | null;
     if (checkResult === "string") return res.status(400).send(checkResult);
 
     const orders = await OrderModel.find(
       {
-        restId,
+        restId: restaurantId,
       },
       { __v: 0 }
     );
@@ -31,12 +32,12 @@ orderRouter.get("/:restId", async (req: Request, res: Response) => {
 
 // Post new order
 orderRouter.post("/", async (req: Request, res: Response) => {
-  try {
-    // Validate req body
-    let validationResult = validateOrder(req.body);
-    if (validationResult)
-      return res.status(400).send(validationResult.details[0].message);
+  // Validate req body
+  let validationResult = validateOrder(req.body);
+  if (validationResult)
+    return res.status(400).send(validationResult.details[0].message);
 
+  try {
     // Create new order
     const newOrder = new OrderModel(req.body);
 

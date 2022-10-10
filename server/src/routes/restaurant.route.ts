@@ -7,15 +7,16 @@ import {
   validateRestaurant,
   validateRestaurantUpdate,
 } from "../utils/validation";
+import { verifyAuth } from "../middlewares/token.auth.middleware";
 import RestaurantModel, { RestaurantProps } from "../models/restaurant.model";
 
 export const restaurantRouter = Router();
 
 // Get restaurant by user id
 restaurantRouter.get("/:userId", async (req: Request, res: Response) => {
-  try {
-    const { userId } = req.params;
+  const { userId } = req.params;
 
+  try {
     // Check user id
     const checkResult = await checkUserId(userId);
     if (typeof checkResult === "string")
@@ -23,7 +24,7 @@ restaurantRouter.get("/:userId", async (req: Request, res: Response) => {
 
     const restaurant = (await RestaurantModel.findOne(
       {
-        userId: userId,
+        userId,
       },
       { __v: 0 }
     ).populate({
@@ -41,12 +42,12 @@ restaurantRouter.get("/:userId", async (req: Request, res: Response) => {
 
 // Post new resaturant
 restaurantRouter.post("/", async (req: Request, res: Response) => {
-  try {
-    // Validate req body
-    let validationResult = validateRestaurant(req.body);
-    if (validationResult)
-      return res.status(400).send(validationResult.details[0].message);
+  // Validate req body
+  let validationResult = validateRestaurant(req.body);
+  if (validationResult)
+    return res.status(400).send(validationResult.details[0].message);
 
+  try {
     // Create new resaturant
     const newRestaurant = new RestaurantModel(req.body);
     // Save resaturant
@@ -64,10 +65,10 @@ restaurantRouter.post("/", async (req: Request, res: Response) => {
 restaurantRouter.get(
   "/categories/:restaurantId",
   async (req: Request, res: Response) => {
-    try {
-      let restaurant,
-        { restaurantId } = req.params;
+    let restaurant,
+      { restaurantId } = req.params;
 
+    try {
       // Check restaurant id
       const checkResult = await checkRestId(restaurantId);
       typeof checkResult === "string"
@@ -84,16 +85,18 @@ restaurantRouter.get(
 );
 
 // update resaturant data
-restaurantRouter.put("/", async (req: Request, res: Response) => {
-  try {
-    // Validate req body
-    let validationResult = validateRestaurantUpdate(req.body);
-    if (validationResult)
-      return res.status(400).send(validationResult.details[0].message);
+restaurantRouter.put("/", verifyAuth, async (req: Request, res: Response) => {
+  const { restaurantId } = req.user;
 
+  // Validate req body
+  let validationResult = validateRestaurantUpdate(req.body);
+  if (validationResult)
+    return res.status(400).send(validationResult.details[0].message);
+
+  try {
     // Update resaturant
     await RestaurantModel.updateOne(
-      { _id: req.body._id },
+      { _id: restaurantId },
       {
         $set: req.body,
       }
@@ -109,12 +112,12 @@ restaurantRouter.put("/", async (req: Request, res: Response) => {
 
 // update resaturant categories
 restaurantRouter.put("/categories", async (req: Request, res: Response) => {
-  try {
-    // Validate req body
-    let validationResult = validateCategories(req.body);
-    if (validationResult)
-      return res.status(400).send(validationResult.details[0].message);
+  // Validate req body
+  let validationResult = validateCategories(req.body);
+  if (validationResult)
+    return res.status(400).send(validationResult.details[0].message);
 
+  try {
     // Update categories
     const resaturant = await RestaurantModel.findByIdAndUpdate(
       req.body.restaurantId,

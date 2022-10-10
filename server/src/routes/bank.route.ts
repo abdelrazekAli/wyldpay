@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { Request, Response } from "express";
 import BankModel, { BankProps } from "../models/bank.model";
+import { verifyAuth } from "../middlewares/token.auth.middleware";
 import {
   checkUserId,
   validateBank,
@@ -10,12 +11,12 @@ import {
 export const bankRouter = Router();
 
 // Get bank by user id
-bankRouter.get("/:userId", async (req: Request, res: Response) => {
-  try {
-    const { userId } = req.params;
+bankRouter.get("/", verifyAuth, async (req: Request, res: Response) => {
+  const userId = req.user._id;
 
+  try {
     // Check user id
-    const checkResult = await checkUserId(userId);
+    const checkResult = (await checkUserId(userId)) as string | null;
     if (typeof checkResult === "string")
       return res.status(400).send(checkResult);
 
@@ -34,12 +35,12 @@ bankRouter.get("/:userId", async (req: Request, res: Response) => {
 
 // Post new bank informaton
 bankRouter.post("/", async (req: Request, res: Response) => {
-  try {
-    // Validate req body
-    let validationResult = validateBank(req.body);
-    if (validationResult)
-      return res.status(400).send(validationResult.details[0].message);
+  // Validate req body
+  let validationResult = validateBank(req.body);
+  if (validationResult)
+    return res.status(400).send(validationResult.details[0].message);
 
+  try {
     // Create new bank
     const newBank = new BankModel(req.body);
 
@@ -55,16 +56,17 @@ bankRouter.post("/", async (req: Request, res: Response) => {
 });
 
 // Update bank information by user id
-bankRouter.put("/", async (req: Request, res: Response) => {
-  const { userId } = req.body;
-  try {
-    // Validate req body
-    let validationResult = validateBank(req.body);
-    if (validationResult)
-      return res.status(400).send(validationResult.details[0].message);
+bankRouter.put("/", verifyAuth, async (req: Request, res: Response) => {
+  const userId = req.user._id;
 
+  // Validate req body
+  let validationResult = validateBank(req.body);
+  if (validationResult)
+    return res.status(400).send(validationResult.details[0].message);
+
+  try {
     // Check user id
-    const checkResult = await checkUserId(userId);
+    const checkResult = (await checkUserId(userId)) as string | null;
     if (typeof checkResult === "string")
       return res.status(400).send(checkResult);
 
@@ -85,16 +87,17 @@ bankRouter.put("/", async (req: Request, res: Response) => {
 });
 
 // Update payments methods by user id
-bankRouter.put("/methods", async (req: Request, res: Response) => {
-  const { userId } = req.body;
-  try {
-    // Validate req body
-    let validationResult = validatePaymentkeys(req.body);
-    if (validationResult)
-      return res.status(400).send(validationResult.details[0].message);
+bankRouter.put("/methods", verifyAuth, async (req: Request, res: Response) => {
+  const userId = req.user._id;
 
+  // Validate req body
+  let validationResult = validatePaymentkeys(req.body);
+  if (validationResult)
+    return res.status(400).send(validationResult.details[0].message);
+
+  try {
     // Check user id
-    const checkResult = await checkUserId(userId);
+    const checkResult = (await checkUserId(userId)) as string | null;
     if (typeof checkResult === "string")
       return res.status(400).send(checkResult);
 

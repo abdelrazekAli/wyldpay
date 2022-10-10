@@ -4,8 +4,7 @@ import { Router } from "express";
 import { Request, Response } from "express";
 import UserModel from "../models/user.model";
 import { generateToken } from "../utils/token";
-import ResetTokenModel from "../models/resetToken.model";
-import RefreshTokenModel from "../models/refreshToken.model";
+import TokenModel from "../models/token.model";
 import {
   validateLogin,
   validateResetPass,
@@ -66,23 +65,16 @@ authRouter.post("/login", async (req: Request, res: Response) => {
     if (!validPassword)
       return res.status(401).send("Invalid email or password");
 
-    // Create and assign a token
-    let accessToken = generateToken({ _id: user._id });
-    let refreshToken = jwt.sign(
-      { _id: user._id },
-      process.env.JWT_TOKEN_SECRET!
-    );
-
-    // Save refresh token to database
-    let newToken = new RefreshTokenModel({
-      token: refreshToken,
-    });
-    await newToken.save();
-
     // Get user restaurant id
     const restaurant = await RestaurantModel.findOne({
       userId: user._id,
     }).select("_id currency");
+
+    // Create and assign a token
+    let accessToken = generateToken({
+      _id: user._id,
+      restaurantId: restaurant?._id,
+    });
 
     // Set headers and response
     res.header("auth-token", accessToken).json({
@@ -92,7 +84,6 @@ authRouter.post("/login", async (req: Request, res: Response) => {
       restaurantId: restaurant?._id,
       currency: restaurant?.currency,
       accessToken: accessToken,
-      refreshToken: refreshToken,
     });
   } catch (err) {
     console.log(err);
@@ -116,7 +107,7 @@ authRouter.post("/pass/send-reset", async (req: Request, res: Response) => {
     let resetToken = generateToken({ _id: user._id });
 
     // Save reset token to database
-    let newToken = new ResetTokenModel({
+    let newToken = new TokenModel({
       userId: user._id,
       token: resetToken,
     });
@@ -148,7 +139,7 @@ authRouter.post(
       if (!user) return res.status(401).send("Invalid link or expired.");
 
       // Check if token vaild
-      const token = await ResetTokenModel.findOne({
+      const token = await TokenModel.findOne({
         userId: user._id,
         token: req.params.token,
       });

@@ -5,6 +5,26 @@ import { checkItemId, checkRestId, validateItem } from "../utils/validation";
 
 export const itemRouter = Router();
 
+// Get items by retaurant
+itemRouter.get("/restaurant/:restId", async (req: Request, res: Response) => {
+  const { restId } = req.params;
+  try {
+    // Check restaurant id
+    const checkResult = (await checkRestId(restId)) as string | null;
+    if (typeof checkResult === "string")
+      return res.status(400).send(checkResult);
+
+    // Find items by restaurant id
+    const items = (await ItemModel.find({ restId: restId })) as ItemProps[];
+
+    // Response
+    res.status(200).json(items);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json(err);
+  }
+});
+
 // Post new item informaton
 itemRouter.post("/", async (req: Request, res: Response) => {
   try {
@@ -78,27 +98,6 @@ itemRouter.delete("/id/:itemId", async (req: Request, res: Response) => {
 
     // Response
     res.status(200).json(`Successfully deleted item with id : ${itemId}`);
-  } catch (err) {
-    console.log(err);
-    res.status(500).json(err);
-  }
-});
-
-// Get items by retaurant
-itemRouter.get("/restaurant/:restId", async (req: Request, res: Response) => {
-  try {
-    const { restId } = req.params;
-
-    // Check restaurant id
-    const checkResult = await checkRestId(restId);
-    if (typeof checkResult === "string")
-      return res.status(400).send(checkResult);
-
-    // Find items by restaurant id
-    const items = (await ItemModel.find({ restId: restId })) as ItemProps[];
-
-    // Response
-    res.status(200).json(items);
   } catch (err) {
     console.log(err);
     res.status(500).json(err);
