@@ -6,6 +6,7 @@ export type ProductType = {
   category: string;
   desc: string;
   quantity?: number;
+  ingredients?: string;
 };
 
 export type ProductPropType = {

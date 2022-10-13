@@ -12,8 +12,28 @@ import RestaurantModel, { RestaurantProps } from "../models/restaurant.model";
 
 export const restaurantRouter = Router();
 
+// Get restaurant by restaurant id
+restaurantRouter.get("/:restaurantId", async (req: Request, res: Response) => {
+  let restaurant;
+  const { restaurantId } = req.params;
+
+  try {
+    // Check restaurant id
+    const checkResult = await checkRestId(restaurantId);
+    typeof checkResult === "string"
+      ? res.status(400).send(checkResult)
+      : (restaurant = checkResult);
+
+    // Response
+    res.status(200).json(restaurant);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json(err);
+  }
+});
+
 // Get restaurant by user id
-restaurantRouter.get("/:userId", async (req: Request, res: Response) => {
+restaurantRouter.get("/user/:userId", async (req: Request, res: Response) => {
   const { userId } = req.params;
 
   try {
@@ -65,8 +85,8 @@ restaurantRouter.post("/", async (req: Request, res: Response) => {
 restaurantRouter.get(
   "/categories/:restaurantId",
   async (req: Request, res: Response) => {
-    let restaurant,
-      { restaurantId } = req.params;
+    let restaurant;
+    const { restaurantId } = req.params;
 
     try {
       // Check restaurant id

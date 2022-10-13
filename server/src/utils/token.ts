@@ -6,6 +6,6 @@ export const generateToken = (userData: {
   restaurantId?: Types.ObjectId;
 }) => {
   return jwt.sign(userData, process.env.JWT_TOKEN_SECRET!, {
-    expiresIn: "1m",
+    expiresIn: "30d",
   });
 };

@@ -113,6 +113,9 @@ export const RestForm = ({ onClick }: StepperProps) => {
               <span>Upload logo</span>
               <i className="fas fa-upload" color="red"></i>
             </label>
+            <span className="instructions">
+              Logo should be in circle shape with dimensions 75*75
+            </span>
             {logo && (
               <div className="box mb-1">
                 <img
@@ -122,7 +125,7 @@ export const RestForm = ({ onClick }: StepperProps) => {
                 />
               </div>
             )}
-            <label htmlFor="background" className="img-label">
+            <label htmlFor="background" className="img-label mb-2">
               <input
                 type="file"
                 accept="image/*"

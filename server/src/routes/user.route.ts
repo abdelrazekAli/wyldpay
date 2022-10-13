@@ -19,7 +19,7 @@ userRouter.get("/:userId", async (req: Request, res: Response) => {
     // Check user id
     const checkResult = await checkUserId(userId);
     typeof checkResult === "string"
-      ? res.status(400).send(checkResult)
+      ? res.status(406).send(checkResult)
       : (user = checkResult);
 
     // Response

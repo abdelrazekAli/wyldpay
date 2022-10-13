@@ -4,15 +4,14 @@ import { ItemBox } from "../layouts/ItemBox";
 import "../../../styles/forms/foodsForm.sass";
 import { ItemType } from "../../../types/Item";
 import { Key, useEffect, useState } from "react";
-import { CategoryType } from "../../../types/Category";
+import { MainCategoryType } from "../../../types/Category";
 import { StepperProps } from "../../../types/StepperProps";
 
 export const ItemsForm = ({ onClick }: StepperProps) => {
   const [error, setError] = useState<string | null>(null);
   const [isFormVisible, setFormVisible] = useState<boolean>(false);
-  const [categorySelected, setCategorySelected] = useState<CategoryType | null>(
-    null
-  );
+  const [categorySelected, setCategorySelected] =
+    useState<MainCategoryType | null>(null);
 
   const restaurantId = localStorage.getItem("restaurantId")!;
 
@@ -23,8 +22,13 @@ export const ItemsForm = ({ onClick }: StepperProps) => {
   // Fetch items
   useEffect(() => {
     const fetchItems = async () => {
-      const res = await axios.get(`/api/v1/items/restaurant/${restaurantId}`);
-      setItems(res.data);
+      try {
+        const res = await axios.get(`/api/v1/items/restaurant/${restaurantId}`);
+        setItems(res.data);
+      } catch (err) {
+        console.log(err);
+        setError("Something went wrong!");
+      }
     };
     fetchItems();
   }, [restaurantId]);
@@ -73,7 +77,7 @@ export const ItemsForm = ({ onClick }: StepperProps) => {
             </button>
           </div>
           <div className="category">
-            {categories?.map((cate: CategoryType, i: Key) => (
+            {categories?.map((cate: MainCategoryType, i: Key) => (
               <div
                 className={
                   categorySelected?.value === cate.value

@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { CategoryType } from "../../../types/Category";
+import { MainCategoryType } from "../../../types/Category";
 
 type Props = {
-  cate: CategoryType;
+  cate: MainCategoryType;
   onClick: () => void;
 };
 

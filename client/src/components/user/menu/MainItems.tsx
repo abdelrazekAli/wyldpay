@@ -2,13 +2,13 @@ import { MainItem } from "./MainItem";
 import { Element } from "react-scroll";
 import "../../../styles/menu/items.sass";
 import { ProductType } from "../../../types/Product";
-import { CategoryType } from "../../../types/Category";
+import { MenuCategoryType } from "../../../types/Category";
 
 export const MainItems = ({
   categories,
   items,
 }: {
-  categories: CategoryType[];
+  categories: MenuCategoryType[];
   items: ProductType[];
 }) => {
   return (

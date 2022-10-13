@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { Link } from "react-scroll";
 import "../../../styles/menu/categories.sass";
-import { CategoryType } from "../../../types/Category";
+import { MenuCategoryType } from "../../../types/Category";
 
 export const MainCategories = ({
   categories,
 }: {
-  categories: CategoryType[];
+  categories: MenuCategoryType[];
 }) => {
   const [fixed, setFixed] = useState<boolean>(false);
 

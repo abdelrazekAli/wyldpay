@@ -1,25 +1,39 @@
 import { useNavigate } from "react-router-dom";
 import { MainItemCounters } from "./MainItemCounters";
-import { ProductPropType } from "../../../types/Product";
 import { truncate } from "../../../utils/stringTruncate";
+import { ProductPropType } from "../../../types/Product";
+import { getSymbol } from "../../../utils/currencySymbol";
+import { useAppSelector } from "../../../redux/store.hooks";
+import { getRestaurantCurrency } from "../../../redux/restaurant.slice";
 
 export const MainItem = ({ product }: ProductPropType) => {
   let navigate = useNavigate();
+  const currency = useAppSelector(getRestaurantCurrency);
+
   return (
     <div className="menu-item">
       <div
         className="menu-item-texts"
-        onClick={() => navigate(`./item/${product._id}`, { state: product })}
+        onClick={() =>
+          navigate(`./item/${product._id}`, {
+            state: product,
+          })
+        }
       >
         <h2 className="capitalize">{product.name}</h2>
-        <p>{truncate(product.desc, 100)}</p>
-        <span>€{product.price.toFixed(2)}</span>
+        <p>
+          {product.desc.length > 80 ? truncate(product.desc, 80) : product.desc}
+        </p>
+        <span>
+          {getSymbol(currency)}
+          {product.price.toFixed(2)}
+        </span>
       </div>
       <div className="menu-item-img-wrapper">
         <div>
           <img
             className="menu-item-img"
-            src={`../../assets/images/simple-item-img.png`}
+            src={product.img}
             alt=""
             onClick={() =>
               navigate(`./item/${product._id}`, { state: product })

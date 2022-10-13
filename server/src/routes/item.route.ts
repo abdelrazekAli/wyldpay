@@ -5,7 +5,22 @@ import { checkItemId, checkRestId, validateItem } from "../utils/validation";
 
 export const itemRouter = Router();
 
-// Get items by retaurant
+// Get all item details by id
+itemRouter.get("/:itemId", async (req: Request, res: Response) => {
+  const { itemId } = req.params;
+  try {
+    // Find item
+    const item = (await ItemModel.findById(itemId)) as ItemProps;
+
+    // Response
+    res.status(200).json(item);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json(err);
+  }
+});
+
+// Get all items by retaurant id
 itemRouter.get("/restaurant/:restId", async (req: Request, res: Response) => {
   const { restId } = req.params;
   try {

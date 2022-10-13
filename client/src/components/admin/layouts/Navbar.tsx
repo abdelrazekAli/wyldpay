@@ -26,10 +26,6 @@ export const Navbar = () => {
         </Link>
         {user && (
           <div className="dropdown">
-            {/* <img
-            src="http://hello-chat-abdelrazek.herokuapp.com/imgs/avatar.png"
-            alt=""
-          /> */}
             <button className="dropbtn">
               {user.firstName}
               <i className="fa fa-caret-down"></i>
@@ -39,6 +35,7 @@ export const Navbar = () => {
               <Link to="/admin/menu">Menu</Link>
               <Link to="/admin/orders">Orders</Link>
               <Link to="/admin/coupons">Coupons</Link>
+              <Link to={`/menu/${user.restaurantId}/1`}>Go to live</Link>
               <Link to="/admin/tables">Tables QR</Link>
               <span onClick={logoutHandler} className="color-red">
                 Logout

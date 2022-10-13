@@ -1,16 +1,17 @@
 import "../../../styles/menu/header.sass";
+import { RestaurantProps } from "../../../types/Restaurant";
 
-export const MainHeader = () => {
+export const MainHeader = ({ restaurant }: { restaurant: RestaurantProps }) => {
   return (
     <div className="header-wrapper">
       <div
         className="menu-header"
         style={{
-          backgroundImage: `url(../../assets/images/simple-background.png)`,
+          backgroundImage: `url(${restaurant.background})`,
         }}
       >
         <div className="logo">
-          <img src={`../../assets/images/simple-logo.svg`} alt="" />
+          <img src={restaurant.logo} alt="" />
         </div>
       </div>
     </div>

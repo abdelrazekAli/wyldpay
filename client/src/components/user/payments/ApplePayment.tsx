@@ -27,11 +27,11 @@ export const ApplePayment = ({
     }
 
     const pr = stripe.paymentRequest({
-      country: "US",
-      currency: "usd",
+      country: "DE",
+      currency: "eur",
       total: {
         label: "total",
-        amount: totalPrice,
+        amount: Math.round(totalPrice),
       },
       requestPayerName: true,
       requestPayerEmail: true,
@@ -47,7 +47,7 @@ export const ApplePayment = ({
     pr.on("paymentmethod", async (e) => {
       await axios
         .post("/api/v1/payments/stripe/create-payment-intent", {
-          amount: totalPrice,
+          amount: Math.round(totalPrice),
           currency: "eur",
           secretKey: process.env.REACT_APP_STRIPE_SECRET_KEY,
         })

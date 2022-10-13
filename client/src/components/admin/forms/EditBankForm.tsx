@@ -20,14 +20,19 @@ export const EditBankForm = () => {
   useEffect(() => {
     const fetchItems = async () => {
       // Fetch bank data
-      const res = await axios.get(`/api/v1/banks`, {
-        headers: {
-          "auth-token": accessToken,
-        },
-      });
+      try {
+        const res = await axios.get(`/api/v1/banks`, {
+          headers: {
+            "auth-token": accessToken,
+          },
+        });
 
-      setBankData(res.data);
-      setCheck(res.data.customerFees);
+        setBankData(res.data);
+        setCheck(res.data.customerFees);
+      } catch (err) {
+        console.log(err);
+        setError("Something went wrong on fetch bank data!");
+      }
     };
     fetchItems();
   }, []);

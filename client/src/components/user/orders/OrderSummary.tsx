@@ -1,17 +1,24 @@
 import { useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import "../../../styles/menu/orderSummary.sass";
 import { SummaryItem } from "../menu/SummaryItem";
+import { getSymbol } from "../../../utils/currencySymbol";
 import { PaymentWrapper } from "../payments/PaymentWrapper";
 import { useAppSelector } from "../../../redux/store.hooks";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { getRestaurantCurrency } from "../../../redux/restaurant.slice";
 import { getCartProducts, getTotalPrice } from "../../../redux/cart.slice";
 
 export const OrderSummary = () => {
   const navigate = useNavigate();
+  const { tableId, restId } = useParams();
+  const orderNote = useLocation().state as string;
+
   let subPrice = useAppSelector(getTotalPrice);
+  const cartProducts = useAppSelector(getCartProducts);
+  const currency = useAppSelector(getRestaurantCurrency);
+
   const [tip, setTip] = useState<number | null>(null);
   const discountName = useRef<HTMLInputElement>(null!);
-  const cartProducts = useAppSelector(getCartProducts);
   const [isFormVisible, setFormVisible] = useState<boolean>(false);
 
   const handleDiscount = (e: { preventDefault: () => void }) => {
@@ -53,7 +60,14 @@ export const OrderSummary = () => {
             </div>
           </div>
         )}
-        <div className="back-icon" onClick={() => navigate(-1)}>
+        <div
+          className="back-icon"
+          onClick={() =>
+            navigate(`/menu/${restId}/${tableId}/checkout`, {
+              state: orderNote,
+            })
+          }
+        >
           <i className="fas fa-chevron-left"></i>
         </div>
         <h1 className="heading-1">Your order</h1>
@@ -70,7 +84,10 @@ export const OrderSummary = () => {
                 <h2 className="capitalize">Summary</h2>
               </div>
               <div className="counters-price-wrapper">
-                <span>€{subPrice.toFixed(2)}</span>
+                <span>
+                  {getSymbol(currency)}
+                  {subPrice.toFixed(2)}
+                </span>
               </div>
             </div>
             <h2 className="heading-2">Choose a tip</h2>
@@ -82,7 +99,8 @@ export const OrderSummary = () => {
                   onClick={() => setTip(5)}
                 >
                   <div className="tip-price">
-                    €{(subPrice * 0.05).toFixed(2)}
+                    {getSymbol(currency)}
+                    {(subPrice * 0.05).toFixed(2)}
                   </div>
                   <div className="tip-percentage">5%</div>
                 </div>
@@ -91,7 +109,8 @@ export const OrderSummary = () => {
                   onClick={() => setTip(10)}
                 >
                   <div className="tip-price">
-                    €{(subPrice * 0.1).toFixed(2)}
+                    {getSymbol(currency)}
+                    {(subPrice * 0.1).toFixed(2)}
                   </div>
                   <div className="tip-percentage">10%</div>
                 </div>
@@ -100,7 +119,8 @@ export const OrderSummary = () => {
                   onClick={() => setTip(20)}
                 >
                   <div className="tip-price">
-                    €{(subPrice * 0.2).toFixed(2)}
+                    {getSymbol(currency)}
+                    {(subPrice * 0.2).toFixed(2)}
                   </div>
                   <div className="tip-percentage">20%</div>
                 </div>

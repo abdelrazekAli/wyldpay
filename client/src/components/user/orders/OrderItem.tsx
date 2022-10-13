@@ -1,15 +1,18 @@
 import { useState } from "react";
 import { truncate } from "../../../utils/stringTruncate";
-import { useAppDispatch } from "../../../redux/store.hooks";
+import { getSymbol } from "../../../utils/currencySymbol";
 import { ProductPropType, ProductType } from "../../../types/Product";
+import { useAppDispatch, useAppSelector } from "../../../redux/store.hooks";
 import {
   addToCart,
   decreseFromCart,
   removeFromCart,
 } from "../../../redux/cart.slice";
+import { getRestaurantCurrency } from "../../../redux/restaurant.slice";
 
 export const OrderItem = ({ product }: ProductPropType) => {
   const dispatch = useAppDispatch();
+  const currency = useAppSelector(getRestaurantCurrency);
 
   const [counter, setCounter] = useState<number>(product.quantity!);
 
@@ -40,16 +43,15 @@ export const OrderItem = ({ product }: ProductPropType) => {
     <div className="order-item">
       <div className="order-item-img-wrapper">
         <div>
-          <img
-            className="order-item-img"
-            src={`../../../assets/images/order-img.png`}
-            alt=""
-          />
+          <img className="order-item-img" src={product.img} alt="" />
         </div>
       </div>
       <div className="order-item-texts">
         <h2 className="capitalize">{product.name}</h2>
-        <p>{truncate(product.desc, 55)}</p>
+        <p>
+          {" "}
+          {product.desc.length > 50 ? truncate(product.desc, 50) : product.desc}
+        </p>
       </div>
       <div className="counters-price-wrapper">
         <div className="counters-container">
@@ -77,7 +79,10 @@ export const OrderItem = ({ product }: ProductPropType) => {
             </button>
           </div>
         </div>
-        <span>€{(counter * product.price).toFixed(2)}</span>
+        <span>
+          {getSymbol(currency)}
+          {(counter * product.price).toFixed(2)}
+        </span>
       </div>
     </div>
   );

@@ -7,15 +7,14 @@ import { ItemType } from "../../../types/Item";
 import { Key, useEffect, useState } from "react";
 import { AddCategoryForm } from "./AddCategoryForm";
 import { getUser } from "../../../redux/user.slice";
-import { CategoryType } from "../../../types/Category";
+import { MainCategoryType } from "../../../types/Category";
 import { useAppSelector } from "../../../redux/store.hooks";
 
 export const MenuForm = () => {
   const { restaurantId } = useAppSelector(getUser);
-  const [categories, setCategories] = useState<CategoryType[] | null>();
-  const [categorySelected, setCategorySelected] = useState<CategoryType | null>(
-    null
-  );
+  const [categories, setCategories] = useState<MainCategoryType[] | null>();
+  const [categorySelected, setCategorySelected] =
+    useState<MainCategoryType | null>(null);
 
   const [error, setError] = useState<string | null>(null);
   const [isItemFormVisible, setItemFormVisible] = useState<boolean>(false);
@@ -27,16 +26,26 @@ export const MenuForm = () => {
   useEffect(() => {
     // Fetch items
     const fetchItems = async () => {
-      const res = await axios.get(`/api/v1/items/restaurant/${restaurantId}`);
-      setItems(res.data);
+      try {
+        const res = await axios.get(`/api/v1/items/restaurant/${restaurantId}`);
+        setItems(res.data);
+      } catch (err) {
+        console.log(err);
+        setError("Something went wrong on fetch items!");
+      }
     };
 
     // Fetch categories
     const fetchCategories = async () => {
-      const res = await axios.get(
-        `/api/v1/restaurants/categories/${restaurantId}`
-      );
-      setCategories(res.data);
+      try {
+        const res = await axios.get(
+          `/api/v1/restaurants/categories/${restaurantId}`
+        );
+        setCategories(res.data);
+      } catch (err) {
+        console.log(err);
+        setError("Something went wrong on fetch categories!");
+      }
     };
 
     fetchItems();
@@ -105,7 +114,7 @@ export const MenuForm = () => {
             </div>
           </div>
           <div className="category">
-            {categories?.map((cate: CategoryType, i: Key) => (
+            {categories?.map((cate: MainCategoryType, i: Key) => (
               <div
                 className={
                   categorySelected?.value === cate.value

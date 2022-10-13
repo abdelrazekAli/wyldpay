@@ -4,6 +4,9 @@ import { loadStripe } from "@stripe/stripe-js";
 import { PaypalPayment } from "./PaypalPayment";
 import { StripePayment } from "./StripePayment";
 import { Elements } from "@stripe/react-stripe-js";
+import { getSymbol } from "../../../utils/currencySymbol";
+import { useAppSelector } from "../../../redux/store.hooks";
+import { getRestaurantCurrency } from "../../../redux/restaurant.slice";
 
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_CLIENT_KEY!);
 
@@ -14,6 +17,7 @@ export const PaymentWrapper = ({
   totalPrice: number;
   tip: number | null;
 }) => {
+  const currency = useAppSelector(getRestaurantCurrency);
   const [paymentSelected, setPaymentSelected] = useState<number>(0);
   const [isDropDownVisible, setDropDownVisible] = useState<boolean>(false);
 
@@ -81,14 +85,18 @@ export const PaymentWrapper = ({
           </div>
         </div>
         <div className="total-price">
-          Total price: <span>€{totalPrice}</span>
+          Total price:{" "}
+          <span>
+            {getSymbol(currency)}
+            {totalPrice}
+          </span>
         </div>
       </div>
-      {/* {paymentSelected === 0 && (
+      {paymentSelected === 3 && (
         <Elements stripe={stripePromise}>
           <ApplePayment totalPrice={totalPrice} tip={tip} />
         </Elements>
-      )} */}
+      )}
       {paymentSelected === 0 && (
         <Elements stripe={stripePromise}>
           <StripePayment totalPrice={totalPrice} tip={tip} />
@@ -97,7 +105,7 @@ export const PaymentWrapper = ({
       {paymentSelected === 1 && (
         <PaypalPayment totalPrice={totalPrice} tip={tip} />
       )}
-      {(paymentSelected === 2 || paymentSelected === 3) && (
+      {paymentSelected === 2 && (
         <button className="bg-none">
           <div className="order-btn">Order now</div>
         </button>

@@ -43,11 +43,16 @@ export const ProfileForm = () => {
   // Fetch data from
   useEffect(() => {
     const fetchData = async () => {
-      const res = await axios.get(`/api/v1/restaurants/${_id}`);
-      setRestaurant(res.data);
-      setVatNum(res.data.vatNum);
-      setUserData(res.data.userId);
-      setPhoneNum(res.data.userId.phone);
+      try {
+        const res = await axios.get(`/api/v1/restaurants/user/${_id}`);
+        setRestaurant(res.data);
+        setVatNum(res.data.vatNum);
+        setUserData(res.data.userId);
+        setPhoneNum(res.data.userId.phone);
+      } catch (err) {
+        console.log(err);
+        setError("Something went wrong on fetch profile data!");
+      }
     };
     fetchData();
   }, [_id]);

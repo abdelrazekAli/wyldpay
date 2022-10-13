@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 import { ItemType } from "../../../types/Item";
-import { CategoryType } from "../../../types/Category";
+import { MainCategoryType } from "../../../types/Category";
 
 export const AddItemForm = ({
   hideForm,
@@ -11,7 +11,7 @@ export const AddItemForm = ({
 }: {
   hideForm: () => void;
   setItems: (newItem: ItemType) => void;
-  category: CategoryType;
+  category: MainCategoryType;
   restaurantId: string;
 }) => {
   const [name, setName] = useState<string | null>("");

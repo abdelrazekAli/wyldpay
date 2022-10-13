@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useState } from "react";
-import { CategoryType } from "../../../types/Category";
+import { MainCategoryType } from "../../../types/Category";
 
 export const AddCategoryForm = ({
   hideForm,
@@ -9,8 +9,8 @@ export const AddCategoryForm = ({
   restaurantId,
 }: {
   hideForm: () => void;
-  categories: CategoryType[];
-  setCategories: (newCategories: CategoryType[]) => void;
+  categories: MainCategoryType[];
+  setCategories: (newCategories: MainCategoryType[]) => void;
   restaurantId: string;
 }) => {
   const [error, setError] = useState<string | null>(null);
@@ -23,7 +23,7 @@ export const AddCategoryForm = ({
     setError(null);
     setisLoading(true);
 
-    const newCategories: CategoryType[] = [
+    const newCategories: MainCategoryType[] = [
       ...categories,
       { value: categoryName!, selected: true },
     ];
@@ -39,7 +39,7 @@ export const AddCategoryForm = ({
     } catch (err) {
       console.log(err);
       setisLoading(false);
-      setError("Somthing went wrong!");
+      setError("Somthing went wrong on fetch categories!");
     }
   };
 

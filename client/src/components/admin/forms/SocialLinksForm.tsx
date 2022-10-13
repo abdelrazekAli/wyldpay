@@ -18,15 +18,20 @@ export const SocialLinksForm = ({ hideForm }: { hideForm: () => void }) => {
   useEffect(() => {
     // Fetch links
     const fetchLinks = async () => {
-      const res = await axios.get(`/api/v1/users/${_id}`);
-      res.data.socialLinks?.map((link: { name: string; value: string }) => {
-        link.name === "google" && setGoogle(link.value);
-        link.name === "youtube" && setYoutube(link.value);
-        link.name === "twitter" && setTwitter(link.value);
-        link.name === "telegram" && setTelegram(link.value);
-        link.name === "instagram" && setInstagram(link.value);
-        return 0;
-      });
+      try {
+        const res = await axios.get(`/api/v1/users/${_id}`);
+        res.data.socialLinks?.map((link: { name: string; value: string }) => {
+          link.name === "google" && setGoogle(link.value);
+          link.name === "youtube" && setYoutube(link.value);
+          link.name === "twitter" && setTwitter(link.value);
+          link.name === "telegram" && setTelegram(link.value);
+          link.name === "instagram" && setInstagram(link.value);
+          return 0;
+        });
+      } catch (err) {
+        console.log(err);
+        setError("Something went wrong!");
+      }
     };
     fetchLinks();
   }, [_id]);

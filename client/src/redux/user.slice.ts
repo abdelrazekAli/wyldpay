@@ -10,6 +10,7 @@ const userSlice = createSlice({
       localStorage.setItem("user", JSON.stringify(action.payload));
       return action.payload;
     },
+
     updateUsername: (state, action: PayloadAction<string>) => {
       localStorage.setItem(
         "user",

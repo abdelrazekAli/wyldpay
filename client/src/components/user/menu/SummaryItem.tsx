@@ -1,6 +1,11 @@
 import { ProductPropType } from "../../../types/Product";
+import { getSymbol } from "../../../utils/currencySymbol";
+import { useAppSelector } from "../../../redux/store.hooks";
+import { getRestaurantCurrency } from "../../../redux/restaurant.slice";
 
 export const SummaryItem = ({ product }: ProductPropType) => {
+  const currency = useAppSelector(getRestaurantCurrency);
+
   return (
     <div className="order-item">
       <div className="order-item-img-wrapper">
@@ -18,7 +23,10 @@ export const SummaryItem = ({ product }: ProductPropType) => {
         </h2>
       </div>
       <div className="counters-price-wrapper">
-        <span>€{(product.quantity! * product.price).toFixed(2)}</span>
+        <span>
+          {getSymbol(currency)}
+          {(product.quantity! * product.price).toFixed(2)}
+        </span>
       </div>
     </div>
   );
