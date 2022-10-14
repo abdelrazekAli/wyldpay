@@ -7,7 +7,7 @@ import {
   decreseFromCart,
 } from "../../../redux/cart.slice";
 
-export const MainItemCounters = ({ product }: ProductPropType) => {
+export const ItemCounters = ({ product }: ProductPropType) => {
   const dispatch = useAppDispatch();
   const cartProducts = useAppSelector(getCartProducts);
 

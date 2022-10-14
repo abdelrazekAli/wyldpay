@@ -1,11 +1,11 @@
 import axios from "axios";
 import { Footer } from "./Footer";
-import { MainItems } from "./MainItems";
 import "../../../styles/menu/menu.sass";
 import { MainHeader } from "./MainHeader";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { ViewOrderBtn } from "./ViewOrderBtn";
+import { Items } from "../items/Items";
 import { MainCategories } from "./MainCategories";
 import { ProductType } from "../../../types/Product";
 import { CircularProgress } from "@material-ui/core";
@@ -44,7 +44,7 @@ export const Menu = () => {
       }
     };
     fetchItems();
-  }, [restId]);
+  }, [restId, dispatch]);
 
   return (
     <>
@@ -53,7 +53,7 @@ export const Menu = () => {
           <MainHeader restaurant={restaurant.data} />
           <MainCategories categories={restaurant.data.categories} />
           {items.length > 0 && (
-            <MainItems items={items} categories={restaurant.data.categories} />
+            <Items items={items} categories={restaurant.data.categories} />
           )}
           <ViewOrderBtn />
         </>

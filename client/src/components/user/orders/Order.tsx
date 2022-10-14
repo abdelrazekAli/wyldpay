@@ -3,7 +3,7 @@ import { OrderTip } from "./OrderTip";
 import { OrderSummary } from "./OrderSummary";
 import "../../../styles/menu/orderSummary.sass";
 import { OrderDiscount } from "./OrderDiscount";
-import { SummaryItem } from "../menu/SummaryItem";
+import { SummaryItem } from "../items/SummaryItem";
 import { getSymbol } from "../../../utils/currencySymbol";
 import { PaymentWrapper } from "../payments/PaymentWrapper";
 import { useAppSelector } from "../../../redux/store.hooks";

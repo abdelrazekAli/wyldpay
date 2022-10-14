@@ -1,4 +1,4 @@
-import { MainItemDetails } from "../../components/user/menu/MainItemDetails";
+import { MainItemDetails } from "../../components/user/items/MainItemDetails";
 
 export const ItemDetails = () => {
   return (

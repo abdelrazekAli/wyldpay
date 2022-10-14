@@ -1,12 +1,12 @@
 import { useNavigate } from "react-router-dom";
-import { MainItemCounters } from "./MainItemCounters";
+import { ItemCounters } from "./ItemCounters";
 import { truncate } from "../../../utils/stringTruncate";
 import { ProductPropType } from "../../../types/Product";
 import { getSymbol } from "../../../utils/currencySymbol";
 import { useAppSelector } from "../../../redux/store.hooks";
 import { getRestaurantCurrency } from "../../../redux/restaurant.slice";
 
-export const MainItem = ({ product }: ProductPropType) => {
+export const Item = ({ product }: ProductPropType) => {
   let navigate = useNavigate();
   const currency = useAppSelector(getRestaurantCurrency);
 
@@ -40,7 +40,7 @@ export const MainItem = ({ product }: ProductPropType) => {
             }
           />
         </div>
-        <MainItemCounters product={product} />
+        <ItemCounters product={product} />
       </div>
     </div>
   );

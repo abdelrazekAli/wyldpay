@@ -1,10 +1,10 @@
-import { MainItem } from "./MainItem";
+import { Item } from "./Item";
 import { Element } from "react-scroll";
 import "../../../styles/menu/items.sass";
 import { ProductType } from "../../../types/Product";
 import { MenuCategoryType } from "../../../types/Category";
 
-export const MainItems = ({
+export const Items = ({
   categories,
   items,
 }: {
@@ -20,7 +20,7 @@ export const MainItems = ({
             {items
               .filter((item) => item.category === category.value)
               .map((p) => (
-                <MainItem product={p} key={p._id} />
+                <Item product={p} key={p._id} />
               ))}
           </div>
         </Element>
