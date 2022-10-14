@@ -65,10 +65,10 @@ couponRouter.post("/", verifyAuth, async (req: Request, res: Response) => {
 });
 
 // Apply coupon
-couponRouter.post("/:couponName", async (req: Request, res: Response) => {
+couponRouter.post("/:restId", async (req: Request, res: Response) => {
   try {
-    const { restId } = req.body,
-      { couponName } = req.params;
+    const { restId } = req.params,
+      { couponCode } = req.body;
 
     // Validate req body
     let validationResult = validateApplyCoupon(req.body);
@@ -78,7 +78,7 @@ couponRouter.post("/:couponName", async (req: Request, res: Response) => {
     // Check coupon
     const coupon = await CouponModel.findOne({
       restId: restId,
-      name: couponName,
+      name: couponCode,
     });
 
     if (!coupon) return res.status(409).send("Coupon is not valid");
@@ -90,7 +90,7 @@ couponRouter.post("/:couponName", async (req: Request, res: Response) => {
       coupon._id,
       { usage: coupon.usage + 1 },
       { new: true }
-    )) as CouponProps;
+    ).select("-_id -limit -usage -restId")) as CouponProps;
 
     // Response
     res.status(200).json(updatedCoupon);

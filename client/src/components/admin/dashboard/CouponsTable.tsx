@@ -11,7 +11,7 @@ import "react-super-responsive-table/dist/SuperResponsiveTableStyle.css";
 export const CouponsTable = () => {
   const { currency, accessToken } = useAppSelector(getUser);
   const [coupons, setCoupons] = useState<CouponType[] | null>();
-  const [couponName, setCouponName] = useState<string | null>(null);
+  const [couponCode, setCouponCode] = useState<string | null>(null);
   const [couponType, setCouponType] = useState<string | null>(null);
   const [couponValue, setCouponValue] = useState<number | null>(null);
   const [couponLimit, setCouponLimit] = useState<number | null>(null);
@@ -43,7 +43,7 @@ export const CouponsTable = () => {
       const res = await axios.post(
         "/api/v1/coupons",
         {
-          name: couponName,
+          name: couponCode,
           type: couponType,
           value: couponValue,
           limit: couponLimit,
@@ -101,8 +101,8 @@ export const CouponsTable = () => {
               <form onSubmit={handleSubmit}>
                 <input
                   type="text"
-                  placeholder="Name"
-                  onChange={(e) => setCouponName(e.target.value)}
+                  placeholder="Code"
+                  onChange={(e) => setCouponCode(e.target.value)}
                 />
                 <select
                   name="type"
@@ -127,7 +127,7 @@ export const CouponsTable = () => {
                 />
                 <button
                   disabled={
-                    !couponName ||
+                    !couponCode ||
                     !couponType ||
                     !couponValue ||
                     !couponLimit ||
@@ -165,7 +165,7 @@ export const CouponsTable = () => {
             <Thead>
               <Tr>
                 <Th>#</Th>
-                <Th>Name</Th>
+                <Th>Code</Th>
                 <Th>Type</Th>
                 <Th>Value</Th>
                 <Th>Limit</Th>

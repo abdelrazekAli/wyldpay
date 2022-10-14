@@ -10,11 +10,7 @@ export const SummaryItem = ({ product }: ProductPropType) => {
     <div className="order-item">
       <div className="order-item-img-wrapper">
         <div>
-          <img
-            className="order-item-img"
-            src={`../../../assets/images/order-img.png`}
-            alt=""
-          />
+          <img className="order-item-img" src={product.img} alt="" />
         </div>
       </div>
       <div className="order-item-texts">

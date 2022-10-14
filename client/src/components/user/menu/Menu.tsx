@@ -23,7 +23,7 @@ export const Menu = () => {
   const [items, setItems] = useState<ProductType[]>([]);
 
   const [error, setError] = useState<boolean>(false);
-  const [isLoading, setisLoading] = useState<boolean>(true);
+  const [isLoading, setisLoading] = useState<boolean>(false);
 
   useEffect(() => {
     // Fetch restaurant data

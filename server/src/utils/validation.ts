@@ -124,7 +124,7 @@ export const validateSendResetPass = (data: object) => {
 
 export const validateApplyCoupon = (data: object) => {
   const schema = joi.object({
-    restId: joi.string().required().max(255),
+    couponCode: joi.string().required().max(255),
   });
   return schema.validate(data).error;
 };
