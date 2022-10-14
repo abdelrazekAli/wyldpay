@@ -1,16 +1,11 @@
+import { addTip, getTip } from "../../../redux/tip.slice";
 import { getSymbol } from "../../../utils/currencySymbol";
-import { useAppSelector } from "../../../redux/store.hooks";
 import { getRestaurantCurrency } from "../../../redux/restaurant.slice";
+import { useAppDispatch, useAppSelector } from "../../../redux/store.hooks";
 
-export const OrderTip = ({
-  subPrice,
-  tip,
-  setTip,
-}: {
-  subPrice: number;
-  tip: number | null;
-  setTip: (data: number) => void;
-}) => {
+export const OrderTip = ({ subPrice }: { subPrice: number }) => {
+  const dispatch = useAppDispatch();
+  const tip = useAppSelector(getTip);
   const currency = useAppSelector(getRestaurantCurrency);
 
   return (
@@ -21,7 +16,7 @@ export const OrderTip = ({
         <div className="row">
           <div
             className={tip === 5 ? "tip selected-tip" : "tip"}
-            onClick={() => setTip(5)}
+            onClick={() => dispatch(addTip(5))}
           >
             <div className="tip-price">
               {getSymbol(currency)}
@@ -31,7 +26,7 @@ export const OrderTip = ({
           </div>
           <div
             className={tip === 10 ? "tip selected-tip" : "tip"}
-            onClick={() => setTip(10)}
+            onClick={() => dispatch(addTip(10))}
           >
             <div className="tip-price">
               {getSymbol(currency)}
@@ -41,7 +36,7 @@ export const OrderTip = ({
           </div>
           <div
             className={tip === 20 ? "tip selected-tip" : "tip"}
-            onClick={() => setTip(20)}
+            onClick={() => dispatch(addTip(20))}
           >
             <div className="tip-price">
               {getSymbol(currency)}
@@ -52,7 +47,7 @@ export const OrderTip = ({
         </div>
         <div
           className={tip === 0 ? "no-tip selected-no-tip" : "no-tip"}
-          onClick={() => setTip(0)}
+          onClick={() => dispatch(addTip(0))}
         >
           No tip
         </div>

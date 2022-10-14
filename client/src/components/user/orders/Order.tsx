@@ -3,6 +3,7 @@ import { OrderTip } from "./OrderTip";
 import { OrderSummary } from "./OrderSummary";
 import "../../../styles/menu/orderSummary.sass";
 import { OrderDiscount } from "./OrderDiscount";
+import { getTip } from "../../../redux/tip.slice";
 import { SummaryItem } from "../items/SummaryItem";
 import { getSymbol } from "../../../utils/currencySymbol";
 import { PaymentWrapper } from "../payments/PaymentWrapper";
@@ -17,12 +18,11 @@ export const Order = () => {
   const { tableId, restId } = useParams();
   const orderNote = useLocation().state as string;
 
+  const tip = useAppSelector(getTip);
   const discount = useAppSelector(getDiscount);
   let subPrice = useAppSelector(getTotalPrice);
   const cartProducts = useAppSelector(getCartProducts);
   const currency = useAppSelector(getRestaurantCurrency);
-
-  const [tip, setTip] = useState<number | null>(null);
 
   const totalPrice = () => {
     // Check tips
@@ -57,11 +57,7 @@ export const Order = () => {
             <SummaryItem product={product} key={i} />
           ))}
           <OrderSummary subPrice={subPrice} currency={getSymbol(currency)} />
-          <OrderTip
-            tip={tip}
-            subPrice={subPrice}
-            setTip={(data) => setTip(data)}
-          />
+          <OrderTip subPrice={subPrice} />
           <OrderDiscount />
           <PaymentWrapper totalPrice={totalPrice()} tip={tip} />
         </>
