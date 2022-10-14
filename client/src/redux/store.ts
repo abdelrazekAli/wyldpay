@@ -1,12 +1,14 @@
 import cart from "./cart.slice";
 import user from "./user.slice";
 import restaurant from "./restaurant.slice";
+import discount from "./discount.slice";
 import { configureStore } from "@reduxjs/toolkit";
 
 export const store = configureStore({
   reducer: {
     cart,
     user,
+    discount,
     restaurant,
   },
 });

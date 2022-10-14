@@ -1,17 +1,20 @@
+import { getSymbol } from "../../../utils/currencySymbol";
+import { useAppSelector } from "../../../redux/store.hooks";
+import { getRestaurantCurrency } from "../../../redux/restaurant.slice";
+
 export const OrderTip = ({
-  currency,
   subPrice,
   tip,
   setTip,
 }: {
-  currency: string;
   subPrice: number;
   tip: number | null;
   setTip: (data: number) => void;
 }) => {
+  const currency = useAppSelector(getRestaurantCurrency);
+
   return (
     <>
-      {" "}
       <h2 className="heading-2">Choose a tip</h2>
       <p className="heading-p">Our staff will be grateful</p>
       <div className="tips">
@@ -21,7 +24,7 @@ export const OrderTip = ({
             onClick={() => setTip(5)}
           >
             <div className="tip-price">
-              {currency}
+              {getSymbol(currency)}
               {(subPrice * 0.05).toFixed(2)}
             </div>
             <div className="tip-percentage">5%</div>
@@ -31,7 +34,7 @@ export const OrderTip = ({
             onClick={() => setTip(10)}
           >
             <div className="tip-price">
-              {currency}
+              {getSymbol(currency)}
               {(subPrice * 0.1).toFixed(2)}
             </div>
             <div className="tip-percentage">10%</div>
@@ -41,7 +44,7 @@ export const OrderTip = ({
             onClick={() => setTip(20)}
           >
             <div className="tip-price">
-              {currency}
+              {getSymbol(currency)}
               {(subPrice * 0.2).toFixed(2)}
             </div>
             <div className="tip-percentage">20%</div>

@@ -4,10 +4,10 @@ import { OrderSummary } from "./OrderSummary";
 import "../../../styles/menu/orderSummary.sass";
 import { OrderDiscount } from "./OrderDiscount";
 import { SummaryItem } from "../menu/SummaryItem";
-import { DiscountProps } from "../../../types/Coupon";
 import { getSymbol } from "../../../utils/currencySymbol";
 import { PaymentWrapper } from "../payments/PaymentWrapper";
 import { useAppSelector } from "../../../redux/store.hooks";
+import { getDiscount } from "../../../redux/discount.slice";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { getRestaurantCurrency } from "../../../redux/restaurant.slice";
 import { getCartProducts, getTotalPrice } from "../../../redux/cart.slice";
@@ -17,12 +17,12 @@ export const Order = () => {
   const { tableId, restId } = useParams();
   const orderNote = useLocation().state as string;
 
+  const discount = useAppSelector(getDiscount);
   let subPrice = useAppSelector(getTotalPrice);
   const cartProducts = useAppSelector(getCartProducts);
   const currency = useAppSelector(getRestaurantCurrency);
 
   const [tip, setTip] = useState<number | null>(null);
-  const [discount, setDiscount] = useState<DiscountProps | null>(null);
 
   const totalPrice = () => {
     // Check tips
@@ -60,13 +60,9 @@ export const Order = () => {
           <OrderTip
             tip={tip}
             subPrice={subPrice}
-            currency={getSymbol(currency)}
             setTip={(data) => setTip(data)}
           />
-          <OrderDiscount
-            currency={getSymbol(currency)}
-            onSuccess={(data) => setDiscount(data)}
-          />
+          <OrderDiscount />
           <PaymentWrapper totalPrice={totalPrice()} tip={tip} />
         </>
       ) : (

@@ -2,18 +2,17 @@ import axios from "axios";
 import { useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { CircularProgress } from "@material-ui/core";
-import { DiscountProps } from "../../../types/Coupon";
+import { getSymbol } from "../../../utils/currencySymbol";
+import { getRestaurantCurrency } from "../../../redux/restaurant.slice";
+import { addDiscount, getDiscount } from "../../../redux/discount.slice";
+import { useAppDispatch, useAppSelector } from "../../../redux/store.hooks";
 
-export const OrderDiscount = ({
-  onSuccess,
-  currency,
-}: {
-  onSuccess: ({}: DiscountProps) => void;
-  currency: string;
-}) => {
+export const OrderDiscount = () => {
   const { restId } = useParams();
+  const dispatch = useAppDispatch();
+  const discount = useAppSelector(getDiscount);
   const discountCode = useRef<HTMLInputElement>(null!);
-  const [discount, setDiscount] = useState<DiscountProps | null>(null);
+  const currency = useAppSelector(getRestaurantCurrency);
 
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setisLoading] = useState<boolean>(false);
@@ -33,8 +32,7 @@ export const OrderDiscount = ({
         couponCode: String(discountCode.current.value),
       });
 
-      onSuccess(res.data);
-      setDiscount(res.data);
+      dispatch(addDiscount(res.data));
       setFormVisible(!isFormVisible);
     } catch (err: any) {
       console.log(err);
@@ -92,7 +90,7 @@ export const OrderDiscount = ({
           <div className="text g-1">
             <img src="../../../assets/images/discount.svg" alt="" />
             Discount of {discount.value}
-            {discount.type === "amount" ? currency : "%"} is valid
+            {discount.type === "amount" ? getSymbol(currency) : "%"} is valid
           </div>
         </div>
       ) : (
