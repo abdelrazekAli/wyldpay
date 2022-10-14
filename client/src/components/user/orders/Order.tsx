@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { OrderTip } from "./OrderTip";
 import "../../../styles/menu/orderSummary.sass";
 import { OrderDiscount } from "./OrderDiscount";
 import { SummaryItem } from "../menu/SummaryItem";
@@ -10,7 +11,7 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { getRestaurantCurrency } from "../../../redux/restaurant.slice";
 import { getCartProducts, getTotalPrice } from "../../../redux/cart.slice";
 
-export const OrderSummary = () => {
+export const Order = () => {
   const navigate = useNavigate();
   const { tableId, restId } = useParams();
   const orderNote = useLocation().state as string;
@@ -68,51 +69,15 @@ export const OrderSummary = () => {
               </span>
             </div>
           </div>
-          <h2 className="heading-2">Choose a tip</h2>
-          <p className="heading-p">Our staff will be grateful</p>
-          <div className="tips">
-            <div className="row">
-              <div
-                className={tip === 5 ? "tip selected-tip" : "tip"}
-                onClick={() => setTip(5)}
-              >
-                <div className="tip-price">
-                  {getSymbol(currency)}
-                  {(subPrice * 0.05).toFixed(2)}
-                </div>
-                <div className="tip-percentage">5%</div>
-              </div>
-              <div
-                className={tip === 10 ? "tip selected-tip" : "tip"}
-                onClick={() => setTip(10)}
-              >
-                <div className="tip-price">
-                  {getSymbol(currency)}
-                  {(subPrice * 0.1).toFixed(2)}
-                </div>
-                <div className="tip-percentage">10%</div>
-              </div>
-              <div
-                className={tip === 20 ? "tip selected-tip" : "tip"}
-                onClick={() => setTip(20)}
-              >
-                <div className="tip-price">
-                  {getSymbol(currency)}
-                  {(subPrice * 0.2).toFixed(2)}
-                </div>
-                <div className="tip-percentage">20%</div>
-              </div>
-            </div>
-            <div
-              className={tip === 0 ? "no-tip selected-no-tip" : "no-tip"}
-              onClick={() => setTip(0)}
-            >
-              No tip
-            </div>
-          </div>
-          <OrderDiscount
-            onSuccess={(data) => setDiscount(data)}
+          <OrderTip
+            tip={tip}
+            subPrice={subPrice}
             currency={getSymbol(currency)}
+            setTip={(data) => setTip(data)}
+          />
+          <OrderDiscount
+            currency={getSymbol(currency)}
+            onSuccess={(data) => setDiscount(data)}
           />
           <PaymentWrapper totalPrice={totalPrice()} tip={tip} />
         </>

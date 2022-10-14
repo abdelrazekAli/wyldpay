@@ -1,10 +1,10 @@
-import { OrderSummary } from "../../components/user/orders/OrderSummary";
+import { Order } from "../../components/user/orders/Order";
 
-export const Order = () => {
+export const OrderDetails = () => {
   return (
     <div className="mobile-wrapper">
       <div className="mobile-wrapper-container">
-        <OrderSummary />
+        <Order />
       </div>
     </div>
   );

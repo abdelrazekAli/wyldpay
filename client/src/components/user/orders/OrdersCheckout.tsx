@@ -5,7 +5,7 @@ import { useAppSelector } from "../../../redux/store.hooks";
 import { getCartProducts } from "../../../redux/cart.slice";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 
-export const Orders = () => {
+export const OrdersCheckout = () => {
   const navigate = useNavigate();
   const { tableId, restId } = useParams();
   const noteStateValue = useLocation().state as string;

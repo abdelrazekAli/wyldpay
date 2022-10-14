@@ -9,7 +9,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 // Import pages
 import { QR } from "./pages/admin/QR";
-import { Order } from "./pages/user/Order";
+import { OrderDetails } from "./pages/user/OrderDetails";
 import { Login } from "./pages/admin/Login";
 import { Signup } from "./pages/admin/Signup";
 import { Orders } from "./pages/admin/Orders";
@@ -46,7 +46,10 @@ function AppWraper() {
             path="/menu/:restId/:tableId/item/:itemId"
             element={<ItemDetails />}
           />
-          <Route path="/menu/:restId/:tableId/order" element={<Order />} />
+          <Route
+            path="/menu/:restId/:tableId/order"
+            element={<OrderDetails />}
+          />
           <Route
             path="/menu/:restId/:tableId/checkout"
             element={<Checkout />}
