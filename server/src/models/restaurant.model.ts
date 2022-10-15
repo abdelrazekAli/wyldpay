@@ -5,6 +5,7 @@ export type RestaurantProps = {
   background: string;
   currency: string;
   vatNum: string;
+  vatPercentage: number;
   categories?: { value: string }[];
   userId: ObjectId;
 };
@@ -15,6 +16,7 @@ const restaurantSchema = new mongoose.Schema(
     background: { type: String, required: true },
     currency: { type: String, required: true },
     vatNum: { type: String, required: true },
+    vatPercentage: { type: Number, required: true, default: 19 },
     categories: { type: Array, default: [] },
     userId: {
       type: mongoose.Types.ObjectId,

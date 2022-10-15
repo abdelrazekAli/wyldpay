@@ -106,9 +106,7 @@ export const LoginForm = () => {
             </button>
           </div>
         </form>
-        {error && (
-          <span className="error d-block text-center fs-2">{error}</span>
-        )}
+        <span className="error d-block text-center fs-2">{error}</span>
         {/* <div className="parent-login-line">
           <span className="login-line mt-2">or</span>
         </div> */}

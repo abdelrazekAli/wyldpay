@@ -10,12 +10,13 @@ import { useAppSelector } from "../../../redux/store.hooks";
 import { paymentSchema } from "../../../validations/paymentSchema";
 
 export const EditBankForm = () => {
-  const { accessToken } = useAppSelector(getUser);
   const [check, setCheck] = useState<boolean>();
+  const { accessToken } = useAppSelector(getUser);
+  const [bankData, setBankData] = useState<BankProps | null>(null);
+
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setisLoading] = useState<boolean>(false);
   const [success, setSuccess] = useState<string | null>(null);
-  const [bankData, setBankData] = useState<BankProps | null>(null);
 
   useEffect(() => {
     const fetchItems = async () => {

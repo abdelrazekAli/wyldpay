@@ -1,4 +1,4 @@
-export type ItemType = {
+export type Item = {
   _id: string;
   name: string;
   price: number;

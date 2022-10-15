@@ -7,12 +7,13 @@ export const RestForm = ({ onClick }: StepperProps) => {
   const userId = localStorage.getItem("userId");
   const [logo, setLogo] = useState<null | File>(null);
   const [vatNum, setVatNum] = useState<string | null>("");
-  const [error, setError] = useState<string | null>(null);
-  const [isLoading, setisLoading] = useState<boolean>(false);
   const [logoBlob, setLogoBlob] = useState<string | Blob>("");
   const [currency, setCurrency] = useState<string | null>("");
   const [background, setBackground] = useState<null | File>(null);
   const [backgroundBlob, setBackgroundBlob] = useState<string | Blob>("");
+
+  const [error, setError] = useState<string | null>(null);
+  const [isLoading, setisLoading] = useState<boolean>(false);
 
   // Handle form submit
   const handleSubmit = async (e: { preventDefault: () => void }) => {
@@ -92,13 +93,6 @@ export const RestForm = ({ onClick }: StepperProps) => {
               <option value="cad">CAD</option>
               <option value="inr">INR</option>
             </select>
-            <textarea
-              name=""
-              id=""
-              cols={30}
-              rows={4}
-              placeholder="Write a short bio about your restaurant !"
-            ></textarea>
             <label htmlFor="logo" className="img-label">
               <input
                 type="file"
@@ -148,7 +142,13 @@ export const RestForm = ({ onClick }: StepperProps) => {
                 />
               </div>
             )}
-
+            <textarea
+              name=""
+              id=""
+              cols={30}
+              rows={4}
+              placeholder="Write a short bio about your restaurant !"
+            ></textarea>
             <button
               type="submit"
               className="btn"
@@ -158,9 +158,7 @@ export const RestForm = ({ onClick }: StepperProps) => {
             >
               {isLoading ? "Loading..." : "Continue"}
             </button>
-            {error && (
-              <span className="color-error text-center fs-2 my-1">{error}</span>
-            )}
+            <span className="color-error text-center fs-2 my-1">{error}</span>
           </form>
           <div className="imgs home-right">
             <img

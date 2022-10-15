@@ -157,9 +157,7 @@ export const RegisterForm = ({ onClick }: StepperProps) => {
             {isLoading ? "Loading..." : "Get started"}
           </button>
         </div>
-        {error && (
-          <span className="error d-block my-2 text-center fs-2">{error}</span>
-        )}
+        <span className="error d-block my-2 text-center fs-2">{error}</span>
       </form>
     </div>
   );

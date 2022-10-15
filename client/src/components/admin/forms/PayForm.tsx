@@ -79,9 +79,7 @@ export const PayForm = () => {
             </button>
           </div>
           <div className="d-flex">
-            {error && (
-              <span className="color-error text-center fs-2 my-1">{error}</span>
-            )}
+            <span className="color-error text-center fs-2 my-1">{error}</span>
           </div>
         </form>
       </div>

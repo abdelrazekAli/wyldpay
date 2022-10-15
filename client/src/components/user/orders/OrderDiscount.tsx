@@ -64,11 +64,9 @@ export const OrderDiscount = () => {
                   className="mb-1"
                   onChange={() => setError(null)}
                 />
-                {error && (
-                  <span className="error color-error d-block fs-1 mb-1">
-                    {error}
-                  </span>
-                )}
+                <span className="error color-error d-block fs-1 mb-1">
+                  {error}
+                </span>
                 <button
                   disabled={isLoading}
                   type="submit"

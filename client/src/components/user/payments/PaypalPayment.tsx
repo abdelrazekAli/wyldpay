@@ -1,21 +1,18 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAppSelector } from "../../../redux/store.hooks";
+import { getTip } from "../../../redux/tip.slice";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 
-export const PaypalPayment = ({
-  totalPrice,
-  tip,
-}: {
-  totalPrice: number;
-  tip: number | null;
-}) => {
+export const PaypalPayment = ({ totalPrice }: { totalPrice: number }) => {
   const navigate = useNavigate();
+  const tip = useAppSelector(getTip);
   const [error, setError] = useState<string | null>(null);
 
   return (
     <div className="paypal-payment">
       <div className="paypal-payment-container">
-        {error && <div className="error">{error}</div>}
+        <div className="error">{error}</div>
         <PayPalScriptProvider
           options={{
             "client-id": process.env.REACT_APP_PAYPAL_KEY!,

@@ -5,7 +5,6 @@ import { useAppSelector } from "../../../redux/store.hooks";
 
 export const StripeKeysForm = ({ hideForm }: { hideForm: () => void }) => {
   const { accessToken } = useAppSelector(getUser);
-
   const [publicKey, setPublicKey] = useState<string | null>(null);
   const [secretKey, setSecretKey] = useState<string | null>(null);
 
@@ -73,9 +72,7 @@ export const StripeKeysForm = ({ hideForm }: { hideForm: () => void }) => {
             </button>
           </form>
         </div>
-        {error && (
-          <span className="color-error text-center fs-2 my-1">{error}</span>
-        )}
+        <span className="color-error text-center fs-2 my-1">{error}</span>
       </div>
     </div>
   );

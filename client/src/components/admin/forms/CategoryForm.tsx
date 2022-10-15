@@ -35,10 +35,11 @@ export const CategoryForm = ({ onClick }: StepperProps) => {
   ];
 
   const categoryName = useRef<HTMLInputElement>(null!);
+  const [categoriesList, setCategoriesList] = useState(categoriesDestruct);
+
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setisLoading] = useState<boolean>(false);
   const [isFormVisible, setFormVisible] = useState<boolean>(false);
-  const [categoriesList, setCategoriesList] = useState(categoriesDestruct);
 
   const filterCategories = categoriesList.filter((c) => c.selected === true);
 
@@ -136,9 +137,7 @@ export const CategoryForm = ({ onClick }: StepperProps) => {
             ))}
           </section>
           <div>
-            {error && (
-              <span className="color-error text-center fs-2 my-1">{error}</span>
-            )}
+            <span className="color-error text-center fs-2 my-1">{error}</span>
           </div>
           <div className="btn-container">
             <button

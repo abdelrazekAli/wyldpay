@@ -67,9 +67,7 @@ export const AddCategoryForm = ({
             </button>
           </form>
         </div>
-        {error && (
-          <span className="color-error text-center fs-2 my-1">{error}</span>
-        )}
+        <span className="color-error text-center fs-2 my-1">{error}</span>
       </div>
     </div>
   );

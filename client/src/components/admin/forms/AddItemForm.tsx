@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useState } from "react";
-import { ItemType } from "../../../types/Item";
+import { Item } from "../../../types/Item";
 import { MainCategoryType } from "../../../types/Category";
 
 export const AddItemForm = ({
@@ -10,7 +10,7 @@ export const AddItemForm = ({
   restaurantId,
 }: {
   hideForm: () => void;
-  setItems: (newItem: ItemType) => void;
+  setItems: (newItem: Item) => void;
   category: MainCategoryType;
   restaurantId: string;
 }) => {
@@ -133,9 +133,7 @@ export const AddItemForm = ({
             </button>
           </form>
         </div>
-        {error && (
-          <span className="color-error text-center fs-2 my-1">{error}</span>
-        )}
+        <span className="color-error text-center fs-2 my-1">{error}</span>
       </div>
     </div>
   );

@@ -3,7 +3,7 @@ import "../../../styles/item.sass";
 import { AddItemForm } from "./AddItemForm";
 import "../../../styles/forms/menuForm.sass";
 import { ItemBox } from "../layouts/ItemBox";
-import { ItemType } from "../../../types/Item";
+import { Item } from "../../../types/Item";
 import { Key, useEffect, useState } from "react";
 import { AddCategoryForm } from "./AddCategoryForm";
 import { getUser } from "../../../redux/user.slice";
@@ -12,6 +12,8 @@ import { useAppSelector } from "../../../redux/store.hooks";
 
 export const MenuForm = () => {
   const { restaurantId } = useAppSelector(getUser);
+
+  const [items, setItems] = useState<Item[]>([]);
   const [categories, setCategories] = useState<MainCategoryType[] | null>();
   const [categorySelected, setCategorySelected] =
     useState<MainCategoryType | null>(null);
@@ -20,8 +22,6 @@ export const MenuForm = () => {
   const [isItemFormVisible, setItemFormVisible] = useState<boolean>(false);
   const [isCategoryFormVisible, setCategoryFormVisible] =
     useState<boolean>(false);
-
-  const [items, setItems] = useState<ItemType[]>([]);
 
   useEffect(() => {
     // Fetch items

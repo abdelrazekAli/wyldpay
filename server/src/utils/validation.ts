@@ -14,6 +14,8 @@ export const validateUser = (data: object) => {
     city: joi.string().required().max(255),
     state: joi.string().required().max(255),
     zip: joi.string().required().max(20),
+    vatNum: joi.string().max(255),
+    vatPercentage: joi.number().max(100),
     businessName: joi.string().required().min(2).max(255),
     businessAddress: joi.string().required().min(2).max(1000),
   });
@@ -39,6 +41,7 @@ export const validateRestaurant = (data: object) => {
     logo: joi.string().required().max(1000),
     background: joi.string().required().max(1000),
     vatNum: joi.string().required().max(255),
+    vatPercentage: joi.number().max(100),
     currency: joi.string().required().length(3).max(255),
     categories: joi.array(),
     userId: joi.string().max(255),
@@ -83,6 +86,7 @@ export const validateRestaurantUpdate = (data: object) => {
     logo: joi.string().max(1000),
     background: joi.string().max(1000),
     vatNum: joi.string().max(255),
+    vatPercentage: joi.number().max(100),
   });
   return schema.validate(data).error;
 };
@@ -179,6 +183,7 @@ export const checkRestId = async (id: string) => {
     if (Types.ObjectId.isValid(id)) {
       let restaurant = await RestaurantModel.findById(id).populate({
         path: "userId",
+        select: "-_id -password -updatedAt -createdAt -__v",
       });
       return restaurant === null
         ? `There is no restaurant with this id: ${id}`

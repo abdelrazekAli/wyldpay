@@ -1,10 +1,7 @@
 import axios from "axios";
 import { RootState } from "./store";
-import { parseURL } from "../utils/parseURL";
 import { RestaurantProps } from "../types/Restaurant";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-
-const restaurantId = parseURL()[2];
 
 const initialState = {
   loading: false,
@@ -18,7 +15,7 @@ const initialState = {
 
 export const fetchRestaurant = createAsyncThunk(
   "restaurant/fetchByIdStatus",
-  async () => {
+  async (restaurantId: string) => {
     const response = await axios.get(`/api/v1/restaurants/${restaurantId}`);
     return response.data;
   }

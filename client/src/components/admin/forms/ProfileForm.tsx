@@ -12,15 +12,14 @@ import { SocialLinksForm } from "./SocialLinksForm";
 import { UserProps } from "../../../types/UserProps";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { RestaurantProps } from "../../../types/Restaurant";
-import { updateUserSchema } from "../../../validations/userSchema";
 import { getUser, updateUsername } from "../../../redux/user.slice";
+import { updateProfileSchema } from "../../../validations/userSchema";
 import { useAppDispatch, useAppSelector } from "../../../redux/store.hooks";
 
 export const ProfileForm = () => {
   const dispatch = useAppDispatch();
   const { _id, accessToken } = useAppSelector(getUser);
 
-  const [vatNum, setVatNum] = useState<string>("");
   const [phoneNum, setPhoneNum] = useState<string>("");
   const [userData, setUserData] = useState<UserProps | null>(null);
   const [restaurant, setRestaurant] = useState<RestaurantProps | null>(null);
@@ -30,25 +29,26 @@ export const ProfileForm = () => {
   const [background, setBackground] = useState<null | File>(null);
   const [backgroundBlob, setBackgroundBlob] = useState<string | Blob>("");
 
-  const [error, setError] = useState<string | null>(null);
-  const [isLoading, setisLoading] = useState<boolean>(false);
-  const [success, setSuccess] = useState<string | null>(null);
-  const [vatError, setVatError] = useState<string | null>(null);
-  const [phoneError, setPhoneError] = useState<string | null>(null);
-
   const [isLinksFormVisible, setLinksFormVisible] = useState<boolean>(false);
   const [isPaypalFormVisible, setPaypalFormVisible] = useState<boolean>(false);
   const [isStripeFormVisible, setStripeFormVisible] = useState<boolean>(false);
 
-  // Fetch data from
+  const [error, setError] = useState<string | null>(null);
+  const [isLoading, setisLoading] = useState<boolean>(false);
+  const [success, setSuccess] = useState<string | null>(null);
+
+  // Fetch data from API
   useEffect(() => {
     const fetchData = async () => {
       try {
         const res = await axios.get(`/api/v1/restaurants/user/${_id}`);
         setRestaurant(res.data);
-        setVatNum(res.data.vatNum);
-        setUserData(res.data.userId);
         setPhoneNum(res.data.userId.phone);
+        setUserData({
+          ...res.data.userId,
+          vatNum: res.data.vatNum,
+          vatPercentage: res.data.vatPercentage,
+        });
       } catch (err) {
         console.log(err);
         setError("Something went wrong on fetch profile data!");
@@ -58,7 +58,7 @@ export const ProfileForm = () => {
   }, [_id]);
 
   // Inputs validation
-  type Props = yup.InferType<typeof updateUserSchema>;
+  type Props = yup.InferType<typeof updateProfileSchema>;
 
   const {
     reset,
@@ -68,7 +68,7 @@ export const ProfileForm = () => {
   } = useForm<Props>({
     defaultValues: userData!,
 
-    resolver: yupResolver(updateUserSchema),
+    resolver: yupResolver(updateProfileSchema),
   });
 
   // Reset user data for validation
@@ -80,8 +80,7 @@ export const ProfileForm = () => {
   const editProfile = async (data: UserProps) => {
     setError(null);
     setSuccess(null);
-    if (!vatNum) return setVatError("VAT number required");
-    if (!phoneNum) return setPhoneError("Phone number required");
+    if (!phoneNum) return setError("Phone number required");
 
     setisLoading(true);
     delete data.confirmPassword;
@@ -126,11 +125,13 @@ export const ProfileForm = () => {
         );
       }
 
+      // Update restaurant data
       await axios.put(
         `/api/v1/restaurants`,
         {
+          vatNum: data.vatNum,
+          vatPercentage: data.vatPercentage,
           logo: logoUploadRes?.data.url,
-          vatNum,
           background: backgroundUploadRes?.data.url,
         },
         {
@@ -144,24 +145,24 @@ export const ProfileForm = () => {
       dispatch(updateUsername(data.firstName));
       setSuccess("Profile updated successfully!");
     } catch (err: any) {
-      setisLoading(false);
-      setSuccess(null);
-      if (err.response.status === 409) {
-        setError("Email is already used.");
-      } else {
-        setError("Somthing went wrong!");
-      }
       console.log(err);
+      setSuccess(null);
+      setisLoading(false);
+
+      if (err.response.status === 409) {
+        setError("Email is already used");
+      } else {
+        setError("Something went wrong!");
+      }
     }
   };
 
   return (
     <>
-      {error && (
-        <span className="error color-error  d-block mt-4 text-center fs-3">
-          {error}
-        </span>
-      )}
+      <span className="error color-error  d-block mt-4 text-center fs-3">
+        {error}
+      </span>
+
       {success && (
         <span className="font-bold color-green  d-block mt-4 text-center fs-3">
           {success}
@@ -253,10 +254,9 @@ export const ProfileForm = () => {
                 value={String(userData?.phone)}
                 onChange={(value) => {
                   setPhoneNum(value);
-                  setPhoneError(null);
+                  setError(null);
                 }}
               />
-              {phoneError && <span className="error">{phoneError}</span>}
             </div>
             <div className="input-group">
               <label htmlFor="email">Email</label>
@@ -336,16 +336,19 @@ export const ProfileForm = () => {
           <div className="input-group">
             <label htmlFor="vat">VAT number</label>
 
+            <input id="vatNum" type="text" {...register("vatNum")} />
+            <span className="error">{errors?.vatNum?.message}</span>
+          </div>
+          <div className="input-group">
+            <label htmlFor="vat">VAT percentage</label>
+
             <input
               id="vat"
-              type="text"
-              value={vatNum!}
-              onChange={(e) => {
-                setVatNum(e.target.value);
-                setVatError(null);
-              }}
+              type="number"
+              max={100}
+              {...register("vatPercentage")}
             />
-            {vatError && <span className="error">{vatError}</span>}
+            <span className="error">{errors?.vatPercentage?.message}</span>
           </div>
           <label>Social links</label>
           <div
@@ -381,12 +384,12 @@ export const ProfileForm = () => {
               Update paypal keys
             </span>
           </div>
-          <label>Crypto credentials</label>
+          {/* <label>Crypto credentials</label>
           <div className="fixed-box cursor-pointer">
             <span className="color-green font-bold fs-2  ">
               Update crypto keys
             </span>
-          </div>
+          </div> */}
         </div>
       </div>
     </>

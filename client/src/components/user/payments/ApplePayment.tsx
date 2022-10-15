@@ -1,22 +1,20 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { getTip } from "../../../redux/tip.slice";
+import { useAppSelector } from "../../../redux/store.hooks";
 import {
   PaymentRequestButtonElement,
   useStripe,
   useElements,
 } from "@stripe/react-stripe-js";
 
-export const ApplePayment = ({
-  totalPrice,
-  tip,
-}: {
-  totalPrice: number;
-  tip: number | null;
-}) => {
+export const ApplePayment = ({ totalPrice }: { totalPrice: number }) => {
   const stripe = useStripe();
   const elements = useElements();
   const navigate = useNavigate();
+  const tip = useAppSelector(getTip);
+
   const [error, setError] = useState<any | null>(null);
   const [clientSecret, setClientSecret] = useState<string>("");
   const [paymentRequest, setPaymentRequest] = useState<any>();
@@ -82,7 +80,7 @@ export const ApplePayment = ({
   return (
     <div className="apple-payment">
       <div className="apple-payment-container">
-        {error && <div className="error">{error}</div>}
+        <div className="error">{error}</div>
         {paymentRequest && (
           <PaymentRequestButtonElement options={{ paymentRequest }} />
         )}

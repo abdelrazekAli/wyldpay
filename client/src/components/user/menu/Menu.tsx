@@ -19,7 +19,6 @@ export const Menu = () => {
   const { restId } = useParams();
   const dispatch = useAppDispatch();
   const restaurant = useAppSelector(getRestaurantState);
-
   const [items, setItems] = useState<ProductType[]>([]);
 
   const [error, setError] = useState<boolean>(false);
@@ -27,7 +26,7 @@ export const Menu = () => {
 
   useEffect(() => {
     // Fetch restaurant data
-    dispatch(fetchRestaurant());
+    dispatch(fetchRestaurant(restId!));
 
     // Fetch items
     const fetchItems = async () => {

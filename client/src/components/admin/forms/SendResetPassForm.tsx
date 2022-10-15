@@ -10,10 +10,10 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { sendResetPassSchema } from "../../../validations/sendResetPassSchema";
 
 export const SendResetPassForm = () => {
+  const email = useLocation().state;
   const [error, setError] = useState<string | null>(null);
   const [hideModal, setHideModal] = useState<boolean>(true);
   const [isLoading, setisLoading] = useState<boolean>(false);
-  const email = useLocation().state;
 
   // Inputs validation
   type Props = yup.InferType<typeof sendResetPassSchema>;
@@ -92,9 +92,7 @@ export const SendResetPassForm = () => {
               </button>
             </div>
           </form>
-          {error && (
-            <span className="error d-block text-center fs-2">{error}</span>
-          )}
+          <span className="error d-block text-center fs-2">{error}</span>
         </div>
       </div>
     </>

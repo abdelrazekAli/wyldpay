@@ -2,22 +2,21 @@ import axios from "axios";
 import { AddItemForm } from "./AddItemForm";
 import { ItemBox } from "../layouts/ItemBox";
 import "../../../styles/forms/foodsForm.sass";
-import { ItemType } from "../../../types/Item";
+import { Item } from "../../../types/Item";
 import { Key, useEffect, useState } from "react";
 import { MainCategoryType } from "../../../types/Category";
 import { StepperProps } from "../../../types/StepperProps";
 
 export const ItemsForm = ({ onClick }: StepperProps) => {
-  const [error, setError] = useState<string | null>(null);
-  const [isFormVisible, setFormVisible] = useState<boolean>(false);
   const [categorySelected, setCategorySelected] =
     useState<MainCategoryType | null>(null);
 
+  const [items, setItems] = useState<Item[]>([]);
   const restaurantId = localStorage.getItem("restaurantId")!;
-
   const categories = JSON.parse(localStorage.getItem("categories")!);
 
-  const [items, setItems] = useState<ItemType[]>([]);
+  const [error, setError] = useState<string | null>(null);
+  const [isFormVisible, setFormVisible] = useState<boolean>(false);
 
   // Fetch items
   useEffect(() => {

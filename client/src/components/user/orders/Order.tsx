@@ -1,16 +1,13 @@
-import { useState } from "react";
 import { OrderTip } from "./OrderTip";
 import { OrderSummary } from "./OrderSummary";
 import "../../../styles/menu/orderSummary.sass";
 import { OrderDiscount } from "./OrderDiscount";
 import { getTip } from "../../../redux/tip.slice";
 import { SummaryItem } from "../items/SummaryItem";
-import { getSymbol } from "../../../utils/currencySymbol";
 import { PaymentWrapper } from "../payments/PaymentWrapper";
 import { useAppSelector } from "../../../redux/store.hooks";
 import { getDiscount } from "../../../redux/discount.slice";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { getRestaurantCurrency } from "../../../redux/restaurant.slice";
 import { getCartProducts, getTotalPrice } from "../../../redux/cart.slice";
 
 export const Order = () => {
@@ -22,8 +19,8 @@ export const Order = () => {
   const discount = useAppSelector(getDiscount);
   let subPrice = useAppSelector(getTotalPrice);
   const cartProducts = useAppSelector(getCartProducts);
-  const currency = useAppSelector(getRestaurantCurrency);
 
+  // Calc total price
   const totalPrice = () => {
     // Check tips
     tip && tip !== 0 && (subPrice += subPrice * (tip / 100));
@@ -35,6 +32,7 @@ export const Order = () => {
         : discount.value < subPrice
         ? (subPrice -= discount.value)
         : (subPrice = 0));
+
     return +subPrice.toFixed(2);
   };
 
@@ -56,10 +54,10 @@ export const Order = () => {
           {cartProducts.map((product, i) => (
             <SummaryItem product={product} key={i} />
           ))}
-          <OrderSummary subPrice={subPrice} currency={getSymbol(currency)} />
+          <OrderSummary subPrice={subPrice} />
           <OrderTip subPrice={subPrice} />
           <OrderDiscount />
-          <PaymentWrapper totalPrice={totalPrice()} tip={tip} />
+          <PaymentWrapper totalPrice={totalPrice()} />
         </>
       ) : (
         <div className="no-items">No order items added yet</div>

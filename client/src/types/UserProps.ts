@@ -8,6 +8,8 @@ export type UserProps = {
   city: string;
   state: string;
   zip: string;
+  vatNum?: string;
+  vatPercentage?: number;
   password?: string;
   confirmPassword?: string;
   socialLinks?: { name: string; value: string }[];

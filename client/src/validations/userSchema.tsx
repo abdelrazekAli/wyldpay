@@ -45,7 +45,7 @@ export const userSchema = yup.object({
     .oneOf([yup.ref("password"), null], "Passwords not the same"),
 });
 
-export const updateUserSchema = yup.object({
+export const updateProfileSchema = yup.object({
   firstName: yup.string().trim().required("First name required").max(255),
 
   lastName: yup.string().trim().required("Last name required").max(255),
@@ -70,6 +70,12 @@ export const updateUserSchema = yup.object({
     .required("Business address required")
     .min(2, "Please enter a valid business address")
     .max(1000),
+
+  vatNum: yup.string().trim().required("Vat number required").max(255),
+  vatPercentage: yup
+    .number()
+    .typeError("Please enter a valid Vat percentage example: 19")
+    .max(100),
 
   city: yup.string().trim().required("City required").max(255),
 
