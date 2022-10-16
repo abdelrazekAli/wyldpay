@@ -1,8 +1,8 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getTip } from "../../../redux/tip.slice";
-import { useAppSelector } from "../../../redux/store.hooks";
+import { getTip } from "../../../../redux/tip.slice";
+import { useAppSelector } from "../../../../redux/store.hooks";
 import {
   PaymentRequestButtonElement,
   useStripe,

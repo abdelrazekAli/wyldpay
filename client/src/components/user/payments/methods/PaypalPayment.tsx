@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAppSelector } from "../../../redux/store.hooks";
-import { getTip } from "../../../redux/tip.slice";
+import { getTip } from "../../../../redux/tip.slice";
+import { useAppSelector } from "../../../../redux/store.hooks";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 
 export const PaypalPayment = ({ totalPrice }: { totalPrice: number }) => {

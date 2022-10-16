@@ -164,7 +164,7 @@ export const ProfileForm = () => {
       </span>
 
       {success && (
-        <span className="font-bold color-green  d-block mt-4 text-center fs-3">
+        <span className="font-bold color-main  d-block mt-4 text-center fs-3">
           {success}
         </span>
       )}
@@ -268,7 +268,7 @@ export const ProfileForm = () => {
             <Link
               to={"/admin/send-reset-pass"}
               state={userData?.email}
-              className="color-green font-bold fs-2 cursor-pointer"
+              className="color-main font-bold fs-2 cursor-pointer"
             >
               <div className="fixed-box">Send reset link</div>
             </Link>
@@ -355,14 +355,14 @@ export const ProfileForm = () => {
             className="fixed-box cursor-pointer"
             onClick={() => setLinksFormVisible(!isLinksFormVisible)}
           >
-            <span className="color-green font-bold fs-2  ">
+            <span className="color-main font-bold fs-2  ">
               Update social links
             </span>
           </div>
           <label>Bank</label>
           <Link
             to={"/admin/bank"}
-            className="color-green font-bold fs-2 cursor-pointer"
+            className="color-main font-bold fs-2 cursor-pointer"
           >
             <div className="fixed-box">Update bank info</div>
           </Link>
@@ -371,7 +371,7 @@ export const ProfileForm = () => {
             className="fixed-box cursor-pointer"
             onClick={() => setStripeFormVisible(!isStripeFormVisible)}
           >
-            <span className="color-green font-bold fs-2  ">
+            <span className="color-main font-bold fs-2  ">
               Update stripe keys
             </span>
           </div>
@@ -380,13 +380,13 @@ export const ProfileForm = () => {
             className="fixed-box cursor-pointer"
             onClick={() => setPaypalFormVisible(!isPaypalFormVisible)}
           >
-            <span className="color-green font-bold fs-2  ">
+            <span className="color-main font-bold fs-2  ">
               Update paypal keys
             </span>
           </div>
           {/* <label>Crypto credentials</label>
           <div className="fixed-box cursor-pointer">
-            <span className="color-green font-bold fs-2  ">
+            <span className="color-main font-bold fs-2  ">
               Update crypto keys
             </span>
           </div> */}

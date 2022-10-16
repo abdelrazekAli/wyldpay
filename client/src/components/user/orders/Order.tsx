@@ -4,9 +4,9 @@ import "../../../styles/menu/orderSummary.sass";
 import { OrderDiscount } from "./OrderDiscount";
 import { getTip } from "../../../redux/tip.slice";
 import { SummaryItem } from "../items/SummaryItem";
-import { PaymentWrapper } from "../payments/PaymentWrapper";
 import { useAppSelector } from "../../../redux/store.hooks";
 import { getDiscount } from "../../../redux/discount.slice";
+import { PaymentsWrapper } from "../payments/PaymentsWrapper";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { getCartProducts, getTotalPrice } from "../../../redux/cart.slice";
 
@@ -19,6 +19,9 @@ export const Order = () => {
   const discount = useAppSelector(getDiscount);
   let subPrice = useAppSelector(getTotalPrice);
   const cartProducts = useAppSelector(getCartProducts);
+
+  // Add VAT percentage
+  subPrice = +(subPrice + subPrice * 0.19).toFixed(2);
 
   // Calc total price
   const totalPrice = () => {
@@ -57,7 +60,7 @@ export const Order = () => {
           <OrderSummary subPrice={subPrice} />
           <OrderTip subPrice={subPrice} />
           <OrderDiscount />
-          <PaymentWrapper totalPrice={totalPrice()} />
+          <PaymentsWrapper totalPrice={totalPrice()} />
         </>
       ) : (
         <div className="no-items">No order items added yet</div>

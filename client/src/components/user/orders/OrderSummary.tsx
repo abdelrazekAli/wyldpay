@@ -5,9 +5,6 @@ import { getRestaurantCurrency } from "../../../redux/restaurant.slice";
 export const OrderSummary = ({ subPrice }: { subPrice: number }) => {
   const currency = useAppSelector(getRestaurantCurrency);
 
-  // Add 19% VAT
-  subPrice = +(subPrice + subPrice * 0.19).toFixed(2);
-
   return (
     <div className="order-summary">
       <div className="order-item-icon-wrapper">

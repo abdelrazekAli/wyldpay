@@ -11,8 +11,8 @@ import {
 export const bankRouter = Router();
 
 // Get bank by user id
-bankRouter.get("/", verifyAuth, async (req: Request, res: Response) => {
-  const userId = req.user._id;
+bankRouter.get("/:userId", async (req: Request, res: Response) => {
+  const { userId } = req.params;
 
   try {
     // Check user id

@@ -19,6 +19,7 @@ export const Menu = () => {
   const { restId } = useParams();
   const dispatch = useAppDispatch();
   const restaurant = useAppSelector(getRestaurantState);
+
   const [items, setItems] = useState<ProductType[]>([]);
 
   const [error, setError] = useState<boolean>(false);

@@ -1,10 +1,10 @@
 import axios from "axios";
-import "../../../styles/payments.sass";
-import { Modal } from "../layouts/Modal";
+import "../../../../styles/payments.sass";
+import { Modal } from "../../layouts/Modal";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getTip } from "../../../redux/tip.slice";
-import { useAppSelector } from "../../../redux/store.hooks";
+import { getTip } from "../../../../redux/tip.slice";
+import { useAppSelector } from "../../../../redux/store.hooks";
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 
 export const StripePayment = ({ totalPrice }: { totalPrice: number }) => {

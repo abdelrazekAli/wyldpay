@@ -105,8 +105,8 @@ export const validateBank = (data: object) => {
 export const validatePaymentkeys = (data: object) => {
   const schema = joi.object({
     name: joi.string().required().valid("stripe", "paypal"),
-    publicKey: joi.string().required().max(1000),
-    secretKey: joi.string().required().max(1000),
+    publicKey: joi.string().required().allow("").max(1000),
+    secretKey: joi.string().required().allow("").max(1000),
   });
   return schema.validate(data).error;
 };
@@ -183,7 +183,7 @@ export const checkRestId = async (id: string) => {
     if (Types.ObjectId.isValid(id)) {
       let restaurant = await RestaurantModel.findById(id).populate({
         path: "userId",
-        select: "-_id -password -updatedAt -createdAt -__v",
+        select: " -password -updatedAt -createdAt -__v",
       });
       return restaurant === null
         ? `There is no restaurant with this id: ${id}`

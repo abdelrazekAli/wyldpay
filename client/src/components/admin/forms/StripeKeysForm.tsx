@@ -1,29 +1,54 @@
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { getUser } from "../../../redux/user.slice";
+import { CircularProgress } from "@material-ui/core";
 import { useAppSelector } from "../../../redux/store.hooks";
+import { PaymentMethod } from "../../../types/PaymentMethod";
 
 export const StripeKeysForm = ({ hideForm }: { hideForm: () => void }) => {
-  const { accessToken } = useAppSelector(getUser);
-  const [publicKey, setPublicKey] = useState<string | null>(null);
-  const [secretKey, setSecretKey] = useState<string | null>(null);
+  const { _id, accessToken } = useAppSelector(getUser);
 
+  const [paymentsMethod, setPaymentsMethod] = useState<PaymentMethod>({
+    name: "stripe",
+    publicKey: "",
+    secretKey: "",
+  });
+
+  const [isLoading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const [isLoading, setisLoading] = useState<boolean>(false);
+  const [success, setSuccess] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchMethods = async () => {
+      try {
+        const res = await axios.get(`/api/v1/banks/${_id}`);
+        setPaymentsMethod(
+          res.data.paymentsMethods.filter(
+            (method: PaymentMethod) => method.name === "stripe"
+          )[0]
+        );
+        setLoading(false);
+      } catch (err) {
+        setLoading(false);
+        setError("Something went wrong!");
+      }
+    };
+    fetchMethods();
+  }, [_id]);
 
   // Handle update payment keys
   const editPaymentKeys = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
     setError(null);
-    setisLoading(true);
+    setLoading(true);
 
     try {
       await axios.put(
         "/api/v1/banks/methods",
         {
           name: "stripe",
-          publicKey: publicKey,
-          secretKey: secretKey,
+          publicKey: paymentsMethod?.publicKey,
+          secretKey: paymentsMethod?.secretKey,
         },
         {
           headers: {
@@ -31,11 +56,11 @@ export const StripeKeysForm = ({ hideForm }: { hideForm: () => void }) => {
           },
         }
       );
-      hideForm();
-      setisLoading(false);
+      setSuccess("Keys updated successfully");
+      setLoading(false);
     } catch (err) {
       console.log(err);
-      setisLoading(false);
+      setLoading(false);
       setError("Somthing went wrong!");
     }
   };
@@ -52,27 +77,48 @@ export const StripeKeysForm = ({ hideForm }: { hideForm: () => void }) => {
               <img src="../../assets/images/stripe-logo.png" alt="" />
             </div>
           </div>
-          <form onSubmit={editPaymentKeys}>
-            <input
-              type="text"
-              placeholder="Public key"
-              onChange={(e) => setPublicKey(e.target.value)}
-            />
-            <input
-              type="password"
-              placeholder="Secret key"
-              onChange={(e) => setSecretKey(e.target.value)}
-            />
-            <button
-              disabled={!publicKey || !secretKey}
-              type="submit"
-              className="btn"
-            >
-              {isLoading ? "Loading..." : "Save"}
-            </button>
-          </form>
+          {!isLoading ? (
+            <form onSubmit={editPaymentKeys} autoComplete="off">
+              <input
+                id="publicKey"
+                name="publicKey"
+                type="text"
+                placeholder="Public key"
+                value={paymentsMethod?.publicKey}
+                autoComplete="off"
+                onChange={(e) =>
+                  setPaymentsMethod({
+                    ...paymentsMethod,
+                    publicKey: e.target.value.trim(),
+                  })
+                }
+              />
+              <input
+                id="secretKey"
+                name="secretKey"
+                type="password"
+                placeholder="Secret key"
+                value={paymentsMethod?.secretKey}
+                autoComplete="off"
+                onChange={(e) =>
+                  setPaymentsMethod({
+                    ...paymentsMethod,
+                    secretKey: e.target.value.trim(),
+                  })
+                }
+              />
+              <button type="submit" className="btn">
+                {isLoading ? "Loading..." : "Save"}
+              </button>
+            </form>
+          ) : (
+            <div className="p-5 text-center">
+              <CircularProgress color="inherit" size="25px" />
+            </div>
+          )}
         </div>
-        <span className="color-error text-center fs-2 my-1">{error}</span>
+        <span className="color-error text-center fs-2 mt-1">{error}</span>
+        <span className="color-main text-center fs-2 mt-1">{success}</span>
       </div>
     </div>
   );

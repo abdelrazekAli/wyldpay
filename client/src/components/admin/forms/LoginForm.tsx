@@ -95,7 +95,7 @@ export const LoginForm = () => {
             </div>
             <Link
               to={"/admin/send-reset-pass"}
-              className="fs-2 color-green m-half"
+              className="fs-2 color-main m-half"
             >
               Forgot password?
             </Link>

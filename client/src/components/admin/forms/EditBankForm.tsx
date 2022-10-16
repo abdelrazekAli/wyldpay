@@ -11,22 +11,18 @@ import { paymentSchema } from "../../../validations/paymentSchema";
 
 export const EditBankForm = () => {
   const [check, setCheck] = useState<boolean>();
-  const { accessToken } = useAppSelector(getUser);
+  const { _id, accessToken } = useAppSelector(getUser);
   const [bankData, setBankData] = useState<BankProps | null>(null);
 
   const [error, setError] = useState<string | null>(null);
-  const [isLoading, setisLoading] = useState<boolean>(false);
+  const [isLoading, setLoading] = useState<boolean>(false);
   const [success, setSuccess] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchItems = async () => {
       // Fetch bank data
       try {
-        const res = await axios.get(`/api/v1/banks`, {
-          headers: {
-            "auth-token": accessToken,
-          },
-        });
+        const res = await axios.get(`/api/v1/banks/${_id}`);
 
         setBankData(res.data);
         setCheck(res.data.customerFees);
@@ -43,7 +39,7 @@ export const EditBankForm = () => {
     try {
       setError(null);
       setSuccess(null);
-      setisLoading(true);
+      setLoading(true);
 
       delete data.paymentsMethods;
 
@@ -61,11 +57,11 @@ export const EditBankForm = () => {
       );
 
       setSuccess("Bank info updated successfully!");
-      setisLoading(false);
+      setLoading(false);
     } catch (err) {
       console.log(err);
       setSuccess(null);
-      setisLoading(false);
+      setLoading(false);
       setError("Somthing went wrong!");
     }
   };
@@ -94,7 +90,7 @@ export const EditBankForm = () => {
         </span>
       )}
       {success && (
-        <span className="mb-1 font-bold color-green  d-block mt-4 text-center fs-3">
+        <span className="mb-1 font-bold color-main  d-block mt-4 text-center fs-3">
           {success}
         </span>
       )}

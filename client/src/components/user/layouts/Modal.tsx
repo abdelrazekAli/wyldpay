@@ -59,7 +59,7 @@ export const Modal = ({ status, enableHide }: ModalPropsType) => {
             <h3>All done!</h3>
             <p>
               You can login to your dashboard now from{" "}
-              <Link to={"/admin/login"} className="color-green font-bold">
+              <Link to={"/admin/login"} className="color-main font-bold">
                 here
               </Link>
             </p>
@@ -74,7 +74,7 @@ export const Modal = ({ status, enableHide }: ModalPropsType) => {
             <h3>Password reset successfully!</h3>
             <p>
               You can{" "}
-              <Link to={"/admin/login"} className="color-green font-bold">
+              <Link to={"/admin/login"} className="color-main font-bold">
                 login now
               </Link>{" "}
               with your new password

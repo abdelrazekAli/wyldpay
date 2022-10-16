@@ -16,8 +16,12 @@ const initialState = {
 export const fetchRestaurant = createAsyncThunk(
   "restaurant/fetchByIdStatus",
   async (restaurantId: string) => {
-    const response = await axios.get(`/api/v1/restaurants/${restaurantId}`);
-    return response.data;
+    try {
+      const response = await axios.get(`/api/v1/restaurants/${restaurantId}`);
+      return response.data;
+    } catch (err) {
+      console.log(err);
+    }
   }
 );
 

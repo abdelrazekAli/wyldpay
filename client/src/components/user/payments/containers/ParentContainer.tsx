@@ -1,38 +1,24 @@
 import { useState } from "react";
-import { ApplePayment } from "./ApplePayment";
 import { loadStripe } from "@stripe/stripe-js";
-import { PaypalPayment } from "./PaypalPayment";
-import { StripePayment } from "./StripePayment";
-import { getTip } from "../../../redux/tip.slice";
 import { Elements } from "@stripe/react-stripe-js";
-import { getSymbol } from "../../../utils/currencySymbol";
-import { useAppSelector } from "../../../redux/store.hooks";
-import { getRestaurantCurrency } from "../../../redux/restaurant.slice";
+import { ApplePayment } from "../methods/ApplePayment";
+import { PaypalPayment } from "../methods/PaypalPayment";
+import { StripePayment } from "../methods/StripePayment";
+import { getSymbol } from "../../../../utils/currencySymbol";
+import { useAppSelector } from "../../../../redux/store.hooks";
+import { getRestaurantState } from "../../../../redux/restaurant.slice";
 
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_CLIENT_KEY!);
 
-export const PaymentWrapper = ({ totalPrice }: { totalPrice: number }) => {
-  const tip = useAppSelector(getTip);
-  const currency = useAppSelector(getRestaurantCurrency);
+export const ParentContainer = ({ totalPrice }: { totalPrice: number }) => {
+  const restaurant = useAppSelector(getRestaurantState);
   const [paymentSelected, setPaymentSelected] = useState<number>(0);
   const [isDropDownVisible, setDropDownVisible] = useState<boolean>(false);
 
-  // Add 19% VAT
-  totalPrice = +(totalPrice + totalPrice * 0.19).toFixed(2);
-
   return (
-    <div className="order-btn-wrapper">
+    <>
       <div className="row">
         <div className="payment">
-          {paymentSelected === 3 && (
-            <div className="payment-icon">
-              <img
-                src="../../../assets/images/apple-pay.svg"
-                alt=""
-                width={40}
-              />
-            </div>
-          )}
           {paymentSelected === 0 && (
             <div className="payment-icon">
               <img
@@ -53,9 +39,18 @@ export const PaymentWrapper = ({ totalPrice }: { totalPrice: number }) => {
           )}
           {paymentSelected === 2 && (
             <div className="payment-icon">
-              <img src="../../../assets/images/crypto-sm.png" alt="" />
+              <img
+                src="../../../assets/images/apple-pay.svg"
+                alt=""
+                width={40}
+              />
             </div>
           )}
+          {/* {paymentSelected === 3 && (
+              <div className="payment-icon">
+              <img src="../../../assets/images/crypto-sm.png" alt="" />
+              </div>
+     )} */}
           <div className="options">
             <div>Payment</div>
             <div className="dropdown">
@@ -65,8 +60,8 @@ export const PaymentWrapper = ({ totalPrice }: { totalPrice: number }) => {
               >
                 {paymentSelected === 0 && "Visa"}
                 {paymentSelected === 1 && "PayPal"}
-                {paymentSelected === 2 && "Crypto"}
-                {paymentSelected === 3 && "Apple pay"}
+                {paymentSelected === 2 && "Apple pay"}
+                {/* {paymentSelected === 3 && "Crypto"} */}
                 <i className="fa fa-caret-down"></i>
               </button>
               {isDropDownVisible && (
@@ -76,8 +71,9 @@ export const PaymentWrapper = ({ totalPrice }: { totalPrice: number }) => {
                 >
                   <span onClick={() => setPaymentSelected(0)}>Visa</span>
                   <span onClick={() => setPaymentSelected(1)}>PayPal</span>
-                  <span onClick={() => setPaymentSelected(2)}>Crypto</span>
-                  <span onClick={() => setPaymentSelected(3)}>Apple pay</span>
+
+                  <span onClick={() => setPaymentSelected(2)}>Apple pay</span>
+                  {/* <span onClick={() => setPaymentSelected(3)}>Crypto</span> */}
                 </div>
               )}
             </div>
@@ -86,16 +82,11 @@ export const PaymentWrapper = ({ totalPrice }: { totalPrice: number }) => {
         <div className="total-price">
           Total price:{" "}
           <span>
-            {getSymbol(currency)}
-            {totalPrice}
+            {getSymbol(restaurant.data?.currency!)}
+            {totalPrice.toFixed(2)}
           </span>
         </div>
       </div>
-      {paymentSelected === 3 && (
-        <Elements stripe={stripePromise}>
-          <ApplePayment totalPrice={totalPrice} />
-        </Elements>
-      )}
       {paymentSelected === 0 && (
         <Elements stripe={stripePromise}>
           <StripePayment totalPrice={totalPrice} />
@@ -103,10 +94,15 @@ export const PaymentWrapper = ({ totalPrice }: { totalPrice: number }) => {
       )}
       {paymentSelected === 1 && <PaypalPayment totalPrice={totalPrice} />}
       {paymentSelected === 2 && (
-        <button className="bg-none">
-          <div className="order-btn">Order now</div>
-        </button>
+        <Elements stripe={stripePromise}>
+          <ApplePayment totalPrice={totalPrice} />
+        </Elements>
       )}
-    </div>
+      {/* {paymentSelected === 2 && (
+<button className="bg-none">
+<div className="order-btn">Order now</div>
+</button>
+)} */}
+    </>
   );
 };
