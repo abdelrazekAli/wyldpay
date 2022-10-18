@@ -13,8 +13,6 @@ export const Success = () => {
   const [isLoading, setisLoading] = useState<boolean>(true);
   const [restaurant, setRestaurant] = useState<RestaurantProps>();
 
-  // const tip = useLocation().state as number | null;
-
   useEffect(() => {
     // Set scroll to top
     window.scrollTo(0, 0);
