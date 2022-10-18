@@ -6,7 +6,22 @@ import { verifyAuth } from "../middlewares/token.auth.middleware";
 
 export const orderRouter = Router();
 
-// Get all restaurant orders by restaurant id
+// Get order by id
+orderRouter.get("/:orderId", async (req: Request, res: Response) => {
+  const { orderId } = req.params;
+
+  try {
+    const order = await OrderModel.findById(orderId);
+
+    // Response
+    res.status(200).json(order);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json(err);
+  }
+});
+
+// Get all orders by restaurant id
 orderRouter.get("/", verifyAuth, async (req: Request, res: Response) => {
   const { restaurantId } = req.user;
 
@@ -20,7 +35,7 @@ orderRouter.get("/", verifyAuth, async (req: Request, res: Response) => {
         restId: restaurantId,
       },
       { __v: 0 }
-    );
+    ).sort({ createdAt: -1 });
 
     // Response
     res.status(200).json(orders);

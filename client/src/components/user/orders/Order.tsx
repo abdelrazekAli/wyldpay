@@ -1,12 +1,12 @@
 import { OrderTip } from "./OrderTip";
 import { OrderSummary } from "./OrderSummary";
-import "../../../styles/menu/orderSummary.sass";
 import { OrderDiscount } from "./OrderDiscount";
 import { getTip } from "../../../redux/tip.slice";
 import { SummaryItem } from "../items/SummaryItem";
 import { useAppSelector } from "../../../redux/store.hooks";
 import { getDiscount } from "../../../redux/discount.slice";
 import { PaymentsWrapper } from "../payments/PaymentsWrapper";
+import { getRestaurantState } from "../../../redux/restaurant.slice";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { getCartProducts, getTotalPrice } from "../../../redux/cart.slice";
 
@@ -14,6 +14,7 @@ export const Order = () => {
   const navigate = useNavigate();
   const { tableId, restId } = useParams();
   const orderNote = useLocation().state as string;
+  const restaurant = useAppSelector(getRestaurantState);
 
   const tip = useAppSelector(getTip);
   const discount = useAppSelector(getDiscount);
@@ -21,12 +22,16 @@ export const Order = () => {
   const cartProducts = useAppSelector(getCartProducts);
 
   // Add VAT percentage
-  subPrice = +(subPrice + subPrice * 0.19).toFixed(2);
+  const vatAmount = subPrice * (restaurant.data?.vatPercentage! / 100);
+
+  subPrice = +(subPrice + vatAmount).toFixed(2);
+
+  const tipAmount = subPrice * (tip! / 100);
 
   // Calc total price
   const totalPrice = () => {
     // Check tips
-    tip && tip !== 0 && (subPrice += subPrice * (tip / 100));
+    tip && tip !== 0 && (subPrice += tipAmount);
 
     // Check discount
     discount &&
@@ -57,10 +62,10 @@ export const Order = () => {
           {cartProducts.map((product, i) => (
             <SummaryItem product={product} key={i} />
           ))}
-          <OrderSummary subPrice={subPrice} />
+          <OrderSummary subPrice={subPrice} vatAmount={vatAmount} />
           <OrderTip subPrice={subPrice} />
           <OrderDiscount />
-          <PaymentsWrapper totalPrice={totalPrice()} />
+          <PaymentsWrapper totalPrice={totalPrice()} orderNote={orderNote} />
         </>
       ) : (
         <div className="no-items">No order items added yet</div>

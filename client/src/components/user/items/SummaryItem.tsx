@@ -15,7 +15,8 @@ export const SummaryItem = ({ product }: ProductPropType) => {
       </div>
       <div className="order-item-texts">
         <h2 className="capitalize">
-          {product.quantity!}*{product.name}
+          {product.quantity!} <span className="lowercase">x</span>{" "}
+          {product.name}
         </h2>
       </div>
       <div className="counters-price-wrapper">

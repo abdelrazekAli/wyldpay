@@ -9,7 +9,6 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 // Import pages
 import { QR } from "./pages/admin/QR";
-import { OrderDetails } from "./pages/user/OrderDetails";
 import { Login } from "./pages/admin/Login";
 import { Signup } from "./pages/admin/Signup";
 import { Orders } from "./pages/admin/Orders";
@@ -22,6 +21,7 @@ import { EditBank } from "./pages/admin/EditBank";
 import { Dashboard } from "./pages/admin/Dashboard";
 import { ResetPass } from "./pages/admin/ResetPass";
 import { ItemDetails } from "./pages/user/ItemDetails";
+import { OrderDetails } from "./pages/user/OrderDetails";
 import { OrderSuccess } from "./pages/user/OrderSuccess";
 import { SendResetPass } from "./pages/admin/SendResetPass";
 
@@ -29,18 +29,13 @@ function AppWraper() {
   const App = () => {
     const user = useAppSelector(getUser);
     useEffect(() => {
-      //check that user account is still activated or not
+      //check if user account is still activated or not
       user && checkUser(user._id);
     }, [user]);
 
     return (
       <BrowserRouter>
         <Routes>
-          <Route
-            path="/admin/reset-pass/:userId/:token"
-            element={<ResetPass />}
-          />
-          <Route path="/admin/send-reset-pass" element={<SendResetPass />} />
           <Route path="/menu/:restId/:tableId" element={<MainMenu />} />
           <Route
             path="/menu/:restId/:tableId/item/:itemId"
@@ -54,9 +49,11 @@ function AppWraper() {
             path="/menu/:restId/:tableId/checkout"
             element={<Checkout />}
           />
+          <Route path="/orders/:restId/:orderId" element={<OrderSuccess />} />
+          <Route path="/admin/send-reset-pass" element={<SendResetPass />} />
           <Route
-            path="/menu/:restId/:tableId/order/success"
-            element={<OrderSuccess />}
+            path="/admin/reset-pass/:userId/:token"
+            element={<ResetPass />}
           />
           {user ? (
             <>

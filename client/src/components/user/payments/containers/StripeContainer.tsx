@@ -9,7 +9,13 @@ import { getRestaurantState } from "../../../../redux/restaurant.slice";
 
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_CLIENT_KEY!);
 
-export const StripeContainer = ({ totalPrice }: { totalPrice: number }) => {
+export const StripeContainer = ({
+  totalPrice,
+  orderNote,
+}: {
+  totalPrice: number;
+  orderNote: string;
+}) => {
   const restaurant = useAppSelector(getRestaurantState);
   const [paymentSelected, setPaymentSelected] = useState<number>(0);
   const [isDropDownVisible, setDropDownVisible] = useState<boolean>(false);
@@ -70,12 +76,12 @@ export const StripeContainer = ({ totalPrice }: { totalPrice: number }) => {
       </div>
       {paymentSelected === 0 && (
         <Elements stripe={stripePromise}>
-          <StripePayment totalPrice={totalPrice} />
+          <StripePayment totalPrice={totalPrice} orderNote={orderNote} />
         </Elements>
       )}
       {paymentSelected === 1 && (
         <Elements stripe={stripePromise}>
-          <ApplePayment totalPrice={totalPrice} />
+          <ApplePayment totalPrice={totalPrice} orderNote={orderNote} />
         </Elements>
       )}
     </>

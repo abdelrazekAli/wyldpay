@@ -1,26 +1,50 @@
-import { useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { Order } from "../../../types/Order";
+import { useParams } from "react-router-dom";
 import "../../../styles/menu/orderSuccess.sass";
-import { getCartProducts, getTotalPrice } from "../../../redux/cart.slice";
-import { useAppSelector } from "../../../redux/store.hooks";
+import { CircularProgress } from "@material-ui/core";
+import { RestaurantProps } from "../../../types/Restaurant";
 import { downloadReceipt } from "../../../utils/orderReceipt";
 
 export const Success = () => {
+  const { restId, orderId } = useParams();
+  const [order, setOrder] = useState<Order>();
+  const [isLoading, setisLoading] = useState<boolean>(true);
+  const [restaurant, setRestaurant] = useState<RestaurantProps>();
+
   // const tip = useLocation().state as number | null;
-  let subPrice = useAppSelector(getTotalPrice).toFixed(2);
-  const cartProducts = useAppSelector(getCartProducts);
 
   useEffect(() => {
     // Set scroll to top
     window.scrollTo(0, 0);
 
-    // Clear localstorage cart
-    localStorage.removeItem("cart");
-  }, []);
+    // Fetch order and restaurant data
+    const fetchData = async () => {
+      try {
+        const orderResponse = await axios.get(`/api/v1/orders/${orderId}`);
+        const restaurantResponse = await axios.get(
+          `/api/v1/restaurants/${restId}`
+        );
+        setOrder(orderResponse.data);
+        setRestaurant(restaurantResponse.data);
+        setisLoading(false);
+      } catch (err) {
+        setisLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [orderId, restId]);
 
   return (
     <>
-      {cartProducts.length > 0 ? (
+      {!isLoading && (!order || !restaurant) ? (
+        <span className="error color-error d-block mt-4 text-center fs-3 mt-5">
+          Something went wrong on fetch your order!
+        </span>
+      ) : null}
+      {!isLoading && order && restaurant ? (
         <div className="order-success">
           <div className="success-icon">
             <img
@@ -33,14 +57,24 @@ export const Success = () => {
           </h1>
           <div className="google-rate">
             <div className="heading-2">Please rate us on Google</div>
-            <div
-              onClick={() =>
-                window.open(
-                  "https://www.google.com/business",
-                  "Google review",
-                  "width=600,height=400"
-                )
+            <a
+              href={
+                restaurant?.userId.socialLinks?.find(
+                  (link) => link.name === "google"
+                )?.value
               }
+              target="_blank"
+              // onClick={() =>
+              //   window.open(
+              //     `${
+              //       restaurant?.userId.socialLinks?.find(
+              //         (link) => link.name === "google"
+              //       )?.value
+              //     }`,
+              //     "Google review",
+              //     "width=800,height=600"
+              //   )
+              // }
               className="rate-wrapper"
             >
               <div className="text">
@@ -50,34 +84,69 @@ export const Success = () => {
               <div className="icon">
                 <img src="../../../../assets/images/open-right.svg" alt="" />
               </div>
-            </div>
+            </a>
           </div>
           <div className="social-links">
             <div className="heading-2">We're on social media</div>
             <div className="links">
-              <a href={"https://instagram.com"} className="link">
+              <a
+                href={
+                  restaurant?.userId.socialLinks?.find(
+                    (link) => link.name === "instagram"
+                  )?.value
+                }
+                target="_blank"
+                className="link"
+              >
                 <img src="../../../../assets/images/insta.svg" alt="" />
               </a>
-              <a href={"https://telegram.org"} className="link">
+              <a
+                href={
+                  restaurant?.userId.socialLinks?.find(
+                    (link) => link.name === "telegram"
+                  )?.value
+                }
+                target="_blank"
+                className="link"
+              >
                 <img src="../../../../assets/images/telegram.svg" alt="" />
               </a>
-              <a href={"https://youtube.com"} className="link">
+              <a
+                href={
+                  restaurant?.userId.socialLinks?.find(
+                    (link) => link.name === "youtube"
+                  )?.value
+                }
+                target="_blank"
+                className="link"
+              >
                 <img src="../../../../assets/images/youtube.svg" alt="" />
               </a>
-              <a href={"https://twitter.com"} className="link">
+              <a
+                href={
+                  restaurant?.userId.socialLinks?.find(
+                    (link) => link.name === "twitter"
+                  )?.value
+                }
+                target="_blank"
+                className="link"
+              >
                 <img src="../../../../assets/images/twitter.svg" alt="" />
               </a>
             </div>
           </div>
           <div
             className="invoice-btn-wrapper"
-            onClick={() => downloadReceipt(cartProducts, +subPrice)}
+            onClick={() => downloadReceipt(order, restaurant)}
           >
             <div className="invoice-btn">Download Invoice</div>
           </div>
         </div>
-      ) : (
-        <div className="no-cart-items">No order items added yet</div>
+      ) : null}
+      {isLoading && (
+        <div className="p-5 text-center mt-5">
+          <CircularProgress color="inherit" size="25px" />
+        </div>
       )}
     </>
   );

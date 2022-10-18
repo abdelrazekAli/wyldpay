@@ -1,28 +1,53 @@
 import jsPDF from "jspdf";
+import { Order } from "../types/Order";
 import autoTable from "jspdf-autotable";
-import { ProductType } from "../types/Product";
+import { getSymbol } from "./currencySymbol";
+import { RestaurantProps } from "../types/Restaurant";
 
-export const downloadReceipt = (
-  cartProducts: ProductType[],
-  subPrice: number
-  // tip: number | null
-) => {
+export const downloadReceipt = (order: Order, restaurant: RestaurantProps) => {
+  // Push order items to table body
   let tableRows: any = [];
-
-  // let tipAmount: number = +((subPrice * tip!) / 100).toFixed(2);
-  // let totalPriceAfterTip: number = tipAmount + subPrice;
-
-  cartProducts.forEach((p) =>
-    tableRows?.push([p.name, p.quantity!, p.price, p.quantity! * p.price])
+  order.items.forEach((item) =>
+    tableRows?.push([
+      item.name,
+      item.quantity!,
+      getSymbol(restaurant.currency) + item.price.toFixed(2),
+      getSymbol(restaurant.currency) + (item.quantity! * item.price).toFixed(2),
+    ])
   );
 
+  // Calc total items amount
+  const subPrice = +order.items.reduce(
+    (acc, next) => (acc += next.quantity! * next.price),
+    0
+  );
+
+  // Calc VAT amount
+  const VatAmount = +(subPrice * (restaurant.vatPercentage / 100));
+
+  // Calc total price
+  const calcTotalPrice = () => {
+    let subPriceAfterVAT = subPrice + VatAmount;
+
+    // Check if discount
+    order.discount &&
+      (order.discount.type === "percentage"
+        ? (subPriceAfterVAT -= subPriceAfterVAT * (order.discount.value / 100))
+        : order.discount.value < subPriceAfterVAT
+        ? (subPriceAfterVAT -= order.discount.value)
+        : (subPriceAfterVAT = 0));
+
+    return subPriceAfterVAT.toFixed(2);
+  };
+
+  // Generate receipt pdf
   const doc = new jsPDF();
 
   autoTable(doc, {
     body: [
       [
         {
-          content: "Restaurant name",
+          content: restaurant.userId.businessName,
           styles: {
             halign: "left",
             fontSize: 20,
@@ -49,7 +74,11 @@ export const downloadReceipt = (
     body: [
       [
         {
-          content: `Table No#: 5 \nInvoice No#: INV0001  \nVAT No#: 14/2111/00417 \nDate: ${new Date().toLocaleString()}`,
+          content: `Table No#: ${
+            order.tableNum
+          } \nInvoice No#: ${order._id.substring(0, 8)}  \nVAT No#: ${
+            restaurant.vatNum
+          } \nDate: ${new Date(order.createdAt).toLocaleString()}`,
           styles: {
             halign: "left",
           },
@@ -64,10 +93,9 @@ export const downloadReceipt = (
       [
         {
           content:
-            "\nAddress line 1" +
-            "\nAddress line 2" +
-            "\nZip code - City" +
-            "\nState",
+            `\n${restaurant.userId.businessAddress}` +
+            `\n${restaurant.userId.state}` +
+            `\n${restaurant.userId.zip} - ${restaurant.userId.city}`,
           styles: {
             halign: "left",
           },
@@ -96,37 +124,48 @@ export const downloadReceipt = (
           },
         },
         {
-          content: `€${subPrice}`,
+          content: `${getSymbol(restaurant.currency)}${subPrice.toFixed(2)}`,
           styles: {
             halign: "right",
           },
         },
       ],
-      // [
-      //   {
-      //     content: "Tip:",
-      //     styles: {
-      //       halign: "right",
-      //     },
-      //   },
-      //   {
-      //     content: tip ? `€${tipAmount}` : 0,
-      //     styles: {
-      //       halign: "right",
-      //     },
-      //   },
-      // ],
       [
         {
-          content: "Total 19% tax:",
+          content: `VAT (${restaurant.vatPercentage}%):`,
           styles: {
             halign: "right",
           },
         },
         {
-          content: `${(subPrice - subPrice * 0.19).toFixed(2)}`,
+          content: `${getSymbol(restaurant.currency)}${VatAmount.toFixed(2)}`,
           styles: {
             halign: "right",
+          },
+        },
+      ],
+      [
+        {
+          content: `Discount${
+            order.discount ? " (" + order.discount.name + ")" : ""
+          }:`,
+          styles: {
+            halign: "right",
+          },
+        },
+        {
+          content: `${
+            order.discount
+              ? order.discount?.type === "amount"
+                ? "-" +
+                  getSymbol(restaurant.currency) +
+                  order.discount?.value.toFixed(2)
+                : "-" + order.discount?.value + "%"
+              : 0
+          }`,
+          styles: {
+            halign: "right",
+            textColor: "#ef0046",
           },
         },
       ],
@@ -140,8 +179,7 @@ export const downloadReceipt = (
           },
         },
         {
-          // content: tip ? `€${totalPriceAfterTip}` : `€${subPrice}`,
-          content: `€${subPrice}`,
+          content: `${getSymbol(restaurant.currency)}${calcTotalPrice()}`,
           styles: {
             halign: "right",
             textColor: "#3366ff",
@@ -156,5 +194,49 @@ export const downloadReceipt = (
     },
   });
 
-  return doc.save("invoice");
+  autoTable(doc, {
+    body: [
+      [
+        {
+          content: "Notes",
+          styles: {
+            halign: "left",
+            fontSize: 14,
+          },
+        },
+      ],
+      [
+        {
+          content:
+            `- Payment done with ${order.paymentMethod}.` +
+            `\n- Tips is not included in receipt.`,
+
+          styles: {
+            halign: "left",
+            cellPadding: 1,
+          },
+        },
+      ],
+    ],
+    theme: "plain",
+  });
+
+  autoTable(doc, {
+    body: [
+      [
+        {
+          content: "Powered by Wyld",
+          styles: {
+            halign: "center",
+            textColor: "#808080",
+          },
+        },
+      ],
+    ],
+    theme: "plain",
+  });
+
+  return doc.save(
+    `${restaurant.userId.businessName}-invoice-${order._id.substring(0, 8)}`
+  );
 };

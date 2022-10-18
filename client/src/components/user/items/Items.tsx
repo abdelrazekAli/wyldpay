@@ -11,17 +11,22 @@ export const Items = ({
   categories: MenuCategoryType[];
   items: ProductType[];
 }) => {
+  // Filter items array with category
+  const filterItems = (category: MenuCategoryType) =>
+    items
+      .filter((item) => item.category === category.value)
+      .map((p) => <Item product={p} key={p._id} />);
+
   return (
     <div className="menu-items">
       {categories.map((category, i) => (
         <Element key={i} name={category.value}>
           <div>
-            <h1 className="heading-1 capitalize">{category.value}</h1>
-            {items
-              .filter((item) => item.category === category.value)
-              .map((p) => (
-                <Item product={p} key={p._id} />
-              ))}
+            <h1 className="heading-1 capitalize">
+              {/* {filterItems(category).length > 0 && category.value} */}
+              {category.value}
+            </h1>
+            {filterItems(category)}
           </div>
         </Element>
       ))}

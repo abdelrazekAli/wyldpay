@@ -1,13 +1,54 @@
+import axios from "axios";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { getTip } from "../../../../redux/tip.slice";
 import { useAppSelector } from "../../../../redux/store.hooks";
+import { getCartProducts } from "../../../../redux/cart.slice";
+import { getDiscount } from "../../../../redux/discount.slice";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
+import { getRestaurantCurrency } from "../../../../redux/restaurant.slice";
 
-export const PaypalPayment = ({ totalPrice }: { totalPrice: number }) => {
-  const navigate = useNavigate();
+export const PaypalPayment = ({
+  totalPrice,
+  orderNote,
+}: {
+  totalPrice: number;
+  orderNote: string;
+}) => {
   const tip = useAppSelector(getTip);
+  const { restId, tableId } = useParams();
+  const discount = useAppSelector(getDiscount);
+  const currency = useAppSelector(getRestaurantCurrency);
   const [error, setError] = useState<string | null>(null);
+
+  const cartProducts = useAppSelector(getCartProducts);
+  const cartItems = cartProducts.map((product) => {
+    return {
+      _id: product._id,
+      name: product.name,
+      price: product.price,
+      quantity: product.quantity,
+    };
+  });
+
+  const submitOrder = async (paymentMethod: string) => {
+    try {
+      const res = await axios.post("/api/v1/orders", {
+        items: cartItems,
+        totalPrice,
+        notes: orderNote || "",
+        paymentMethod,
+        tableNum: tableId,
+        tip: tip || null,
+        discount: discount || null,
+        restId,
+      });
+      window.location.replace(`/orders/${restId}/${res.data._id}`);
+    } catch (err) {
+      console.log(err);
+      setError("Something went wrong!");
+    }
+  };
 
   return (
     <div className="paypal-payment">
@@ -17,7 +58,7 @@ export const PaypalPayment = ({ totalPrice }: { totalPrice: number }) => {
           options={{
             "client-id": process.env.REACT_APP_PAYPAL_KEY!,
             "disable-funding": "card",
-            currency: "EUR",
+            currency,
           }}
         >
           <PayPalButtons
@@ -33,7 +74,7 @@ export const PaypalPayment = ({ totalPrice }: { totalPrice: number }) => {
               });
             }}
             onApprove={async (data, actions) => {
-              navigate("success", { state: tip });
+              submitOrder("PayPal");
             }}
             onError={() => {
               setError("Something went wrong!");

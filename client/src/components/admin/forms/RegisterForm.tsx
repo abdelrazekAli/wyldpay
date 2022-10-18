@@ -101,7 +101,10 @@ export const RegisterForm = ({ onClick }: StepperProps) => {
               specialLabel={""}
               preferredCountries={["de"]}
               placeholder={"Phone number"}
-              onChange={(value) => setPhone(value)}
+              onChange={(value) => {
+                setPhone(value);
+                setError(null);
+              }}
             />
             {phoneError && <span className="error">{phoneError}</span>}
           </div>

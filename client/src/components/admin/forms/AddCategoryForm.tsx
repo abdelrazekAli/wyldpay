@@ -45,7 +45,7 @@ export const AddCategoryForm = ({
 
   return (
     <div id="myModal" className="modal form-modal">
-      <div className="modal-content p-relative custom-content">
+      <div className="modal-content p-relative custom-content custom-modal-p">
         <span onClick={hideForm} className="modal-close">
           &times;
         </span>

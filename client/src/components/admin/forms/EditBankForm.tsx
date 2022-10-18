@@ -32,7 +32,7 @@ export const EditBankForm = () => {
       }
     };
     fetchItems();
-  }, []);
+  }, [_id]);
 
   // Handle submit
   const onSubmit = async (data: BankProps) => {

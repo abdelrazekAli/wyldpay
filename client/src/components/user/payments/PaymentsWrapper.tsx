@@ -9,7 +9,13 @@ import { StripeContainer } from "./containers/StripeContainer";
 import { PaypalContainer } from "./containers/PaypalContainer";
 import { getRestaurantState } from "../../../redux/restaurant.slice";
 
-export const PaymentsWrapper = ({ totalPrice }: { totalPrice: number }) => {
+export const PaymentsWrapper = ({
+  totalPrice,
+  orderNote,
+}: {
+  totalPrice: number;
+  orderNote: string;
+}) => {
   const restaurant = useAppSelector(getRestaurantState);
   const [paypalKeys, setPaypalKeys] = useState<PaymentMethod>();
   const [stripeKeys, setStripeKeys] = useState<PaymentMethod>();
@@ -45,7 +51,7 @@ export const PaymentsWrapper = ({ totalPrice }: { totalPrice: number }) => {
       }
     };
     fetchMethods();
-  }, []);
+  }, [restaurant.data]);
 
   return (
     <>
@@ -60,15 +66,21 @@ export const PaymentsWrapper = ({ totalPrice }: { totalPrice: number }) => {
             {stripeKeys?.publicKey &&
             stripeKeys.secretKey &&
             paypalKeys?.publicKey ? (
-              <ParentContainer totalPrice={totalPrice} />
+              <ParentContainer totalPrice={totalPrice} orderNote={orderNote} />
             ) : (
               <>
                 {stripeKeys?.publicKey && stripeKeys.secretKey ? (
-                  <StripeContainer totalPrice={totalPrice} />
+                  <StripeContainer
+                    totalPrice={totalPrice}
+                    orderNote={orderNote}
+                  />
                 ) : (
                   <>
                     {paypalKeys?.publicKey ? (
-                      <PaypalContainer totalPrice={totalPrice} />
+                      <PaypalContainer
+                        totalPrice={totalPrice}
+                        orderNote={orderNote}
+                      />
                     ) : (
                       <>
                         <div className="row">

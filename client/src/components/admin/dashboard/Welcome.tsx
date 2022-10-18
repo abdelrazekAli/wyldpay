@@ -20,9 +20,9 @@ export const Welcome = () => {
             </p>
 
             <div className="btn_wrapper">
-              <Link to={"/admin/tables"}>
+              <Link to={"/admin/orders"}>
                 <button className="btn view_more_btn">
-                  Generate QR <i className="fas fa-arrow-right"></i>
+                  View orders <i className="fas fa-arrow-right"></i>
                 </button>
               </Link>
               <Link to={"/admin/menu"}>

@@ -1,8 +1,15 @@
+import "../../../styles/menu/orderSummary.sass";
 import { getSymbol } from "../../../utils/currencySymbol";
 import { useAppSelector } from "../../../redux/store.hooks";
 import { getRestaurantCurrency } from "../../../redux/restaurant.slice";
 
-export const OrderSummary = ({ subPrice }: { subPrice: number }) => {
+export const OrderSummary = ({
+  subPrice,
+  vatAmount,
+}: {
+  subPrice: number;
+  vatAmount: number;
+}) => {
   const currency = useAppSelector(getRestaurantCurrency);
 
   return (
@@ -11,7 +18,13 @@ export const OrderSummary = ({ subPrice }: { subPrice: number }) => {
         <img src="../../../assets/images/summary.svg" alt="" />
       </div>
       <div className="order-item-texts">
-        <h2 className="capitalize">Summary (VAT Included)</h2>
+        <h2 className="capitalize">
+          Summary{" "}
+          <span>
+            ({vatAmount.toFixed(2)}
+            {getSymbol(currency)} VAT Included)
+          </span>
+        </h2>
       </div>
       <div className="counters-price-wrapper">
         <span>

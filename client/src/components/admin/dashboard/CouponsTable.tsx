@@ -10,7 +10,7 @@ import "react-super-responsive-table/dist/SuperResponsiveTableStyle.css";
 
 export const CouponsTable = () => {
   const { currency, accessToken } = useAppSelector(getUser);
-  const [coupons, setCoupons] = useState<CouponType[] | null>();
+  const [coupons, setCoupons] = useState<CouponType[]>([]);
   const [couponCode, setCouponCode] = useState<string | null>(null);
   const [couponType, setCouponType] = useState<string | null>(null);
   const [couponValue, setCouponValue] = useState<number | null>(null);
@@ -23,15 +23,20 @@ export const CouponsTable = () => {
   useEffect(() => {
     // Fetch coupons
     const fetchCoupons = async () => {
-      const res = await axios.get(`/api/v1/coupons`, {
-        headers: {
-          "auth-token": accessToken,
-        },
-      });
-      setCoupons(res.data);
+      try {
+        const res = await axios.get(`/api/v1/coupons`, {
+          headers: {
+            "auth-token": accessToken,
+          },
+        });
+        setCoupons(res.data);
+      } catch (err) {
+        console.log(err);
+        setError("Somthing went wrong on fetch coupons!");
+      }
     };
     fetchCoupons();
-  }, []);
+  }, [accessToken]);
 
   // Handle add coupon
   const handleSubmit = async (e: { preventDefault: () => void }) => {
@@ -55,9 +60,9 @@ export const CouponsTable = () => {
         }
       );
 
-      setCoupons([...coupons!, res.data]);
-      setFormVisible(!isFormVisible);
       setisLoading(false);
+      setFormVisible(!isFormVisible);
+      setCoupons([...coupons!, res.data]);
     } catch (err: any) {
       setisLoading(false);
       if (err.response.status === 409) {
@@ -197,7 +202,6 @@ export const CouponsTable = () => {
               ))}
             </Tbody>
           </Table>
-
           {coupons?.length === 0 && (
             <div className="justify-content-center">
               <div className="no-items">No coupons added yet</div>

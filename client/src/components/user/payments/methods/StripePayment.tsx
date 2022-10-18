@@ -2,21 +2,42 @@ import axios from "axios";
 import "../../../../styles/payments.sass";
 import { Modal } from "../../layouts/Modal";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { getTip } from "../../../../redux/tip.slice";
+import { getCartProducts } from "../../../../redux/cart.slice";
 import { useAppSelector } from "../../../../redux/store.hooks";
+import { getDiscount } from "../../../../redux/discount.slice";
+import { getRestaurantCurrency } from "../../../../redux/restaurant.slice";
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 
-export const StripePayment = ({ totalPrice }: { totalPrice: number }) => {
+export const StripePayment = ({
+  totalPrice,
+  orderNote,
+}: {
+  totalPrice: number;
+  orderNote: string;
+}) => {
   const stripe = useStripe();
   const elements = useElements();
-  const navigate = useNavigate();
   const tip = useAppSelector(getTip);
+  const { restId, tableId } = useParams();
+  const discount = useAppSelector(getDiscount);
 
+  const currency = useAppSelector(getRestaurantCurrency);
   const [error, setError] = useState<string | null>(null);
   const [cardValid, setCardValid] = useState<boolean>(false);
   const [paymentFailed, setPaymentFailed] = useState<boolean>(false);
   const [paymentLoading, setPaymentLoading] = useState<boolean>(false);
+
+  const cartProducts = useAppSelector(getCartProducts);
+  const cartItems = cartProducts.map((product) => {
+    return {
+      _id: product._id,
+      name: product.name,
+      price: product.price,
+      quantity: product.quantity,
+    };
+  });
 
   // Check if card valid before submit
   useEffect(() => {
@@ -34,9 +55,26 @@ export const StripePayment = ({ totalPrice }: { totalPrice: number }) => {
     }
   }, [elements]);
 
-  const confirmPayment = async () => {
-    navigate("success", { state: tip });
+  const submitOrder = async (paymentMethod: string) => {
+    try {
+      const res = await axios.post("/api/v1/orders", {
+        items: cartItems,
+        totalPrice,
+        notes: orderNote || "",
+        paymentMethod,
+        tableNum: tableId,
+        tip: tip || null,
+        discount: discount || null,
+        restId,
+      });
+      window.location.replace(`/orders/${restId}/${res.data._id}`);
+    } catch (err) {
+      console.log(err);
+      setError("Something went wrong!");
+    }
+  };
 
+  const confirmPayment = async () => {
     if (!cardValid) {
       return setError("Please enter a valid card information");
     }
@@ -45,8 +83,8 @@ export const StripePayment = ({ totalPrice }: { totalPrice: number }) => {
     setPaymentLoading(true);
     axios
       .post("/api/v1/payments/stripe/create-payment-intent", {
-        amount: totalPrice,
-        currency: "eur",
+        amount: +totalPrice.toFixed(2),
+        currency,
         secretKey: process.env.REACT_APP_STRIPE_SECRET_KEY,
       })
       .then((res) => {
@@ -58,8 +96,8 @@ export const StripePayment = ({ totalPrice }: { totalPrice: number }) => {
       })
       .then((result) => {
         if (result?.paymentIntent) {
+          submitOrder("Visa");
           setPaymentLoading(false);
-          navigate("success", { state: tip });
         } else {
           setPaymentFailed(true);
           setPaymentLoading(false);
@@ -78,7 +116,7 @@ export const StripePayment = ({ totalPrice }: { totalPrice: number }) => {
       {paymentLoading && <Modal status="loading" />}
       {paymentFailed && <Modal status="error" enableHide />}
       <div className="stripe-payment">
-        <div className="stripe-payment-container">
+        <div className="stripe-payment-container overflow-hidden">
           <CardElement
             options={{
               hidePostalCode: true,
@@ -98,10 +136,10 @@ export const StripePayment = ({ totalPrice }: { totalPrice: number }) => {
           />
         </div>
         <div className="error">{error}</div>
-        <button onClick={confirmPayment} className="order-btn">
-          Order now
-        </button>
       </div>
+      <button onClick={confirmPayment} className="order-btn">
+        Order now
+      </button>
     </div>
   );
 };

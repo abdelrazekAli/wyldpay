@@ -3,3 +3,5 @@ export type PaymentMethod = {
   publicKey: string;
   secretKey: string;
 };
+
+export type PaymentMethodsTypes = "Visa" | "PayPal" | "Apple pay";

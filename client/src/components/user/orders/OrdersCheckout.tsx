@@ -37,6 +37,7 @@ export const OrdersCheckout = () => {
               onChange={(e) => setNoteValue(e.target.value)}
               id=""
               rows={2}
+              maxLength={10000}
               placeholder="Leave a notes about your order..."
             ></textarea>
           </div>
