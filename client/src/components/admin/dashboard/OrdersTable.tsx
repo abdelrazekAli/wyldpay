@@ -1,20 +1,18 @@
 import axios from "axios";
-import TimeAgo from "react-timeago";
 import "../../../styles/orders.sass";
 import { useEffect, useState } from "react";
 import { Order } from "../../../types/Order";
+import { OrderRow } from "../layouts/OrderRow";
 import { getUser } from "../../../redux/user.slice";
 import { CircularProgress } from "@material-ui/core";
-import { getSymbol } from "../../../utils/currencySymbol";
 import { useAppSelector } from "../../../redux/store.hooks";
 import { RestaurantProps } from "../../../types/Restaurant";
-import { downloadReceipt } from "../../../utils/orderReceipt";
-import { Table, Thead, Tbody, Tr, Th, Td } from "react-super-responsive-table";
+import { Table, Thead, Tbody, Tr, Th } from "react-super-responsive-table";
 import "react-super-responsive-table/dist/SuperResponsiveTableStyle.css";
 
 export const OrdersTable = () => {
   const [orders, setOrders] = useState<Order[]>([]);
-  const { _id, currency, accessToken } = useAppSelector(getUser);
+  const { _id, accessToken } = useAppSelector(getUser);
   const [restaurant, setRestaurant] = useState<RestaurantProps | null>(null);
 
   const [error, setError] = useState<string | null>(null);
@@ -33,9 +31,9 @@ export const OrdersTable = () => {
 
         // Fetch restaurant
         const res = await axios.get(`/api/v1/restaurants/user/${_id}`);
-        setRestaurant(res.data);
 
         setisLoading(false);
+        setRestaurant(res.data);
       } catch (err) {
         console.log(err);
         setisLoading(false);
@@ -66,32 +64,12 @@ export const OrdersTable = () => {
               </Tr>
             </Thead>
             <Tbody>
-              {orders?.map((order, i) => (
-                <Tr key={i}>
-                  <Td>{order._id.substring(0, 8)}</Td>
-                  <Td>{order.tableNum}</Td>
-                  <Td>
-                    <TimeAgo date={order.createdAt} />
-                  </Td>
-                  <Td>
-                    {order.items.map(
-                      (item, i, row) =>
-                        item.quantity +
-                        " x " +
-                        item.name +
-                        (row.length !== i + 1 && ", ")
-                    )}
-                  </Td>
-                  <Td>{order.notes}</Td>
-                  <Td>
-                    {order.totalPrice.toFixed(2)}
-                    {getSymbol(currency)}
-                  </Td>
-                  <Td>{order.paymentMethod}</Td>
-                  <Td onClick={() => downloadReceipt(order, restaurant!)}>
-                    <span className="color-main cursor-pointer">Download</span>
-                  </Td>
-                </Tr>
+              {orders?.map((order) => (
+                <OrderRow
+                  key={order._id}
+                  order={order}
+                  restaurant={restaurant!}
+                />
               ))}
             </Tbody>
           </Table>
