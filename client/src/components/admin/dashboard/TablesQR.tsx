@@ -1,6 +1,7 @@
 import { useState } from "react";
 import QRcode from "qrcode.react";
 import "../../../styles/tablesQR.sass";
+import { downloadQR } from "../../../utils/QR";
 import { getUser } from "../../../redux/user.slice";
 import { useAppSelector } from "../../../redux/store.hooks";
 
@@ -8,20 +9,6 @@ export const TablesQR = () => {
   const { restaurantId } = useAppSelector(getUser);
   const [tableNum, setTableNum] = useState<number | null>(null);
   const [isFormVisible, setFormVisible] = useState<boolean>(false);
-
-  const downloadQR = () => {
-    const canvas: any = document.getElementById("myqr")!;
-    const pngUrl = canvas
-      ?.toDataURL("image/png")
-      .replace("image/png", "image/octet-stream");
-
-    let downloadLink = document.createElement("a");
-    downloadLink.href = pngUrl;
-    downloadLink.download = `table-${tableNum}-QR.png`;
-    document.body.appendChild(downloadLink);
-    downloadLink.click();
-    document.body.removeChild(downloadLink);
-  };
 
   return (
     <>
@@ -83,7 +70,11 @@ export const TablesQR = () => {
                   includeMargin={true}
                 />
                 <div className="btn-container">
-                  <button type="submit" className="btn" onClick={downloadQR}>
+                  <button
+                    type="submit"
+                    className="btn"
+                    onClick={() => downloadQR(tableNum!)}
+                  >
                     Download
                   </button>
                 </div>
