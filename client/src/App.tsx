@@ -9,16 +9,16 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 // Import pages
 import { QR } from "./pages/admin/QR";
+import { Home } from "./pages/admin/Home";
 import { Login } from "./pages/admin/Login";
 import { Signup } from "./pages/admin/Signup";
 import { Orders } from "./pages/admin/Orders";
 import { Coupons } from "./pages/admin/Coupons";
-import { Profile } from "./pages/admin/Profile";
 import { MainMenu } from "./pages/user/MainMenu";
 import { Checkout } from "./pages/user/Checkout";
 import { EditMenu } from "./pages/admin/EditMenu";
 import { EditBank } from "./pages/admin/EditBank";
-import { Dashboard } from "./pages/admin/Dashboard";
+import { Settings } from "./pages/admin/Settings";
 import { ResetPass } from "./pages/admin/ResetPass";
 import { ItemDetails } from "./pages/user/ItemDetails";
 import { OrderDetails } from "./pages/user/OrderDetails";
@@ -57,17 +57,14 @@ function AppWraper() {
           />
           {user ? (
             <>
+              <Route path="/admin/home" element={<Home />} />
               <Route path="/admin/tables" element={<QR />} />
               <Route path="/admin/bank" element={<EditBank />} />
               <Route path="/admin/menu" element={<EditMenu />} />
               <Route path="/admin/orders" element={<Orders />} />
               <Route path="/admin/coupons" element={<Coupons />} />
-              <Route path="/admin/profile" element={<Profile />} />
-              <Route path="/admin/dashboard" element={<Dashboard />} />
-              <Route
-                path="*"
-                element={<Navigate to="/admin/dashboard" replace />}
-              />
+              <Route path="/admin/settings" element={<Settings />} />
+              <Route path="*" element={<Navigate to="/admin/home" replace />} />
             </>
           ) : (
             <>

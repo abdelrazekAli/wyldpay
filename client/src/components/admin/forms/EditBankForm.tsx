@@ -83,7 +83,7 @@ export const EditBankForm = () => {
   }, [reset, bankData]);
 
   return (
-    <div className="bank-form">
+    <div className="bank-form w-100">
       {error && (
         <span className="error color-error d-block mt-4 text-center fs-3">
           {error}

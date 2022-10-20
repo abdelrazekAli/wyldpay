@@ -44,7 +44,7 @@ export const OrdersTable = () => {
   }, [_id, accessToken]);
 
   return (
-    <div className="orders-table">
+    <div className="orders-table w-100">
       {!isLoading ? (
         <div className="container">
           <h3>Orders</h3>

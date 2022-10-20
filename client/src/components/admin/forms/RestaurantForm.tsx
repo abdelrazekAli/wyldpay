@@ -2,6 +2,8 @@ import axios from "axios";
 import { useState } from "react";
 import "../../../styles/forms/restaurantForm.sass";
 import { StepperProps } from "../../../types/StepperProps";
+import { faUpload } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export const RestForm = ({ onClick }: StepperProps) => {
   const userId = localStorage.getItem("userId");
@@ -69,7 +71,6 @@ export const RestForm = ({ onClick }: StepperProps) => {
         </p>
         <div className="content">
           <form onSubmit={handleSubmit}>
-            <input type="text" placeholder="Type of food" />
             <input
               type="text"
               placeholder="VAT number"
@@ -105,7 +106,8 @@ export const RestForm = ({ onClick }: StepperProps) => {
                 }}
               />
               <span>Upload logo</span>
-              <i className="fas fa-upload" color="red"></i>
+
+              <FontAwesomeIcon icon={faUpload} className="upload-icon" />
             </label>
             <span className="instructions">
               Logo should be in circle shape with dimensions 75*75
@@ -131,7 +133,7 @@ export const RestForm = ({ onClick }: StepperProps) => {
                 }}
               />
               <span>Upload background</span>
-              <i className="fas fa-upload" color="red"></i>
+              <FontAwesomeIcon icon={faUpload} className="upload-icon" />
             </label>
             {background && (
               <div className="box mb-1">

@@ -6,6 +6,8 @@ import { PaypalPayment } from "../methods/PaypalPayment";
 import { StripePayment } from "../methods/StripePayment";
 import { getSymbol } from "../../../../utils/currencySymbol";
 import { useAppSelector } from "../../../../redux/store.hooks";
+import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { getRestaurantState } from "../../../../redux/restaurant.slice";
 
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_CLIENT_KEY!);
@@ -68,7 +70,7 @@ export const ParentContainer = ({
                 {paymentSelected === 1 && "PayPal"}
                 {paymentSelected === 2 && "Apple pay"}
                 {/* {paymentSelected === 3 && "Crypto"} */}
-                <i className="fa fa-caret-down"></i>
+                <FontAwesomeIcon icon={faCaretDown} className="ml-1" />
               </button>
               {isDropDownVisible && (
                 <div

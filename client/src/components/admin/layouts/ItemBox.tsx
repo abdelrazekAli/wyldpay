@@ -1,4 +1,6 @@
 import "../../../styles/item.sass";
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export const ItemBox = ({
   item,
@@ -17,10 +19,12 @@ export const ItemBox = ({
 }) => {
   return (
     <div className="box">
-      <i
-        className="fa fa-trash delete-item"
+      <FontAwesomeIcon
+        icon={faTrash}
+        className="icon-delete"
         onClick={() => onDelete(item._id)}
-      ></i>
+      />
+
       <h4>{item.name}</h4>
       {/* <div className="image">
         <img src={URL.createObjectURL(product.img)} alt="" />

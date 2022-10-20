@@ -2,6 +2,8 @@ import axios from "axios";
 import { useState } from "react";
 import { Item } from "../../../types/Item";
 import { MainCategoryType } from "../../../types/Category";
+import { faUpload } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export const AddItemForm = ({
   hideForm,
@@ -92,7 +94,7 @@ export const AddItemForm = ({
                 }}
               />
               <span>Upload image</span>
-              <i className="fas fa-upload" color="red"></i>
+              <FontAwesomeIcon icon={faUpload} className="upload-icon" />
             </label>
             {itemImg && (
               <div className="box">

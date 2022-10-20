@@ -63,3 +63,170 @@
         border-radius: 100%
         max-width: 100%
         display: block
+
+.header
+  position: sticky
+  top: 0
+  left: 0
+  right: 0
+  z-index: 1000
+  background: $white
+  box-shadow: $box-shadow
+  display: flex
+  align-items: center
+  justify-content: flex-start
+  padding: 2rem 0
+
+.logo
+  font-size: 2.5rem
+  font-weight: bolder
+  color: $black
+  padding-left: 2rem
+
+  i
+    padding-right: .7rem
+    color: $main-color
+
+.navbar
+  a
+    font-size: 1.7rem
+    margin: 0 1rem
+    color: $light-color
+
+    &:hover
+      color: $main-color
+
+.icons
+  display: flex
+  gap: 5px
+
+  .menu-custom, .cart-custom
+    height: 4.5rem
+    width: 4.5rem
+    line-height: 4.5rem
+    font-size: 2rem
+    background: $light-bg
+    color: $black
+    border-radius: .5rem
+    margin-left: .3rem
+    cursor: pointer
+    text-align: center
+
+    &:hover
+      color: $white
+      background: $main-color
+
+    .quantity
+      position: absolute
+      right: 0
+      bottom: 0
+      width: 1.5rem
+      font-size: 1.3rem
+      height: 1.5rem
+      border-radius: 50%
+      border: 1px solid
+      line-height: normal
+      display: flex
+      justify-content: center
+      align-items: center
+      background-color: $main-color
+      color: $white
+      padding: 8px
+      user-select: none
+      transform: translate(25%, 25%)
+
+    &:hover
+      color: $main-color
+      background-color: $white
+
+#menu-btn
+  display: none
+
+@keyframes fadeUp
+  0%
+    transform: translateY(5rem)
+    opacity: 0
+
+.dropdown
+  display: flex
+  justify-content: space-between
+  align-items: center
+
+  img
+    width: 30px
+    height: 30px
+    border-radius: 50%
+    vertical-align: middle
+
+    & .dropbtn
+      font-size: 1.8rem
+      border: none
+      outline: none
+      color: $black
+      padding-left: 10px
+      background-color: inherit
+      font-family: inherit
+      margin: 0
+      cursor: pointer
+
+    i
+      margin-left: 8px
+
+    &-content
+      opacity: 0
+      visibility: hidden
+      transition-delay: .1s
+      display: block
+      position: absolute
+      background-color: $white
+      min-width: 15rem
+      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2)
+      z-index: 1
+      top: 5rem
+      padding: 0.5rem 0.3rem 0.65rem 0.3rem
+
+    &-content a, span
+      color: black
+      padding: 12px 16px
+      text-decoration: none
+      display: block
+      text-align: left
+      font-size: 1.5rem
+      color: $black
+      cursor: pointer
+
+    &-content a:hover
+      background-color: $main-color
+      color: #fff !important
+      box-shadow: 0 4px 20px 0 rgb(0 0 0 / 14%), 0 7px 10px -5px rgb(0 123 255 / 40%)
+
+    &:hover .dropdown-content
+      opacity: 1
+      visibility: visible
+
+/* Toggle button */
+.toggle-button
+  display: flex
+  flex-direction: column
+  justify-content: space-between
+  height: 42px
+  padding: 15px 10px
+  background: transparent
+  border: none
+  cursor: pointer
+  box-sizing: border-box
+  margin-left: 20px
+  z-index: 99999
+  border-radius: 50%
+  transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms
+
+  &:hover
+    background: rgba(0, 0, 0, 0.08)
+
+  &:focus
+    outline: none
+
+  &-line
+    width: 20px
+    height: 2px
+    background: rgba(0, 0, 0, 0.87)

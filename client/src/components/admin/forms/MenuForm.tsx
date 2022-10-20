@@ -82,7 +82,7 @@ export const MenuForm = () => {
           setCategories={(newCategories) => setCategories(newCategories)}
         />
       )}
-      <div className="menu-form ">
+      <div className="menu-form w-100">
         <div className="container">
           <h3>Menu</h3>
           <p>Select category and then add your food items.</p>

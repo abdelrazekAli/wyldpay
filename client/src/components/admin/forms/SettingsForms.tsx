@@ -16,7 +16,7 @@ import { getUser, updateUsername } from "../../../redux/user.slice";
 import { updateProfileSchema } from "../../../validations/userSchema";
 import { useAppDispatch, useAppSelector } from "../../../redux/store.hooks";
 
-export const ProfileForm = () => {
+export const SettingsForms = () => {
   const dispatch = useAppDispatch();
   const { _id, accessToken } = useAppSelector(getUser);
 
@@ -169,7 +169,7 @@ export const ProfileForm = () => {
         </span>
       )}
 
-      <div className="profile-form">
+      <div className="profile-form w-100">
         {isStripeFormVisible && (
           <StripeKeysForm hideForm={() => setStripeFormVisible(false)} />
         )}

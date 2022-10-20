@@ -1,7 +1,9 @@
-import { Link } from "react-router-dom";
-import { useAppSelector } from "../../../redux/store.hooks";
-import { getUser } from "../../../redux/user.slice";
 import "../../../styles/welcome.sass";
+import { Link } from "react-router-dom";
+import { getUser } from "../../../redux/user.slice";
+import { useAppSelector } from "../../../redux/store.hooks";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 
 export const Welcome = () => {
   const user = useAppSelector(getUser);
@@ -22,7 +24,12 @@ export const Welcome = () => {
             <div className="btn_wrapper">
               <Link to={"/admin/orders"}>
                 <button className="btn view_more_btn">
-                  View orders <i className="fas fa-arrow-right"></i>
+                  View orders{" "}
+                  <FontAwesomeIcon
+                    icon={faArrowRight}
+                    size={"sm"}
+                    className="arrow-icon"
+                  />
                 </button>
               </Link>
               <Link to={"/admin/menu"}>

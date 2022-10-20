@@ -1,30 +1,30 @@
 import { Link } from "react-router-dom";
 import "../../../styles/menu/header.sass";
-import { getUser, logout } from "../../../redux/user.slice";
-import { useAppDispatch, useAppSelector } from "../../../redux/store.hooks";
+import { useAppDispatch } from "../../../redux/store.hooks";
+import { toggleSidebar } from "../../../redux/layouts.slice";
 
 export const Navbar = () => {
   const dispatch = useAppDispatch();
-  const user = useAppSelector(getUser);
-
-  // Logout handler
-  const logoutHandler = () => {
-    dispatch(logout());
-    window.location.replace("/admin/login");
-  };
 
   return (
     <>
       <header className="header">
-        <Link to="/admin/dashboard" className="logo">
-          {/* <i className="fas fa-utensils"></i>WyldPay */}
+        <button
+          className="toggle-button"
+          onClick={() => dispatch(toggleSidebar())}
+        >
+          <div className="toggle-button-line" />
+          <div className="toggle-button-line" />
+          <div className="toggle-button-line" />
+        </button>
+        <Link to="/admin/home" className="logo">
           <img
             src="../../assets/images/logo-blue.png"
             alt=""
-            style={{ width: "13rem" }}
+            style={{ width: "10.5rem" }}
           />
         </Link>
-        {user && (
+        {/* {user && (
           <div className="dropdown">
             <button className="dropbtn">
               {user.firstName}
@@ -42,7 +42,7 @@ export const Navbar = () => {
               </span>
             </div>
           </div>
-        )}
+        )} */}
       </header>
     </>
   );

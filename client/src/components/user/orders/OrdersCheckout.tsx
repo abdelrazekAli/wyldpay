@@ -3,6 +3,8 @@ import { OrderItem } from "./OrderItem";
 import "../../../styles/menu/checkout.sass";
 import { useAppSelector } from "../../../redux/store.hooks";
 import { getCartProducts } from "../../../redux/cart.slice";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 
 export const OrdersCheckout = () => {
@@ -19,7 +21,7 @@ export const OrdersCheckout = () => {
         className="back-icon"
         onClick={() => navigate(`/menu/${restId}/${tableId}`)}
       >
-        <i className="fas fa-chevron-left"></i>
+        <FontAwesomeIcon icon={faChevronLeft} className="left-arrow" />
       </div>
       <h1 className="heading-1">Your order</h1>
       {cartProducts.length > 0 ? (

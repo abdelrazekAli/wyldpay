@@ -53,7 +53,7 @@ export const CouponsTable = () => {
           setCoupons={(newCoupon) => setCoupons([...coupons!, newCoupon])}
         />
       )}
-      <div className="coupons-table">
+      <div className="coupons-table w-100">
         {!isLoading ? (
           <div className="container">
             <div className="btn-container">

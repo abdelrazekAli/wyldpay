@@ -39,7 +39,7 @@ export const TablesQR = () => {
           </div>
         </div>
       )}
-      <div className="qr-table">
+      <div className="qr-table w-100">
         <div className="container">
           <div className="content">
             <div>

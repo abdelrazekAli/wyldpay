@@ -1,11 +1,15 @@
+import Sidebar from "../../components/admin/layouts/Sidebar";
 import { Navbar } from "../../components/admin/layouts/Navbar";
 import { CouponsTable } from "../../components/admin/dashboard/CouponsTable";
 
 export const Coupons = () => {
   return (
-    <div>
+    <>
       <Navbar />
-      <CouponsTable />
-    </div>
+      <div className="main-container">
+        <Sidebar />
+        <CouponsTable />
+      </div>
+    </>
   );
 };

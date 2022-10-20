@@ -1,14 +1,14 @@
 import Sidebar from "../../components/admin/layouts/Sidebar";
 import { Navbar } from "../../components/admin/layouts/Navbar";
-import { MenuForm } from "../../components/admin/forms/MenuForm";
+import { Welcome } from "../../components/admin/dashboard/Welcome";
 
-export const EditMenu = () => {
+export const Home = () => {
   return (
     <>
       <Navbar />
       <div className="main-container">
         <Sidebar />
-        <MenuForm />
+        <Welcome />
       </div>
     </>
   );

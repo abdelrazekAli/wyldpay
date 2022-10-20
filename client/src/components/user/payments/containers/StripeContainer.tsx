@@ -5,6 +5,8 @@ import { ApplePayment } from "../methods/ApplePayment";
 import { StripePayment } from "../methods/StripePayment";
 import { getSymbol } from "../../../../utils/currencySymbol";
 import { useAppSelector } from "../../../../redux/store.hooks";
+import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { getRestaurantState } from "../../../../redux/restaurant.slice";
 
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_CLIENT_KEY!);
@@ -51,7 +53,7 @@ export const StripeContainer = ({
               >
                 {paymentSelected === 0 && "Visa"}
                 {paymentSelected === 1 && "Apple pay"}
-                <i className="fa fa-caret-down"></i>
+                <FontAwesomeIcon icon={faCaretDown} className="ml-1" />
               </button>
               {isDropDownVisible && (
                 <div

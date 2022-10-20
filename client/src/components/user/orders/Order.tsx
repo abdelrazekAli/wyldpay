@@ -6,6 +6,8 @@ import { SummaryItem } from "../items/SummaryItem";
 import { useAppSelector } from "../../../redux/store.hooks";
 import { getDiscount } from "../../../redux/discount.slice";
 import { PaymentsWrapper } from "../payments/PaymentsWrapper";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import { getRestaurantState } from "../../../redux/restaurant.slice";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { getCartProducts, getTotalPrice } from "../../../redux/cart.slice";
@@ -54,7 +56,7 @@ export const Order = () => {
           })
         }
       >
-        <i className="fas fa-chevron-left"></i>
+        <FontAwesomeIcon icon={faChevronLeft} className="left-arrow" />
       </div>
       <h1 className="heading-1">Your order</h1>
       {cartProducts.length > 0 ? (

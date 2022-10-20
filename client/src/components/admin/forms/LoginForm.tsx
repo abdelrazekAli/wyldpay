@@ -9,6 +9,8 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useAppDispatch } from "../../../redux/store.hooks";
 import { RegisteredUserProps } from "../../../types/UserProps";
 import { loginSchema } from "../../../validations/loginSchema";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
 export const LoginForm = () => {
   const dispatch = useAppDispatch();
@@ -82,10 +84,11 @@ export const LoginForm = () => {
               placeholder="Password"
               {...register("password")}
             />
-            <i
-              className={!hidePass ? "fa fa-eye" : "fa fa-eye-slash"}
+            <FontAwesomeIcon
+              icon={!hidePass ? faEye : faEyeSlash}
+              className="eye-icon"
               onClick={() => setHidePass(!hidePass)}
-            ></i>
+            />
           </div>
           <span className="error">{errors?.password?.message}</span>
           <div className="d-flex">

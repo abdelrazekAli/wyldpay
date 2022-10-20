@@ -6,12 +6,18 @@ import { CircularProgress } from "@material-ui/core";
 import { addToCart } from "../../../redux/cart.slice";
 import { getSymbol } from "../../../utils/currencySymbol";
 import { useNavigate, useParams } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { getRestaurantCurrency } from "../../../redux/restaurant.slice";
 import { useAppDispatch, useAppSelector } from "../../../redux/store.hooks";
+import {
+  faCheck,
+  faChevronDown,
+  faChevronLeft,
+} from "@fortawesome/free-solid-svg-icons";
 
 export const MainItemDetails = () => {
-  const { itemId, tableId, restId } = useParams();
   const navigate = useNavigate();
+  const { itemId, tableId, restId } = useParams();
 
   const dispatch = useAppDispatch();
   const currency = useAppSelector(getRestaurantCurrency);
@@ -77,7 +83,7 @@ export const MainItemDetails = () => {
               className="back-icon"
               onClick={() => navigate(`/menu/${restId}/${tableId}`)}
             >
-              <i className="fas fa-chevron-left"></i>
+              <FontAwesomeIcon icon={faChevronLeft} className="left-arrow" />
             </div>
           </div>
           <div className="content">
@@ -121,12 +127,12 @@ export const MainItemDetails = () => {
             <p className="description">{item.desc}</p>
             <div className="ingredients" onClick={() => setDetails(!details)}>
               <span>Ingredients</span>
-              <i className="fas fa-chevron-down"></i>
+              <FontAwesomeIcon icon={faChevronDown} className="down-arrow" />
             </div>
             {details && (
               <div className="details">
                 <div>
-                  <i className="fa fa-check" aria-hidden="true"></i>
+                  <FontAwesomeIcon icon={faCheck} className="down-arrow" />
                   {item.ingredients}
                 </div>
               </div>

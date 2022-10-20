@@ -1,11 +1,15 @@
+import Sidebar from "../../components/admin/layouts/Sidebar";
 import { Navbar } from "../../components/admin/layouts/Navbar";
 import { OrdersTable } from "../../components/admin/dashboard/OrdersTable";
 
 export const Orders = () => {
   return (
-    <div>
+    <>
       <Navbar />
-      <OrdersTable />
-    </div>
+      <div className="main-container">
+        <Sidebar />
+        <OrdersTable />
+      </div>
+    </>
   );
 };
