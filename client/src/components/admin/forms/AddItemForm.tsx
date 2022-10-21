@@ -62,6 +62,12 @@ export const AddItemForm = ({
     }
   };
 
+  // Disable input number increment on wheel scroll
+  const disableIncrement = () => {
+    if (document.activeElement instanceof HTMLElement)
+      document.activeElement.blur();
+  };
+
   return (
     <div id="myModal" className="modal form-modal">
       <div className="modal-content p-relative custom-content custom-modal-p">
@@ -80,6 +86,7 @@ export const AddItemForm = ({
               type="number"
               step=".01"
               placeholder="Item price"
+              onWheel={disableIncrement}
               onChange={(e) => setPrice(+e.target.value)}
             />
             <label htmlFor="item-img" className="img-label mb-0">
@@ -99,7 +106,7 @@ export const AddItemForm = ({
             </label>
             <span className="instructions">Recommended size is 100x100px</span>
             {itemImg && (
-              <div className="box">
+              <div className="img-box">
                 <img
                   src={URL.createObjectURL(itemImg)}
                   alt="img"

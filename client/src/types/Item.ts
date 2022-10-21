@@ -5,5 +5,6 @@ export type Item = {
   img: string;
   category: string;
   desc: string;
-  restaurantId: string;
+  ingredients: string;
+  restId: string;
 };

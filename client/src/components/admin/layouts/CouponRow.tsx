@@ -16,8 +16,8 @@ export const CouponRow = ({
   onDelete: (couponId: string) => void;
 }) => {
   const { currency, accessToken } = useAppSelector(getUser);
-  const [error, setError] = useState<string | null>(null);
 
+  const [error, setError] = useState<string | null>(null);
   const [isLoading, setisLoading] = useState<boolean>(false);
 
   const deleteCoupon = async (couponId: string) => {

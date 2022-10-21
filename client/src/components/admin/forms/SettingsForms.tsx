@@ -11,7 +11,9 @@ import { StripeKeysForm } from "./StripeKeysForm";
 import { SocialLinksForm } from "./SocialLinksForm";
 import { UserProps } from "../../../types/UserProps";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { faPen } from "@fortawesome/free-solid-svg-icons";
 import { RestaurantProps } from "../../../types/Restaurant";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { getUser, updateUsername } from "../../../redux/user.slice";
 import { updateProfileSchema } from "../../../validations/userSchema";
 import { useAppDispatch, useAppSelector } from "../../../redux/store.hooks";
@@ -286,7 +288,7 @@ export const SettingsForms = () => {
             </button>
           </div>
           <label>Logo</label>
-          <div className="img-box">
+          <div className="img-box p-relative">
             <label htmlFor="logo" className="mb-0">
               <input
                 type="file"
@@ -307,10 +309,11 @@ export const SettingsForms = () => {
               ) : (
                 <img src={restaurant?.logo} alt="" />
               )}
+              <FontAwesomeIcon icon={faPen} className="icon-img-edit" />
             </label>
           </div>
           <label>Background</label>
-          <div className="img-box">
+          <div className="img-box p-relative">
             <label htmlFor="background" className="mb-0">
               <input
                 type="file"
@@ -331,6 +334,7 @@ export const SettingsForms = () => {
               ) : (
                 <img src={restaurant?.background} alt="" />
               )}
+              <FontAwesomeIcon icon={faPen} className="icon-img-edit" />
             </label>
           </div>
           <div className="input-group">
