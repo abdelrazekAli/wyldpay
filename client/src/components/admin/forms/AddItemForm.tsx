@@ -78,10 +78,11 @@ export const AddItemForm = ({
             />
             <input
               type="number"
+              step=".01"
               placeholder="Item price"
               onChange={(e) => setPrice(+e.target.value)}
             />
-            <label htmlFor="item-img" className="img-label">
+            <label htmlFor="item-img" className="img-label mb-0">
               <input
                 type="file"
                 accept="image/*"
@@ -96,6 +97,7 @@ export const AddItemForm = ({
               <span>Upload image</span>
               <FontAwesomeIcon icon={faUpload} className="upload-icon" />
             </label>
+            <span className="instructions">Recommended size is 100x100px</span>
             {itemImg && (
               <div className="box">
                 <img

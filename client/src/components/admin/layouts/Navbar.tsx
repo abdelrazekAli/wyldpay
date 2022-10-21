@@ -1,29 +1,43 @@
 import { Link } from "react-router-dom";
 import "../../../styles/menu/header.sass";
-import { useAppDispatch } from "../../../redux/store.hooks";
+import { getUser } from "../../../redux/user.slice";
 import { toggleSidebar } from "../../../redux/layouts.slice";
+import { useAppDispatch, useAppSelector } from "../../../redux/store.hooks";
 
 export const Navbar = () => {
   const dispatch = useAppDispatch();
+  const user = useAppSelector(getUser);
 
   return (
     <>
       <header className="header">
-        <button
-          className="toggle-button"
-          onClick={() => dispatch(toggleSidebar())}
-        >
-          <div className="toggle-button-line" />
-          <div className="toggle-button-line" />
-          <div className="toggle-button-line" />
-        </button>
-        <Link to="/admin/home" className="logo">
-          <img
-            src="../../assets/images/logo-blue.png"
-            alt=""
-            style={{ width: "10.5rem" }}
-          />
-        </Link>
+        {user ? (
+          <>
+            <button
+              className="toggle-button"
+              onClick={() => dispatch(toggleSidebar())}
+            >
+              <div className="toggle-button-line" />
+              <div className="toggle-button-line" />
+              <div className="toggle-button-line" />
+            </button>
+            <Link to="/admin/home" className="logo">
+              <img
+                src="../../assets/images/logo-blue.png"
+                alt=""
+                style={{ width: "10.5rem" }}
+              />
+            </Link>
+          </>
+        ) : (
+          <Link to="/admin/home" className="logo pl-10">
+            <img
+              src="../../assets/images/logo-blue.png"
+              alt=""
+              style={{ width: "10.5rem" }}
+            />
+          </Link>
+        )}
         {/* {user && (
           <div className="dropdown">
             <button className="dropbtn">

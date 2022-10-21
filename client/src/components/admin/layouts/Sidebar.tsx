@@ -32,9 +32,9 @@ export default function Sidebar() {
   };
 
   return (
-    <div>
+    <>
       {hideSidebar ? (
-        <div className={"sidebar d-block h-100"}>
+        <div className={"sidebar d-block"}>
           <div className="sidebarWrapper">
             <ul className="sidebarList">
               <NavLink
@@ -132,7 +132,7 @@ export default function Sidebar() {
           </div>
         </div>
       ) : (
-        <div className={"icons-sidebar sidebar d-block h-100"}>
+        <div className={"icons-sidebar sidebar d-block"}>
           <div className="sidebarWrapper">
             <ul className="sidebarList">
               <NavLink
@@ -140,6 +140,7 @@ export default function Sidebar() {
                 className={({ isActive }) =>
                   isActive ? "active-navlink" : undefined
                 }
+                title="Home"
               >
                 <li className="sidebar-item">
                   <FontAwesomeIcon icon={faHome} className="sidebar-icon" />
@@ -151,6 +152,7 @@ export default function Sidebar() {
                 className={({ isActive }) =>
                   isActive ? "active-navlink" : undefined
                 }
+                title="Menu"
               >
                 <li className="sidebar-item">
                   <FontAwesomeIcon icon={faUtensils} className="sidebar-icon" />
@@ -161,6 +163,7 @@ export default function Sidebar() {
                 className={({ isActive }) =>
                   isActive ? "active-navlink" : undefined
                 }
+                title="Orders"
               >
                 <li className="sidebar-item">
                   <FontAwesomeIcon
@@ -174,6 +177,7 @@ export default function Sidebar() {
                 className={({ isActive }) =>
                   isActive ? "active-navlink" : undefined
                 }
+                title="Coupons"
               >
                 <li className="sidebar-item">
                   <FontAwesomeIcon
@@ -191,15 +195,17 @@ export default function Sidebar() {
                     `width=460,height=${viewportheight},left=${+viewportwidth}`
                   )
                 }
+                title="Preview"
               >
                 <i className="fas fa-rocket-launch"></i>
                 <FontAwesomeIcon icon={faRocket} className="sidebar-icon" />
               </li>
               <NavLink
-                to="/admin/tables"
+                to="/admin/qr"
                 className={({ isActive }) =>
                   isActive ? "active-navlink" : undefined
                 }
+                title="QR"
               >
                 <li className="sidebar-item">
                   <FontAwesomeIcon icon={faQrcode} className="sidebar-icon" />
@@ -210,18 +216,23 @@ export default function Sidebar() {
                 className={({ isActive }) =>
                   isActive ? "active-navlink" : undefined
                 }
+                title="Settings"
               >
                 <li className="sidebar-item">
                   <FontAwesomeIcon icon={faCog} className="sidebar-icon" />
                 </li>
               </NavLink>
-              <li className="sidebar-item" onClick={logoutHandler}>
+              <li
+                className="sidebar-item"
+                onClick={logoutHandler}
+                title="Logout"
+              >
                 <FontAwesomeIcon icon={faPowerOff} className="sidebar-icon" />
               </li>
             </ul>
           </div>
         </div>
       )}
-    </div>
+    </>
   );
 }

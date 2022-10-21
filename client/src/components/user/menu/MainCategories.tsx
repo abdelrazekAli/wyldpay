@@ -8,32 +8,25 @@ export const MainCategories = ({
 }: {
   categories: MenuCategoryType[];
 }) => {
-  const [fixed, setFixed] = useState<boolean>(false);
-
-  const onScroll = () => {
-    window.scrollY >= 300 ? setFixed(true) : setFixed(false);
-  };
-
+  const [scroll, setScroll] = useState(0);
   useEffect(() => {
-    window.addEventListener("scroll", onScroll);
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-    };
-  }, []);
-
+    window.addEventListener("scroll", () => {
+      setScroll(window.scrollY);
+    });
+  }, [window.scrollY]);
   return (
     <>
-      <div
-        className={
-          fixed ? "menu-categories menu-categories-fixed" : "menu-categories"
-        }
-      >
+      <div className={"menu-categories menu-categories-fixed"}>
         {categories.map((c, i) => (
           <Link
             to={`${c.value}`}
             spy={true}
-            offset={-75}
-            className="category-item"
+            offset={-100}
+            className={
+              i === 0 && scroll <= 100
+                ? "active category-item"
+                : "category-item"
+            }
             activeClass="active"
             key={i}
           >

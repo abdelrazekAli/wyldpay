@@ -58,7 +58,7 @@ function AppWraper() {
           {user ? (
             <>
               <Route path="/admin/home" element={<Home />} />
-              <Route path="/admin/tables" element={<QR />} />
+              <Route path="/admin/qr" element={<QR />} />
               <Route path="/admin/bank" element={<EditBank />} />
               <Route path="/admin/menu" element={<EditMenu />} />
               <Route path="/admin/orders" element={<Orders />} />

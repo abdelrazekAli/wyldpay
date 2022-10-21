@@ -18,24 +18,30 @@
 
     .box
         border-radius: 5rem
-        position: relative
         background: $light-bg
-        padding: 1.8rem 4rem
+        padding: 1.8rem 2rem
         max-width: fit-content
-        text-align: center
         display: flex
+        gap: 2rem
         align-items: center
 
-        .delete-item
-            &:hover
-                color: $red
+        .item-icons
+            display: flex
+            gap: 1rem
+            margin-left: -1rem
 
-        .icon-delete
-            color: $main-color
-            font-size: 1.8rem
-            position: absolute
-            left: 1rem
-            cursor: pointer
+            .icon
+                font-size: 1.8rem
+                cursor: pointer
+                color: $main-color
+
+            .icon-delete
+                &:hover
+                    color: $red
+
+            .icon-edit
+                &:hover
+                    color: #27ae60
 
         .image
             margin: 1rem 0
