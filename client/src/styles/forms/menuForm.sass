@@ -4,7 +4,7 @@
     margin-top: 6rem
 
     .container
-        max-width: 90%
+        max-width: 85%
         padding-left: 15px
         padding-right: 15px
         margin-left: auto
@@ -16,6 +16,7 @@
             align-items: center
             margin-top: 2.5rem
             margin-bottom: 2.5rem
+            width: 90%
 
             .btn
                 margin-top: 0
@@ -52,6 +53,7 @@
         padding: 1rem
         border-bottom: 1px solid #eee
         margin-bottom: 2rem
+        width: 90%
 
         &::-webkit-scrollbar
             height: 7px
@@ -218,3 +220,21 @@
         .btn-container
             .btn
                 width: 50% !important
+
+@media (max-width: 640px)
+    .menu-form
+        margin-top: 2rem
+
+        .container
+            max-width: 85% !important
+
+        .btns-flex
+            display: flex
+            gap: 0rem
+
+        .category
+            grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr))
+
+        .btn-container
+            .btn
+                width: 40% !important
