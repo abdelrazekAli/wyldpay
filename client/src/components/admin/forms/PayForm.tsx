@@ -4,25 +4,35 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import "../../../styles/forms/payForm.sass";
 import { Modal } from "../../user/layouts/Modal";
+import { login } from "../../../redux/user.slice";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useAppDispatch } from "../../../redux/store.hooks";
+import { RegisteredUserProps } from "../../../types/UserProps";
 import { paymentSchema } from "../../../validations/paymentSchema";
 
 export const PayForm = () => {
+  const dispatch = useAppDispatch();
   const [check, setCheck] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
-  const [hideModal, setHideModal] = useState<boolean>(true);
   const [isLoading, setisLoading] = useState<boolean>(false);
+
+  // Login handler
+  const loginHandler = (userData: RegisteredUserProps) => {
+    dispatch(login(userData));
+  };
 
   const onSubmit = async (data: object) => {
     try {
       setError(null);
       const userId = localStorage.getItem("userId");
-      await axios.post("/api/v1/banks", {
+      const res = await axios.post("/api/v1/banks", {
         ...data,
         userId,
         customerFees: check,
       });
-      setHideModal(false);
+      localStorage.clear();
+      loginHandler(res.data);
+      // setHideModal(false);
       setisLoading(false);
     } catch (err) {
       console.log(err);
@@ -44,7 +54,6 @@ export const PayForm = () => {
 
   return (
     <div className="pay-form">
-      {!hideModal && <Modal status="signup" enableHide={false} />}
       <div className="container">
         <h3>
           Finally let's help you <br /> get paid!

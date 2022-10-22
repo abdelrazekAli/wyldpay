@@ -69,7 +69,7 @@ export const SendResetPassForm = () => {
           ) : (
             <p>
               Cancel?
-              <Link to={"/admin/profile"}>Back to profile</Link>
+              <Link to={"/admin/settings"}>Back to profile</Link>
             </p>
           )}
 

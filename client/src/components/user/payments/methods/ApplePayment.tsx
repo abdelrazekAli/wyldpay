@@ -10,14 +10,17 @@ import {
 } from "@stripe/react-stripe-js";
 import { getDiscount } from "../../../../redux/discount.slice";
 import { getCartProducts } from "../../../../redux/cart.slice";
+import { PaymentMethod } from "../../../../types/PaymentMethod";
 import { getRestaurantCurrency } from "../../../../redux/restaurant.slice";
 
 export const ApplePayment = ({
-  totalPrice,
   orderNote,
+  totalPrice,
+  stripeKeys,
 }: {
-  totalPrice: number;
   orderNote: string;
+  totalPrice: number;
+  stripeKeys: PaymentMethod;
 }) => {
   const stripe = useStripe();
   const elements = useElements();
@@ -87,7 +90,7 @@ export const ApplePayment = ({
         .post("/api/v1/payments/stripe/create-payment-intent", {
           amount: +totalPrice.toFixed(2),
           currency,
-          secretKey: process.env.REACT_APP_STRIPE_SECRET_KEY,
+          secretKey: stripeKeys.secretKey,
         })
         .then((res) => {
           setClientSecret(res.data.clientSecret);

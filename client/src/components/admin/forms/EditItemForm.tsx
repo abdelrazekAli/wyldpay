@@ -1,19 +1,18 @@
 import axios from "axios";
 import { useState } from "react";
 import { Item } from "../../../types/Item";
-import { getUser } from "../../../redux/user.slice";
-import { useAppSelector } from "../../../redux/store.hooks";
 import { faUpload } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export const EditItemForm = ({
   item,
   hideForm,
+  onUpdate,
 }: {
   item: Item;
   hideForm: () => void;
+  onUpdate: (updatedItem: Item) => void;
 }) => {
-  const { accessToken } = useAppSelector(getUser);
   const [name, setName] = useState<string>(item.name);
   const [file, setFile] = useState<string | Blob>("");
   const [price, setPrice] = useState<number>(item.price);
@@ -40,25 +39,17 @@ export const EditItemForm = ({
         );
         url = uploadRes.data.url;
       }
-
-      const res = await axios.put(
-        `/api/v1/items/id/${item._id}`,
-        {
-          name,
-          price,
-          img: file ? url : item.img,
-          category: item.category,
-          desc: description,
-          ingredients,
-          restId: item.restId,
-        },
-        {
-          headers: {
-            "auth-token": accessToken,
-          },
-        }
-      );
-
+      const updatedItem = {
+        name,
+        price,
+        img: file ? url : item.img,
+        category: item.category,
+        desc: description,
+        ingredients,
+        restId: item.restId,
+      };
+      await axios.put(`/api/v1/items/id/${item._id}`, updatedItem);
+      onUpdate({ _id: item._id, ...updatedItem });
       hideForm();
       setisLoading(false);
     } catch (err) {

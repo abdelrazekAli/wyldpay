@@ -161,239 +161,246 @@ export const SettingsForms = () => {
 
   return (
     <>
-      <span className="error color-error  d-block mt-4 text-center fs-3">
-        {error}
-      </span>
+      <div className="w-100">
+        <div>
+          <span className="error color-error  d-block mt-4 text-center fs-3">
+            {error}
+          </span>
 
-      {success && (
-        <span className="font-bold color-main  d-block mt-4 text-center fs-3">
-          {success}
-        </span>
-      )}
+          {success && (
+            <span className="font-bold color-main  d-block  text-center fs-3">
+              {success}
+            </span>
+          )}
+        </div>
 
-      <div className="profile-form w-100">
-        {isStripeFormVisible && (
-          <StripeKeysForm hideForm={() => setStripeFormVisible(false)} />
-        )}
-        {isPaypalFormVisible && (
-          <PaypalKeysForm hideForm={() => setPaypalFormVisible(false)} />
-        )}
+        <div className="profile-form w-100">
+          {isStripeFormVisible && (
+            <StripeKeysForm hideForm={() => setStripeFormVisible(false)} />
+          )}
+          {isPaypalFormVisible && (
+            <PaypalKeysForm hideForm={() => setPaypalFormVisible(false)} />
+          )}
 
-        {isLinksFormVisible && (
-          <SocialLinksForm hideForm={() => setLinksFormVisible(false)} />
-        )}
-        <div className="column">
-          <h3>Profile</h3>
-          <p className="d-none-mobile">Keep your information up-to-date.</p>
-          <form
-            id="profile-form"
-            onSubmit={handleSubmit((data) => editProfile(data))}
-          >
-            <div className="input-group">
-              <label htmlFor="firstName">First name</label>
-              <input id="firstName" type="text" {...register("firstName")} />
-              <span className="error">{errors?.firstName?.message}</span>
+          {isLinksFormVisible && (
+            <SocialLinksForm hideForm={() => setLinksFormVisible(false)} />
+          )}
+          <div className="column">
+            <h3>Profile</h3>
+            <p className="d-none-mobile">Keep your information up-to-date.</p>
+            <form
+              id="profile-form"
+              onSubmit={handleSubmit((data) => editProfile(data))}
+            >
+              <div className="input-group">
+                <label htmlFor="firstName">First name</label>
+                <input id="firstName" type="text" {...register("firstName")} />
+                <span className="error">{errors?.firstName?.message}</span>
+              </div>
+              <div className="input-group">
+                <label htmlFor="lastName">Last name</label>
+
+                <input id="lastName" type="text" {...register("lastName")} />
+                <span className="error">{errors?.lastName?.message}</span>
+              </div>
+              <div className="input-group">
+                <label htmlFor="businessName">Business name</label>
+                <input
+                  id="businessName"
+                  type="text"
+                  {...register("businessName")}
+                />
+                <span className="error">{errors?.businessName?.message}</span>
+              </div>
+
+              <div className="input-group">
+                <label htmlFor="businessAddress">Business address</label>
+
+                <input
+                  id="businessAddress"
+                  type="text"
+                  {...register("businessAddress")}
+                />
+                <span className="error">
+                  {errors?.businessAddress?.message}
+                </span>
+              </div>
+              <div className="input-group">
+                <label htmlFor="city">City</label>
+
+                <input id="city" type="text" {...register("city")} />
+                <span className="error">{errors?.city?.message}</span>
+              </div>
+              <div className="input-group">
+                <label htmlFor="state">State</label>
+
+                <input id="state" type="text" {...register("state")} />
+                <span className="error">{errors?.state?.message}</span>
+              </div>
+              <div className="input-group">
+                <label htmlFor="zip">Zip</label>
+
+                <input id="zip" type="text" {...register("zip")} />
+                <span className="error">{errors?.zip?.message}</span>
+              </div>
+              <div className="input-group">
+                <label htmlFor="phone">Phone number</label>
+                <PhoneInput
+                  inputProps={{
+                    style: {
+                      outline: 0,
+                      width: "100%",
+                      height: "100%",
+                      border: "none",
+                      background: "#f2f2f2",
+                      fontSize: "1.5rem",
+                    },
+                  }}
+                  specialLabel={""}
+                  preferredCountries={["de"]}
+                  value={String(userData?.phone)}
+                  onChange={(value) => {
+                    setPhoneNum(value);
+                    setError(null);
+                  }}
+                />
+              </div>
+              <div className="input-group">
+                <label htmlFor="email">Email</label>
+
+                <input id="email" type="email" {...register("email")} />
+                <span className="error">{errors?.email?.message}</span>
+              </div>
+              <label>Password</label>
+              <Link
+                to={"/admin/send-reset-pass"}
+                state={userData?.email}
+                className="color-main font-bold fs-2 cursor-pointer"
+              >
+                <div className="fixed-box">Send reset link</div>
+              </Link>
+            </form>
+          </div>
+          <div className="column">
+            <div className="btn-container justify-content-end mb-6">
+              <button
+                className="btn w-15"
+                type="submit"
+                form="profile-form"
+                disabled={isLoading}
+              >
+                {isLoading ? "Loading..." : "Save edits"}
+              </button>
+            </div>
+
+            <label>Logo</label>
+            <div className="img-box p-relative">
+              <label htmlFor="logo" className="mb-0">
+                <input
+                  type="file"
+                  accept="image/*"
+                  hidden
+                  id="logo"
+                  onChange={(e) => {
+                    setLogo(e.target.files![0]);
+                    setLogoBlob(e.target.files![0]);
+                  }}
+                />
+                {logoBlob ? (
+                  <img
+                    src={URL.createObjectURL(logo!)}
+                    alt="img"
+                    className="img-obj"
+                  />
+                ) : (
+                  <img src={restaurant?.logo} alt="" />
+                )}
+                <FontAwesomeIcon icon={faPen} className="icon-img-edit" />
+              </label>
+            </div>
+            <label>Background</label>
+            <div className="img-box p-relative">
+              <label htmlFor="background" className="mb-0">
+                <input
+                  type="file"
+                  accept="image/*"
+                  hidden
+                  id="background"
+                  onChange={(e) => {
+                    setBackground(e.target.files![0]);
+                    setBackgroundBlob(e.target.files![0]);
+                  }}
+                />
+                {backgroundBlob ? (
+                  <img
+                    src={URL.createObjectURL(background!)}
+                    alt="img"
+                    className="img-obj"
+                  />
+                ) : (
+                  <img src={restaurant?.background} alt="" />
+                )}
+                <FontAwesomeIcon icon={faPen} className="icon-img-edit" />
+              </label>
             </div>
             <div className="input-group">
-              <label htmlFor="lastName">Last name</label>
+              <label htmlFor="vat">VAT number</label>
 
-              <input id="lastName" type="text" {...register("lastName")} />
-              <span className="error">{errors?.lastName?.message}</span>
+              <input id="vatNum" type="text" {...register("vatNum")} />
+              <span className="error">{errors?.vatNum?.message}</span>
             </div>
             <div className="input-group">
-              <label htmlFor="businessName">Business name</label>
+              <label htmlFor="vat">VAT percentage</label>
+
               <input
-                id="businessName"
-                type="text"
-                {...register("businessName")}
+                id="vat"
+                type="number"
+                max={100}
+                {...register("vatPercentage")}
               />
-              <span className="error">{errors?.businessName?.message}</span>
+              <span className="error">{errors?.vatPercentage?.message}</span>
             </div>
-
-            <div className="input-group">
-              <label htmlFor="businessAddress">Business address</label>
-
-              <input
-                id="businessAddress"
-                type="text"
-                {...register("businessAddress")}
-              />
-              <span className="error">{errors?.businessAddress?.message}</span>
+            <label>Social links</label>
+            <div
+              className="fixed-box cursor-pointer"
+              onClick={() => setLinksFormVisible(!isLinksFormVisible)}
+            >
+              <span className="color-main font-bold fs-2  ">
+                Update social links
+              </span>
             </div>
-            <div className="input-group">
-              <label htmlFor="city">City</label>
-
-              <input id="city" type="text" {...register("city")} />
-              <span className="error">{errors?.city?.message}</span>
-            </div>
-            <div className="input-group">
-              <label htmlFor="state">State</label>
-
-              <input id="state" type="text" {...register("state")} />
-              <span className="error">{errors?.state?.message}</span>
-            </div>
-            <div className="input-group">
-              <label htmlFor="zip">Zip</label>
-
-              <input id="zip" type="text" {...register("zip")} />
-              <span className="error">{errors?.zip?.message}</span>
-            </div>
-            <div className="input-group">
-              <label htmlFor="phone">Phone number</label>
-              <PhoneInput
-                inputProps={{
-                  style: {
-                    outline: 0,
-                    width: "100%",
-                    height: "100%",
-                    border: "none",
-                    background: "#f2f2f2",
-                    fontSize: "1.5rem",
-                  },
-                }}
-                specialLabel={""}
-                preferredCountries={["de"]}
-                value={String(userData?.phone)}
-                onChange={(value) => {
-                  setPhoneNum(value);
-                  setError(null);
-                }}
-              />
-            </div>
-            <div className="input-group">
-              <label htmlFor="email">Email</label>
-
-              <input id="email" type="email" {...register("email")} />
-              <span className="error">{errors?.email?.message}</span>
-            </div>
-            <label>Password</label>
+            <label>Bank</label>
             <Link
-              to={"/admin/send-reset-pass"}
-              state={userData?.email}
+              to={"/admin/bank"}
               className="color-main font-bold fs-2 cursor-pointer"
             >
-              <div className="fixed-box">Send reset link</div>
+              <div className="fixed-box">Update bank info</div>
             </Link>
-          </form>
-        </div>
-        <div className="column">
-          <div className="btn-container justify-content-end mb-6">
-            <button
-              className="btn w-15"
-              type="submit"
-              form="profile-form"
-              disabled={isLoading}
+            <label>Stripe credentials</label>
+            <div
+              className="fixed-box cursor-pointer"
+              onClick={() => setStripeFormVisible(!isStripeFormVisible)}
             >
-              {isLoading ? "Loading..." : "Save edits"}
-            </button>
-          </div>
-          <label>Logo</label>
-          <div className="img-box p-relative">
-            <label htmlFor="logo" className="mb-0">
-              <input
-                type="file"
-                accept="image/*"
-                hidden
-                id="logo"
-                onChange={(e) => {
-                  setLogo(e.target.files![0]);
-                  setLogoBlob(e.target.files![0]);
-                }}
-              />
-              {logoBlob ? (
-                <img
-                  src={URL.createObjectURL(logo!)}
-                  alt="img"
-                  className="img-obj"
-                />
-              ) : (
-                <img src={restaurant?.logo} alt="" />
-              )}
-              <FontAwesomeIcon icon={faPen} className="icon-img-edit" />
-            </label>
-          </div>
-          <label>Background</label>
-          <div className="img-box p-relative">
-            <label htmlFor="background" className="mb-0">
-              <input
-                type="file"
-                accept="image/*"
-                hidden
-                id="background"
-                onChange={(e) => {
-                  setBackground(e.target.files![0]);
-                  setBackgroundBlob(e.target.files![0]);
-                }}
-              />
-              {backgroundBlob ? (
-                <img
-                  src={URL.createObjectURL(background!)}
-                  alt="img"
-                  className="img-obj"
-                />
-              ) : (
-                <img src={restaurant?.background} alt="" />
-              )}
-              <FontAwesomeIcon icon={faPen} className="icon-img-edit" />
-            </label>
-          </div>
-          <div className="input-group">
-            <label htmlFor="vat">VAT number</label>
-
-            <input id="vatNum" type="text" {...register("vatNum")} />
-            <span className="error">{errors?.vatNum?.message}</span>
-          </div>
-          <div className="input-group">
-            <label htmlFor="vat">VAT percentage</label>
-
-            <input
-              id="vat"
-              type="number"
-              max={100}
-              {...register("vatPercentage")}
-            />
-            <span className="error">{errors?.vatPercentage?.message}</span>
-          </div>
-          <label>Social links</label>
-          <div
-            className="fixed-box cursor-pointer"
-            onClick={() => setLinksFormVisible(!isLinksFormVisible)}
-          >
-            <span className="color-main font-bold fs-2  ">
-              Update social links
-            </span>
-          </div>
-          <label>Bank</label>
-          <Link
-            to={"/admin/bank"}
-            className="color-main font-bold fs-2 cursor-pointer"
-          >
-            <div className="fixed-box">Update bank info</div>
-          </Link>
-          <label>Stripe credentials</label>
-          <div
-            className="fixed-box cursor-pointer"
-            onClick={() => setStripeFormVisible(!isStripeFormVisible)}
-          >
-            <span className="color-main font-bold fs-2  ">
-              Update stripe keys
-            </span>
-          </div>
-          <label>PayPal credentials</label>
-          <div
-            className="fixed-box cursor-pointer"
-            onClick={() => setPaypalFormVisible(!isPaypalFormVisible)}
-          >
-            <span className="color-main font-bold fs-2  ">
-              Update paypal keys
-            </span>
-          </div>
-          {/* <label>Crypto credentials</label>
+              <span className="color-main font-bold fs-2  ">
+                Update stripe keys
+              </span>
+            </div>
+            <label>PayPal credentials</label>
+            <div
+              className="fixed-box cursor-pointer"
+              onClick={() => setPaypalFormVisible(!isPaypalFormVisible)}
+            >
+              <span className="color-main font-bold fs-2  ">
+                Update paypal keys
+              </span>
+            </div>
+            {/* <label>Crypto credentials</label>
           <div className="fixed-box cursor-pointer">
             <span className="color-main font-bold fs-2  ">
               Update crypto keys
             </span>
           </div> */}
+          </div>
         </div>
       </div>
     </>

@@ -5,15 +5,18 @@ import { getTip } from "../../../../redux/tip.slice";
 import { useAppSelector } from "../../../../redux/store.hooks";
 import { getCartProducts } from "../../../../redux/cart.slice";
 import { getDiscount } from "../../../../redux/discount.slice";
+import { PaymentMethod } from "../../../../types/PaymentMethod";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import { getRestaurantCurrency } from "../../../../redux/restaurant.slice";
 
 export const PaypalPayment = ({
   totalPrice,
   orderNote,
+  paypalKeys,
 }: {
-  totalPrice: number;
   orderNote: string;
+  totalPrice: number;
+  paypalKeys: PaymentMethod;
 }) => {
   const tip = useAppSelector(getTip);
   const { restId, tableId } = useParams();
@@ -56,7 +59,7 @@ export const PaypalPayment = ({
         <div className="error">{error}</div>
         <PayPalScriptProvider
           options={{
-            "client-id": process.env.REACT_APP_PAYPAL_KEY!,
+            "client-id": paypalKeys.publicKey,
             "disable-funding": "card",
             currency,
           }}

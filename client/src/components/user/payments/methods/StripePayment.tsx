@@ -7,15 +7,18 @@ import { getTip } from "../../../../redux/tip.slice";
 import { getCartProducts } from "../../../../redux/cart.slice";
 import { useAppSelector } from "../../../../redux/store.hooks";
 import { getDiscount } from "../../../../redux/discount.slice";
+import { PaymentMethod } from "../../../../types/PaymentMethod";
 import { getRestaurantCurrency } from "../../../../redux/restaurant.slice";
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 
 export const StripePayment = ({
   totalPrice,
   orderNote,
+  stripeKeys,
 }: {
   totalPrice: number;
   orderNote: string;
+  stripeKeys: PaymentMethod;
 }) => {
   const stripe = useStripe();
   const elements = useElements();
@@ -85,7 +88,7 @@ export const StripePayment = ({
       .post("/api/v1/payments/stripe/create-payment-intent", {
         amount: +totalPrice.toFixed(2),
         currency,
-        secretKey: process.env.REACT_APP_STRIPE_SECRET_KEY,
+        secretKey: stripeKeys.secretKey,
       })
       .then((res) => {
         return stripe?.confirmCardPayment(res.data.clientSecret, {

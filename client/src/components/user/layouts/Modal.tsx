@@ -37,7 +37,7 @@ export const Modal = ({ status, enableHide }: ModalPropsType) => {
           <div className="toastContainer">
             <BounceLoader color="red" />
             <h3>An error occured!</h3>
-            <p>Please ensure that you enter a valid card informations.</p>
+            <p>Please ensure that credentials are vaild.</p>
           </div>
         );
         break;

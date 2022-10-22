@@ -34,7 +34,7 @@ export default function Sidebar() {
   return (
     <>
       {hideSidebar ? (
-        <div className={"sidebar d-block"}>
+        <div className="sidebar d-block">
           <div className="sidebarWrapper">
             <ul className="sidebarList">
               <NavLink
@@ -94,7 +94,7 @@ export default function Sidebar() {
                   window.open(
                     `/menu/${user.restaurantId}/1`,
                     "Restaurant live",
-                    "width=460,height=650"
+                    `width=460,height=${viewportheight},left=${+viewportwidth}`
                   )
                 }
               >
@@ -132,7 +132,7 @@ export default function Sidebar() {
           </div>
         </div>
       ) : (
-        <div className={"icons-sidebar sidebar d-block"}>
+        <div className="icons-sidebar sidebar d-block">
           <div className="sidebarWrapper">
             <ul className="sidebarList">
               <NavLink

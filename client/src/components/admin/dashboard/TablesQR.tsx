@@ -68,6 +68,7 @@ export const TablesQR = () => {
                   value={`${process.env.REACT_APP_BASE_URL}/menu/${restaurantId}/${tableNum}`}
                   size={320}
                   includeMargin={true}
+                  className="qr-responsive"
                 />
                 <div className="btn-container">
                   <button

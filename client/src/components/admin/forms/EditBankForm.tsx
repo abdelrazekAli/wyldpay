@@ -28,7 +28,6 @@ export const EditBankForm = () => {
         setCheck(res.data.customerFees);
       } catch (err) {
         console.log(err);
-        setError("Something went wrong on fetch bank data!");
       }
     };
     fetchItems();

@@ -66,13 +66,19 @@ export const PaymentsWrapper = ({
             {stripeKeys?.publicKey &&
             stripeKeys.secretKey &&
             paypalKeys?.publicKey ? (
-              <ParentContainer totalPrice={totalPrice} orderNote={orderNote} />
+              <ParentContainer
+                totalPrice={totalPrice}
+                orderNote={orderNote}
+                stripeKeys={stripeKeys}
+                paypalKeys={paypalKeys}
+              />
             ) : (
               <>
                 {stripeKeys?.publicKey && stripeKeys.secretKey ? (
                   <StripeContainer
                     totalPrice={totalPrice}
                     orderNote={orderNote}
+                    stripeKeys={stripeKeys}
                   />
                 ) : (
                   <>
@@ -80,6 +86,7 @@ export const PaymentsWrapper = ({
                       <PaypalContainer
                         totalPrice={totalPrice}
                         orderNote={orderNote}
+                        paypalKeys={paypalKeys}
                       />
                     ) : (
                       <>

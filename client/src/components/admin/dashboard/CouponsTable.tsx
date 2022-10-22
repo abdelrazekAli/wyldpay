@@ -99,7 +99,7 @@ export const CouponsTable = () => {
             ) : (
               coupons?.length === 0 && (
                 <div className="justify-content-center">
-                  <div className="no-items">No coupons added yet</div>
+                  <div className="no-items">There are no coupons yet</div>
                 </div>
               )
             )}

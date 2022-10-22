@@ -2,14 +2,17 @@ import { useState } from "react";
 import { PaypalPayment } from "../methods/PaypalPayment";
 import { getSymbol } from "../../../../utils/currencySymbol";
 import { useAppSelector } from "../../../../redux/store.hooks";
+import { PaymentMethod } from "../../../../types/PaymentMethod";
 import { getRestaurantState } from "../../../../redux/restaurant.slice";
 
 export const PaypalContainer = ({
-  totalPrice,
   orderNote,
+  totalPrice,
+  paypalKeys,
 }: {
-  totalPrice: number;
   orderNote: string;
+  totalPrice: number;
+  paypalKeys: PaymentMethod;
 }) => {
   const restaurant = useAppSelector(getRestaurantState);
   const [isDropDownVisible, setDropDownVisible] = useState<boolean>(false);
@@ -45,7 +48,11 @@ export const PaypalContainer = ({
           </span>
         </div>
       </div>
-      <PaypalPayment totalPrice={totalPrice} orderNote={orderNote} />
+      <PaypalPayment
+        totalPrice={totalPrice}
+        orderNote={orderNote}
+        paypalKeys={paypalKeys}
+      />
     </>
   );
 };

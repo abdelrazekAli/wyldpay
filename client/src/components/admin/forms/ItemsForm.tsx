@@ -44,6 +44,17 @@ export const ItemsForm = ({ onClick }: StepperProps) => {
     }
   };
 
+  // Handle update item
+  const handleUpdateItem = async (updatedItem: Item) => {
+    const updatedItems = items.map((item) => {
+      if (item._id === updatedItem._id) {
+        return updatedItem;
+      }
+      return item;
+    });
+    setItems(updatedItems);
+  };
+
   return (
     <>
       {isFormVisible && (
@@ -101,6 +112,7 @@ export const ItemsForm = ({ onClick }: StepperProps) => {
                       item={i}
                       key={i._id}
                       onDelete={(id) => handleDelete(id)}
+                      onUpdate={(updatedItem) => handleUpdateItem(updatedItem)}
                     />
                   )
               )

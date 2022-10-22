@@ -6,19 +6,21 @@ import { StripePayment } from "../methods/StripePayment";
 import { getSymbol } from "../../../../utils/currencySymbol";
 import { useAppSelector } from "../../../../redux/store.hooks";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
+import { PaymentMethod } from "../../../../types/PaymentMethod";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { getRestaurantState } from "../../../../redux/restaurant.slice";
 
-const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_CLIENT_KEY!);
-
 export const StripeContainer = ({
-  totalPrice,
   orderNote,
+  totalPrice,
+  stripeKeys,
 }: {
-  totalPrice: number;
   orderNote: string;
+  totalPrice: number;
+  stripeKeys: PaymentMethod;
 }) => {
   const restaurant = useAppSelector(getRestaurantState);
+  const stripePromise = loadStripe(stripeKeys.publicKey);
   const [paymentSelected, setPaymentSelected] = useState<number>(0);
   const [isDropDownVisible, setDropDownVisible] = useState<boolean>(false);
 
@@ -78,12 +80,20 @@ export const StripeContainer = ({
       </div>
       {paymentSelected === 0 && (
         <Elements stripe={stripePromise}>
-          <StripePayment totalPrice={totalPrice} orderNote={orderNote} />
+          <StripePayment
+            totalPrice={totalPrice}
+            orderNote={orderNote}
+            stripeKeys={stripeKeys}
+          />
         </Elements>
       )}
       {paymentSelected === 1 && (
         <Elements stripe={stripePromise}>
-          <ApplePayment totalPrice={totalPrice} orderNote={orderNote} />
+          <ApplePayment
+            totalPrice={totalPrice}
+            orderNote={orderNote}
+            stripeKeys={stripeKeys}
+          />
         </Elements>
       )}
     </>

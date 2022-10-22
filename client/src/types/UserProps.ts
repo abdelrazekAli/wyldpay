@@ -15,6 +15,11 @@ export type UserProps = {
   socialLinks?: { name: string; value: string }[];
 };
 
+export type AuthUserProps = {
+  email: string;
+  password: string;
+};
+
 export type RegisteredUserProps = UserProps & {
   _id?: string;
   restaurantId?: string;

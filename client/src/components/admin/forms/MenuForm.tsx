@@ -1,9 +1,9 @@
 import axios from "axios";
 import "../../../styles/item.sass";
-import { AddItemForm } from "./AddItemForm";
-import "../../../styles/forms/menuForm.sass";
-import { ItemBox } from "../layouts/ItemBox";
 import { Item } from "../../../types/Item";
+import { AddItemForm } from "./AddItemForm";
+import { ItemBox } from "../layouts/ItemBox";
+import "../../../styles/forms/menuForm.sass";
 import { Key, useEffect, useState } from "react";
 import { AddCategoryForm } from "./AddCategoryForm";
 import { getUser } from "../../../redux/user.slice";
@@ -62,6 +62,17 @@ export const MenuForm = () => {
       console.log(err);
       setError("Somthing went wrong!");
     }
+  };
+
+  // Handle update item
+  const handleUpdateItem = async (updatedItem: Item) => {
+    const updatedItems = items.map((item) => {
+      if (item._id === updatedItem._id) {
+        return updatedItem;
+      }
+      return item;
+    });
+    setItems(updatedItems);
   };
 
   return (
@@ -139,6 +150,7 @@ export const MenuForm = () => {
                       item={i}
                       key={i._id}
                       onDelete={(id) => handleDeleteItem(id)}
+                      onUpdate={(updatedItem) => handleUpdateItem(updatedItem)}
                     />
                   )
               )
