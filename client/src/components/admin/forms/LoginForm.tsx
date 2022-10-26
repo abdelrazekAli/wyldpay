@@ -3,14 +3,12 @@ import * as yup from "yup";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import "../../../styles/forms/loginFrom.sass";
+import "../../../styles/forms/loginFromModal.sass";
 import { login } from "../../../redux/user.slice";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useAppDispatch } from "../../../redux/store.hooks";
 import { RegisteredUserProps } from "../../../types/UserProps";
 import { loginSchema } from "../../../validations/loginSchema";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
 export const LoginForm = () => {
   const dispatch = useAppDispatch();
@@ -60,59 +58,55 @@ export const LoginForm = () => {
   };
 
   return (
-    <div className="login-form">
-      <div className="container">
-        <h3>Sign in</h3>
-        <p>
-          New user?
-          <Link to={"/admin/signup"}>Create an account</Link>
-        </p>
+    <div className="login-form-modal">
+      <div>
+        <div className="container" id="container">
+          <div className="form-container sign-in-container">
+            <form onSubmit={handleSubmit((data) => onSubmit(data))}>
+              <h1 className="h1-mb-1 ">Sign in</h1>
+              <input type="email" placeholder="Email" {...register("email")} />
+              <span className="error">{errors?.email?.message}</span>
 
-        <form onSubmit={handleSubmit((data) => onSubmit(data))}>
-          <div className="input-group">
-            <input
-              type="text"
-              placeholder="Email address"
-              {...register("email")}
-              className="mb-1"
-            />
-            <span className="error">{errors?.email?.message}</span>
+              <input
+                type="password"
+                placeholder="Password"
+                {...register("password")}
+              />
+              <span className="error">{errors?.password?.message}</span>
+
+              <div className="links">
+                <Link to={"/admin/send-reset-pass"} className="forget-password">
+                  Forgot password?
+                </Link>
+                <Link
+                  to={"/admin/signup"}
+                  className="color-main text-right w-100 d-only-mobile"
+                >
+                  Create account
+                </Link>
+              </div>
+              <button type="submit" className="login-btn" disabled={isLoading}>
+                {isLoading ? "Loading..." : "Sign in"}
+              </button>
+              <span className="error d-block text-center fs-2 main-error">
+                {error}
+              </span>
+            </form>
           </div>
-          <div className="input-group pass-wrapper">
-            <input
-              type={hidePass ? "password" : "text"}
-              placeholder="Password"
-              {...register("password")}
-            />
-            <FontAwesomeIcon
-              icon={!hidePass ? faEye : faEyeSlash}
-              className="eye-icon"
-              onClick={() => setHidePass(!hidePass)}
-            />
-          </div>
-          <span className="error">{errors?.password?.message}</span>
-          <div className="d-flex">
-            <div className="check">
-              <input type="checkbox" name="" />
-              <span>Keep me logged in</span>
+          <div className="overlay-container">
+            <div className="overlay">
+              <div className="overlay-panel overlay-right">
+                <h1>Hello, Friend!</h1>
+                <p>Enter your business details and start journey with us</p>
+                <Link to={"/admin/signup"}>
+                  <button className="border-white register-button" id="signUp">
+                    Sign Up
+                  </button>
+                </Link>
+              </div>
             </div>
-            <Link
-              to={"/admin/send-reset-pass"}
-              className="fs-2 color-main m-half"
-            >
-              Forgot password?
-            </Link>
           </div>
-          <div className="btn-container">
-            <button type="submit" className="btn" disabled={isLoading}>
-              {isLoading ? "Loading..." : "Sign in"}
-            </button>
-          </div>
-        </form>
-        <span className="error d-block text-center fs-2">{error}</span>
-        {/* <div className="parent-login-line">
-          <span className="login-line mt-2">or</span>
-        </div> */}
+        </div>
       </div>
     </div>
   );

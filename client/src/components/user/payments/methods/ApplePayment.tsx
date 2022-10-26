@@ -72,7 +72,7 @@ export const ApplePayment = ({
       currency,
       total: {
         label: "total",
-        amount: +totalPrice.toFixed(2),
+        amount: Math.trunc(+totalPrice.toFixed(2) * 100),
       },
       requestPayerName: true,
       requestPayerEmail: true,
@@ -96,6 +96,7 @@ export const ApplePayment = ({
           setClientSecret(res.data.clientSecret);
         })
         .catch((err) => {
+          console.log(err);
           setError("Something went wrong!");
           return;
         });
@@ -111,6 +112,7 @@ export const ApplePayment = ({
 
       if (stripeError) {
         // Show error
+        console.log(stripeError.message);
         setError(stripeError.message);
         return;
       }

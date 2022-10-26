@@ -103,7 +103,7 @@ export default function Sidebar() {
                 <span className="sidebar-text">Go to live</span>
               </li>
               <NavLink
-                to="/admin/tables"
+                to="/admin/qr"
                 className={({ isActive }) =>
                   isActive ? "active-navlink" : undefined
                 }

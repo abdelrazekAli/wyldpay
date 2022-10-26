@@ -47,7 +47,7 @@ export const PaypalKeysForm = ({ hideForm }: { hideForm: () => void }) => {
         {
           name: "paypal",
           publicKey: paymentsMethod?.publicKey,
-          secretKey: paymentsMethod?.secretKey,
+          secretKey: "0",
         },
         {
           headers: {
@@ -55,7 +55,7 @@ export const PaypalKeysForm = ({ hideForm }: { hideForm: () => void }) => {
           },
         }
       );
-      setSuccess("Keys updated successfully");
+      setSuccess("key updated successfully");
       setLoading(false);
     } catch (err) {
       console.log(err);
@@ -82,7 +82,8 @@ export const PaypalKeysForm = ({ hideForm }: { hideForm: () => void }) => {
                 id="publicKey"
                 name="publicKey"
                 type="text"
-                placeholder="Public key"
+                placeholder="Client Id"
+                className="mb-0"
                 value={paymentsMethod?.publicKey}
                 autoComplete="off"
                 onChange={(e) =>
@@ -92,7 +93,17 @@ export const PaypalKeysForm = ({ hideForm }: { hideForm: () => void }) => {
                   })
                 }
               />
-              <input
+              <span className="instructions">
+                Note: you can get your key from{" "}
+                <a
+                  href="https://developer.paypal.com/dashboard/applications/live"
+                  target="_blank"
+                  className="color-main text-underline"
+                >
+                  <b>here</b>
+                </a>
+              </span>
+              {/* <input
                 id="secretKey"
                 name="secretKey"
                 type="password"
@@ -105,7 +116,7 @@ export const PaypalKeysForm = ({ hideForm }: { hideForm: () => void }) => {
                     secretKey: e.target.value.trim(),
                   })
                 }
-              />
+              /> */}
               <button type="submit" className="btn">
                 {isLoading ? "Loading..." : "Save"}
               </button>

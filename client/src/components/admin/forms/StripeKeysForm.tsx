@@ -77,6 +77,7 @@ export const StripeKeysForm = ({ hideForm }: { hideForm: () => void }) => {
               <img src="../../assets/images/stripe-logo.png" alt="" />
             </div>
           </div>
+
           {!isLoading ? (
             <form onSubmit={editPaymentKeys} autoComplete="off">
               <input
@@ -100,6 +101,7 @@ export const StripeKeysForm = ({ hideForm }: { hideForm: () => void }) => {
                 placeholder="Secret key"
                 value={paymentsMethod?.secretKey}
                 autoComplete="off"
+                className="mb-0"
                 onChange={(e) =>
                   setPaymentsMethod({
                     ...paymentsMethod,
@@ -107,6 +109,16 @@ export const StripeKeysForm = ({ hideForm }: { hideForm: () => void }) => {
                   })
                 }
               />
+              <span className="instructions">
+                Note: you can get your keys from{" "}
+                <a
+                  href="https://dashboard.stripe.com/apikeys"
+                  target="_blank"
+                  className="color-main text-underline"
+                >
+                  <b>here</b>
+                </a>
+              </span>
               <button type="submit" className="btn">
                 {isLoading ? "Loading..." : "Save"}
               </button>

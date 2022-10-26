@@ -77,9 +77,10 @@ export const PaypalPayment = ({
               });
             }}
             onApprove={async (data, actions) => {
-              submitOrder("PayPal");
+              return submitOrder("PayPal");
             }}
-            onError={() => {
+            onError={(err) => {
+              console.log(err);
               setError("Something went wrong!");
             }}
             onCancel={() => {
