@@ -1,5 +1,6 @@
 import "dotenv/config";
 import cors from "cors";
+import nodemailer from "nodemailer";
 import connect from "./utils/connect";
 import express, { Application } from "express";
 
@@ -27,6 +28,37 @@ app.use("/api/v1/orders", orderRouter);
 app.use("/api/v1/coupons", couponRouter);
 app.use("/api/v1/payments", paymentRouter);
 app.use("/api/v1/restaurants", restaurantRouter);
+
+app.post("/send_email", function (req, response) {
+  const from = req.body.from;
+  const to = req.body.to;
+  const subject = req.body.subject;
+  const message = req.body.message;
+
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: "wyldpay@gmail.com",
+      pass: "nhtmadisdjbwfuil",
+    },
+  });
+
+  const mailOptions = {
+    from: from,
+    to: to,
+    subject: subject,
+    text: message,
+  };
+
+  transporter.sendMail(mailOptions, function (error, info) {
+    if (error) {
+      console.log(error);
+    } else {
+      console.log("Email Sent: " + info.response);
+    }
+    // response.redirect("/");
+  });
+});
 
 // For production
 app.use(express.static("./client/build"));

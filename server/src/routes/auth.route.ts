@@ -6,10 +6,10 @@ import UserModel from "../models/user.model";
 import { generateToken } from "../utils/token";
 import TokenModel from "../models/token.model";
 import {
+  validateUser,
   validateLogin,
   validateResetPass,
   validateSendResetPass,
-  validateUser,
 } from "../utils/validation";
 import RestaurantModel from "../models/restaurant.model";
 

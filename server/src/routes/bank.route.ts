@@ -1,5 +1,8 @@
 import { Router } from "express";
 import { Request, Response } from "express";
+import UserModel from "../models/user.model";
+import { generateToken } from "../utils/token";
+import RestaurantModel from "../models/restaurant.model";
 import BankModel, { BankProps } from "../models/bank.model";
 import { verifyAuth } from "../middlewares/token.auth.middleware";
 import {
@@ -46,9 +49,28 @@ bankRouter.post("/", async (req: Request, res: Response) => {
 
     // Save bank
     const bank = (await newBank.save()) as BankProps;
+    const user = await UserModel.findById(req.body.userId)!;
 
-    // Response
-    res.status(200).json(bank);
+    // Get user restaurant id
+    const restaurant = await RestaurantModel.findOne({
+      userId: req.body.userId,
+    }).select("_id currency");
+
+    // Create and assign a token
+    let accessToken = generateToken({
+      _id: req.body.userId,
+      restaurantId: restaurant?._id,
+    });
+
+    // Set headers and response
+    res.header("auth-token", accessToken).json({
+      _id: req.body.userId,
+      firstName: user?.firstName,
+      email: user?.email,
+      restaurantId: restaurant?._id,
+      currency: restaurant?.currency,
+      accessToken: accessToken,
+    });
   } catch (err) {
     console.log(err);
     res.status(500).json(err);

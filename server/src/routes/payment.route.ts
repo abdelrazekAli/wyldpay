@@ -18,11 +18,10 @@ paymentRouter.post(
       secretKey: string;
       amount: number;
     };
-
     const stripe = require("stripe")(secretKey);
     try {
       const { client_secret } = await stripe.paymentIntents.create({
-        amount: amount * 100,
+        amount: Math.trunc(amount * 100),
         currency,
       });
 
