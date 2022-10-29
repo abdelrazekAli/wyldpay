@@ -1,6 +1,5 @@
 import "dotenv/config";
 import cors from "cors";
-import nodemailer from "nodemailer";
 import connect from "./utils/connect";
 import express, { Application } from "express";
 
@@ -10,6 +9,7 @@ import { bankRouter } from "./routes/bank.route";
 import { itemRouter } from "./routes/item.route";
 import { userRouter } from "./routes/user.route";
 import { orderRouter } from "./routes/order.route";
+import { emailRouter } from "./routes/email.route";
 import { couponRouter } from "./routes/coupon.route";
 import { paymentRouter } from "./routes/payment.route";
 import { restaurantRouter } from "./routes/restaurant.route";
@@ -25,40 +25,10 @@ app.use("/api/v1/users", userRouter);
 app.use("/api/v1/items", itemRouter);
 app.use("/api/v1/banks", bankRouter);
 app.use("/api/v1/orders", orderRouter);
+app.use("/api/v1/emails", emailRouter);
 app.use("/api/v1/coupons", couponRouter);
 app.use("/api/v1/payments", paymentRouter);
 app.use("/api/v1/restaurants", restaurantRouter);
-
-app.post("/send_email", function (req, response) {
-  const from = req.body.from;
-  const to = req.body.to;
-  const subject = req.body.subject;
-  const message = req.body.message;
-
-  const transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-      user: "wyldpay@gmail.com",
-      pass: "nhtmadisdjbwfuil",
-    },
-  });
-
-  const mailOptions = {
-    from: from,
-    to: to,
-    subject: subject,
-    text: message,
-  };
-
-  transporter.sendMail(mailOptions, function (error, info) {
-    if (error) {
-      console.log(error);
-    } else {
-      console.log("Email Sent: " + info.response);
-    }
-    // response.redirect("/");
-  });
-});
 
 // For production
 app.use(express.static("./client/build"));

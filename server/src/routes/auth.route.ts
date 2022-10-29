@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 import { Router } from "express";
 import { Request, Response } from "express";
 import UserModel from "../models/user.model";
-import { generateToken } from "../utils/token";
+import { generateAccessToken } from "../utils/token";
 import TokenModel from "../models/token.model";
 import {
   validateUser,
@@ -71,7 +71,7 @@ authRouter.post("/login", async (req: Request, res: Response) => {
     }).select("_id currency");
 
     // Create and assign a token
-    let accessToken = generateToken({
+    let accessToken = generateAccessToken({
       _id: user._id,
       restaurantId: restaurant?._id,
     });
@@ -104,7 +104,7 @@ authRouter.post("/pass/send-reset", async (req: Request, res: Response) => {
     if (!user) return res.status(401).send("Email is not registered yet");
 
     // Create and assign a token
-    let resetToken = generateToken({ _id: user._id });
+    let resetToken = generateAccessToken({ _id: user._id });
 
     // Save reset token to database
     let newToken = new TokenModel({

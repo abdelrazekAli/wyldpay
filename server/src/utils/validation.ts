@@ -22,6 +22,12 @@ export const validateUser = (data: object) => {
   return schema.validate(data).error;
 };
 
+export const validateEmail = (data: object) => {
+  const schema = joi.object({
+    email: joi.string().required().email().max(255),
+  });
+  return schema.validate(data).error;
+};
 export const validateUpdateUserLinks = (data: object) => {
   let link = joi.object().keys({
     name: joi

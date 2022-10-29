@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { Request, Response } from "express";
 import UserModel from "../models/user.model";
-import { generateToken } from "../utils/token";
+import { generateAccessToken } from "../utils/token";
 import RestaurantModel from "../models/restaurant.model";
 import BankModel, { BankProps } from "../models/bank.model";
 import { verifyAuth } from "../middlewares/token.auth.middleware";
@@ -57,7 +57,7 @@ bankRouter.post("/", async (req: Request, res: Response) => {
     }).select("_id currency");
 
     // Create and assign a token
-    let accessToken = generateToken({
+    let accessToken = generateAccessToken({
       _id: req.body.userId,
       restaurantId: restaurant?._id,
     });
