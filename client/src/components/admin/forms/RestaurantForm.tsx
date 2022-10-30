@@ -164,21 +164,21 @@ export const RestForm = ({ onClick }: StepperProps) => {
           </form>
           <div className="imgs home-right">
             <img
-              src=".././assets/images/food1.png"
+              src="../.././assets/images/food1.png"
               alt="food"
               className="food-img food-1"
               width="200"
               loading="lazy"
             />
             <img
-              src=".././assets/images/food2.png"
+              src="../.././assets/images/food2.png"
               alt="food"
               className="food-img food-2"
               width="200"
               loading="lazy"
             />
             <img
-              src=".././assets/images/food3.png"
+              src="../.././assets/images/food3.png"
               alt="food"
               className="food-img food-3"
               width="200"
@@ -186,31 +186,31 @@ export const RestForm = ({ onClick }: StepperProps) => {
             />
 
             <img
-              src=".././assets/images/circle.svg"
+              src="../.././assets/images/circle.svg"
               alt="circle shape"
               className="shape shape-1"
               width="25"
             />
             <img
-              src=".././assets/images/circle.svg"
+              src="../.././assets/images/circle.svg"
               alt="circle shape"
               className="shape shape-2"
               width="15"
             />
             <img
-              src=".././assets/images/circle.svg"
+              src="../.././assets/images/circle.svg"
               alt="circle shape"
               className="shape shape-3"
               width="30"
             />
             <img
-              src=".././assets/images/ring.svg"
+              src="../.././assets/images/ring.svg"
               alt="ring shape"
               className="shape shape-4"
               width="60"
             />
             <img
-              src=".././assets/images/ring.svg"
+              src="../.././assets/images/ring.svg"
               alt="ring shape"
               className="shape shape-5"
               width="40"

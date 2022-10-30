@@ -1,16 +1,13 @@
 @use '../base' as *
-@import url('https://fonts.googleapis.com/css?family=Montserrat:400,800')
 
 .login-form-modal
     h1
         font-weight: bold
-        font-family: 'Montserrat', sans-serif
         font-size: 3rem
         margin: 0
 
     h2
         text-align: center
-        font-family: 'Montserrat', sans-serif
 
     p
         font-size: 14px
@@ -31,7 +28,7 @@
         font-weight: bold
         padding: 12px 45px
         letter-spacing: 1px
-        text-transform: uppercase
+        text-transform: capitalize
         cursor: pointer
         transition: .3s ease-in
 
@@ -198,6 +195,24 @@
     .d-only-mobile
         display: none
 
+    .success-container
+        display: flex
+        justify-content: center
+        background-color: #fff
+        align-items: center
+        justify-content: center
+        flex-direction: column
+        padding: 0 50px
+        height: 100%
+        text-align: center
+
+        img
+            max-width: 11rem
+            margin: 24px 0px 32px
+
+        h1
+            font-size: 20px
+
     .error
         color: #cc0000
         font-size: 1.3rem
@@ -210,6 +225,9 @@
         text-align: center !important
         margin-top: 1rem
 
+    .text-center
+        text-align: center !important
+
 @media (max-width: 640px)
     .login-form-modal
         .container
@@ -220,8 +238,11 @@
         .overlay-container
             display: none
 
-        .sign-in-container
+        .sign-in-container, .sign-up-container
             width: 100%
+
+        .sign-up-container
+            transform: none !important
 
         .d-only-mobile
             display: inline

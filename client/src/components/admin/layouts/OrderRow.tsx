@@ -4,8 +4,8 @@ import { getUser } from "../../../redux/user.slice";
 import { Tr, Td } from "react-super-responsive-table";
 import { getSymbol } from "../../../utils/currencySymbol";
 import { useAppSelector } from "../../../redux/store.hooks";
-import { downloadReceipt } from "../../../utils/orderReceipt";
 import { RestaurantProps } from "../../../types/Restaurant";
+import { downloadReceipt } from "../../../utils/orderReceipt";
 
 export const OrderRow = ({
   order,
@@ -26,7 +26,10 @@ export const OrderRow = ({
       <Td>
         {order.items.map(
           (item, i, row) =>
-            item.quantity + " x " + item.name + (row.length !== i + 1 && ", ")
+            item.quantity +
+            " x " +
+            item.name +
+            (row.length !== i + 1 ? ", " : "")
         )}
       </Td>
       <Td>{order.notes}</Td>

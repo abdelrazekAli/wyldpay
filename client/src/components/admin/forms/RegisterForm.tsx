@@ -1,9 +1,11 @@
 import axios from "axios";
 import * as yup from "yup";
 import { useState } from "react";
+import jwt_decode from "jwt-decode";
 import { useForm } from "react-hook-form";
 import "react-phone-input-2/lib/style.css";
 import PhoneInput from "react-phone-input-2";
+import { useParams } from "react-router-dom";
 import "../../../styles/forms/registerForm.sass";
 import { UserProps } from "../../../types/UserProps";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -11,6 +13,7 @@ import { StepperProps } from "../../../types/StepperProps";
 import { userSchema } from "../../../validations/userSchema";
 
 export const RegisterForm = ({ onClick }: StepperProps) => {
+  const { token } = useParams();
   const [phone, setPhone] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setisLoading] = useState<boolean>(false);
@@ -51,6 +54,13 @@ export const RegisterForm = ({ onClick }: StepperProps) => {
   } = useForm<Props>({
     resolver: yupResolver(userSchema),
   });
+
+  // Decode token
+  const decodedToken = jwt_decode(token!) as {
+    exp: number;
+    iat: number;
+    email: string;
+  };
 
   return (
     <div className="register-form">
@@ -131,14 +141,12 @@ export const RegisterForm = ({ onClick }: StepperProps) => {
             <span className="error">{errors?.zip?.message}</span>
           </div>
         </div>
-        <div className="input-group">
-          <input
-            type="email"
-            placeholder="Email address"
-            {...register("email")}
-          />
-          <span className="error">{errors?.email?.message}</span>
-        </div>
+        <input
+          type="email"
+          hidden
+          value={decodedToken.email}
+          {...register("email")}
+        />
         <div className="input-group">
           <input
             type="password"

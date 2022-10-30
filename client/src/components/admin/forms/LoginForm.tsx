@@ -3,10 +3,11 @@ import * as yup from "yup";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import "../../../styles/forms/loginFromModal.sass";
 import { login } from "../../../redux/user.slice";
+import "../../../styles/forms/loginFromModal.sass";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useAppDispatch } from "../../../redux/store.hooks";
+import { SendRegisterLinkForm } from "./SendRegisterLinkForm";
 import { RegisteredUserProps } from "../../../types/UserProps";
 import { loginSchema } from "../../../validations/loginSchema";
 
@@ -14,14 +15,12 @@ export const LoginForm = () => {
   const dispatch = useAppDispatch();
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setisLoading] = useState<boolean>(false);
+  const [rightPanel, setRightPanel] = useState<boolean>(false);
 
   // Login handler
   const loginHandler = (userData: RegisteredUserProps) => {
     dispatch(login(userData));
   };
-
-  // Show/Hide password
-  const [hidePass, setHidePass] = useState<boolean>(true);
 
   // Inputs validation
   type Props = yup.InferType<typeof loginSchema>;
@@ -34,6 +33,7 @@ export const LoginForm = () => {
     resolver: yupResolver(loginSchema),
   });
 
+  // Handle login submit
   const onSubmit = async (data: { email: string; password: string }) => {
     setError(null);
     setisLoading(true);
@@ -60,11 +60,18 @@ export const LoginForm = () => {
   return (
     <div className="login-form-modal">
       <div>
-        <div className="container" id="container">
+        <div
+          className={rightPanel ? `container right-panel-active` : `container`}
+          id="container"
+        >
+          <div className="form-container sign-up-container">
+            <SendRegisterLinkForm />
+          </div>
           <div className="form-container sign-in-container">
             <form onSubmit={handleSubmit((data) => onSubmit(data))}>
-              <h1 className="h1-mb-1 ">Sign in</h1>
+              <h1 className="h1-mb-1">Sign in</h1>
               <input type="email" placeholder="Email" {...register("email")} />
+
               <span className="error">{errors?.email?.message}</span>
 
               <input
@@ -78,12 +85,12 @@ export const LoginForm = () => {
                 <Link to={"/admin/send-reset-pass"} className="forget-password">
                   Forgot password?
                 </Link>
-                <Link
-                  to={"/admin/signup"}
-                  className="color-main text-right w-100 d-only-mobile"
+                <div
+                  className="color-main text-right w-100 cursor-pointer d-only-mobile"
+                  onClick={() => setRightPanel(!rightPanel)}
                 >
                   Create account
-                </Link>
+                </div>
               </div>
               <button type="submit" className="login-btn" disabled={isLoading}>
                 {isLoading ? "Loading..." : "Sign in"}
@@ -95,14 +102,29 @@ export const LoginForm = () => {
           </div>
           <div className="overlay-container">
             <div className="overlay">
+              <div className="overlay-panel overlay-left">
+                <h1>Welcome Back!</h1>
+                <p>
+                  To keep connected with us please login with your personal info
+                </p>
+                <button
+                  className="border-white register-button"
+                  id="signIn"
+                  onClick={() => setRightPanel(!rightPanel)}
+                >
+                  Sign In
+                </button>
+              </div>
               <div className="overlay-panel overlay-right">
                 <h1>Hello, Friend!</h1>
                 <p>Enter your business details and start journey with us</p>
-                <Link to={"/admin/signup"}>
-                  <button className="border-white register-button" id="signUp">
-                    Sign Up
-                  </button>
-                </Link>
+                <button
+                  className="border-white register-button"
+                  id="signUp"
+                  onClick={() => setRightPanel(!rightPanel)}
+                >
+                  Sign Up
+                </button>
               </div>
             </div>
           </div>

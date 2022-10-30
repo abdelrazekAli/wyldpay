@@ -28,6 +28,7 @@
     "http-proxy-middleware": "^2.0.6",
     "jspdf": "^2.5.1",
     "jspdf-autotable": "^3.5.25",
+    "jwt-decode": "^3.1.2",
     "nice-invoice": "^1.1.8",
     "qrcode.react": "^3.1.0",
     "react": "^18.2.0",

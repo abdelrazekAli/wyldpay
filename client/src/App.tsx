@@ -69,7 +69,7 @@ function AppWraper() {
           ) : (
             <>
               <Route path="/admin/login" element={<Login />} />
-              <Route path="/admin/signup" element={<Signup />} />
+              <Route path="/admin/signup/:token" element={<Signup />} />
             </>
           )}
           <Route path="*" element={<Navigate to="/admin/login" replace />} />
