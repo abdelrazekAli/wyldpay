@@ -91,39 +91,6 @@ authRouter.post("/login", async (req: Request, res: Response) => {
   }
 });
 
-// Send reset password link
-authRouter.post("/pass/send-reset", async (req: Request, res: Response) => {
-  try {
-    // Validate req body
-    let validationResult = validateSendResetPass(req.body);
-    if (validationResult)
-      return res.status(400).send(validationResult.details[0].message);
-
-    // Check if email exist
-    const user = await UserModel.findOne({ email: req.body.email });
-    if (!user) return res.status(401).send("Email is not registered yet");
-
-    // Create and assign a token
-    let resetToken = generateAccessToken({ _id: user._id });
-
-    // Save reset token to database
-    let newToken = new TokenModel({
-      userId: user._id,
-      token: resetToken,
-    });
-    await newToken.save();
-
-    // Response
-    res.status(200).json({
-      _id: user._id,
-      token: resetToken,
-    });
-  } catch (err) {
-    console.log(err);
-    res.status(500).json(err);
-  }
-});
-
 // Reset password
 authRouter.post(
   "/pass/reset/:userId/:token",

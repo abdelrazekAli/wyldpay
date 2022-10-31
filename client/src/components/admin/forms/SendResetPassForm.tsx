@@ -31,14 +31,8 @@ export const SendResetPassForm = () => {
     setisLoading(true);
 
     try {
-      let res = await axios.post("/api/v1/pass/send-reset", data);
-      const resetLink = `${process.env.REACT_APP_BASE_URL}/admin/reset-pass/${res.data._id}/${res.data.token}`;
-      await emailjs.send(
-        process.env.REACT_APP_EMAIL_SERVICE_ID!,
-        process.env.REACT_APP_EMAIL_TEMPLATE_ID!,
-        { email: data.email, resetLink: resetLink },
-        process.env.REACT_APP_EMAIL_PUPLIC_KEY!
-      );
+      await axios.post("/api/v1/emails/send-reset-token", data);
+
       setHideModal(false);
       setError(null);
       setisLoading(false);

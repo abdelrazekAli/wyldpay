@@ -15,3 +15,9 @@ export const generateRegisterToken = (userData: { email: string }) => {
     expiresIn: "6h",
   });
 };
+
+export const generateResetPassToken = (userData: { _id: Types.ObjectId }) => {
+  return jwt.sign(userData, process.env.JWT_TOKEN_SECRET!, {
+    expiresIn: "6h",
+  });
+};
