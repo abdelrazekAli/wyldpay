@@ -26,7 +26,7 @@ export const TablesQR = () => {
                 type="number"
                 placeholder="Enter table number"
                 className="mb-1"
-                onChange={(e) => setTableNum(+e.target.value)}
+                onChange={(e) => setTableNum(Math.round(+e.target.value))}
               />
               <button
                 disabled={!tableNum}
