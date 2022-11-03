@@ -13,6 +13,7 @@ import { emailRouter } from "./routes/email.route";
 import { couponRouter } from "./routes/coupon.route";
 import { paymentRouter } from "./routes/payment.route";
 import { restaurantRouter } from "./routes/restaurant.route";
+import { subscriptionRouter } from "./routes/subscription.route";
 
 // Middlewares
 const app: Application = express();
@@ -29,6 +30,7 @@ app.use("/api/v1/emails", emailRouter);
 app.use("/api/v1/coupons", couponRouter);
 app.use("/api/v1/payments", paymentRouter);
 app.use("/api/v1/restaurants", restaurantRouter);
+app.use("/api/v1/subscriptions", subscriptionRouter);
 
 // For production
 app.use(express.static("./client/build"));
