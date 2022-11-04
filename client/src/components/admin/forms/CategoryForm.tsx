@@ -4,7 +4,7 @@ import "../../../styles/forms/categoryForm.sass";
 import { CategoryBox } from "../layouts/CategoryBox";
 import { StepperProps } from "../../../types/StepperProps";
 
-export const CategoryForm = ({ onClick }: StepperProps) => {
+export const CategoryForm = ({ onClick, onSkip }: StepperProps) => {
   const categories: string[] = [
     "appetizers",
     "pizzas",
@@ -139,7 +139,10 @@ export const CategoryForm = ({ onClick }: StepperProps) => {
           <div>
             <span className="color-error text-center fs-2 my-1">{error}</span>
           </div>
-          <div className="btn-container">
+          <div className="btn-container d-flex m-4">
+            <div className="skip-btn" onClick={onSkip}>
+              Skip for now
+            </div>
             <button
               className="btn"
               disabled={filterCategories.length === 0 || isLoading}

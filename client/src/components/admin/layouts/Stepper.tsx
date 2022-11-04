@@ -1,11 +1,11 @@
 import "../../../styles/stepper.sass";
-import { PayForm } from "../forms/PayForm";
 import { useState, useEffect } from "react";
 import { ItemsForm } from "../forms/ItemsForm";
 import { StepperCircle } from "./StepperCircle";
 import { RestForm } from "../forms/RestaurantForm";
 import { RegisterForm } from "../forms/RegisterForm";
 import { CategoryForm } from "../forms/CategoryForm";
+import { SubscriptionsPlans } from "../dashboard/SubscriptionsPlans";
 
 export const Stepper = () => {
   const [circle] = useState<number>(5);
@@ -43,11 +43,16 @@ export const Stepper = () => {
       {/* Restaurant form */}
       {active === 1 && <RestForm onClick={() => setActive(active + 1)} />}
       {/* Categories form */}
-      {active === 2 && <CategoryForm onClick={() => setActive(active + 1)} />}
+      {active === 2 && (
+        <CategoryForm
+          onClick={() => setActive(active + 1)}
+          onSkip={() => setActive(active + 2)}
+        />
+      )}
       {/* Foods form */}
       {active === 3 && <ItemsForm onClick={() => setActive(active + 1)} />}
       {/* Payment form */}
-      {active === 4 && <PayForm />}
+      {active === 4 && <SubscriptionsPlans />}
     </>
   );
 };

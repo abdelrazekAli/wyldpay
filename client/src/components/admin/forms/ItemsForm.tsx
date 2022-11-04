@@ -1,8 +1,8 @@
 import axios from "axios";
+import { Item } from "../../../types/Item";
 import { AddItemForm } from "./AddItemForm";
 import { ItemBox } from "../layouts/ItemBox";
 import "../../../styles/forms/foodsForm.sass";
-import { Item } from "../../../types/Item";
 import { Key, useEffect, useState } from "react";
 import { MainCategoryType } from "../../../types/Category";
 import { StepperProps } from "../../../types/StepperProps";
@@ -118,7 +118,10 @@ export const ItemsForm = ({ onClick }: StepperProps) => {
               )
             )}
           </div>
-          <div className="btn-container">
+          <div className="btn-container d-flex m-4">
+            <div className="skip-btn" onClick={onClick}>
+              Skip for now
+            </div>
             <button
               className="btn"
               onClick={onClick}

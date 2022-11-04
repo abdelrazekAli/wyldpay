@@ -1,17 +1,16 @@
 import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
 import { Router } from "express";
+import { stripe } from "../utils/stripe";
 import { Request, Response } from "express";
 import UserModel from "../models/user.model";
-import { generateAccessToken } from "../utils/token";
 import TokenModel from "../models/token.model";
+import { generateAccessToken } from "../utils/token";
+import RestaurantModel from "../models/restaurant.model";
 import {
   validateUser,
   validateLogin,
   validateResetPass,
-  validateSendResetPass,
 } from "../utils/validation";
-import RestaurantModel from "../models/restaurant.model";
 
 export const authRouter = Router();
 
@@ -31,8 +30,21 @@ authRouter.post("/register", async (req: Request, res: Response) => {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(req.body.password, salt);
 
+    const stripeCustomer = await stripe.customers.create(
+      {
+        email: req.body.email,
+      },
+      {
+        apiKey: process.env.STRIPE_SECRET_KEY,
+      }
+    );
+
     // Create new user
-    const newUser = new UserModel({ ...req.body, password: hashedPassword });
+    const newUser = new UserModel({
+      ...req.body,
+      password: hashedPassword,
+      stripeCustomerId: stripeCustomer.id,
+    });
 
     // Save user
     const user = await newUser.save();

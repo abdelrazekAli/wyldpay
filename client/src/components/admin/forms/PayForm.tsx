@@ -3,7 +3,6 @@ import * as yup from "yup";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import "../../../styles/forms/payForm.sass";
-import { Modal } from "../../user/layouts/Modal";
 import { login } from "../../../redux/user.slice";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useAppDispatch } from "../../../redux/store.hooks";
@@ -32,7 +31,6 @@ export const PayForm = () => {
       });
       localStorage.clear();
       loginHandler(res.data);
-      // setHideModal(false);
       setisLoading(false);
     } catch (err) {
       console.log(err);
