@@ -1,0 +1,168 @@
+@use './base' as *
+
+.pricing-section
+    position: relative
+    padding: 100px 0 80px
+    overflow: hidden
+
+    & .outer-box
+        max-width: 1100px
+        margin: 0 auto
+
+    & .row
+        margin: 0 -30px
+
+        .pricing-block
+            position: relative
+            padding: 0 30px
+            width: 100%
+            margin-bottom: 40px
+
+    & .inner-box
+        position: relative
+        background-color: #ffffff
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08)
+        padding: 0 0 30px
+        max-width: 370px
+        margin: 0 auto
+        border-bottom: 20px solid #1d95d2
+
+    & .icon-box
+        position: relative
+        padding: 50px 30px 0
+        background-color: #1d95d2
+        text-align: center
+
+    & .icon-box:before
+        position: absolute
+        left: 0
+        bottom: 0
+        height: 75px
+        width: 100%
+        border-radius: 50% 50% 0 0
+        background-color: #ffffff
+        content: ""
+
+    & .icon-box .icon-outer
+        position: relative
+        height: 150px
+        width: 150px
+        background-color: #ffffff
+        border-radius: 50%
+        margin: 0 auto
+        padding: 10px
+
+    & .icon-box i
+        position: relative
+        display: block
+        height: 130px
+        width: 130px
+        line-height: 120px
+        border: 5px solid #1d95d2
+        border-radius: 50%
+        font-size: 50px
+        color: #1d95d2
+        -webkit-transition: all 600ms ease
+        -ms-transition: all 600ms ease
+        -o-transition: all 600ms ease
+        -moz-transition: all 600ms ease
+        transition: all 600ms ease
+
+    & .inner-box:hover .icon-box i
+        transform: rotate(360deg)
+
+    & .price-box
+        position: relative
+        text-align: center
+        padding: 10px 20px
+
+    & .title
+        position: relative
+        display: block
+        font-size: 24px
+        line-height: 1.2em
+        color: #222222
+        font-weight: 600
+
+    & .price
+        margin: 1rem
+        display: block
+        font-size: 30px
+        color: #222222
+        font-weight: 700
+        color: #1d95d2
+
+    & .features
+        position: relative
+        max-width: 200px
+        margin: 0 auto 20px
+
+    & .features li
+        position: relative
+        display: block
+        font-size: 14px
+        line-height: 30px
+        color: #848484
+        font-weight: 500
+        padding: 5px 0
+        padding-left: 30px
+        border-bottom: 1px dashed #dddddd
+
+    & .features li:before
+        position: absolute
+        left: 0
+        top: 50%
+        font-size: 16px
+        color: #2bd40f
+        -moz-osx-font-smoothing: grayscale
+        -webkit-font-smoothing: antialiased
+        display: inline-block
+        font-style: normal
+        font-variant: normal
+        text-rendering: auto
+        line-height: 1
+        content: "\f058"
+        font-family: "Font Awesome 5 Free"
+        margin-top: -8px
+
+    & .features li.false:before
+        color: #e1137b
+        content: "\f057"
+
+    & .features li a
+        color: #848484
+
+    & .features li:last-child
+        border-bottom: 0
+
+    & .btn-box
+        position: relative
+        text-align: center
+
+    & .btn-box button
+        position: relative
+        display: inline-block
+        font-size: 14px
+        line-height: 25px
+        cursor: pointer
+        color: #ffffff
+        font-weight: 500
+        padding: 8px 30px
+        background-color: #1d95d2
+        border-radius: 10px
+        border-top: 2px solid transparent
+        border-bottom: 2px solid transparent
+        -webkit-transition: all 400ms ease
+        -moz-transition: all 400ms ease
+        -ms-transition: all 400ms ease
+        -o-transition: all 400ms ease
+        transition: all 300ms ease
+
+    & .btn-box button:hover
+        color: #ffffff
+
+    & .inner-box:hover .btn-box button
+        color: #1d95d2
+        background: none
+        border-radius: 0px
+        border-color: #1d95d2
