@@ -12,6 +12,7 @@ export type UserProps = {
   vatPercentage?: number;
   password?: string;
   confirmPassword?: string;
+  stripeCustomerId?: string;
   socialLinks?: { name: string; value: string }[];
 };
 

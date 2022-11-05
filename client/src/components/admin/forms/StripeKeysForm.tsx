@@ -22,6 +22,7 @@ export const StripeKeysForm = ({ hideForm }: { hideForm: () => void }) => {
     const fetchMethods = async () => {
       try {
         const res = await axios.get(`/api/v1/banks/${_id}`);
+        console.log(res);
         setPaymentsMethod(
           res.data.paymentsMethods.filter(
             (method: PaymentMethod) => method.name === "stripe"
@@ -30,6 +31,7 @@ export const StripeKeysForm = ({ hideForm }: { hideForm: () => void }) => {
         setLoading(false);
       } catch (err) {
         setLoading(false);
+        console.log(err);
         setError("Something went wrong!");
       }
     };

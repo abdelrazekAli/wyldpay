@@ -24,7 +24,8 @@ import { ItemDetails } from "./pages/user/ItemDetails";
 import { OrderDetails } from "./pages/user/OrderDetails";
 import { OrderSuccess } from "./pages/user/OrderSuccess";
 import { SendResetPass } from "./pages/admin/SendResetPass";
-import { Subscriptions } from "./pages/admin/Subscriptions";
+import { SubscriptionFailed } from "./pages/admin/SubscriptionFailed";
+import { SubscriptionSuccess } from "./pages/admin/SubscriptionSuccess";
 
 function AppWraper() {
   const App = () => {
@@ -51,8 +52,15 @@ function AppWraper() {
             element={<Checkout />}
           />
           <Route path="/orders/:restId/:orderId" element={<OrderSuccess />} />
-          <Route path="/admin/subscriptions" element={<Subscriptions />} />
           <Route path="/admin/send-reset-pass" element={<SendResetPass />} />
+          <Route
+            path="/admin/subscription-success"
+            element={<SubscriptionSuccess />}
+          />
+          <Route
+            path="/admin/subscription-failed"
+            element={<SubscriptionFailed />}
+          />
           <Route
             path="/admin/reset-pass/:userId/:token"
             element={<ResetPass />}

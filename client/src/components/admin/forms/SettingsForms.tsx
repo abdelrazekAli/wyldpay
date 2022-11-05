@@ -87,6 +87,7 @@ export const SettingsForms = () => {
     setisLoading(true);
     delete data.confirmPassword;
     delete data.socialLinks;
+    delete data.stripeCustomerId;
 
     try {
       // Update user data

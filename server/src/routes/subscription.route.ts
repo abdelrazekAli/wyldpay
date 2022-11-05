@@ -15,6 +15,7 @@ subscriptionRouter.get("/prices", async (req: Request, res: Response) => {
   return res.json(prices);
 });
 
+// Create stripe payment session
 subscriptionRouter.post("/session", async (req, res) => {
   const user = await UserModel.findOne({ _id: req.body.userId });
 
@@ -28,8 +29,8 @@ subscriptionRouter.post("/session", async (req, res) => {
           quantity: 1,
         },
       ],
-      success_url: `${process.env.BASE_URL}/articles`,
-      cancel_url: `${process.env.BASE_URL}/article-plans`,
+      success_url: `${process.env.BASE_URL}/admin/subscription-success`,
+      cancel_url: `${process.env.BASE_URL}/admin/subscription-failed`,
       customer: user?.stripeCustomerId,
     },
     {

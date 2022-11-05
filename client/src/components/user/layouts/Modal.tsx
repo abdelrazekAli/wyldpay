@@ -52,17 +52,27 @@ export const Modal = ({ status, enableHide }: ModalPropsType) => {
         );
         break;
 
-      case "signup":
+      case "subscription-success":
         setModalContent(
           <div className="toastContainer">
             <HashLoader color="#4479FB" />
-            <h3>All done!</h3>
+            <h3>Payment done!</h3>
             <p>
-              You can login to your dashboard now from{" "}
+              You can login now to your dashboard from{" "}
               <Link to={"/admin/login"} className="color-main font-bold">
                 here
               </Link>
             </p>
+          </div>
+        );
+        break;
+
+      case "subscription-failed":
+        setModalContent(
+          <div className="toastContainer">
+            <BounceLoader color="red" />
+            <h3>Payment failed!</h3>
+            <p>Please try again later.</p>
           </div>
         );
         break;

@@ -3,7 +3,8 @@ export type ModalPropsType = {
     | "success"
     | "error"
     | "loading"
-    | "signup"
+    | "subscription-success"
+    | "subscription-failed"
     | "password reset"
     | "send link";
   enableHide?: boolean;

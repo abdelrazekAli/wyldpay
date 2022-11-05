@@ -25,6 +25,16 @@ export const SubscriptionsPlans = () => {
 
   const createSession = async (priceId: string) => {
     setisLoading(true);
+
+    // This step will be deleted next
+    await axios.post("/api/v1/banks", {
+      name: "bank name",
+      iban: "bank iban",
+      bic: "bank bic",
+      userId,
+      customerFees: false,
+    });
+
     const { data: response } = await axios.post(
       "/api/v1/subscriptions/session",
       {
