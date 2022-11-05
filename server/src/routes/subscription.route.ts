@@ -40,3 +40,22 @@ subscriptionRouter.post("/session", async (req, res) => {
 
   return res.json(session);
 });
+
+// Check user subscription
+subscriptionRouter.post("/users/check", async (req, res) => {
+  const user = await UserModel.findOne({ _id: req.body.userId });
+
+  // Check user subscription
+  const subscriptions = await stripe.subscriptions.list(
+    {
+      customer: user?.stripeCustomerId,
+      status: "all",
+      expand: ["data.default_payment_method"],
+    },
+    {
+      apiKey: process.env.STRIPE_SECRET_KEY,
+    }
+  );
+
+  return res.json(subscriptions);
+});

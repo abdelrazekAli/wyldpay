@@ -77,6 +77,16 @@ export const Modal = ({ status, enableHide }: ModalPropsType) => {
         );
         break;
 
+      case "no-subscription":
+        setModalContent(
+          <div className="toastContainer">
+            <BounceLoader color="red" />
+            <h3>You're not subscribe to menu orders plan!</h3>
+            {/* <p>Please subscribe to access orders.</p> */}
+          </div>
+        );
+        break;
+
       case "password reset":
         setModalContent(
           <div className="toastContainer">
