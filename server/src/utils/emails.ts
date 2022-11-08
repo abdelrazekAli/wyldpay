@@ -7,8 +7,10 @@ export const sendRegisterEmail = (email: string, token: string) => {
       user: process.env.EMAIL_ADDRESS,
       pass: process.env.EMAIL_PASS,
     },
+    tls: {
+      rejectUnauthorized: false
+    }
   });
-
   const mailOptions = {
     from: "Wyld",
     to: email,
@@ -157,7 +159,7 @@ export const sendRegisterEmail = (email: string, token: string) => {
   };
   transporter.sendMail(mailOptions, function (error, info) {
     if (error) {
-      throw error;
+      throw error.message;
     } else {
       console.log("Email Sent: " + info.response);
     }

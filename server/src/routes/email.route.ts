@@ -29,7 +29,7 @@ emailRouter.post(
       // Response
       res.status(200).send("Register Email sent successfully");
     } catch (err) {
-      console.log(err);
+      console.log(err.message);
       res.status(500).json(err);
     }
   }

@@ -15,6 +15,8 @@ import { paymentRouter } from "./routes/payment.route";
 import { restaurantRouter } from "./routes/restaurant.route";
 import { subscriptionRouter } from "./routes/subscription.route";
 
+require('dotenv').config();
+
 // Middlewares
 const app: Application = express();
 app.use(express.json());
