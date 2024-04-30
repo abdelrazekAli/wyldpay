@@ -6,22 +6,20 @@ export const SendRegisterLinkForm = () => {
 
   const [success, setSuccess] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
-  const [isLoading, setisLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   // Handle sending email
-  const sendingEmail = async (e: { preventDefault: () => void }) => {
+  const sendingEmail = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError(null);
-    setisLoading(true);
     if (!email) return setError("Please enter an email");
+    setIsLoading(true);
     try {
-      const res = await axios.post(`/api/v1/emails/send-register-token`, {
+      await axios.post(`/api/v1/emails/send-register-token`, {
         email,
       });
       setSuccess(true);
-      setisLoading(false);
     } catch (err: any) {
-      setisLoading(false);
       let statusCode = err.response.status;
       if (statusCode === 409) {
         setError("Email is already used");
@@ -29,6 +27,8 @@ export const SendRegisterLinkForm = () => {
         setError("Somthing went wrong!");
       }
       console.log(err);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -57,7 +57,7 @@ export const SendRegisterLinkForm = () => {
       ) : (
         <div className="success-container">
           <img
-            src=".././assets/images/mailbox.webp"
+            src="/assets/images/mailbox.webp"
             alt="food"
             className="food-img food-2"
             width="200"

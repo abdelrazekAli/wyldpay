@@ -14,14 +14,14 @@ export const AddCategoryForm = ({
   restaurantId: string;
 }) => {
   const [error, setError] = useState<string | null>(null);
-  const [isLoading, setisLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [categoryName, setCategoryName] = useState<string | null>("");
 
   // Handle add category
-  const handleAddCategory = async (e: { preventDefault: () => void }) => {
+  const handleAddCategory = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError(null);
-    setisLoading(true);
+    setIsLoading(true);
 
     const newCategories: MainCategoryType[] = [
       ...categories,
@@ -33,13 +33,13 @@ export const AddCategoryForm = ({
         categories: newCategories,
         restaurantId,
       });
-      setisLoading(false);
       setCategories(newCategories);
       hideForm();
     } catch (err) {
       console.log(err);
-      setisLoading(false);
       setError("Somthing went wrong on fetch categories!");
+    } finally {
+      setIsLoading(false);
     }
   };
 

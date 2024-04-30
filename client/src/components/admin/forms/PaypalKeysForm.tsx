@@ -14,7 +14,7 @@ export const PaypalKeysForm = ({ hideForm }: { hideForm: () => void }) => {
     secretKey: "",
   });
 
-  const [isLoading, setLoading] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
 
@@ -27,20 +27,20 @@ export const PaypalKeysForm = ({ hideForm }: { hideForm: () => void }) => {
             (method: PaymentMethod) => method.name === "paypal"
           )[0]
         );
-        setLoading(false);
       } catch (err) {
-        setLoading(false);
         setError("Something went wrong!");
+      } finally {
+        setIsLoading(false);
       }
     };
     fetchMethods();
   }, [_id]);
 
   // Handle update payment keys
-  const editPaymentKeys = async (e: { preventDefault: () => void }) => {
+  const editPaymentKeys = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError(null);
-    setLoading(true);
+    setIsLoading(true);
     try {
       await axios.put(
         "/api/v1/banks/methods",
@@ -56,11 +56,11 @@ export const PaypalKeysForm = ({ hideForm }: { hideForm: () => void }) => {
         }
       );
       setSuccess("key updated successfully");
-      setLoading(false);
     } catch (err) {
       console.log(err);
-      setLoading(false);
       setError("Somthing went wrong!");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -73,7 +73,7 @@ export const PaypalKeysForm = ({ hideForm }: { hideForm: () => void }) => {
         <div className="main-content">
           <div className="card">
             <div className="img">
-              <img src="../../assets/images/paypal-logo.png" alt="" />
+              <img src="/assets/images/paypal-logo.png" alt="" />
             </div>
           </div>
           {!isLoading ? (
@@ -98,6 +98,7 @@ export const PaypalKeysForm = ({ hideForm }: { hideForm: () => void }) => {
                 <a
                   href="https://developer.paypal.com/dashboard/applications/live"
                   target="_blank"
+                  rel="noreferrer"
                   className="color-main text-underline"
                 >
                   <b>here</b>

@@ -10,7 +10,7 @@ import { downloadReceipt } from "../../../utils/orderReceipt";
 export const Success = () => {
   const { restId, orderId } = useParams();
   const [order, setOrder] = useState<Order>();
-  const [isLoading, setisLoading] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [restaurant, setRestaurant] = useState<RestaurantProps>();
 
   useEffect(() => {
@@ -26,9 +26,10 @@ export const Success = () => {
         );
         setOrder(orderResponse.data);
         setRestaurant(restaurantResponse.data);
-        setisLoading(false);
       } catch (err) {
-        setisLoading(false);
+        console.log(err);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -45,10 +46,7 @@ export const Success = () => {
       {!isLoading && order && restaurant ? (
         <div className="order-success">
           <div className="success-icon">
-            <img
-              src="../../../../assets/images/payment-success-sm.png"
-              alt=""
-            />
+            <img src="/assets/images/payment-success-sm.png" alt="" />
           </div>
           <h1 className="heading-1">
             We've received your order <br /> and we'll prepare it right away
@@ -62,25 +60,15 @@ export const Success = () => {
                 )?.value
               }
               target="_blank"
-              // onClick={() =>
-              //   window.open(
-              //     `${
-              //       restaurant?.userId.socialLinks?.find(
-              //         (link) => link.name === "google"
-              //       )?.value
-              //     }`,
-              //     "Google review",
-              //     "width=800,height=600"
-              //   )
-              // }
+              rel="noreferrer"
               className="rate-wrapper"
             >
               <div className="text">
-                <img src="../../../../assets/images/star.svg" alt="" />
+                <img src="/assets/images/star.svg" alt="" />
                 Evaluate
               </div>
               <div className="icon">
-                <img src="../../../../assets/images/open-right.svg" alt="" />
+                <img src="/assets/images/open-right.svg" alt="" />
               </div>
             </a>
           </div>
@@ -94,9 +82,10 @@ export const Success = () => {
                   )?.value
                 }
                 target="_blank"
+                rel="noreferrer"
                 className="link"
               >
-                <img src="../../../../assets/images/insta.svg" alt="" />
+                <img src="/assets/images/insta.svg" alt="" />
               </a>
               <a
                 href={
@@ -105,9 +94,10 @@ export const Success = () => {
                   )?.value
                 }
                 target="_blank"
+                rel="noreferrer"
                 className="link"
               >
-                <img src="../../../../assets/images/telegram.svg" alt="" />
+                <img src="/assets/images/telegram.svg" alt="" />
               </a>
               <a
                 href={
@@ -116,9 +106,10 @@ export const Success = () => {
                   )?.value
                 }
                 target="_blank"
+                rel="noreferrer"
                 className="link"
               >
-                <img src="../../../../assets/images/youtube.svg" alt="" />
+                <img src="/assets/images/youtube.svg" alt="" />
               </a>
               <a
                 href={
@@ -127,9 +118,10 @@ export const Success = () => {
                   )?.value
                 }
                 target="_blank"
+                rel="noreferrer"
                 className="link"
               >
-                <img src="../../../../assets/images/twitter.svg" alt="" />
+                <img src="/assets/images/twitter.svg" alt="" />
               </a>
             </div>
           </div>

@@ -39,7 +39,7 @@ export const Welcome = () => {
           </div>
           <div className="grid-item-2">
             <div className="team_img_wrapper">
-              <img src="../../assets/images/team.svg" alt="team-img" />
+              <img src="/assets/images/team.svg" alt="team-img" />
             </div>
           </div>
         </div>

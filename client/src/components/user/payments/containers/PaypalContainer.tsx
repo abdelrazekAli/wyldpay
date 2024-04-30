@@ -22,11 +22,7 @@ export const PaypalContainer = ({
       <div className="row">
         <div className="payment">
           <div className="payment-icon">
-            <img
-              src="../../../assets/images/paypal-dark.svg"
-              width={40}
-              alt=""
-            />
+            <img src="assets/images/paypal-dark.svg" width={40} alt="" />
           </div>
           <div className="options">
             <div>Payment</div>

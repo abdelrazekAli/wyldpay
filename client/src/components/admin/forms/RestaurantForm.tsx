@@ -15,13 +15,13 @@ export const RestForm = ({ onClick }: StepperProps) => {
   const [backgroundBlob, setBackgroundBlob] = useState<string | Blob>("");
 
   const [error, setError] = useState<string | null>(null);
-  const [isLoading, setisLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   // Handle form submit
-  const handleSubmit = async (e: { preventDefault: () => void }) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError(null);
-    setisLoading(true);
+    setIsLoading(true);
 
     let logoForm = new FormData();
     logoForm.append("file", logoBlob);
@@ -53,11 +53,11 @@ export const RestForm = ({ onClick }: StepperProps) => {
       });
 
       localStorage.setItem("restaurantId", restaurant.data._id);
-      setisLoading(false);
     } catch (err) {
       console.log(err);
-      setisLoading(false);
       setError("Somthing went wrong!");
+    } finally {
+      setIsLoading(false);
     }
     onClick();
   };
@@ -164,21 +164,21 @@ export const RestForm = ({ onClick }: StepperProps) => {
           </form>
           <div className="imgs home-right">
             <img
-              src="../.././assets/images/food1.png"
+              src="/assets/images/food1.png"
               alt="food"
               className="food-img food-1"
               width="200"
               loading="lazy"
             />
             <img
-              src="../.././assets/images/food2.png"
+              src="/assets/images/food2.png"
               alt="food"
               className="food-img food-2"
               width="200"
               loading="lazy"
             />
             <img
-              src="../.././assets/images/food3.png"
+              src="/assets/images/food3.png"
               alt="food"
               className="food-img food-3"
               width="200"
@@ -186,31 +186,31 @@ export const RestForm = ({ onClick }: StepperProps) => {
             />
 
             <img
-              src="../.././assets/images/circle.svg"
+              src="/assets/images/circle.svg"
               alt="circle shape"
               className="shape shape-1"
               width="25"
             />
             <img
-              src="../.././assets/images/circle.svg"
+              src="/assets/images/circle.svg"
               alt="circle shape"
               className="shape shape-2"
               width="15"
             />
             <img
-              src="../.././assets/images/circle.svg"
+              src="/assets/images/circle.svg"
               alt="circle shape"
               className="shape shape-3"
               width="30"
             />
             <img
-              src="../.././assets/images/ring.svg"
+              src="/assets/images/ring.svg"
               alt="ring shape"
               className="shape shape-4"
               width="60"
             />
             <img
-              src="../.././assets/images/ring.svg"
+              src="/assets/images/ring.svg"
               alt="ring shape"
               className="shape shape-5"
               width="40"

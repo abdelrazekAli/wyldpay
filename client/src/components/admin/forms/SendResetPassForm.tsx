@@ -1,7 +1,6 @@
 import axios from "axios";
 import * as yup from "yup";
 import { useState } from "react";
-import emailjs from "@emailjs/browser";
 import { useForm } from "react-hook-form";
 import "../../../styles/forms/loginFrom.sass";
 import { Modal } from "../../user/layouts/Modal";
@@ -13,7 +12,7 @@ export const SendResetPassForm = () => {
   const email = useLocation().state;
   const [error, setError] = useState<string | null>(null);
   const [hideModal, setHideModal] = useState<boolean>(true);
-  const [isLoading, setisLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   // Inputs validation
   type Props = yup.InferType<typeof sendResetPassSchema>;
@@ -28,16 +27,14 @@ export const SendResetPassForm = () => {
 
   const onSubmit = async (data: { email: string }) => {
     setError(null);
-    setisLoading(true);
+    setIsLoading(true);
 
     try {
       await axios.post("/api/v1/emails/send-reset-token", data);
 
       setHideModal(false);
       setError(null);
-      setisLoading(false);
     } catch (err: any) {
-      setisLoading(false);
       let statusCode = err.response?.status;
       if (statusCode === 401) {
         setError("Email is not registered yet");
@@ -45,6 +42,8 @@ export const SendResetPassForm = () => {
         setError("Somthing went wrong!");
       }
       console.log(err);
+    } finally {
+      setIsLoading(false);
     }
   };
 

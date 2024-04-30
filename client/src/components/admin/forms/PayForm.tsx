@@ -13,7 +13,7 @@ export const PayForm = () => {
   const dispatch = useAppDispatch();
   const [check, setCheck] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
-  const [isLoading, setisLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   // Login handler
   const loginHandler = (userData: RegisteredUserProps) => {
@@ -31,11 +31,11 @@ export const PayForm = () => {
       });
       localStorage.clear();
       loginHandler(res.data);
-      setisLoading(false);
     } catch (err) {
       console.log(err);
-      setisLoading(false);
       setError("Somthing went wrong!");
+    } finally {
+      setIsLoading(false);
     }
   };
 

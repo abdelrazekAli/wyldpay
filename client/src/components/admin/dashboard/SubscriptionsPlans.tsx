@@ -6,7 +6,7 @@ export const SubscriptionsPlans = () => {
   const userId = localStorage.getItem("userId");
   const [prices, setPrices] = useState<any[]>([]);
   const [error, setError] = useState<string | null>(null);
-  const [isLoading, setisLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchPrices = async () => {
@@ -24,7 +24,7 @@ export const SubscriptionsPlans = () => {
   }, []);
 
   const createSession = async (priceId: string) => {
-    setisLoading(true);
+    setIsLoading(true);
 
     // This step will be deleted next
     await axios.post("/api/v1/banks", {

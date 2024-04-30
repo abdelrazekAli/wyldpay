@@ -16,14 +16,14 @@ export const RegisterForm = ({ onClick }: StepperProps) => {
   const { token } = useParams();
   const [phone, setPhone] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [isLoading, setisLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [phoneError, setPhoneError] = useState<string | null>(null);
 
   const onSubmit = async (data: UserProps) => {
     setError(null);
     if (!phone) return setPhoneError("Phone number required");
 
-    setisLoading(true);
+    setIsLoading(true);
     delete data.confirmPassword;
 
     try {
@@ -34,7 +34,7 @@ export const RegisterForm = ({ onClick }: StepperProps) => {
       localStorage.setItem("userId", res.data._id);
       onClick();
     } catch (err: any) {
-      setisLoading(false);
+      setIsLoading(false);
       if (err.response.status === 409) {
         setError("Email is already used");
       } else {

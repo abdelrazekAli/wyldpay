@@ -23,7 +23,7 @@ export const Menu = () => {
   const [items, setItems] = useState<ProductType[]>([]);
 
   const [error, setError] = useState<boolean>(false);
-  const [isLoading, setisLoading] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
     // Fetch restaurant data
@@ -35,11 +35,11 @@ export const Menu = () => {
       try {
         const res = await axios.get(`/api/v1/items/restaurant/${restId}`);
         setItems(res.data);
-        setisLoading(false);
       } catch (err) {
         console.log(err);
         setError(true);
-        setisLoading(false);
+      } finally {
+        setIsLoading(false);
       }
     };
     fetchItems();

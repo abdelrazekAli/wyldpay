@@ -23,7 +23,7 @@ export const Navbar = () => {
             </button>
             <Link to="/admin/home" className="logo">
               <img
-                src="../../assets/images/logo-blue.png"
+                src="/assets/images/logo-blue.png"
                 alt=""
                 style={{ width: "10.5rem" }}
               />
@@ -32,7 +32,7 @@ export const Navbar = () => {
         ) : (
           <Link to="/admin/home" className="logo pl-10">
             <img
-              src="../../assets/images/logo-blue.png"
+              src="/assets/images/logo-blue.png"
               alt=""
               style={{ width: "10.5rem" }}
             />

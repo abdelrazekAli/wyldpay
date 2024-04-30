@@ -15,10 +15,10 @@ export const OrderDiscount = () => {
   const currency = useAppSelector(getRestaurantCurrency);
 
   const [error, setError] = useState<string | null>(null);
-  const [isLoading, setisLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isFormVisible, setFormVisible] = useState<boolean>(false);
 
-  const handleSubmitDiscount = async (e: { preventDefault: () => void }) => {
+  const handleSubmitDiscount = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError(null);
 
@@ -27,7 +27,7 @@ export const OrderDiscount = () => {
       return setError("Discount code is required");
 
     try {
-      setisLoading(true);
+      setIsLoading(true);
       const res = await axios.post(`/api/v1/coupons/${restId}`, {
         couponCode: String(discountCode.current.value).trim(),
       });
@@ -36,7 +36,7 @@ export const OrderDiscount = () => {
       setFormVisible(!isFormVisible);
     } catch (err: any) {
       console.log(err);
-      setisLoading(false);
+      setIsLoading(false);
       if (err.response.status === 409) {
         return setError("Discount code is not valid");
       }
@@ -86,7 +86,7 @@ export const OrderDiscount = () => {
       {discount ? (
         <div className="discount-wrapper border-none justify-content-center">
           <div className="text g-1">
-            <img src="../../../assets/images/discount.svg" alt="" />
+            <img src="assets/images/discount.svg" alt="" />
             Discount of {discount.value}
             {discount.type === "amount" ? getSymbol(currency) : "%"} is valid
           </div>
@@ -96,16 +96,16 @@ export const OrderDiscount = () => {
           className="discount-wrapper"
           onClick={() => {
             setError("");
-            setisLoading(false);
+            setIsLoading(false);
             setFormVisible(!isFormVisible);
           }}
         >
           <div className="text">
-            <img src="../../../assets/images/discount.svg" alt="" />
+            <img src="assets/images/discount.svg" alt="" />
             Add discount code
           </div>
           <div className="icon">
-            <img src="../../../assets/images/open-right.svg" alt="" />
+            <img src="assets/images/open-right.svg" alt="" />
           </div>
         </div>
       )}

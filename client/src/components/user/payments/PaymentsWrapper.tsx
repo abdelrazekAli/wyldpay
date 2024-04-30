@@ -20,7 +20,7 @@ export const PaymentsWrapper = ({
   const [paypalKeys, setPaypalKeys] = useState<PaymentMethod>();
   const [stripeKeys, setStripeKeys] = useState<PaymentMethod>();
 
-  const [isLoading, setLoading] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
   // Fetch payment methods
@@ -42,12 +42,11 @@ export const PaymentsWrapper = ({
             (method: PaymentMethod) => method.name === "paypal"
           )[0]
         );
-
-        setLoading(false);
       } catch (err) {
         console.log(err);
-        setLoading(false);
         setError("Something went wrong!");
+      } finally {
+        setIsLoading(false);
       }
     };
     fetchMethods();

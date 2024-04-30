@@ -15,7 +15,7 @@ export const CouponsTable = () => {
   const [coupons, setCoupons] = useState<CouponType[]>([]);
 
   const [error, setError] = useState<string | null>(null);
-  const [isLoading, setisLoading] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isFormVisible, setFormVisible] = useState<boolean>(false);
 
   useEffect(() => {
@@ -28,12 +28,12 @@ export const CouponsTable = () => {
           },
         });
 
-        setisLoading(false);
         setCoupons(res.data);
       } catch (err) {
         console.log(err);
-        setisLoading(false);
         setError("Somthing went wrong on fetch coupons!");
+      } finally {
+        setIsLoading(false);
       }
     };
     fetchCoupons();

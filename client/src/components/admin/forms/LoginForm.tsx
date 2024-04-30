@@ -14,7 +14,7 @@ import { loginSchema } from "../../../validations/loginSchema";
 export const LoginForm = () => {
   const dispatch = useAppDispatch();
   const [error, setError] = useState<string | null>(null);
-  const [isLoading, setisLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [rightPanel, setRightPanel] = useState<boolean>(false);
 
   // Login handler
@@ -36,17 +36,14 @@ export const LoginForm = () => {
   // Handle login submit
   const onSubmit = async (data: { email: string; password: string }) => {
     setError(null);
-    setisLoading(true);
+    setIsLoading(true);
     localStorage.clear();
 
     try {
       let res = await axios.post("/api/v1/login", data);
       loginHandler(res.data);
       setError(null);
-      setisLoading(false);
     } catch (err: any) {
-      setisLoading(false);
-
       let statusCode = err.response.status;
       if (statusCode === 400 || statusCode === 401) {
         setError("Invalid email or password");
@@ -54,6 +51,8 @@ export const LoginForm = () => {
         setError("Somthing went wrong!");
       }
       console.log(err);
+    } finally {
+      setIsLoading(false);
     }
   };
 

@@ -18,22 +18,22 @@ export const CouponRow = ({
   const { currency, accessToken } = useAppSelector(getUser);
 
   const [error, setError] = useState<string | null>(null);
-  const [isLoading, setisLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const deleteCoupon = async (couponId: string) => {
-    setisLoading(true);
+    setIsLoading(true);
     try {
       await axios.delete(`/api/v1/coupons/${couponId}`, {
         headers: {
           "auth-token": accessToken,
         },
       });
-      setisLoading(false);
       onDelete(coupon._id);
     } catch (err) {
       console.log(err);
-      setisLoading(false);
       setError("Somthing went wrong!");
+    } finally {
+      setIsLoading(false);
     }
   };
   return (

@@ -27,21 +27,21 @@ export const MainItemDetails = () => {
   const [details, setDetails] = useState<boolean>(false);
 
   const [error, setError] = useState<boolean>(false);
-  const [isLoading, setisLoading] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
     // Fetch item
     const fetchItem = async () => {
       setError(false);
-      setisLoading(true);
+      setIsLoading(true);
       try {
         const res = await axios.get(`/api/v1/items/${itemId}`);
         setItem(res.data);
-        setisLoading(false);
       } catch (err) {
         console.log(err);
         setError(true);
-        setisLoading(false);
+      } finally {
+        setIsLoading(false);
       }
     };
     fetchItem();

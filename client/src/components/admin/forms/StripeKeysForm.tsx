@@ -14,7 +14,7 @@ export const StripeKeysForm = ({ hideForm }: { hideForm: () => void }) => {
     secretKey: "",
   });
 
-  const [isLoading, setLoading] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
 
@@ -28,21 +28,21 @@ export const StripeKeysForm = ({ hideForm }: { hideForm: () => void }) => {
             (method: PaymentMethod) => method.name === "stripe"
           )[0]
         );
-        setLoading(false);
       } catch (err) {
-        setLoading(false);
         console.log(err);
         setError("Something went wrong!");
+      } finally {
+        setIsLoading(false);
       }
     };
     fetchMethods();
   }, [_id]);
 
   // Handle update payment keys
-  const editPaymentKeys = async (e: { preventDefault: () => void }) => {
+  const editPaymentKeys = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError(null);
-    setLoading(true);
+    setIsLoading(true);
 
     try {
       await axios.put(
@@ -59,10 +59,10 @@ export const StripeKeysForm = ({ hideForm }: { hideForm: () => void }) => {
         }
       );
       setSuccess("Keys updated successfully");
-      setLoading(false);
+      setIsLoading(false);
     } catch (err) {
       console.log(err);
-      setLoading(false);
+      setIsLoading(false);
       setError("Somthing went wrong!");
     }
   };
@@ -76,7 +76,7 @@ export const StripeKeysForm = ({ hideForm }: { hideForm: () => void }) => {
         <div className="main-content">
           <div className="card">
             <div className="img">
-              <img src="../../assets/images/stripe-logo.png" alt="" />
+              <img src="/assets/images/stripe-logo.png" alt="" />
             </div>
           </div>
 
@@ -116,6 +116,7 @@ export const StripeKeysForm = ({ hideForm }: { hideForm: () => void }) => {
                 <a
                   href="https://dashboard.stripe.com/apikeys"
                   target="_blank"
+                  rel="noreferrer"
                   className="color-main text-underline"
                 >
                   <b>here</b>

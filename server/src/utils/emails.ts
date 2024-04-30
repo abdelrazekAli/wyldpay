@@ -8,8 +8,8 @@ export const sendRegisterEmail = (email: string, token: string) => {
       pass: process.env.EMAIL_PASS,
     },
     tls: {
-      rejectUnauthorized: false
-    }
+      rejectUnauthorized: false,
+    },
   });
   const mailOptions = {
     from: "Wyld",

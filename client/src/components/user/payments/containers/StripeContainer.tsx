@@ -30,20 +30,12 @@ export const StripeContainer = ({
         <div className="payment">
           {paymentSelected === 0 && (
             <div className="payment-icon">
-              <img
-                src="../../../assets/images/visa-dark.svg"
-                alt=""
-                width={40}
-              />
+              <img src="assets/images/visa-dark.svg" alt="" width={40} />
             </div>
           )}
           {paymentSelected === 1 && (
             <div className="payment-icon">
-              <img
-                src="../../../assets/images/apple-pay.svg"
-                alt=""
-                width={40}
-              />
+              <img src="assets/images/apple-pay.svg" alt="" width={40} />
             </div>
           )}
           <div className="options">

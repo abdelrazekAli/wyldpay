@@ -38,7 +38,7 @@ export const CategoryForm = ({ onClick, onSkip }: StepperProps) => {
   const [categoriesList, setCategoriesList] = useState(categoriesDestruct);
 
   const [error, setError] = useState<string | null>(null);
-  const [isLoading, setisLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isFormVisible, setFormVisible] = useState<boolean>(false);
 
   const filterCategories = categoriesList.filter((c) => c.selected === true);
@@ -51,7 +51,7 @@ export const CategoryForm = ({ onClick, onSkip }: StepperProps) => {
     setCategoriesList(seletedCategories);
   };
 
-  const addCategory = (e: { preventDefault: () => void }) => {
+  const addCategory = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setFormVisible(!isFormVisible);
     setCategoriesList([
@@ -65,7 +65,7 @@ export const CategoryForm = ({ onClick, onSkip }: StepperProps) => {
 
   const handleSubmit = async () => {
     setError(null);
-    setisLoading(true);
+    setIsLoading(true);
     const restaurantId = localStorage.getItem("restaurantId");
     localStorage.setItem("categories", JSON.stringify(filterCategories));
     try {
@@ -76,7 +76,7 @@ export const CategoryForm = ({ onClick, onSkip }: StepperProps) => {
       onClick();
     } catch (err) {
       console.log(err);
-      setisLoading(false);
+      setIsLoading(false);
       setError("Somthing went wrong!");
     }
   };

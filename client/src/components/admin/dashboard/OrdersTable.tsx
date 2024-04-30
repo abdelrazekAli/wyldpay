@@ -18,7 +18,7 @@ export const OrdersTable = () => {
   const [restaurant, setRestaurant] = useState<RestaurantProps | null>(null);
 
   const [error, setError] = useState<string | null>(null);
-  const [isLoading, setisLoading] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const checkSubscription = async () => {
@@ -48,12 +48,12 @@ export const OrdersTable = () => {
         // Fetch restaurant
         const res = await axios.get(`/api/v1/restaurants/user/${_id}`);
 
-        setisLoading(false);
         setRestaurant(res.data);
       } catch (err) {
         console.log(err);
-        setisLoading(false);
         setError("Somthing went wrong on fetch orders!");
+      } finally {
+        setIsLoading(false);
       }
     };
 

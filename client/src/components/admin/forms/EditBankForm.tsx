@@ -15,7 +15,7 @@ export const EditBankForm = () => {
   const [bankData, setBankData] = useState<BankProps | null>(null);
 
   const [error, setError] = useState<string | null>(null);
-  const [isLoading, setLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [success, setSuccess] = useState<string | null>(null);
 
   useEffect(() => {
@@ -38,7 +38,7 @@ export const EditBankForm = () => {
     try {
       setError(null);
       setSuccess(null);
-      setLoading(true);
+      setIsLoading(true);
 
       delete data.paymentsMethods;
 
@@ -56,12 +56,12 @@ export const EditBankForm = () => {
       );
 
       setSuccess("Bank info updated successfully!");
-      setLoading(false);
     } catch (err) {
       console.log(err);
       setSuccess(null);
-      setLoading(false);
       setError("Somthing went wrong!");
+    } finally {
+      setIsLoading(false);
     }
   };
 

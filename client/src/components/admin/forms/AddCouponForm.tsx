@@ -18,13 +18,13 @@ export const AddCouponForm = ({
   const [couponLimit, setCouponLimit] = useState<number | null>(null);
 
   const [error, setError] = useState<string | null>(null);
-  const [isLoading, setisLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   // Handle add coupon
-  const handleSubmit = async (e: { preventDefault: () => void }) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError(null);
-    setisLoading(true);
+    setIsLoading(true);
 
     try {
       const res = await axios.post(
@@ -42,16 +42,16 @@ export const AddCouponForm = ({
         }
       );
 
-      setisLoading(false);
       hideForm();
       setCoupons(res.data);
     } catch (err: any) {
-      setisLoading(false);
       if (err.response.status === 409) {
         setError("Coupon name is already used.");
       } else {
         setError("Somthing went wrong!");
       }
+    } finally {
+      setIsLoading(false);
     }
   };
   return (

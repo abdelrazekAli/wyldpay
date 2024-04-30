@@ -12,7 +12,7 @@ export const ResetPassForm = () => {
   const { userId, token } = useParams();
   const [error, setError] = useState<string | null>(null);
   const [hideModal, setHideModal] = useState<boolean>(true);
-  const [isLoading, setisLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   // Inputs validation
   type Props = yup.InferType<typeof resetPassSchema>;
@@ -30,7 +30,7 @@ export const ResetPassForm = () => {
     confirmPassword: string;
   }) => {
     setError(null);
-    setisLoading(true);
+    setIsLoading(true);
 
     try {
       await axios.post(`/api/v1/pass/reset/${userId}/${token}`, {
@@ -38,9 +38,7 @@ export const ResetPassForm = () => {
       });
       setError(null);
       setHideModal(false);
-      setisLoading(false);
     } catch (err: any) {
-      setisLoading(false);
       let statusCode = err.response.status;
       if (statusCode === 401) {
         setError("Invalid link or expired");
@@ -48,6 +46,8 @@ export const ResetPassForm = () => {
         setError("Somthing went wrong!");
       }
       console.log(err);
+    } finally {
+      setIsLoading(false);
     }
   };
 

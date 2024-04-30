@@ -13,7 +13,7 @@ export const SocialLinksForm = ({ hideForm }: { hideForm: () => void }) => {
   const [instagram, setInstagram] = useState<string>("https://instagram.com/");
 
   const [error, setError] = useState<string | null>(null);
-  const [isLoading, setisLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
     // Fetch links
@@ -37,10 +37,10 @@ export const SocialLinksForm = ({ hideForm }: { hideForm: () => void }) => {
   }, [_id]);
 
   // Handle update social links
-  const SocialLinksForm = async (e: { preventDefault: () => void }) => {
+  const SocialLinksForm = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError(null);
-    setisLoading(true);
+    setIsLoading(true);
 
     try {
       await axios.put(
@@ -62,11 +62,11 @@ export const SocialLinksForm = ({ hideForm }: { hideForm: () => void }) => {
       );
 
       hideForm();
-      setisLoading(false);
     } catch (err) {
       console.log(err);
-      setisLoading(false);
       setError("Somthing went wrong!");
+    } finally {
+      setIsLoading(false);
     }
   };
 

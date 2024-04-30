@@ -24,12 +24,12 @@ export const AddItemForm = ({
   const [ingredients, setIngredients] = useState<string | null>("");
 
   const [error, setError] = useState<string | null>(null);
-  const [isLoading, setisLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const handleAddItem = async (e: { preventDefault: () => void }) => {
+  const handleAddItem = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError(null);
-    setisLoading(true);
+    setIsLoading(true);
 
     let data = new FormData();
     data.append("file", file);
@@ -54,11 +54,11 @@ export const AddItemForm = ({
       setItems(res.data);
 
       hideForm();
-      setisLoading(false);
     } catch (err) {
       console.log(err);
-      setisLoading(false);
       setError("Somthing went wrong!");
+    } finally {
+      setIsLoading(false);
     }
   };
 

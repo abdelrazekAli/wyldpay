@@ -131,7 +131,7 @@ authRouter.post(
       // Update user
       user.password = hashedPassword;
       await user.save();
-      await token.delete();
+      await token.deleteOne();
 
       // Response
       res.status(200).send("Password reset succssfully");

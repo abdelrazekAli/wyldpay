@@ -36,7 +36,7 @@ export const SettingsForms = () => {
   const [isStripeFormVisible, setStripeFormVisible] = useState<boolean>(false);
 
   const [error, setError] = useState<string | null>(null);
-  const [isLoading, setisLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [success, setSuccess] = useState<string | null>(null);
 
   // Fetch data from API
@@ -84,7 +84,7 @@ export const SettingsForms = () => {
     setSuccess(null);
     if (!phoneNum) return setError("Phone number required");
 
-    setisLoading(true);
+    setIsLoading(true);
     delete data.confirmPassword;
     delete data.socialLinks;
     delete data.stripeCustomerId;
@@ -144,19 +144,19 @@ export const SettingsForms = () => {
         }
       );
 
-      setisLoading(false);
       dispatch(updateUsername(data.firstName));
       setSuccess("Profile updated successfully!");
     } catch (err: any) {
       console.log(err);
       setSuccess(null);
-      setisLoading(false);
 
       if (err.response.status === 409) {
         setError("Email is already used");
       } else {
         setError("Something went wrong!");
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 

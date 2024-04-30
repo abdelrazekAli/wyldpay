@@ -21,12 +21,12 @@ export const EditItemForm = ({
   const [ingredients, setIngredients] = useState<string>(item.ingredients);
 
   const [error, setError] = useState<string | null>(null);
-  const [isLoading, setisLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const handleEditItem = async (e: { preventDefault: () => void }) => {
+  const handleEditItem = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError(null);
-    setisLoading(true);
+    setIsLoading(true);
     let url;
     try {
       if (file) {
@@ -51,11 +51,11 @@ export const EditItemForm = ({
       await axios.put(`/api/v1/items/id/${item._id}`, updatedItem);
       onUpdate({ _id: item._id, ...updatedItem });
       hideForm();
-      setisLoading(false);
     } catch (err) {
       console.log(err);
-      setisLoading(false);
       setError("Somthing went wrong!");
+    } finally {
+      setIsLoading(false);
     }
   };
 
