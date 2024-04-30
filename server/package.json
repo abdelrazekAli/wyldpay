@@ -1,5 +1,5 @@
 {
-  "name": "payfood-backend",
+  "name": "wyldfood-server",
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
@@ -8,35 +8,33 @@
     "dev": "nodemon src/server.ts",
     "build": "tsc"
   },
-  "author": "",
+  "author": "Abdelrazek",
   "license": "ISC",
   "dependencies": {
-    "bcrypt": "^5.0.1",
-    "bcryptjs": "^2.4.3",
+    "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
-    "dotenv": "^16.0.3",
-    "express": "^4.17.3",
-    "joi": "^17.6.0",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "joi": "^17.13.0",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^6.6.0",
+    "mongoose": "^8.3.3",
     "multer": "^1.4.5-lts.1",
-    "nodemailer": "^6.8.0",
-    "stripe": "^8.204.0",
-    "winston": "^3.8.2"
+    "nodemailer": "^6.9.13",
+    "stripe": "^15.4.0",
+    "winston": "^3.13.0"
   },
   "engines": {
-    "node": "14.15.4",
-    "npm": "7.20.0"
+    "node": "20.11.1",
+    "npm": "10.2.4"
   },
   "devDependencies": {
-    "@types/bcrypt": "^5.0.0",
+    "@types/bcrypt": "^5.0.2",
     "@types/cors": "^2.8.12",
-    "@types/express": "^4.17.13",
-    "@types/joi": "^17.2.3",
+    "@types/express": "^4.17.21",
     "@types/jsonwebtoken": "^8.5.9",
-    "@types/node": "^18.7.15",
+    "@types/node": "^20.12.7",
     "@types/nodemailer": "^6.4.6",
-    "ts-node": "^10.9.1",
-    "typescript": "^4.8.2"
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.5"
   }
 }
