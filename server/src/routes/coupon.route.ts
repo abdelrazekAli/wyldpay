@@ -4,8 +4,9 @@ import CouponModel, { CouponProps } from "../models/coupon.model";
 import { verifyAuth } from "../middlewares/token.auth.middleware";
 import {
   checkRestId,
-  validateApplyCoupon,
   validateCoupon,
+  handleValidation,
+  validateApplyCoupon,
 } from "../utils/validation";
 
 export const couponRouter = Router();
@@ -39,8 +40,7 @@ couponRouter.post("/", verifyAuth, async (req: Request, res: Response) => {
 
   // Validate req body
   let validationResult = validateCoupon(req.body);
-  if (validationResult)
-    return res.status(400).send(validationResult.details[0].message);
+  handleValidation(validationResult, res, 400);
 
   try {
     // Check if coupon already exist

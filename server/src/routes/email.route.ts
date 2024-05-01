@@ -2,9 +2,9 @@ import { Router } from "express";
 import { Request, Response } from "express";
 import TokenModel from "../models/token.model";
 import UserModel from "../models/user.model";
-import { sendRegisterEmail, sendResetPassEmail } from "../utils/emails";
 import { validateEmail, validateSendResetPass } from "../utils/validation";
-import { generateRegisterToken, generateResetPassToken } from "../utils/token";
+import { sendRegistrationEmail, sendResetPassEmail } from "../utils/emails";
+import { generateRegisterToken, generateResetPassToken } from "../utils/tokens";
 
 export const emailRouter = Router();
 
@@ -24,7 +24,7 @@ emailRouter.post(
 
       // Generate register token
       const registerToken = generateRegisterToken({ email: req.body.email });
-      sendRegisterEmail(req.body.email, registerToken);
+      sendRegistrationEmail(req.body.email, registerToken);
 
       // Response
       res.status(200).send("Register Email sent successfully");

@@ -1,13 +1,14 @@
 import { Router } from "express";
 import { Request, Response } from "express";
 import UserModel from "../models/user.model";
-import { generateAccessToken } from "../utils/token";
+import { generateAccessToken } from "../utils/tokens";
 import RestaurantModel from "../models/restaurant.model";
 import BankModel, { BankProps } from "../models/bank.model";
 import { verifyAuth } from "../middlewares/token.auth.middleware";
 import {
   checkUserId,
   validateBank,
+  handleValidation,
   validatePaymentkeys,
 } from "../utils/validation";
 
@@ -40,8 +41,7 @@ bankRouter.get("/:userId", async (req: Request, res: Response) => {
 bankRouter.post("/", async (req: Request, res: Response) => {
   // Validate req body
   let validationResult = validateBank(req.body);
-  if (validationResult)
-    return res.status(400).send(validationResult.details[0].message);
+  handleValidation(validationResult, res, 400);
 
   try {
     // Create new bank
@@ -83,8 +83,7 @@ bankRouter.put("/", verifyAuth, async (req: Request, res: Response) => {
 
   // Validate req body
   let validationResult = validateBank(req.body);
-  if (validationResult)
-    return res.status(400).send(validationResult.details[0].message);
+  handleValidation(validationResult, res, 400);
 
   try {
     // Check user id
@@ -114,8 +113,7 @@ bankRouter.put("/methods", verifyAuth, async (req: Request, res: Response) => {
 
   // Validate req body
   let validationResult = validatePaymentkeys(req.body);
-  if (validationResult)
-    return res.status(400).send(validationResult.details[0].message);
+  handleValidation(validationResult, res, 400);
 
   try {
     // Check user id

@@ -3,8 +3,9 @@ import { Request, Response } from "express";
 import UserModel, { UserProps } from "../models/user.model";
 import {
   checkUserId,
-  validateUpdateUserLinks,
   validateUser,
+  handleValidation,
+  validateUpdateUserLinks,
 } from "../utils/validation";
 import { verifyAuth } from "../middlewares/token.auth.middleware";
 
@@ -37,8 +38,7 @@ userRouter.put("/", verifyAuth, async (req: Request, res: Response) => {
 
   // Validate req body
   let validationResult = validateUser(req.body);
-  if (validationResult)
-    return res.status(400).send(validationResult.details[0].message);
+  handleValidation(validationResult, res, 400);
 
   try {
     // Check user id
@@ -75,8 +75,7 @@ userRouter.put("/links/", verifyAuth, async (req: Request, res: Response) => {
 
   // Validate req body
   let validationResult = validateUpdateUserLinks(req.body);
-  if (validationResult)
-    return res.status(400).send(validationResult.details[0].message);
+  handleValidation(validationResult, res, 400);
 
   try {
     // Check user id

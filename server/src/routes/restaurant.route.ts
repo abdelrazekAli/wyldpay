@@ -3,6 +3,7 @@ import { Request, Response } from "express";
 import {
   checkRestId,
   checkUserId,
+  handleValidation,
   validateCategories,
   validateRestaurant,
   validateRestaurantUpdate,
@@ -14,15 +15,17 @@ export const restaurantRouter = Router();
 
 // Get restaurant by restaurant id
 restaurantRouter.get("/:restaurantId", async (req: Request, res: Response) => {
-  let restaurant;
   const { restaurantId } = req.params;
 
   try {
     // Check restaurant id
-    const checkResult = await checkRestId(restaurantId);
-    typeof checkResult === "string"
-      ? res.status(400).send(checkResult)
-      : (restaurant = checkResult);
+    const restaurant: RestaurantProps | string = await checkRestId(
+      restaurantId
+    );
+    if (typeof restaurant === "string") {
+      return res.status(400).send(restaurant);
+    }
+    res.status(200).json(restaurant);
 
     // Response
     res.status(200).json(restaurant);
@@ -64,8 +67,7 @@ restaurantRouter.get("/user/:userId", async (req: Request, res: Response) => {
 restaurantRouter.post("/", async (req: Request, res: Response) => {
   // Validate req body
   let validationResult = validateRestaurant(req.body);
-  if (validationResult)
-    return res.status(400).send(validationResult.details[0].message);
+  handleValidation(validationResult, res, 400);
 
   try {
     // Create new resaturant
@@ -85,15 +87,16 @@ restaurantRouter.post("/", async (req: Request, res: Response) => {
 restaurantRouter.get(
   "/categories/:restaurantId",
   async (req: Request, res: Response) => {
-    let restaurant;
     const { restaurantId } = req.params;
 
     try {
       // Check restaurant id
-      const checkResult = await checkRestId(restaurantId);
-      typeof checkResult === "string"
-        ? res.status(400).send(checkResult)
-        : (restaurant = checkResult);
+      const restaurant: RestaurantProps | string = await checkRestId(
+        restaurantId
+      );
+      if (typeof restaurant === "string") {
+        return res.status(400).send(restaurant);
+      }
 
       // Response
       res.status(200).json(restaurant?.categories);
@@ -110,8 +113,7 @@ restaurantRouter.put("/", verifyAuth, async (req: Request, res: Response) => {
 
   // Validate req body
   let validationResult = validateRestaurantUpdate(req.body);
-  if (validationResult)
-    return res.status(400).send(validationResult.details[0].message);
+  handleValidation(validationResult, res, 400);
 
   try {
     // Update resaturant
@@ -134,8 +136,7 @@ restaurantRouter.put("/", verifyAuth, async (req: Request, res: Response) => {
 restaurantRouter.put("/categories", async (req: Request, res: Response) => {
   // Validate req body
   let validationResult = validateCategories(req.body);
-  if (validationResult)
-    return res.status(400).send(validationResult.details[0].message);
+  handleValidation(validationResult, res, 400);
 
   try {
     // Update categories

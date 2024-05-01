@@ -1,5 +1,6 @@
 import joi from "joi";
 import { Types } from "mongoose";
+import { Response } from "express";
 import UserModel from "../models/user.model";
 import ItemModel from "../models/item.model";
 import RestaurantModel from "../models/restaurant.model";
@@ -208,5 +209,15 @@ export const checkItemId = async (id: string) => {
       let item = await ItemModel.findById(id);
       return item === null ? `There is no item with this id: ${id}` : item;
     } else return `Item id: ${id} is not valid`;
+  }
+};
+
+export const handleValidation = (
+  validationResult: any,
+  res: Response,
+  statusCode: number
+) => {
+  if (validationResult) {
+    return res.status(statusCode).send(validationResult.details[0].message);
   }
 };
