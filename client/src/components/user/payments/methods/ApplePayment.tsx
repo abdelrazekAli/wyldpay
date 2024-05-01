@@ -101,14 +101,13 @@ export const ApplePayment = ({
           return;
         });
 
-      const { error: stripeError, paymentIntent } =
-        await stripe.confirmCardPayment(
-          clientSecret,
-          {
-            payment_method: e.paymentMethod.id,
-          },
-          { handleActions: false }
-        );
+      const { error: stripeError } = await stripe.confirmCardPayment(
+        clientSecret,
+        {
+          payment_method: e.paymentMethod.id,
+        },
+        { handleActions: false }
+      );
 
       if (stripeError) {
         // Show error
@@ -120,7 +119,7 @@ export const ApplePayment = ({
       // if success
       submitOrder("Apple pay");
     });
-  }, [stripe, elements]);
+  });
 
   return (
     <div className="apple-payment">

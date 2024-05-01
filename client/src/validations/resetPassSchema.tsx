@@ -10,5 +10,5 @@ export const resetPassSchema = yup.object({
   confirmPassword: yup
     .string()
     .required("Please confirm password")
-    .oneOf([yup.ref("password"), null], "Passwords not the same"),
+    .oneOf([yup.ref("password")], "Passwords not the same"),
 });

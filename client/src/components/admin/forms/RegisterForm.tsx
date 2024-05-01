@@ -1,7 +1,7 @@
 import axios from "axios";
 import * as yup from "yup";
 import { useState } from "react";
-import jwt_decode from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 import { useForm } from "react-hook-form";
 import "react-phone-input-2/lib/style.css";
 import PhoneInput from "react-phone-input-2";
@@ -56,7 +56,7 @@ export const RegisterForm = ({ onClick }: StepperProps) => {
   });
 
   // Decode token
-  const decodedToken = jwt_decode(token!) as {
+  const decodedToken = jwtDecode(token!) as {
     exp: number;
     iat: number;
     email: string;

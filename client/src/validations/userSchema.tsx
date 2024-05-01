@@ -42,7 +42,7 @@ export const userSchema = yup.object({
   confirmPassword: yup
     .string()
     .required("Please confirm password")
-    .oneOf([yup.ref("password"), null], "Passwords not the same"),
+    .oneOf([yup.ref("password")], "Passwords must match"),
 });
 
 export const updateProfileSchema = yup.object({

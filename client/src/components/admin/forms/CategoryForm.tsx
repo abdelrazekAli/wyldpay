@@ -2,32 +2,10 @@ import axios from "axios";
 import { useRef, useState } from "react";
 import "../../../styles/forms/categoryForm.sass";
 import { CategoryBox } from "../layouts/CategoryBox";
+import { categories } from "../../../utils/foodCategories";
 import { StepperProps } from "../../../types/StepperProps";
 
 export const CategoryForm = ({ onClick, onSkip }: StepperProps) => {
-  const categories: string[] = [
-    "appetizers",
-    "pizzas",
-    "burgers",
-    "pastas",
-    "creps",
-    "meats",
-    "chickens",
-    "seafood",
-    "soups",
-    "salads",
-    "breakfast",
-    "lunch",
-    "dinner",
-    "cakes",
-    "cookies",
-    "sides",
-    "drinks",
-    "dessert",
-    "super",
-    "popular",
-  ];
-
   const categoriesDestruct = [
     ...categories.map((value) => {
       return { value, selected: false };

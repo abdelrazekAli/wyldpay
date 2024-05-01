@@ -13,7 +13,7 @@ export const MainCategories = ({
     window.addEventListener("scroll", () => {
       setScroll(window.scrollY);
     });
-  }, [window.scrollY]);
+  }, []);
   return (
     <>
       <div className={"menu-categories menu-categories-fixed"}>
