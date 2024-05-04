@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { Request, Response } from "express";
-import ItemModel, { ItemProps } from "../models/item.model";
+import ItemModel from "../models/item.model";
+import { ItemProps } from "../types/item.type";
 import { checkItemId, checkRestId, validateItem } from "../utils/validation";
 
 export const itemRouter = Router();

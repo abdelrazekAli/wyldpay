@@ -1,9 +1,10 @@
 import { Router } from "express";
 import { Request, Response } from "express";
 import UserModel from "../models/user.model";
+import BankModel from "../models/bank.model";
+import { BankProps } from "../types/bank.type";
 import { generateAccessToken } from "../utils/tokens";
 import RestaurantModel from "../models/restaurant.model";
-import BankModel, { BankProps } from "../models/bank.model";
 import { verifyAuth } from "../middlewares/token.auth.middleware";
 import {
   checkUserId,

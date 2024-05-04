@@ -8,8 +8,9 @@ import {
   validateRestaurant,
   validateRestaurantUpdate,
 } from "../utils/validation";
+import RestaurantModel from "../models/restaurant.model";
+import { RestaurantProps } from "../types/restaurant.type";
 import { verifyAuth } from "../middlewares/token.auth.middleware";
-import RestaurantModel, { RestaurantProps } from "../models/restaurant.model";
 
 export const restaurantRouter = Router();
 

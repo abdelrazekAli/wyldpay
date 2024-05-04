@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { Request, Response } from "express";
-import CouponModel, { CouponProps } from "../models/coupon.model";
+import CouponModel from "../models/coupon.model";
+import { CouponProps } from "../types/coupon.type";
 import { verifyAuth } from "../middlewares/token.auth.middleware";
 import {
   checkRestId,

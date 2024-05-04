@@ -1,13 +1,14 @@
 import { Router } from "express";
 import { Request, Response } from "express";
-import UserModel, { UserProps } from "../models/user.model";
+import UserModel from "../models/user.model";
+import { UserProps } from "../types/user.type";
+import { verifyAuth } from "../middlewares/token.auth.middleware";
 import {
   checkUserId,
   validateUser,
   handleValidation,
   validateUpdateUserLinks,
 } from "../utils/validation";
-import { verifyAuth } from "../middlewares/token.auth.middleware";
 
 export const userRouter = Router();
 
