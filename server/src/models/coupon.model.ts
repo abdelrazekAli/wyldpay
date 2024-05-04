@@ -1,13 +1,5 @@
-import mongoose, { ObjectId } from "mongoose";
-
-export type CouponProps = {
-  name: string;
-  type: "percentage" | "amount";
-  value: number;
-  limit: number;
-  usage: number;
-  restId: ObjectId;
-};
+import mongoose from "mongoose";
+import { CouponProps } from "../types/coupon.type";
 
 const couponSchema = new mongoose.Schema(
   {

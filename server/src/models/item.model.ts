@@ -1,14 +1,5 @@
-import mongoose, { ObjectId } from "mongoose";
-
-export type ItemProps = {
-  name: string;
-  price: string;
-  img: string;
-  category: string;
-  desc: string;
-  ingredients: string;
-  restId: ObjectId;
-};
+import mongoose from "mongoose";
+import { ItemProps } from "../types/item.type";
 
 const itemSchema = new mongoose.Schema(
   {

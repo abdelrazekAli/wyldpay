@@ -1,7 +1,8 @@
 import { ObjectId } from "mongoose";
+import { ItemProps } from "./item.type";
 
 export type OrderProps = {
-  items: [];
+  items: ItemProps[];
   totalPrice: number;
   paymentMethod: "PayPal" | "Visa" | "Apple pay";
   notes?: string;

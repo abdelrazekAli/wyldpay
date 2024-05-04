@@ -1,21 +1,5 @@
-import mongoose, { ObjectId } from "mongoose";
-
-type DiscountProps = {
-  name: string;
-  type: "percentage" | "amount";
-  value: number;
-};
-
-export type OrderProps = {
-  items: [];
-  totalPrice: number;
-  paymentMethod: "PayPal" | "Visa" | "Apple pay";
-  notes?: string;
-  tip: number;
-  discount: DiscountProps;
-  tableNum: number;
-  restId: ObjectId;
-};
+import mongoose from "mongoose";
+import { OrderProps } from "../types/order.type";
 
 const orderSchema = new mongoose.Schema(
   {

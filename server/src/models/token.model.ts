@@ -1,10 +1,5 @@
-import mongoose, { ObjectId } from "mongoose";
-
-export type TokenProps = {
-  token: string;
-  userId: ObjectId;
-  createdAt: Date;
-};
+import mongoose from "mongoose";
+import { TokenProps } from "../types/token.type";
 
 const tokenSchema = new mongoose.Schema({
   userId: {
