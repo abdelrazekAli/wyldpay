@@ -1,12 +1,11 @@
 # WyldPay
 
-> QR Food Ordering solution<br>
-> This project provides efficient food ordering and management through a web interface.
+> QR Food Ordering solution through a web interface.
 
 ## Features
 
 - **Responsive User and Admin Interface**  
-  - Developed a responsive interface for both users and admins, ensuring a dynamic experience on all devices.
+  - Developed a responsive interface for users and admins, ensuring a dynamic experience on all devices.
 
 - **REST APIs**  
   - Built and maintained RESTful APIs for efficient data handling and integration with the front end.
@@ -18,7 +17,7 @@
   - Integrated multiple payment gateways including Stripe, PayPal, and Apple Pay for secure and flexible payments.
 
 - **Additional Features**  
-  - Implemented additional features such as discount coupons, tips, invoices, and subscription plans to enhance the functionality and user experience.
+  - Implemented additional features such as discount coupons, tips, invoices, and subscription plans.
 <br><br>
 
 ## Screenshots
