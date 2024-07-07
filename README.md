@@ -1,6 +1,6 @@
 # WyldPay
 
-> Welcome to QR Food Ordering solution!<br>
+> QR Food Ordering solution<br>
 > This project provides efficient food ordering and management through a web interface.
 
 ## Features
