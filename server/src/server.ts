@@ -3,15 +3,24 @@ import cors from "cors";
 import helmet from "helmet";
 import allRoutes from "./routes";
 import connect from "./utils/connection";
+import rateLimit from "express-rate-limit";
 import express, { Application } from "express";
 
 // Initialize Express app
 const app: Application = express();
 
+// Rate limiting
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // limit each IP to 100 requests
+  message: "Too many requests from this IP, please try again after 15 minutes",
+});
+
 // Middlewares
-app.use(cors());
-app.use(helmet());
 app.use(express.json());
+app.use(limiter);
+app.use(helmet());
+app.use(cors());
 
 // API routes
 app.use("/api/v1", allRoutes);
@@ -33,8 +42,8 @@ app.use((err, req, res, next) => {
 // Start server
 const port = process.env.PORT || 8000;
 app.listen(port, async () => {
-  console.log("listening on the port", port);
   await connect();
+  console.log("listening on the port", port);
 });
 
 export default app; // Export app to use in testing
