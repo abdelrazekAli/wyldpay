@@ -3,7 +3,7 @@ import CouponModel from "../models/coupon.model";
 import { CouponProps } from "../types/coupon.type";
 import { Request, Response, Router } from "express";
 import { verifyAuth } from "../middlewares/token.auth.middleware";
-import { handleValidation } from "../utils/validation/validationHelper";
+import { handleValidation } from "../utils/validation/helper.validation";
 import { validateRestaurantId } from "../utils/validation/Id.validation";
 import {
   validateCoupon,

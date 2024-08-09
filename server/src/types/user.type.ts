@@ -1,5 +1,3 @@
-import { JwtPayload } from "jsonwebtoken";
-
 export type UserProps = {
   email: string;
   password: string;

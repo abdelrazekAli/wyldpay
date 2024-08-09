@@ -4,7 +4,7 @@ import { UserProps } from "../types/user.type";
 import { Request, Response, Router } from "express";
 import { verifyAuth } from "../middlewares/token.auth.middleware";
 import { validateUserId } from "../utils/validation/Id.validation";
-import { handleValidation } from "../utils/validation/validationHelper";
+import { handleValidation } from "../utils/validation/helper.validation";
 import {
   validateUser,
   validateUpdateUserLinks,

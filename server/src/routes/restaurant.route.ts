@@ -3,7 +3,7 @@ import { Request, Response, Router } from "express";
 import RestaurantModel from "../models/restaurant.model";
 import { RestaurantProps } from "../types/restaurant.type";
 import { verifyAuth } from "../middlewares/token.auth.middleware";
-import { handleValidation } from "../utils/validation/validationHelper";
+import { handleValidation } from "../utils/validation/helper.validation";
 import {
   validateRestaurantId,
   validateUserId,

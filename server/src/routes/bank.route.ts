@@ -8,7 +8,7 @@ import RestaurantModel from "../models/restaurant.model";
 import { verifyAuth } from "../middlewares/token.auth.middleware";
 import { validateUserId } from "../utils/validation/Id.validation";
 import { validateBank } from "../utils/validation/bank.validation";
-import { handleValidation } from "../utils/validation/validationHelper";
+import { handleValidation } from "../utils/validation/helper.validation";
 import { validatePaymentkeys } from "../utils/validation/payment.validation";
 
 export const bankRouter = Router();

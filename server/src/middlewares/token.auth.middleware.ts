@@ -1,26 +1,44 @@
 import jwt from "jsonwebtoken";
+import logger from "../utils/logger";
 import { Request, Response, NextFunction } from "express";
 
+const { TokenExpiredError, JsonWebTokenError } = jwt;
+
 // Check token errors
-const { TokenExpiredError } = jwt;
-const catchExpireError = (err: any, res: Response) => {
-  if (err instanceof TokenExpiredError)
-    return res.status(403).send("Access Token was expired!");
-  res.status(498).send("Invalid token.");
+const catchTokenErrors = (err: any, res: Response) => {
+  if (err instanceof TokenExpiredError) {
+    logger.error("Access Token was expired!");
+    return res.status(403).json({ message: "Access Token was expired!" });
+  } else if (err instanceof JsonWebTokenError) {
+    logger.error("Invalid token.");
+    return res.status(498).json({ message: "Invalid token." });
+  }
+  logger.error("An unknown error occurred.");
+  return res.status(500).json({ message: "An unknown error occurred." });
 };
 
 export const verifyAuth = (req: Request, res: Response, next: NextFunction) => {
   const token = req.header("auth-token");
 
   // Check if no token
-  if (!token) return res.status(403).send("Access Denied. No token provided");
+  if (!token) {
+    logger.warn("Access Denied. No token provided");
+    return res
+      .status(403)
+      .json({ message: "Access Denied. No token provided" });
+  }
 
   // Verify token
-  jwt.verify(token, process.env.JWT_TOKEN_SECRET!, (err: any, decode) => {
-    if (err) return catchExpireError(err, res);
+  jwt.verify(
+    token,
+    process.env.JWT_TOKEN_SECRET as string,
+    (err: any, decode) => {
+      if (err) return catchTokenErrors(err, res);
 
-    // Decode token to user request and push next
-    req.user = decode;
-    next();
-  });
+      // Decode token to user request and push next
+      req.user = decode;
+      logger.info("Token verified successfully");
+      next();
+    }
+  );
 };

@@ -6,7 +6,7 @@ import TokenModel from "../models/token.model";
 import { Request, Response, Router } from "express";
 import { generateAccessToken } from "../utils/tokens";
 import RestaurantModel from "../models/restaurant.model";
-import { handleValidation } from "../utils/validation/validationHelper";
+import { handleValidation } from "../utils/validation/helper.validation";
 import {
   validateUser,
   validateLogin,
