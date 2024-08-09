@@ -1,8 +1,8 @@
-import { Router } from "express";
-import { Request, Response } from "express";
+import logger from "../utils/logger";
 import UserModel from "../models/user.model";
 import BankModel from "../models/bank.model";
 import { BankProps } from "../types/bank.type";
+import { Request, Response, Router } from "express";
 import { generateAccessToken } from "../utils/tokens";
 import RestaurantModel from "../models/restaurant.model";
 import { verifyAuth } from "../middlewares/token.auth.middleware";
@@ -22,27 +22,33 @@ bankRouter.get("/:userId", async (req: Request, res: Response) => {
   try {
     // Check user id
     const checkResult = (await checkUserId(userId)) as string | null;
-    if (typeof checkResult === "string")
+    if (typeof checkResult === "string") {
       return res.status(400).send(checkResult);
+    }
 
-    // get bank
+    // Get bank information
     const bank = (await BankModel.findOne({
       userId,
-    }).select("-_id -userId")) as BankProps;
+    }).select("-_id -userId")) as BankProps | null;
+
+    if (!bank) {
+      return res.status(404).json({ message: "Bank information not found" });
+    }
 
     // Response
-    res.status(200).json(bank);
+    return res.status(200).json(bank);
   } catch (err) {
-    console.log(err);
-    res.status(500).json(err);
+    logger.error("Error fetching bank information by user ID", { error: err });
+    return res.status(500).json({ message: "Internal server error" });
   }
 });
 
-// Post new bank informaton
+// Post new bank information
 bankRouter.post("/", async (req: Request, res: Response) => {
   // Validate req body
-  let validationResult = validateBank(req.body);
-  handleValidation(validationResult, res, 400);
+  const validationResult = validateBank(req.body);
+  const validationError = handleValidation(validationResult, res, 400);
+  if (validationError) return validationError;
 
   try {
     // Create new bank
@@ -50,31 +56,39 @@ bankRouter.post("/", async (req: Request, res: Response) => {
 
     // Save bank
     const bank = (await newBank.save()) as BankProps;
-    const user = await UserModel.findById(req.body.userId)!;
+    const user = await UserModel.findById(req.body.userId);
 
-    // Get user restaurant id
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Get user's restaurant information
     const restaurant = await RestaurantModel.findOne({
       userId: req.body.userId,
     }).select("_id currency");
 
+    if (!restaurant) {
+      return res.status(404).json({ message: "Restaurant not found" });
+    }
+
     // Create and assign a token
-    let accessToken = generateAccessToken({
+    const accessToken = generateAccessToken({
       _id: req.body.userId,
-      restaurantId: restaurant?._id,
+      restaurantId: restaurant._id,
     });
 
     // Set headers and response
-    res.header("auth-token", accessToken).json({
+    return res.header("auth-token", accessToken).json({
       _id: req.body.userId,
-      firstName: user?.firstName,
-      email: user?.email,
-      restaurantId: restaurant?._id,
-      currency: restaurant?.currency,
+      firstName: user.firstName,
+      email: user.email,
+      restaurantId: restaurant._id,
+      currency: restaurant.currency,
       accessToken: accessToken,
     });
   } catch (err) {
-    console.log(err);
-    res.status(500).json(err);
+    logger.error("Error creating new bank information", { error: err });
+    return res.status(500).json({ message: "Internal server error" });
   }
 });
 
@@ -83,47 +97,55 @@ bankRouter.put("/", verifyAuth, async (req: Request, res: Response) => {
   const userId = req.user._id;
 
   // Validate req body
-  let validationResult = validateBank(req.body);
-  handleValidation(validationResult, res, 400);
+  const validationResult = validateBank(req.body);
+  const validationError = handleValidation(validationResult, res, 400);
+  if (validationError) return validationError;
 
   try {
     // Check user id
     const checkResult = (await checkUserId(userId)) as string | null;
-    if (typeof checkResult === "string")
+    if (typeof checkResult === "string") {
       return res.status(400).send(checkResult);
+    }
 
-    // Update bank
-    await BankModel.updateOne(
+    // Update bank information
+    const updateResult = await BankModel.updateOne(
       { userId },
       {
         $set: req.body,
       }
     );
 
+    if (updateResult.modifiedCount === 0) {
+      return res.status(404).json({ message: "Bank information not found" });
+    }
+
     // Response
-    res.status(200).json("Bank updated successfully");
+    return res.status(200).json({ message: "Bank updated successfully" });
   } catch (err) {
-    console.log(err);
-    res.status(500).json(err);
+    logger.error("Error updating bank information by user ID", { error: err });
+    return res.status(500).json({ message: "Internal server error" });
   }
 });
 
-// Update payments methods by user id
+// Update payment methods by user id
 bankRouter.put("/methods", verifyAuth, async (req: Request, res: Response) => {
   const userId = req.user._id;
 
   // Validate req body
-  let validationResult = validatePaymentkeys(req.body);
-  handleValidation(validationResult, res, 400);
+  const validationResult = validatePaymentkeys(req.body);
+  const validationError = handleValidation(validationResult, res, 400);
+  if (validationError) return validationError;
 
   try {
     // Check user id
     const checkResult = (await checkUserId(userId)) as string | null;
-    if (typeof checkResult === "string")
+    if (typeof checkResult === "string") {
       return res.status(400).send(checkResult);
+    }
 
-    // Update bank
-    await BankModel.updateOne(
+    // Update payment methods
+    const updateResult = await BankModel.updateOne(
       { userId },
       {
         $set: {
@@ -134,10 +156,16 @@ bankRouter.put("/methods", verifyAuth, async (req: Request, res: Response) => {
       { arrayFilters: [{ "elem.name": req.body.name }] }
     );
 
+    if (updateResult.modifiedCount === 0) {
+      return res.status(404).json({ message: "Payment method not found" });
+    }
+
     // Response
-    res.status(200).json("Payments methods updated successfully");
+    return res
+      .status(200)
+      .json({ message: "Payment methods updated successfully" });
   } catch (err) {
-    console.log(err);
-    res.status(500).json(err);
+    logger.error("Error updating payment methods by user ID", { error: err });
+    return res.status(500).json({ message: "Internal server error" });
   }
 });

@@ -1,6 +1,6 @@
-import { Router } from "express";
-import { Request, Response } from "express";
+import logger from "../utils/logger";
 import OrderModel from "../models/order.model";
+import { Request, Response, Router } from "express";
 import { verifyAuth } from "../middlewares/token.auth.middleware";
 import {
   checkRestId,
@@ -15,13 +15,21 @@ orderRouter.get("/:orderId", async (req: Request, res: Response) => {
   const { orderId } = req.params;
 
   try {
+    // Find order
     const order = await OrderModel.findById(orderId);
+
+    if (!order) {
+      logger.warn(`Order not found with id: ${orderId}`);
+      return res.status(404).send("Order not found");
+    }
 
     // Response
     res.status(200).json(order);
   } catch (err) {
-    console.log(err);
-    res.status(500).json(err);
+    logger.error(
+      `Failed to get order by id: ${orderId}, Error: ${err.message}`
+    );
+    res.status(500).json({ error: "Internal Server Error" });
   }
 });
 
@@ -32,20 +40,26 @@ orderRouter.get("/", verifyAuth, async (req: Request, res: Response) => {
   try {
     // Check restaurant id
     const checkResult = (await checkRestId(restaurantId)) as string | null;
-    if (checkResult === "string") return res.status(400).send(checkResult);
+    if (typeof checkResult === "string") {
+      logger.warn(
+        `Invalid restaurant id: ${restaurantId}, Error: ${checkResult}`
+      );
+      return res.status(400).send(checkResult);
+    }
 
+    // Find orders
     const orders = await OrderModel.find(
-      {
-        restId: restaurantId,
-      },
+      { restId: restaurantId },
       { __v: 0 }
     ).sort({ createdAt: -1 });
 
     // Response
     res.status(200).json(orders);
   } catch (err) {
-    console.log(err);
-    res.status(500).json(err);
+    logger.error(
+      `Failed to get orders for restaurant id: ${restaurantId}, Error: ${err.message}`
+    );
+    res.status(500).json({ error: "Internal Server Error" });
   }
 });
 
@@ -53,7 +67,10 @@ orderRouter.get("/", verifyAuth, async (req: Request, res: Response) => {
 orderRouter.post("/", async (req: Request, res: Response) => {
   // Validate req body
   let validationResult = validateOrder(req.body);
-  handleValidation(validationResult, res, 400);
+  if (validationResult) {
+    logger.warn(`Invalid order data: ${validationResult.details[0].message}`);
+    return res.status(400).send(validationResult.details[0].message);
+  }
 
   try {
     // Create new order
@@ -63,9 +80,9 @@ orderRouter.post("/", async (req: Request, res: Response) => {
     const order = await newOrder.save();
 
     // Response
-    res.status(200).json(order);
+    res.status(201).json(order);
   } catch (err) {
-    console.log(err);
-    res.status(500).json(err);
+    logger.error(`Failed to create new order, Error: ${err.message}`);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 });

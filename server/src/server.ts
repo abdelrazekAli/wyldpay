@@ -2,6 +2,7 @@ import "dotenv/config";
 import cors from "cors";
 import helmet from "helmet";
 import allRoutes from "./routes";
+import logger from "./utils/logger";
 import connect from "./utils/connection";
 import rateLimit from "express-rate-limit";
 import express, { Application } from "express";
@@ -35,7 +36,7 @@ app.get("*", (req, res) => {
 
 // Error handling
 app.use((err, req, res, next) => {
-  console.error(err);
+  logger.error(err);
   res.status(500).send("Something went wrong!");
 });
 
@@ -43,7 +44,7 @@ app.use((err, req, res, next) => {
 const port = process.env.PORT || 8000;
 app.listen(port, async () => {
   await connect();
-  console.log("listening on the port", port);
+  logger.info("listening on the port", port);
 });
 
 export default app; // Export app to use in testing

@@ -1,7 +1,7 @@
-import { Router } from "express";
-import { Request, Response } from "express";
-import TokenModel from "../models/token.model";
+import logger from "../utils/logger";
 import UserModel from "../models/user.model";
+import TokenModel from "../models/token.model";
+import { Request, Response, Router } from "express";
 import { validateEmail, validateSendResetPass } from "../utils/validation";
 import { sendRegistrationEmail, sendResetPassEmail } from "../utils/emails";
 import { generateRegisterToken, generateResetPassToken } from "../utils/tokens";
@@ -15,12 +15,19 @@ emailRouter.post(
     try {
       // Validate req body
       let validationResult = validateEmail(req.body);
-      if (validationResult)
+      if (validationResult) {
+        logger.warn(
+          `Invalid email validation: ${validationResult.details[0].message}`
+        );
         return res.status(400).send(validationResult.details[0].message);
+      }
 
-      // Check if email unique
+      // Check if email is unique
       let emailCheck = await UserModel.findOne({ email: req.body.email });
-      if (emailCheck) return res.status(409).send("email is already used");
+      if (emailCheck) {
+        logger.warn(`Email already used: ${req.body.email}`);
+        return res.status(409).send("Email is already used");
+      }
 
       // Generate register token
       const registerToken = generateRegisterToken({ email: req.body.email });
@@ -29,8 +36,8 @@ emailRouter.post(
       // Response
       res.status(200).send("Register Email sent successfully");
     } catch (err) {
-      console.log(err.message);
-      res.status(500).json(err);
+      logger.error(`Failed to send registration email: ${err.message}`);
+      res.status(500).json({ error: "Internal Server Error" });
     }
   }
 );
@@ -40,12 +47,19 @@ emailRouter.post("/send-reset-token", async (req: Request, res: Response) => {
   try {
     // Validate req body
     let validationResult = validateSendResetPass(req.body);
-    if (validationResult)
+    if (validationResult) {
+      logger.warn(
+        `Invalid reset password validation: ${validationResult.details[0].message}`
+      );
       return res.status(400).send(validationResult.details[0].message);
+    }
 
-    // Check if email exist
+    // Check if email exists
     const user = await UserModel.findOne({ email: req.body.email });
-    if (!user) return res.status(401).send("Email is not registered yet");
+    if (!user) {
+      logger.warn(`Email not registered: ${req.body.email}`);
+      return res.status(401).send("Email is not registered yet");
+    }
 
     // Create and assign a token
     let resetToken = generateResetPassToken({ _id: user._id });
@@ -63,7 +77,7 @@ emailRouter.post("/send-reset-token", async (req: Request, res: Response) => {
     // Response
     res.status(200).send("Reset password Email sent successfully");
   } catch (err) {
-    console.log(err);
-    res.status(500).json(err);
+    logger.error(`Failed to send reset password email: ${err.message}`);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 });

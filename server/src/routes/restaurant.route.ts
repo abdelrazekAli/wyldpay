@@ -1,5 +1,5 @@
-import { Router } from "express";
-import { Request, Response } from "express";
+import logger from "../utils/logger";
+import { Request, Response, Router } from "express";
 import {
   checkRestId,
   checkUserId,
@@ -20,19 +20,17 @@ restaurantRouter.get("/:restaurantId", async (req: Request, res: Response) => {
 
   try {
     // Check restaurant id
-    const restaurant: RestaurantProps | string = await checkRestId(
-      restaurantId
-    );
+    const restaurant = await checkRestId(restaurantId);
     if (typeof restaurant === "string") {
+      logger.warn(`Invalid restaurant ID: ${restaurantId}`);
       return res.status(400).send(restaurant);
     }
-    res.status(200).json(restaurant);
 
     // Response
     res.status(200).json(restaurant);
   } catch (err) {
-    console.log(err);
-    res.status(500).json(err);
+    logger.error(`Failed to get restaurant by ID: ${err.message}`);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 });
 
@@ -43,13 +41,13 @@ restaurantRouter.get("/user/:userId", async (req: Request, res: Response) => {
   try {
     // Check user id
     const checkResult = await checkUserId(userId);
-    if (typeof checkResult === "string")
+    if (typeof checkResult === "string") {
+      logger.warn(`Invalid user ID: ${userId}`);
       return res.status(400).send(checkResult);
+    }
 
     const restaurant = (await RestaurantModel.findOne(
-      {
-        userId,
-      },
+      { userId },
       { __v: 0 }
     ).populate({
       path: "userId",
@@ -59,32 +57,32 @@ restaurantRouter.get("/user/:userId", async (req: Request, res: Response) => {
     // Response
     res.status(200).json(restaurant);
   } catch (err) {
-    console.log(err);
-    res.status(500).json(err);
+    logger.error(`Failed to get restaurant by user ID: ${err.message}`);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 });
 
-// Post new resaturant
+// Post new restaurant
 restaurantRouter.post("/", async (req: Request, res: Response) => {
   // Validate req body
   let validationResult = validateRestaurant(req.body);
   handleValidation(validationResult, res, 400);
 
   try {
-    // Create new resaturant
+    // Create new restaurant
     const newRestaurant = new RestaurantModel(req.body);
-    // Save resaturant
-    const resaturant = (await newRestaurant.save()) as RestaurantProps;
+    // Save restaurant
+    const restaurant = (await newRestaurant.save()) as RestaurantProps;
 
     // Response
-    res.status(200).json(resaturant);
+    res.status(201).json(restaurant);
   } catch (err) {
-    console.log(err);
-    res.status(500).json(err);
+    logger.error(`Failed to create restaurant: ${err.message}`);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 });
 
-// get resaturant categories
+// Get restaurant categories
 restaurantRouter.get(
   "/categories/:restaurantId",
   async (req: Request, res: Response) => {
@@ -92,23 +90,22 @@ restaurantRouter.get(
 
     try {
       // Check restaurant id
-      const restaurant: RestaurantProps | string = await checkRestId(
-        restaurantId
-      );
+      const restaurant = await checkRestId(restaurantId);
       if (typeof restaurant === "string") {
+        logger.warn(`Invalid restaurant ID for categories: ${restaurantId}`);
         return res.status(400).send(restaurant);
       }
 
       // Response
       res.status(200).json(restaurant?.categories);
     } catch (err) {
-      console.log(err);
-      res.status(500).json(err);
+      logger.error(`Failed to get restaurant categories: ${err.message}`);
+      res.status(500).json({ error: "Internal Server Error" });
     }
   }
 );
 
-// update resaturant data
+// Update restaurant data
 restaurantRouter.put("/", verifyAuth, async (req: Request, res: Response) => {
   const { restaurantId } = req.user;
 
@@ -117,23 +114,18 @@ restaurantRouter.put("/", verifyAuth, async (req: Request, res: Response) => {
   handleValidation(validationResult, res, 400);
 
   try {
-    // Update resaturant
-    await RestaurantModel.updateOne(
-      { _id: restaurantId },
-      {
-        $set: req.body,
-      }
-    );
+    // Update restaurant
+    await RestaurantModel.updateOne({ _id: restaurantId }, { $set: req.body });
 
     // Response
-    res.status(200).json("resaturant updated successfully");
+    res.status(200).json("Restaurant updated successfully");
   } catch (err) {
-    console.log(err);
-    res.status(500).json(err);
+    logger.error(`Failed to update restaurant: ${err.message}`);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 });
 
-// update resaturant categories
+// Update restaurant categories
 restaurantRouter.put("/categories", async (req: Request, res: Response) => {
   // Validate req body
   let validationResult = validateCategories(req.body);
@@ -141,17 +133,16 @@ restaurantRouter.put("/categories", async (req: Request, res: Response) => {
 
   try {
     // Update categories
-    const resaturant = await RestaurantModel.findByIdAndUpdate(
+    const restaurant = await RestaurantModel.findByIdAndUpdate(
       req.body.restaurantId,
-      {
-        categories: req.body.categories,
-      }
+      { categories: req.body.categories },
+      { new: true } // Ensure the updated document is returned
     );
 
     // Response
-    res.status(200).json(resaturant);
+    res.status(200).json(restaurant);
   } catch (err) {
-    console.log(err);
-    res.status(500).json(err);
+    logger.error(`Failed to update restaurant categories: ${err.message}`);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 });

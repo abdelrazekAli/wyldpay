@@ -1,3 +1,4 @@
+import logger from "./logger";
 import nodemailer from "nodemailer";
 
 // Create email transporter
@@ -27,10 +28,10 @@ export const sendRegistrationEmail = (email: string, token: string) => {
 
   transporter.sendMail(mailOptions, function (error, info) {
     if (error) {
-      console.log(error);
+      logger.error(error);
       throw error.message;
     } else {
-      console.log("Email Sent: " + info.response);
+      logger.error("Email Sent: " + info.response);
     }
   });
 };
@@ -52,10 +53,10 @@ export const sendResetPassEmail = (
 
   transporter.sendMail(mailOptions, function (error, info) {
     if (error) {
-      console.log(error);
+      logger.error(error);
       throw error;
     } else {
-      console.log("Email Sent: " + info.response);
+      logger.error("Email Sent: " + info.response);
     }
   });
 };

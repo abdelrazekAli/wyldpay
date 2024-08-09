@@ -1,9 +1,9 @@
 import bcrypt from "bcrypt";
-import { Router } from "express";
+import logger from "../utils/logger";
 import { stripe } from "../utils/stripe";
-import { Request, Response } from "express";
 import UserModel from "../models/user.model";
 import TokenModel from "../models/token.model";
+import { Request, Response, Router } from "express";
 import { generateAccessToken } from "../utils/tokens";
 import RestaurantModel from "../models/restaurant.model";
 import {
@@ -52,7 +52,7 @@ authRouter.post("/register", async (req: Request, res: Response) => {
     // Response
     res.status(200).json(user);
   } catch (err) {
-    console.log(err);
+    logger.error(err);
     res.status(500).json(err);
   }
 });
@@ -97,7 +97,7 @@ authRouter.post("/login", async (req: Request, res: Response) => {
       accessToken: accessToken,
     });
   } catch (err) {
-    console.log(err);
+    logger.error(err);
     res.status(500).json(err);
   }
 });
@@ -134,7 +134,7 @@ authRouter.post(
       // Response
       res.status(200).send("Password reset succssfully");
     } catch (err) {
-      console.log(err);
+      logger.error(err);
       res.status(500).json(err);
     }
   }

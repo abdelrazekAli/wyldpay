@@ -24,7 +24,7 @@
     "multer": "^1.4.5-lts.1",
     "nodemailer": "^6.9.13",
     "stripe": "^15.4.0",
-    "winston": "^3.13.0"
+    "winston": "^3.14.1"
   },
   "engines": {
     "node": "20.11.1",

@@ -1,7 +1,7 @@
-import { Router } from "express";
-import { Request, Response } from "express";
+import logger from "../utils/logger";
 import UserModel from "../models/user.model";
 import { UserProps } from "../types/user.type";
+import { Request, Response, Router } from "express";
 import { verifyAuth } from "../middlewares/token.auth.middleware";
 import {
   checkUserId,
@@ -14,44 +14,49 @@ export const userRouter = Router();
 
 // Get user by id
 userRouter.get("/:userId", async (req: Request, res: Response) => {
-  let user;
+  let user: UserProps;
   const { userId } = req.params;
 
   try {
     // Check user id
     const checkResult = await checkUserId(userId);
-    typeof checkResult === "string"
-      ? res.status(406).send(checkResult)
-      : (user = checkResult);
+    if (typeof checkResult === "string") {
+      return res.status(400).send(checkResult);
+    } else {
+      user = checkResult;
+    }
 
     // Response
-    res.status(200).json(user);
+    return res.status(200).json(user);
   } catch (err) {
-    console.log(err);
-    res.status(500).json(err);
+    logger.error("Error fetching user by ID", { error: err });
+    return res.status(500).json({ message: "Internal server error" });
   }
 });
 
 // Update user by id
 userRouter.put("/", verifyAuth, async (req: Request, res: Response) => {
-  let user;
+  let user: UserProps;
   const userId = req.user._id;
 
   // Validate req body
-  let validationResult = validateUser(req.body);
-  handleValidation(validationResult, res, 400);
+  const validationResult = validateUser(req.body);
+  const validationError = handleValidation(validationResult, res, 400);
+  if (validationError) return validationError;
 
   try {
     // Check user id
     const checkResult = await checkUserId(userId);
-    typeof checkResult === "string"
-      ? res.status(400).send(checkResult)
-      : (user = checkResult);
+    if (typeof checkResult === "string") {
+      return res.status(400).send(checkResult);
+    } else {
+      user = checkResult;
+    }
 
     // Check email
-    if (user?.email !== req.body.email) {
-      let emailCheck = await UserModel.findOne({ email: req.body.email });
-      if (emailCheck) return res.status(409).json("Email is already used");
+    if (user.email !== req.body.email) {
+      const emailCheck = await UserModel.findOne({ email: req.body.email });
+      if (emailCheck) return res.status(409).json("Email is already in use");
     }
 
     // Update user
@@ -62,28 +67,31 @@ userRouter.put("/", verifyAuth, async (req: Request, res: Response) => {
     ).select("-password -createdAt -updatedAt")) as UserProps;
 
     // Response
-    res.status(200).json(updatedUser);
+    return res.status(200).json(updatedUser);
   } catch (err) {
-    console.log(err);
-    res.status(500).json(err);
+    logger.error("Error updating user by ID", { error: err });
+    return res.status(500).json({ message: "Internal server error" });
   }
 });
 
 // Update user social links by id
 userRouter.put("/links/", verifyAuth, async (req: Request, res: Response) => {
-  let user;
+  let user: UserProps;
   const userId = req.user._id;
 
   // Validate req body
-  let validationResult = validateUpdateUserLinks(req.body);
-  handleValidation(validationResult, res, 400);
+  const validationResult = validateUpdateUserLinks(req.body);
+  const validationError = handleValidation(validationResult, res, 400);
+  if (validationError) return validationError;
 
   try {
     // Check user id
     const checkResult = await checkUserId(userId);
-    typeof checkResult === "string"
-      ? res.status(400).send(checkResult)
-      : (user = checkResult);
+    if (typeof checkResult === "string") {
+      return res.status(400).send(checkResult);
+    } else {
+      user = checkResult;
+    }
 
     // Update user
     const updatedLinks = await UserModel.findByIdAndUpdate(
@@ -93,9 +101,9 @@ userRouter.put("/links/", verifyAuth, async (req: Request, res: Response) => {
     ).select("socialLinks");
 
     // Response
-    res.status(200).json(updatedLinks);
+    return res.status(200).json(updatedLinks);
   } catch (err) {
-    console.log(err);
-    res.status(500).json(err);
+    logger.error("Error updating user social links", { error: err });
+    return res.status(500).json({ message: "Internal server error" });
   }
 });
