@@ -1,15 +1,6 @@
 import jwt from "jsonwebtoken";
 import { Request, Response, NextFunction } from "express";
 
-// To avoid Property 'user' does not exist on type express Request error
-declare global {
-  namespace Express {
-    interface Request {
-      user: any;
-    }
-  }
-}
-
 // Check token errors
 const { TokenExpiredError } = jwt;
 const catchExpireError = (err: any, res: Response) => {

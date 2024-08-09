@@ -1,5 +1,6 @@
 import "dotenv/config";
 import cors from "cors";
+import helmet from "helmet";
 import allRoutes from "./routes";
 import connect from "./utils/connection";
 import express, { Application } from "express";
@@ -8,8 +9,9 @@ import express, { Application } from "express";
 const app: Application = express();
 
 // Middlewares
-app.use(express.json());
 app.use(cors());
+app.use(helmet());
+app.use(express.json());
 
 // API routes
 app.use("/api/v1", allRoutes);
@@ -28,3 +30,5 @@ app.listen(port, async () => {
   console.log("listening on the port", port);
   await connect();
 });
+
+export default app; // Export app to use in testing
