@@ -1,6 +1,6 @@
 import logger from "../utils/logger";
 import { Request, Response, Router } from "express";
-import { validateStripePaymentIntent } from "../utils/validation";
+import { validateStripePaymentIntent } from "../utils/validation/payment.validation";
 
 export const paymentRouter = Router();
 

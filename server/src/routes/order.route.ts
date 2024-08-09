@@ -2,11 +2,8 @@ import logger from "../utils/logger";
 import OrderModel from "../models/order.model";
 import { Request, Response, Router } from "express";
 import { verifyAuth } from "../middlewares/token.auth.middleware";
-import {
-  checkRestId,
-  handleValidation,
-  validateOrder,
-} from "../utils/validation";
+import { validateOrder } from "../utils/validation/order.validation";
+import { validateRestaurantId } from "../utils/validation/Id.validation";
 
 export const orderRouter = Router();
 
@@ -39,7 +36,9 @@ orderRouter.get("/", verifyAuth, async (req: Request, res: Response) => {
 
   try {
     // Check restaurant id
-    const checkResult = (await checkRestId(restaurantId)) as string | null;
+    const checkResult = (await validateRestaurantId(restaurantId)) as
+      | string
+      | null;
     if (typeof checkResult === "string") {
       logger.warn(
         `Invalid restaurant id: ${restaurantId}, Error: ${checkResult}`

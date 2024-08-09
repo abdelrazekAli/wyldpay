@@ -2,9 +2,12 @@ import logger from "../utils/logger";
 import UserModel from "../models/user.model";
 import TokenModel from "../models/token.model";
 import { Request, Response, Router } from "express";
-import { validateEmail, validateSendResetPass } from "../utils/validation";
 import { sendRegistrationEmail, sendResetPassEmail } from "../utils/emails";
 import { generateRegisterToken, generateResetPassToken } from "../utils/tokens";
+import {
+  validateEmail,
+  validateSendResetPass,
+} from "../utils/validation/user.validation";
 
 export const emailRouter = Router();
 

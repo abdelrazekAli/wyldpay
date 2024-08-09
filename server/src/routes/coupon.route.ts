@@ -3,12 +3,12 @@ import CouponModel from "../models/coupon.model";
 import { CouponProps } from "../types/coupon.type";
 import { Request, Response, Router } from "express";
 import { verifyAuth } from "../middlewares/token.auth.middleware";
+import { handleValidation } from "../utils/validation/validationHelper";
+import { validateRestaurantId } from "../utils/validation/Id.validation";
 import {
-  checkRestId,
   validateCoupon,
-  handleValidation,
   validateApplyCoupon,
-} from "../utils/validation";
+} from "../utils/validation/coupon.validation";
 
 export const couponRouter = Router();
 
@@ -18,7 +18,9 @@ couponRouter.get("/", verifyAuth, async (req: Request, res: Response) => {
 
   try {
     // Check restaurant id
-    const checkResult = (await checkRestId(restaurantId)) as string | null;
+    const checkResult = (await validateRestaurantId(restaurantId)) as
+      | string
+      | null;
     if (checkResult === "string") {
       logger.warn(`Invalid restaurant ID: ${restaurantId}`);
       return res.status(400).send(checkResult);

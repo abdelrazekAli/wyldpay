@@ -3,12 +3,12 @@ import UserModel from "../models/user.model";
 import { UserProps } from "../types/user.type";
 import { Request, Response, Router } from "express";
 import { verifyAuth } from "../middlewares/token.auth.middleware";
+import { validateUserId } from "../utils/validation/Id.validation";
+import { handleValidation } from "../utils/validation/validationHelper";
 import {
-  checkUserId,
   validateUser,
-  handleValidation,
   validateUpdateUserLinks,
-} from "../utils/validation";
+} from "../utils/validation/user.validation";
 
 export const userRouter = Router();
 
@@ -19,7 +19,7 @@ userRouter.get("/:userId", async (req: Request, res: Response) => {
 
   try {
     // Check user id
-    const checkResult = await checkUserId(userId);
+    const checkResult = await validateUserId(userId);
     if (typeof checkResult === "string") {
       return res.status(400).send(checkResult);
     } else {
@@ -46,7 +46,7 @@ userRouter.put("/", verifyAuth, async (req: Request, res: Response) => {
 
   try {
     // Check user id
-    const checkResult = await checkUserId(userId);
+    const checkResult = await validateUserId(userId);
     if (typeof checkResult === "string") {
       return res.status(400).send(checkResult);
     } else {
@@ -86,7 +86,7 @@ userRouter.put("/links/", verifyAuth, async (req: Request, res: Response) => {
 
   try {
     // Check user id
-    const checkResult = await checkUserId(userId);
+    const checkResult = await validateUserId(userId);
     if (typeof checkResult === "string") {
       return res.status(400).send(checkResult);
     } else {

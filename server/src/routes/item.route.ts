@@ -2,7 +2,11 @@ import logger from "../utils/logger";
 import ItemModel from "../models/item.model";
 import { ItemProps } from "../types/item.type";
 import { Request, Response, Router } from "express";
-import { checkItemId, checkRestId, validateItem } from "../utils/validation";
+import {
+  validateRestaurantId,
+  validateItemId,
+} from "../utils/validation/Id.validation";
+import { validateItem } from "../utils/validation/item.validation";
 
 export const itemRouter = Router();
 
@@ -31,7 +35,7 @@ itemRouter.get("/restaurant/:restId", async (req: Request, res: Response) => {
   const { restId } = req.params;
   try {
     // Check restaurant id
-    const checkResult = (await checkRestId(restId)) as string | null;
+    const checkResult = (await validateRestaurantId(restId)) as string | null;
     if (typeof checkResult === "string") {
       logger.warn(`Invalid restaurant id: ${restId}, Error: ${checkResult}`);
       return res.status(400).send(checkResult);
@@ -88,7 +92,7 @@ itemRouter.put("/id/:itemId", async (req: Request, res: Response) => {
     }
 
     // Check item id
-    const checkResult = await checkItemId(itemId);
+    const checkResult = await validateItemId(itemId);
 
     if (typeof checkResult === "string") {
       logger.warn(`Invalid item id: ${itemId}, Error: ${checkResult}`);
@@ -122,7 +126,7 @@ itemRouter.delete("/id/:itemId", async (req: Request, res: Response) => {
   const { itemId } = req.params;
   try {
     // Check item id
-    const checkResult = await checkItemId(itemId);
+    const checkResult = await validateItemId(itemId);
 
     if (typeof checkResult === "string") {
       logger.warn(

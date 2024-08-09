@@ -1,16 +1,18 @@
 import logger from "../utils/logger";
 import { Request, Response, Router } from "express";
-import {
-  checkRestId,
-  checkUserId,
-  handleValidation,
-  validateCategories,
-  validateRestaurant,
-  validateRestaurantUpdate,
-} from "../utils/validation";
 import RestaurantModel from "../models/restaurant.model";
 import { RestaurantProps } from "../types/restaurant.type";
 import { verifyAuth } from "../middlewares/token.auth.middleware";
+import { handleValidation } from "../utils/validation/validationHelper";
+import {
+  validateRestaurantId,
+  validateUserId,
+} from "../utils/validation/Id.validation";
+import {
+  validateCategories,
+  validateRestaurant,
+  validateRestaurantUpdate,
+} from "../utils/validation/restaurant.validation";
 
 export const restaurantRouter = Router();
 
@@ -20,7 +22,7 @@ restaurantRouter.get("/:restaurantId", async (req: Request, res: Response) => {
 
   try {
     // Check restaurant id
-    const restaurant = await checkRestId(restaurantId);
+    const restaurant = await validateRestaurantId(restaurantId);
     if (typeof restaurant === "string") {
       logger.warn(`Invalid restaurant ID: ${restaurantId}`);
       return res.status(400).send(restaurant);
@@ -40,7 +42,7 @@ restaurantRouter.get("/user/:userId", async (req: Request, res: Response) => {
 
   try {
     // Check user id
-    const checkResult = await checkUserId(userId);
+    const checkResult = await validateUserId(userId);
     if (typeof checkResult === "string") {
       logger.warn(`Invalid user ID: ${userId}`);
       return res.status(400).send(checkResult);
@@ -90,7 +92,7 @@ restaurantRouter.get(
 
     try {
       // Check restaurant id
-      const restaurant = await checkRestId(restaurantId);
+      const restaurant = await validateRestaurantId(restaurantId);
       if (typeof restaurant === "string") {
         logger.warn(`Invalid restaurant ID for categories: ${restaurantId}`);
         return res.status(400).send(restaurant);

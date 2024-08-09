@@ -6,12 +6,10 @@ import { Request, Response, Router } from "express";
 import { generateAccessToken } from "../utils/tokens";
 import RestaurantModel from "../models/restaurant.model";
 import { verifyAuth } from "../middlewares/token.auth.middleware";
-import {
-  checkUserId,
-  validateBank,
-  handleValidation,
-  validatePaymentkeys,
-} from "../utils/validation";
+import { validateUserId } from "../utils/validation/Id.validation";
+import { validateBank } from "../utils/validation/bank.validation";
+import { handleValidation } from "../utils/validation/validationHelper";
+import { validatePaymentkeys } from "../utils/validation/payment.validation";
 
 export const bankRouter = Router();
 
@@ -21,7 +19,7 @@ bankRouter.get("/:userId", async (req: Request, res: Response) => {
 
   try {
     // Check user id
-    const checkResult = (await checkUserId(userId)) as string | null;
+    const checkResult = (await validateUserId(userId)) as string | null;
     if (typeof checkResult === "string") {
       return res.status(400).send(checkResult);
     }
@@ -103,7 +101,7 @@ bankRouter.put("/", verifyAuth, async (req: Request, res: Response) => {
 
   try {
     // Check user id
-    const checkResult = (await checkUserId(userId)) as string | null;
+    const checkResult = (await validateUserId(userId)) as string | null;
     if (typeof checkResult === "string") {
       return res.status(400).send(checkResult);
     }
@@ -139,7 +137,7 @@ bankRouter.put("/methods", verifyAuth, async (req: Request, res: Response) => {
 
   try {
     // Check user id
-    const checkResult = (await checkUserId(userId)) as string | null;
+    const checkResult = (await validateUserId(userId)) as string | null;
     if (typeof checkResult === "string") {
       return res.status(400).send(checkResult);
     }

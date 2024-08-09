@@ -6,12 +6,12 @@ import TokenModel from "../models/token.model";
 import { Request, Response, Router } from "express";
 import { generateAccessToken } from "../utils/tokens";
 import RestaurantModel from "../models/restaurant.model";
+import { handleValidation } from "../utils/validation/validationHelper";
 import {
   validateUser,
   validateLogin,
-  handleValidation,
   validateResetPass,
-} from "../utils/validation";
+} from "../utils/validation/user.validation";
 
 export const authRouter = Router();
 
