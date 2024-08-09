@@ -24,6 +24,12 @@ app.get("*", (req, res) => {
   });
 });
 
+// Error handling
+app.use((err, req, res, next) => {
+  console.error(err);
+  res.status(500).send("Something went wrong!");
+});
+
 // Start server
 const port = process.env.PORT || 8000;
 app.listen(port, async () => {
