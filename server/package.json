@@ -26,10 +26,6 @@
     "stripe": "^15.4.0",
     "winston": "^3.14.1"
   },
-  "engines": {
-    "node": "20.11.1",
-    "npm": "10.2.4"
-  },
   "devDependencies": {
     "@shelf/jest-mongodb": "^4.3.2",
     "@types/bcrypt": "^5.0.2",

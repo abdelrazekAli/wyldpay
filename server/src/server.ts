@@ -44,7 +44,7 @@ app.use((err, req, res, next) => {
 const port = process.env.PORT || 8000;
 app.listen(port, async () => {
   await connect();
-  logger.info("listening on the port", port);
+  logger.info(`listening on port ${port}`);
 });
 
 export default app; // Export app to use in testing

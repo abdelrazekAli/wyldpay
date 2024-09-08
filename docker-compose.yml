@@ -1,0 +1,54 @@
+version: "3"
+
+services:
+  # Backend
+  server:
+    build:
+      context: ./server
+    container_name: server
+    ports:
+      - "5000:5000"
+    depends_on:
+      - mongodb
+    environment:
+      - MONGO_URI=mongodb://mongodb:27017/mern-ts-db
+    networks:
+      - mern-network
+    volumes:
+      - ./server:/app # Mount the server code for development
+    command: npm run dev # For development use nodemon to reload changes
+
+  # MongoDB Service
+  mongodb:
+    image: mongo
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - mern-network
+
+  # Mongo Express service
+  mongo-express:
+    image: mongo-express
+    container_name: mongo-express
+    ports:
+      - "8081:8081"
+    depends_on:
+      - mongodb
+    environment:
+      - ME_CONFIG_MONGODB_SERVER=mongodb # Connect to the MongoDB container
+      - ME_CONFIG_BASICAUTH_USERNAME=mongoadmin # Set up basic auth username
+      - ME_CONFIG_BASICAUTH_PASSWORD=secret # Set up basic auth password
+    networks:
+      - mern-network
+
+# Define a custom network
+networks:
+  mern-network:
+    driver: bridge
+
+# Volumes for MongoDB data persistence
+volumes:
+  mongo-data:
