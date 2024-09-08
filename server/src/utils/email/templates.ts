@@ -1,5 +1,5 @@
 // HTML template for registration email
-const RegistrationEmailHTML = (token: string) => {
+export const RegistrationEmailHTML = (token: string) => {
   return `<div style="margin: 0px auto; max-width: 600px;">
     <table style="width: 100%; border-collapse: collapse;" role="presentation" border="0" cellspacing="0" cellpadding="0" align="center">
     <tbody>
@@ -144,7 +144,7 @@ const RegistrationEmailHTML = (token: string) => {
 };
 
 // HTML template for reset password email
-const ResetPasswordEmailHTML = (userId: string, token: string) => {
+export const ResetPasswordEmailHTML = (userId: string, token: string) => {
   return `<div style="margin: 0px auto; max-width: 600px;">
     <table style="width: 100%; border-collapse: collapse;" role="presentation" border="0" cellspacing="0" cellpadding="0" align="center">
     <tbody>

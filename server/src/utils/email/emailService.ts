@@ -1,5 +1,6 @@
 import logger from "../logger";
 import nodemailer from "nodemailer";
+import { RegistrationEmailHTML, ResetPasswordEmailHTML } from "./templates";
 
 // Create email transporter
 const createTransporter = () => {
