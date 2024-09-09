@@ -18,6 +18,20 @@ services:
       - ./server:/app # Mount the server code for development
     command: npm run dev # For development use nodemon to reload changes
 
+  # Frontend
+  client:
+    build:
+      context: ./client
+    container_name: client
+    ports:
+      - "3000:80"
+    networks:
+      - mern-network
+    depends_on:
+      - server
+    environment:
+      - REACT_APP_API_URL=http://localhost:8000 # Link React to the backend API
+
   # MongoDB Service
   mongodb:
     image: mongo

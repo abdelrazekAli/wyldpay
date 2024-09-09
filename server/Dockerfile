@@ -1,4 +1,4 @@
-# Use an official Node.js image as the base image
+# Use Node.js image as the base image
 FROM node:20-alpine
 
 # Set working directory inside the container
@@ -8,13 +8,13 @@ WORKDIR /app
 COPY package*.json ./
 
 # Install dependencies
-RUN npm install
+RUN npm install --silent
 
 # Copy the entire source code to the container
 COPY . .
 
 # Install TypeScript globally
-RUN npm install -g typescript nodemon
+RUN npm install -g typescript nodemon --silent
 
 # Compile TypeScript code
 RUN tsc
