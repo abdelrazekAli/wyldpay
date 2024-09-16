@@ -20,7 +20,9 @@ authRouter.post("/register", async (req: Request, res: Response) => {
   try {
     // Validate req body
     let validationResult = validateUser(req.body);
-    handleValidation(validationResult, res, 400);
+    if (validationResult) {
+      return handleValidation(validationResult, res, 400);
+    }
 
     // Check if email unique
     let emailCheck = await UserModel.findOne({ email: req.body.email });
@@ -62,7 +64,9 @@ authRouter.post("/login", async (req: Request, res: Response) => {
   try {
     // Validate req body
     let validationResult = validateLogin(req.body);
-    handleValidation(validationResult, res, 400);
+    if (validationResult) {
+      return handleValidation(validationResult, res, 400);
+    }
 
     // Check if email exist
     const user = await UserModel.findOne({ email: req.body.email });
@@ -109,7 +113,9 @@ authRouter.post(
     try {
       // Validate req body
       let validationResult = validateResetPass(req.body);
-      handleValidation(validationResult, res, 400);
+      if (validationResult) {
+        return handleValidation(validationResult, res, 400);
+      }
 
       // Check if email exist
       const user = await UserModel.findById(req.params.userId);

@@ -27,7 +27,7 @@ export const RegisterForm = ({ onClick }: StepperProps) => {
     delete data.confirmPassword;
 
     try {
-      let res = await axios.post("/api/v1/register", {
+      let res = await axios.post("/api/v1/auth/register", {
         ...data,
         phone: +phone,
       });

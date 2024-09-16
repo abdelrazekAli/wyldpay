@@ -33,7 +33,7 @@ export const ResetPassForm = () => {
     setIsLoading(true);
 
     try {
-      await axios.post(`/api/v1/pass/reset/${userId}/${token}`, {
+      await axios.post(`/api/v1/auth/pass/reset/${userId}/${token}`, {
         password: data.password,
       });
       setError(null);

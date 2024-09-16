@@ -40,7 +40,7 @@ export const LoginForm = () => {
     localStorage.clear();
 
     try {
-      let res = await axios.post("/api/v1/login", data);
+      let res = await axios.post("/api/v1/auth/login", data);
       loginHandler(res.data);
       setError(null);
     } catch (err: any) {
