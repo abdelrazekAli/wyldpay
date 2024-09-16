@@ -15,7 +15,6 @@
     "@stripe/react-stripe-js": "^2.7.0",
     "@stripe/stripe-js": "^3.3.0",
     "axios": "^1.6.8",
-    "http-proxy-middleware": "^3.0.0",
     "jspdf": "^2.5.1",
     "jspdf-autotable": "^3.5.25",
     "jwt-decode": "^4.0.0",
@@ -77,5 +76,6 @@
     "@types/react-router-hash-link": "^2.4.9",
     "@types/react-scroll": "^1.8.4",
     "@types/react-timeago": "^4.1.7"
-  }
+  },
+  "proxy": "http://localhost:8000/"
 }
