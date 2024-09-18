@@ -1,4 +1,7 @@
+import { ObjectId } from "mongoose";
+
 export type UserProps = {
+  _id: ObjectId;
   email: string;
   password: string;
   firstName: string;

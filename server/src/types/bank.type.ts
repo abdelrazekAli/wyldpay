@@ -1,6 +1,7 @@
 import { ObjectId } from "mongoose";
 
 export type BankProps = {
+  _id: ObjectId;
   name: string;
   iban: string;
   bic: string;
