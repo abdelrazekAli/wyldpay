@@ -2,7 +2,10 @@ import logger from "../utils/logger";
 import UserModel from "../models/user.model";
 import TokenModel from "../models/token.model";
 import { Request, Response, Router } from "express";
-import { generateRegisterToken, generateResetPassToken } from "../utils/tokens";
+import {
+  generateRegisterToken,
+  generateResetPassToken,
+} from "../services/token.service";
 import {
   sendRegistrationEmail,
   sendResetPassEmail,

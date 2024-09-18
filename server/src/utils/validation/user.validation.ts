@@ -1,6 +1,6 @@
 import joi from "joi";
 
-export const validateUser = (data: object) => {
+export const validateUserData = (data: object) => {
   const schema = joi.object({
     email: joi.string().required().email().max(255),
     password: joi.string().min(5).max(255),
@@ -39,7 +39,7 @@ export const validateUpdateUserLinks = (data: object) => {
   return schema.validate(data).error;
 };
 
-export const validateLogin = (data: object) => {
+export const validateLoginData = (data: object) => {
   const schema = joi.object({
     email: joi.string().required().email().max(255),
     password: joi.string().required().max(255),

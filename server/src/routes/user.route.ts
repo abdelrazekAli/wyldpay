@@ -6,7 +6,7 @@ import { verifyAuth } from "../middlewares/token.auth.middleware";
 import { validateUserId } from "../utils/validation/Id.validation";
 import { handleValidation } from "../utils/validation/helper.validation";
 import {
-  validateUser,
+  validateUserData,
   validateUpdateUserLinks,
 } from "../utils/validation/user.validation";
 
@@ -40,7 +40,7 @@ userRouter.put("/", verifyAuth, async (req: Request, res: Response) => {
   const userId = req.user._id;
 
   // Validate req body
-  const validationResult = validateUser(req.body);
+  const validationResult = validateUserData(req.body);
   const validationError = handleValidation(validationResult, res, 400);
   if (validationError) return validationError;
 

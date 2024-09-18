@@ -1,14 +1,14 @@
 import logger from "../utils/logger";
 import { Request, Response, Router } from "express";
-import { comparePassword, hashPassword } from "../utils/password";
-import { generateAccessToken } from "../utils/tokens";
 import RestaurantModel from "../models/restaurant.model";
+import { generateAccessToken } from "../services/token.service";
 import { createStripeCustomer } from "../services/stripe.service";
+import { comparePassword, hashPassword } from "../utils/password";
 import { deleteToken, findToken } from "../services/token.service";
 import { handleValidation } from "../utils/validation/helper.validation";
 import {
-  validateUser,
-  validateLogin,
+  validateUserData,
+  validateLoginData,
   validateResetPass,
 } from "../utils/validation/user.validation";
 import {
@@ -23,7 +23,7 @@ export const authRouter = Router();
 authRouter.post("/register", async (req: Request, res: Response) => {
   try {
     // Validate user input
-    let validationResult = validateUser(req.body);
+    let validationResult = validateUserData(req.body);
     if (validationResult) {
       return handleValidation(validationResult, res, 400);
     }
@@ -53,7 +53,7 @@ authRouter.post("/register", async (req: Request, res: Response) => {
 authRouter.post("/login", async (req: Request, res: Response) => {
   try {
     // Validate login input
-    const validationResult = validateLogin(req.body);
+    const validationResult = validateLoginData(req.body);
     if (validationResult) return res.status(400).send(validationResult);
 
     // Find user by email
