@@ -2,13 +2,14 @@ import logger from "../utils/logger";
 import UserModel from "../models/user.model";
 import BankModel from "../models/bank.model";
 import { BankProps } from "../types/bank.type";
+import { handleServerError } from "../utils/error";
 import { Request, Response, Router } from "express";
+import { verifyAuth } from "../services/auth.service";
 import RestaurantModel from "../models/restaurant.model";
 import { generateAccessToken } from "../services/token.service";
-import { verifyAuth } from "../middlewares/token.auth.middleware";
 import { validateUserId } from "../utils/validation/Id.validation";
-import { validateBank } from "../utils/validation/bank.validation";
-import { handleValidation } from "../utils/validation/helper.validation";
+import { validateBankData } from "../utils/validation/bank.validation";
+import { handleValidationError } from "../utils/validation/helper.validation";
 import { validatePaymentkeys } from "../utils/validation/payment.validation";
 
 export const bankRouter = Router();
@@ -35,18 +36,20 @@ bankRouter.get("/:userId", async (req: Request, res: Response) => {
 
     // Response
     return res.status(200).json(bank);
-  } catch (err) {
-    logger.error("Error fetching bank information by user ID", { error: err });
-    return res.status(500).json({ message: "Internal server error" });
+  } catch (error: unknown) {
+    return handleServerError(
+      res,
+      error,
+      "Error fetching bank information by user ID"
+    );
   }
 });
 
 // Post new bank information
 bankRouter.post("/", async (req: Request, res: Response) => {
   // Validate req body
-  const validationResult = validateBank(req.body);
-  const validationError = handleValidation(validationResult, res, 400);
-  if (validationError) return validationError;
+  const validationResult = validateBankData(req.body);
+  if (validationResult) return handleValidationError(res, validationResult);
 
   try {
     // Create new bank
@@ -84,9 +87,8 @@ bankRouter.post("/", async (req: Request, res: Response) => {
       currency: restaurant.currency,
       accessToken: accessToken,
     });
-  } catch (err) {
-    logger.error("Error creating new bank information", { error: err });
-    return res.status(500).json({ message: "Internal server error" });
+  } catch (error: unknown) {
+    return handleServerError(res, error, "Error creating new bank information");
   }
 });
 
@@ -95,9 +97,8 @@ bankRouter.put("/", verifyAuth, async (req: Request, res: Response) => {
   const userId = req.user._id;
 
   // Validate req body
-  const validationResult = validateBank(req.body);
-  const validationError = handleValidation(validationResult, res, 400);
-  if (validationError) return validationError;
+  const validationResult = validateBankData(req.body);
+  if (validationResult) return handleValidationError(res, validationResult);
 
   try {
     // Check user id
@@ -120,9 +121,12 @@ bankRouter.put("/", verifyAuth, async (req: Request, res: Response) => {
 
     // Response
     return res.status(200).json({ message: "Bank updated successfully" });
-  } catch (err) {
-    logger.error("Error updating bank information by user ID", { error: err });
-    return res.status(500).json({ message: "Internal server error" });
+  } catch (error: unknown) {
+    return handleServerError(
+      res,
+      error,
+      "Error updating bank information by user ID"
+    );
   }
 });
 
@@ -132,8 +136,7 @@ bankRouter.put("/methods", verifyAuth, async (req: Request, res: Response) => {
 
   // Validate req body
   const validationResult = validatePaymentkeys(req.body);
-  const validationError = handleValidation(validationResult, res, 400);
-  if (validationError) return validationError;
+  if (validationResult) return handleValidationError(res, validationResult);
 
   try {
     // Check user id
@@ -162,8 +165,7 @@ bankRouter.put("/methods", verifyAuth, async (req: Request, res: Response) => {
     return res
       .status(200)
       .json({ message: "Payment methods updated successfully" });
-  } catch (err) {
-    logger.error("Error updating payment methods by user ID", { error: err });
-    return res.status(500).json({ message: "Internal server error" });
+  } catch (error: unknown) {
+    return handleServerError(res, error, "Error updating payment methods");
   }
 });

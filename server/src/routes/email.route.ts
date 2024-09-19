@@ -1,6 +1,7 @@
 import logger from "../utils/logger";
 import UserModel from "../models/user.model";
 import TokenModel from "../models/token.model";
+import { handleServerError } from "../utils/error";
 import { Request, Response, Router } from "express";
 import {
   generateRegisterToken,
@@ -44,9 +45,8 @@ emailRouter.post(
 
       // Response
       res.status(200).send("Register Email sent successfully");
-    } catch (err) {
-      logger.error(`Failed to send registration email: ${err.message}`);
-      res.status(500).json({ error: "Internal Server Error" });
+    } catch (error: unknown) {
+      return handleServerError(res, error, "Failed to send registration email");
     }
   }
 );
@@ -85,8 +85,7 @@ emailRouter.post("/send-reset-token", async (req: Request, res: Response) => {
 
     // Response
     res.status(200).send("Reset password Email sent successfully");
-  } catch (err) {
-    logger.error(`Failed to send reset password email: ${err.message}`);
-    res.status(500).json({ error: "Internal Server Error" });
+  } catch (error: unknown) {
+    return handleServerError(res, error, "Failed to send reset password email");
   }
 });

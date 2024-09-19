@@ -1,4 +1,5 @@
 import logger from "../utils/logger";
+import { handleServerError } from "../utils/error";
 import { Request, Response, Router } from "express";
 import { validateStripePaymentIntent } from "../utils/validation/payment.validation";
 
@@ -34,11 +35,12 @@ paymentRouter.post(
       res.status(200).send({
         clientSecret: client_secret,
       });
-    } catch (err) {
-      logger.error(
-        `Failed to create Stripe payment intent, Error: ${err.message}`
+    } catch (error: unknown) {
+      return handleServerError(
+        res,
+        error,
+        `Failed to create Stripe payment intent`
       );
-      res.status(500).json({ error: "Internal Server Error" });
     }
   }
 );

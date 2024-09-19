@@ -30,7 +30,7 @@ export const sendRegistrationEmail = async (email: string, token: string) => {
   try {
     const info = await transporter.sendMail(mailOptions);
     logger.info("Registration Email Sent: " + info.response);
-  } catch (error) {
+  } catch (error: unknown) {
     logger.error("Error sending registration email: ", error);
     throw error;
   }
@@ -54,7 +54,7 @@ export const sendResetPassEmail = async (
   try {
     const info = await transporter.sendMail(mailOptions);
     logger.info("Reset Password Email Sent: " + info.response);
-  } catch (error) {
+  } catch (error: unknown) {
     logger.error("Error sending reset password email: ", error);
     throw error;
   }

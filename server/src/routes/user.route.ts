@@ -1,10 +1,10 @@
-import logger from "../utils/logger";
 import UserModel from "../models/user.model";
 import { UserProps } from "../types/user.type";
+import { handleServerError } from "../utils/error";
 import { Request, Response, Router } from "express";
-import { verifyAuth } from "../middlewares/token.auth.middleware";
+import { verifyAuth } from "../services/auth.service";
 import { validateUserId } from "../utils/validation/Id.validation";
-import { handleValidation } from "../utils/validation/helper.validation";
+import { handleValidationError } from "../utils/validation/helper.validation";
 import {
   validateUserData,
   validateUpdateUserLinks,
@@ -28,9 +28,8 @@ userRouter.get("/:userId", async (req: Request, res: Response) => {
 
     // Response
     return res.status(200).json(user);
-  } catch (err) {
-    logger.error("Error fetching user by ID", { error: err });
-    return res.status(500).json({ message: "Internal server error" });
+  } catch (error: unknown) {
+    return handleServerError(res, error, "Error fetching user by ID");
   }
 });
 
@@ -41,8 +40,7 @@ userRouter.put("/", verifyAuth, async (req: Request, res: Response) => {
 
   // Validate req body
   const validationResult = validateUserData(req.body);
-  const validationError = handleValidation(validationResult, res, 400);
-  if (validationError) return validationError;
+  if (validationResult) return handleValidationError(res, validationResult);
 
   try {
     // Check user id
@@ -68,9 +66,8 @@ userRouter.put("/", verifyAuth, async (req: Request, res: Response) => {
 
     // Response
     return res.status(200).json(updatedUser);
-  } catch (err) {
-    logger.error("Error updating user by ID", { error: err });
-    return res.status(500).json({ message: "Internal server error" });
+  } catch (error: unknown) {
+    return handleServerError(res, error, "Error updating user by ID");
   }
 });
 
@@ -81,8 +78,7 @@ userRouter.put("/links/", verifyAuth, async (req: Request, res: Response) => {
 
   // Validate req body
   const validationResult = validateUpdateUserLinks(req.body);
-  const validationError = handleValidation(validationResult, res, 400);
-  if (validationError) return validationError;
+  if (validationResult) return handleValidationError(res, validationResult);
 
   try {
     // Check user id
@@ -102,8 +98,7 @@ userRouter.put("/links/", verifyAuth, async (req: Request, res: Response) => {
 
     // Response
     return res.status(200).json(updatedLinks);
-  } catch (err) {
-    logger.error("Error updating user social links", { error: err });
-    return res.status(500).json({ message: "Internal server error" });
+  } catch (error: unknown) {
+    return handleServerError(res, error, "Error updating user social links");
   }
 });

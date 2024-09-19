@@ -5,7 +5,8 @@ import allRoutes from "./routes";
 import logger from "./utils/logger";
 import connect from "./utils/connection";
 import rateLimit from "express-rate-limit";
-import express, { Application } from "express";
+import express, { Application, NextFunction, Request, Response } from "express";
+import { handleServerError } from "./utils/error";
 
 // Initialize Express app
 const app: Application = express();
@@ -34,10 +35,10 @@ app.get("*", (req, res) => {
   });
 });
 
-// Error handling
-app.use((err, req, res, next) => {
-  logger.error(err);
-  res.status(500).send("Something went wrong!");
+// Error handling middleware
+app.use((error: unknown, req: Request, res: Response, next: NextFunction) => {
+  const { method, url } = req;
+  return handleServerError(res, error, `Error in ${method} ${url}`);
 });
 
 // Start server

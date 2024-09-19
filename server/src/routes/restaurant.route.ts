@@ -1,9 +1,10 @@
 import logger from "../utils/logger";
+import { handleServerError } from "../utils/error";
 import { Request, Response, Router } from "express";
+import { verifyAuth } from "../services/auth.service";
 import RestaurantModel from "../models/restaurant.model";
 import { RestaurantProps } from "../types/restaurant.type";
-import { verifyAuth } from "../middlewares/token.auth.middleware";
-import { handleValidation } from "../utils/validation/helper.validation";
+import { handleValidationError } from "../utils/validation/helper.validation";
 import {
   validateRestaurantId,
   validateUserId,
@@ -30,9 +31,8 @@ restaurantRouter.get("/:restaurantId", async (req: Request, res: Response) => {
 
     // Response
     res.status(200).json(restaurant);
-  } catch (err) {
-    logger.error(`Failed to get restaurant by ID: ${err.message}`);
-    res.status(500).json({ error: "Internal Server Error" });
+  } catch (error: unknown) {
+    handleServerError(res, error, "Failed to get restaurant by ID");
   }
 });
 
@@ -58,9 +58,8 @@ restaurantRouter.get("/user/:userId", async (req: Request, res: Response) => {
 
     // Response
     res.status(200).json(restaurant);
-  } catch (err) {
-    logger.error(`Failed to get restaurant by user ID: ${err.message}`);
-    res.status(500).json({ error: "Internal Server Error" });
+  } catch (error: unknown) {
+    handleServerError(res, error, "Failed to get restaurant by user ID");
   }
 });
 
@@ -68,7 +67,7 @@ restaurantRouter.get("/user/:userId", async (req: Request, res: Response) => {
 restaurantRouter.post("/", async (req: Request, res: Response) => {
   // Validate req body
   let validationResult = validateRestaurant(req.body);
-  handleValidation(validationResult, res, 400);
+  handleValidationError(res, validationResult);
 
   try {
     // Create new restaurant
@@ -78,9 +77,8 @@ restaurantRouter.post("/", async (req: Request, res: Response) => {
 
     // Response
     res.status(201).json(restaurant);
-  } catch (err) {
-    logger.error(`Failed to create restaurant: ${err.message}`);
-    res.status(500).json({ error: "Internal Server Error" });
+  } catch (error: unknown) {
+    handleServerError(res, error, "Failed to create new restaurant");
   }
 });
 
@@ -100,9 +98,8 @@ restaurantRouter.get(
 
       // Response
       res.status(200).json(restaurant?.categories);
-    } catch (err) {
-      logger.error(`Failed to get restaurant categories: ${err.message}`);
-      res.status(500).json({ error: "Internal Server Error" });
+    } catch (error: unknown) {
+      handleServerError(res, error, "Failed to get restaurant categories");
     }
   }
 );
@@ -113,7 +110,7 @@ restaurantRouter.put("/", verifyAuth, async (req: Request, res: Response) => {
 
   // Validate req body
   let validationResult = validateRestaurantUpdate(req.body);
-  handleValidation(validationResult, res, 400);
+  handleValidationError(res, validationResult);
 
   try {
     // Update restaurant
@@ -121,9 +118,8 @@ restaurantRouter.put("/", verifyAuth, async (req: Request, res: Response) => {
 
     // Response
     res.status(200).json("Restaurant updated successfully");
-  } catch (err) {
-    logger.error(`Failed to update restaurant: ${err.message}`);
-    res.status(500).json({ error: "Internal Server Error" });
+  } catch (error: unknown) {
+    handleServerError(res, error, "Failed to update restaurant");
   }
 });
 
@@ -131,7 +127,7 @@ restaurantRouter.put("/", verifyAuth, async (req: Request, res: Response) => {
 restaurantRouter.put("/categories", async (req: Request, res: Response) => {
   // Validate req body
   let validationResult = validateCategories(req.body);
-  handleValidation(validationResult, res, 400);
+  handleValidationError(res, validationResult);
 
   try {
     // Update categories
@@ -143,8 +139,11 @@ restaurantRouter.put("/categories", async (req: Request, res: Response) => {
 
     // Response
     res.status(200).json(restaurant);
-  } catch (err) {
-    logger.error(`Failed to update restaurant categories: ${err.message}`);
-    res.status(500).json({ error: "Internal Server Error" });
+  } catch (error: unknown) {
+    return handleServerError(
+      res,
+      error,
+      "Failed to update restaurant categories"
+    );
   }
 });

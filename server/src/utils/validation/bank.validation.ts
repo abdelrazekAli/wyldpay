@@ -1,6 +1,6 @@
 import joi from "joi";
 
-export const validateBank = (data: object) => {
+export const validateBankData = (data: object) => {
   const schema = joi.object({
     name: joi.string().required().max(255),
     iban: joi.string().required().min(5).max(34),

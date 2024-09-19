@@ -1,10 +1,11 @@
 import logger from "../utils/logger";
 import CouponModel from "../models/coupon.model";
 import { CouponProps } from "../types/coupon.type";
+import { handleServerError } from "../utils/error";
 import { Request, Response, Router } from "express";
-import { verifyAuth } from "../middlewares/token.auth.middleware";
-import { handleValidation } from "../utils/validation/helper.validation";
+import { verifyAuth } from "../services/auth.service";
 import { validateRestaurantId } from "../utils/validation/Id.validation";
+import { handleValidationError } from "../utils/validation/helper.validation";
 import {
   validateCoupon,
   validateApplyCoupon,
@@ -35,9 +36,8 @@ couponRouter.get("/", verifyAuth, async (req: Request, res: Response) => {
 
     // Response
     res.status(200).json(coupons);
-  } catch (err) {
-    logger.error(`Failed to get coupons: ${err.message}`);
-    res.status(500).json({ error: "Internal Server Error" });
+  } catch (error: unknown) {
+    handleServerError(res, error, "Failed to get coupons");
   }
 });
 
@@ -47,7 +47,7 @@ couponRouter.post("/", verifyAuth, async (req: Request, res: Response) => {
 
   // Validate req body
   let validationResult = validateCoupon(req.body);
-  handleValidation(validationResult, res, 400);
+  if (validationResult) return handleValidationError(res, validationResult);
 
   try {
     // Check if coupon already exists
@@ -68,9 +68,8 @@ couponRouter.post("/", verifyAuth, async (req: Request, res: Response) => {
 
     // Response
     res.status(201).json(coupon);
-  } catch (err) {
-    logger.error(`Failed to create coupon: ${err.message}`);
-    res.status(500).json({ error: "Internal Server Error" });
+  } catch (error: unknown) {
+    return handleServerError(res, error, "Failed to create coupon");
   }
 });
 
@@ -112,9 +111,8 @@ couponRouter.post("/:restId", async (req: Request, res: Response) => {
 
     // Response
     res.status(200).json(updatedCoupon);
-  } catch (err) {
-    logger.error(`Failed to apply coupon: ${err.message}`);
-    res.status(500).json({ error: "Internal Server Error" });
+  } catch (error: unknown) {
+    return handleServerError(res, error, "Failed to apply coupon");
   }
 });
 
@@ -136,9 +134,8 @@ couponRouter.delete(
 
       // Response
       res.status(200).json("Coupon deleted successfully");
-    } catch (err) {
-      logger.error(`Failed to delete coupon: ${err.message}`);
-      res.status(500).json({ error: "Internal Server Error" });
+    } catch (error: unknown) {
+      return handleServerError(res, error, "Failed to delete coupon");
     }
   }
 );

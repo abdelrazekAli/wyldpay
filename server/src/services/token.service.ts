@@ -1,8 +1,10 @@
-import jwt from "jsonwebtoken";
+import { Response } from "express";
 import { ObjectId } from "mongoose";
 import logger from "../utils/logger";
 import TokenModel from "../models/token.model";
 import { TokenProps } from "../types/token.type";
+import { handleClientError, handleServerError } from "../utils/error";
+import jwt, { JsonWebTokenError, TokenExpiredError } from "jsonwebtoken";
 
 // Generate JWT token
 export const generateToken = (
@@ -11,7 +13,7 @@ export const generateToken = (
 ) => {
   try {
     return jwt.sign(data, process.env.JWT_TOKEN_SECRET!, { expiresIn });
-  } catch (error) {
+  } catch (error: unknown) {
     logger.error(error);
     throw new Error("Error generating token");
   }
@@ -24,7 +26,7 @@ export const findToken = async (
 ): Promise<TokenProps | null> => {
   try {
     return await TokenModel.findOne({ userId, token });
-  } catch (error) {
+  } catch (error: unknown) {
     logger.error(error);
     throw new Error("Error finding token");
   }
@@ -48,8 +50,18 @@ export const generateResetPassToken = (data: { _id: ObjectId }) =>
 export const deleteToken = async (tokenId: ObjectId): Promise<void> => {
   try {
     await TokenModel.deleteOne({ _id: tokenId });
-  } catch (error) {
+  } catch (error: unknown) {
     logger.error(error);
     throw new Error("Error deleting token");
   }
+};
+
+// Check token errors
+export const catchTokenErrors = (res: Response, error: any) => {
+  if (error instanceof TokenExpiredError) {
+    return handleClientError(res, "Access Token was expired!", 403);
+  } else if (error instanceof JsonWebTokenError) {
+    return handleClientError(res, "Invalid token.", 498);
+  }
+  return handleServerError(res, error);
 };

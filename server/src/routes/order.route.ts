@@ -1,7 +1,8 @@
 import logger from "../utils/logger";
 import OrderModel from "../models/order.model";
+import { handleServerError } from "../utils/error";
 import { Request, Response, Router } from "express";
-import { verifyAuth } from "../middlewares/token.auth.middleware";
+import { verifyAuth } from "../services/auth.service";
 import { validateOrder } from "../utils/validation/order.validation";
 import { validateRestaurantId } from "../utils/validation/Id.validation";
 
@@ -22,11 +23,12 @@ orderRouter.get("/:orderId", async (req: Request, res: Response) => {
 
     // Response
     res.status(200).json(order);
-  } catch (err) {
-    logger.error(
-      `Failed to get order by id: ${orderId}, Error: ${err.message}`
+  } catch (error: unknown) {
+    return handleServerError(
+      res,
+      error,
+      `Failed to get order by id: ${orderId}`
     );
-    res.status(500).json({ error: "Internal Server Error" });
   }
 });
 
@@ -54,11 +56,12 @@ orderRouter.get("/", verifyAuth, async (req: Request, res: Response) => {
 
     // Response
     res.status(200).json(orders);
-  } catch (err) {
-    logger.error(
-      `Failed to get orders for restaurant id: ${restaurantId}, Error: ${err.message}`
+  } catch (error: unknown) {
+    return handleServerError(
+      res,
+      error,
+      `Failed to get orders for restaurant id: ${restaurantId}`
     );
-    res.status(500).json({ error: "Internal Server Error" });
   }
 });
 
@@ -80,8 +83,7 @@ orderRouter.post("/", async (req: Request, res: Response) => {
 
     // Response
     res.status(201).json(order);
-  } catch (err) {
-    logger.error(`Failed to create new order, Error: ${err.message}`);
-    res.status(500).json({ error: "Internal Server Error" });
+  } catch (error: unknown) {
+    return handleServerError(res, error, `Failed to create new order`);
   }
 });

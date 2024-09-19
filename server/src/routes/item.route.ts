@@ -1,6 +1,7 @@
 import logger from "../utils/logger";
 import ItemModel from "../models/item.model";
 import { ItemProps } from "../types/item.type";
+import { handleServerError } from "../utils/error";
 import { Request, Response, Router } from "express";
 import {
   validateRestaurantId,
@@ -24,9 +25,8 @@ itemRouter.get("/:itemId", async (req: Request, res: Response) => {
 
     // Response
     res.status(200).json(item);
-  } catch (err) {
-    logger.error(`Failed to get item by id: ${itemId}, Error: ${err.message}`);
-    res.status(500).json({ error: "Internal Server Error" });
+  } catch (error: unknown) {
+    return handleServerError(res, error, `Failed to get item by id: ${itemId}`);
   }
 });
 
@@ -46,11 +46,12 @@ itemRouter.get("/restaurant/:restId", async (req: Request, res: Response) => {
 
     // Response
     res.status(200).json(items);
-  } catch (err) {
-    logger.error(
-      `Failed to get items for restaurant id: ${restId}, Error: ${err.message}`
+  } catch (error: unknown) {
+    return handleServerError(
+      res,
+      error,
+      `Failed to get items for restaurant id: ${restId}`
     );
-    res.status(500).json({ error: "Internal Server Error" });
   }
 });
 
@@ -72,9 +73,8 @@ itemRouter.post("/", async (req: Request, res: Response) => {
 
     // Response
     res.status(201).json(item);
-  } catch (err) {
-    logger.error(`Failed to create new item, Error: ${err.message}`);
-    res.status(500).json({ error: "Internal Server Error" });
+  } catch (error: unknown) {
+    return handleServerError(res, error, "Failed to create new item");
   }
 });
 
@@ -113,11 +113,12 @@ itemRouter.put("/id/:itemId", async (req: Request, res: Response) => {
 
     // Response
     res.status(200).json(updatedItem);
-  } catch (err) {
-    logger.error(
-      `Failed to update item by id: ${itemId}, Error: ${err.message}`
+  } catch (error: unknown) {
+    return handleServerError(
+      res,
+      error,
+      `Failed to update item by id: ${itemId}`
     );
-    res.status(500).json({ error: "Internal Server Error" });
   }
 });
 
@@ -145,10 +146,11 @@ itemRouter.delete("/id/:itemId", async (req: Request, res: Response) => {
 
     // Response
     res.status(200).json(`Successfully deleted item with id: ${itemId}`);
-  } catch (err) {
-    logger.error(
-      `Failed to delete item by id: ${itemId}, Error: ${err.message}`
+  } catch (error: unknown) {
+    return handleServerError(
+      res,
+      error,
+      `Failed to delete item by id: ${itemId}`
     );
-    res.status(500).json({ error: "Internal Server Error" });
   }
 });

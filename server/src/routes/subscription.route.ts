@@ -1,6 +1,7 @@
 import logger from "../utils/logger";
 import { stripe } from "../utils/stripe";
 import UserModel from "../models/user.model";
+import { handleServerError } from "../utils/error";
 import { Request, Response, Router } from "express";
 
 export const subscriptionRouter = Router();
@@ -13,11 +14,8 @@ subscriptionRouter.get("/prices", async (req: Request, res: Response) => {
     });
     logger.info("Fetched subscription prices from Stripe");
     return res.json(prices);
-  } catch (error) {
-    logger.error("Failed to fetch subscription prices", {
-      error: error.message,
-    });
-    return res.status(500).json({ error: "Failed to fetch prices" });
+  } catch (error: unknown) {
+    return handleServerError(res, error, "Failed to fetch subscription prices");
   }
 });
 
@@ -51,11 +49,12 @@ subscriptionRouter.post("/session", async (req: Request, res: Response) => {
 
     logger.info(`Created Stripe session for user: ${user._id}`);
     return res.json(session);
-  } catch (error) {
-    logger.error("Failed to create Stripe payment session", {
-      error: error.message,
-    });
-    return res.status(500).json({ error: "Failed to create payment session" });
+  } catch (error: unknown) {
+    return handleServerError(
+      res,
+      error,
+      `Failed to create Stripe payment session`
+    );
   }
 });
 
@@ -81,8 +80,7 @@ subscriptionRouter.post("/users/check", async (req: Request, res: Response) => {
 
     logger.info(`Fetched subscriptions for user: ${user._id}`);
     return res.json(subscriptions);
-  } catch (error) {
-    logger.error("Failed to check user subscription", { error: error.message });
-    return res.status(500).json({ error: "Failed to check subscription" });
+  } catch (error: unknown) {
+    return handleServerError(res, error, "Failed to check user subscription");
   }
 });
