@@ -1,13 +1,13 @@
-import logger from "../utils/logger";
 import ItemModel from "../models/item.model";
 import { ItemProps } from "../types/item.type";
-import { handleServerError } from "../utils/error";
 import { Request, Response, Router } from "express";
+import { handleClientError, handleServerError } from "../utils/error";
 import {
   validateRestaurantId,
   validateItemId,
 } from "../utils/validation/Id.validation";
-import { validateItem } from "../utils/validation/item.validation";
+import { validateItemData } from "../utils/validation/item.validation";
+import { handleValidationError } from "../utils/validation/helper.validation";
 
 export const itemRouter = Router();
 
@@ -17,10 +17,8 @@ itemRouter.get("/:itemId", async (req: Request, res: Response) => {
   try {
     // Find item
     const item = (await ItemModel.findById(itemId)) as ItemProps;
-
     if (!item) {
-      logger.warn(`Item not found with id: ${itemId}`);
-      return res.status(404).send("Item not found");
+      return handleClientError(res, `Item not found: ${itemId}`, 404);
     }
 
     // Response
@@ -37,8 +35,10 @@ itemRouter.get("/restaurant/:restId", async (req: Request, res: Response) => {
     // Check restaurant id
     const checkResult = (await validateRestaurantId(restId)) as string | null;
     if (typeof checkResult === "string") {
-      logger.warn(`Invalid restaurant id: ${restId}, Error: ${checkResult}`);
-      return res.status(400).send(checkResult);
+      return handleClientError(
+        res,
+        `Invalid restaurant id: ${restId}, Error: ${checkResult}`
+      );
     }
 
     // Find items by restaurant id
@@ -59,11 +59,8 @@ itemRouter.get("/restaurant/:restId", async (req: Request, res: Response) => {
 itemRouter.post("/", async (req: Request, res: Response) => {
   try {
     // Validate req body
-    let validationResult = validateItem(req.body);
-    if (validationResult) {
-      logger.warn(`Invalid item data: ${validationResult.details[0].message}`);
-      return res.status(400).send(validationResult.details[0].message);
-    }
+    let validationResult = validateItemData(req.body);
+    if (validationResult) return handleValidationError(res, validationResult);
 
     // Create new item
     const newItem = new ItemModel(req.body);
@@ -83,20 +80,16 @@ itemRouter.put("/id/:itemId", async (req: Request, res: Response) => {
   const { itemId } = req.params;
   try {
     // Validate req body
-    let validationResult = validateItem(req.body);
-    if (validationResult) {
-      logger.warn(
-        `Invalid item update data: ${validationResult.details[0].message}`
-      );
-      return res.status(400).send(validationResult.details[0].message);
-    }
+    let validationResult = validateItemData(req.body);
+    if (validationResult) return handleValidationError(res, validationResult);
 
     // Check item id
     const checkResult = await validateItemId(itemId);
-
     if (typeof checkResult === "string") {
-      logger.warn(`Invalid item id: ${itemId}, Error: ${checkResult}`);
-      return res.status(400).send(checkResult);
+      return handleClientError(
+        res,
+        `Invalid item id: ${itemId}, Error: ${checkResult}`
+      );
     }
 
     // Update item
@@ -105,11 +98,6 @@ itemRouter.put("/id/:itemId", async (req: Request, res: Response) => {
       { $set: req.body },
       { new: true }
     )) as ItemProps;
-
-    if (!updatedItem) {
-      logger.warn(`Item not found for update with id: ${itemId}`);
-      return res.status(404).send("Item not found");
-    }
 
     // Response
     res.status(200).json(updatedItem);
@@ -130,19 +118,11 @@ itemRouter.delete("/id/:itemId", async (req: Request, res: Response) => {
     const checkResult = await validateItemId(itemId);
 
     if (typeof checkResult === "string") {
-      logger.warn(
-        `Invalid item id for deletion: ${itemId}, Error: ${checkResult}`
-      );
-      return res.status(400).send(checkResult);
+      return handleClientError(res, `Invalid item: ${checkResult}`, 400);
     }
 
     // Delete item
     const result = await ItemModel.deleteOne({ _id: itemId });
-
-    if (result.deletedCount === 0) {
-      logger.warn(`Item not found for deletion with id: ${itemId}`);
-      return res.status(404).send("Item not found");
-    }
 
     // Response
     res.status(200).json(`Successfully deleted item with id: ${itemId}`);

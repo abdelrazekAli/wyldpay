@@ -1,10 +1,10 @@
-import logger from "../utils/logger";
 import OrderModel from "../models/order.model";
-import { handleServerError } from "../utils/error";
 import { Request, Response, Router } from "express";
 import { verifyAuth } from "../services/auth.service";
-import { validateOrder } from "../utils/validation/order.validation";
+import { handleClientError, handleServerError } from "../utils/error";
+import { validateOrderData } from "../utils/validation/order.validation";
 import { validateRestaurantId } from "../utils/validation/Id.validation";
+import { handleValidationError } from "../utils/validation/helper.validation";
 
 export const orderRouter = Router();
 
@@ -17,8 +17,7 @@ orderRouter.get("/:orderId", async (req: Request, res: Response) => {
     const order = await OrderModel.findById(orderId);
 
     if (!order) {
-      logger.warn(`Order not found with id: ${orderId}`);
-      return res.status(404).send("Order not found");
+      return handleClientError(res, `Order not found with id: ${orderId}`, 404);
     }
 
     // Response
@@ -42,10 +41,10 @@ orderRouter.get("/", verifyAuth, async (req: Request, res: Response) => {
       | string
       | null;
     if (typeof checkResult === "string") {
-      logger.warn(
-        `Invalid restaurant id: ${restaurantId}, Error: ${checkResult}`
+      return handleClientError(
+        res,
+        `restaurant id: ${restaurantId}, ${checkResult}`
       );
-      return res.status(400).send(checkResult);
     }
 
     // Find orders
@@ -68,11 +67,8 @@ orderRouter.get("/", verifyAuth, async (req: Request, res: Response) => {
 // Post new order
 orderRouter.post("/", async (req: Request, res: Response) => {
   // Validate req body
-  let validationResult = validateOrder(req.body);
-  if (validationResult) {
-    logger.warn(`Invalid order data: ${validationResult.details[0].message}`);
-    return res.status(400).send(validationResult.details[0].message);
-  }
+  let validationResult = validateOrderData(req.body);
+  if (validationResult) return handleValidationError(res, validationResult);
 
   try {
     // Create new order

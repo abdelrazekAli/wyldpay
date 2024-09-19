@@ -1,6 +1,6 @@
 import joi from "joi";
 
-export const validateCoupon = (data: object) => {
+export const validateCouponData = (data: object) => {
   const schema = joi.object({
     name: joi.string().required().max(255),
     type: joi.string().valid("percentage", "amount").required(),

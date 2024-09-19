@@ -1,13 +1,12 @@
-import logger from "../utils/logger";
 import CouponModel from "../models/coupon.model";
 import { CouponProps } from "../types/coupon.type";
-import { handleServerError } from "../utils/error";
 import { Request, Response, Router } from "express";
 import { verifyAuth } from "../services/auth.service";
+import { handleClientError, handleServerError } from "../utils/error";
 import { validateRestaurantId } from "../utils/validation/Id.validation";
 import { handleValidationError } from "../utils/validation/helper.validation";
 import {
-  validateCoupon,
+  validateCouponData,
   validateApplyCoupon,
 } from "../utils/validation/coupon.validation";
 
@@ -23,8 +22,7 @@ couponRouter.get("/", verifyAuth, async (req: Request, res: Response) => {
       | string
       | null;
     if (checkResult === "string") {
-      logger.warn(`Invalid restaurant ID: ${restaurantId}`);
-      return res.status(400).send(checkResult);
+      return handleClientError(res, `Invalid restaurant ID: ${restaurantId}`);
     }
 
     const coupons = (await CouponModel.find(
@@ -37,7 +35,7 @@ couponRouter.get("/", verifyAuth, async (req: Request, res: Response) => {
     // Response
     res.status(200).json(coupons);
   } catch (error: unknown) {
-    handleServerError(res, error, "Failed to get coupons");
+    handleServerError(res, error, "Failed to get restaurant coupons");
   }
 });
 
@@ -46,7 +44,7 @@ couponRouter.post("/", verifyAuth, async (req: Request, res: Response) => {
   const { restaurantId } = req.user;
 
   // Validate req body
-  let validationResult = validateCoupon(req.body);
+  let validationResult = validateCouponData(req.body);
   if (validationResult) return handleValidationError(res, validationResult);
 
   try {
@@ -56,8 +54,11 @@ couponRouter.post("/", verifyAuth, async (req: Request, res: Response) => {
       name: req.body.name,
     });
     if (couponCheck) {
-      logger.warn(`Coupon already exists: ${req.body.name}`);
-      return res.status(409).send("Coupon is already used");
+      return handleClientError(
+        res,
+        `Coupon: ${req.body.name} already exists`,
+        409
+      );
     }
 
     // Create new coupon
@@ -81,12 +82,7 @@ couponRouter.post("/:restId", async (req: Request, res: Response) => {
 
     // Validate req body
     let validationResult = validateApplyCoupon(req.body);
-    if (validationResult) {
-      logger.warn(
-        `Coupon validation failed: ${validationResult.details[0].message}`
-      );
-      return res.status(400).send(validationResult.details[0].message);
-    }
+    if (validationResult) return handleValidationError(res, validationResult);
 
     // Check coupon
     const coupon = await CouponModel.findOne({
@@ -95,11 +91,9 @@ couponRouter.post("/:restId", async (req: Request, res: Response) => {
     });
 
     if (!coupon) {
-      logger.warn(`Coupon not found: ${couponCode}`);
-      return res.status(409).send("Coupon is not valid");
+      return handleClientError(res, `Coupon: ${couponCode} not found`, 409);
     } else if (coupon.usage === coupon.limit) {
-      logger.warn(`Coupon limit reached: ${couponCode}`);
-      return res.status(409).send("Coupon limit is out");
+      return handleClientError(res, `Coupon: ${couponCode} limit reached`, 409);
     }
 
     // Update coupon usage
@@ -128,8 +122,11 @@ couponRouter.delete(
       const result = await CouponModel.deleteOne({ _id: couponId });
 
       if (result.deletedCount === 0) {
-        logger.warn(`Coupon not found for deletion: ${couponId}`);
-        return res.status(404).json("Coupon not found");
+        return handleClientError(
+          res,
+          `Coupon not found for deletion: ${couponId}`,
+          404
+        );
       }
 
       // Response

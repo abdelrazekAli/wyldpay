@@ -1,6 +1,6 @@
 import joi from "joi";
 
-export const validateItem = (data: object) => {
+export const validateItemData = (data: object) => {
   const schema = joi.object({
     name: joi.string().required().max(255),
     img: joi.string().required().max(1000),

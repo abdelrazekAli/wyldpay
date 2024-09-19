@@ -1,6 +1,6 @@
 import joi from "joi";
 
-export const validateOrder = (data: object) => {
+export const validateOrderData = (data: object) => {
   const schema = joi.object({
     items: joi.array().required(),
     totalPrice: joi.number().required(),

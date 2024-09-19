@@ -1,6 +1,6 @@
 import joi from "joi";
 
-export const validateRestaurant = (data: object) => {
+export const validateRestaurantData = (data: object) => {
   const schema = joi.object({
     logo: joi.string().required().max(1000),
     background: joi.string().required().max(1000),

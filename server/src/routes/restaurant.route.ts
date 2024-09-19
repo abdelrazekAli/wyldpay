@@ -11,7 +11,7 @@ import {
 } from "../utils/validation/Id.validation";
 import {
   validateCategories,
-  validateRestaurant,
+  validateRestaurantData,
   validateRestaurantUpdate,
 } from "../utils/validation/restaurant.validation";
 
@@ -66,7 +66,7 @@ restaurantRouter.get("/user/:userId", async (req: Request, res: Response) => {
 // Post new restaurant
 restaurantRouter.post("/", async (req: Request, res: Response) => {
   // Validate req body
-  let validationResult = validateRestaurant(req.body);
+  let validationResult = validateRestaurantData(req.body);
   handleValidationError(res, validationResult);
 
   try {
