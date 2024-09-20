@@ -36,16 +36,6 @@ const logger = winston.createLogger({
         winston.format.json()
       ),
     }),
-
-    // Warning level logs
-    new winston.transports.File({
-      filename: path.join(logDirectory, "warn.log"),
-      level: "warn",
-      format: winston.format.combine(
-        winston.format.timestamp(),
-        winston.format.json()
-      ),
-    }),
   ],
 });
 

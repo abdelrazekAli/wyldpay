@@ -1,4 +1,3 @@
-import logger from "../utils/logger";
 import UserModel from "../models/user.model";
 import BankModel from "../models/bank.model";
 import { BankProps } from "../types/bank.type";

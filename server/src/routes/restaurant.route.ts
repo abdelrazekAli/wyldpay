@@ -1,19 +1,14 @@
-import logger from "../utils/logger";
-import { handleServerError } from "../utils/error";
 import { Request, Response, Router } from "express";
 import { verifyAuth } from "../services/auth.service";
 import RestaurantModel from "../models/restaurant.model";
 import { RestaurantProps } from "../types/restaurant.type";
+import { handleClientError, handleServerError } from "../utils/error";
 import { handleValidationError } from "../utils/validation/helper.validation";
+import { validateCategories } from "../utils/validation/restaurant.validation";
 import {
   validateRestaurantId,
   validateUserId,
 } from "../utils/validation/Id.validation";
-import {
-  validateCategories,
-  validateRestaurantData,
-  validateRestaurantUpdate,
-} from "../utils/validation/restaurant.validation";
 
 export const restaurantRouter = Router();
 
@@ -23,14 +18,13 @@ restaurantRouter.get("/:restaurantId", async (req: Request, res: Response) => {
 
   try {
     // Check restaurant id
-    const restaurant = await validateRestaurantId(restaurantId);
-    if (typeof restaurant === "string") {
-      logger.warn(`Invalid restaurant ID: ${restaurantId}`);
-      return res.status(400).send(restaurant);
+    const checkRestId = await validateRestaurantId(restaurantId);
+    if (typeof checkRestId === "string") {
+      return handleClientError(res, checkRestId);
     }
 
     // Response
-    res.status(200).json(restaurant);
+    res.status(200).json(checkRestId);
   } catch (error: unknown) {
     handleServerError(res, error, "Failed to get restaurant by ID");
   }
@@ -42,10 +36,9 @@ restaurantRouter.get("/user/:userId", async (req: Request, res: Response) => {
 
   try {
     // Check user id
-    const checkResult = await validateUserId(userId);
-    if (typeof checkResult === "string") {
-      logger.warn(`Invalid user ID: ${userId}`);
-      return res.status(400).send(checkResult);
+    const checkUserResult = await validateUserId(userId);
+    if (typeof checkUserResult === "string") {
+      return handleClientError(res, checkUserResult);
     }
 
     const restaurant = (await RestaurantModel.findOne(
@@ -64,23 +57,28 @@ restaurantRouter.get("/user/:userId", async (req: Request, res: Response) => {
 });
 
 // Post new restaurant
-restaurantRouter.post("/", async (req: Request, res: Response) => {
-  // Validate req body
-  let validationResult = validateRestaurantData(req.body);
-  handleValidationError(res, validationResult);
+restaurantRouter.post(
+  "/",
+  async (req: Request, res: Response<RestaurantProps>) => {
+    // Validate req body
+    let validationResult = validateCategories(req.body);
+    if (validationResult) {
+      return handleValidationError(res, validationResult);
+    }
 
-  try {
-    // Create new restaurant
-    const newRestaurant = new RestaurantModel(req.body);
-    // Save restaurant
-    const restaurant = (await newRestaurant.save()) as RestaurantProps;
+    try {
+      // Create new restaurant
+      const newRestaurant = new RestaurantModel(req.body);
+      // Save restaurant
+      const restaurant = await newRestaurant.save();
 
-    // Response
-    res.status(201).json(restaurant);
-  } catch (error: unknown) {
-    handleServerError(res, error, "Failed to create new restaurant");
+      // Response
+      res.status(201).json(restaurant);
+    } catch (error: unknown) {
+      handleServerError(res, error, "Failed to create new restaurant");
+    }
   }
-});
+);
 
 // Get restaurant categories
 restaurantRouter.get(
@@ -89,15 +87,13 @@ restaurantRouter.get(
     const { restaurantId } = req.params;
 
     try {
-      // Check restaurant id
-      const restaurant = await validateRestaurantId(restaurantId);
-      if (typeof restaurant === "string") {
-        logger.warn(`Invalid restaurant ID for categories: ${restaurantId}`);
-        return res.status(400).send(restaurant);
+      const checkRestId = await validateRestaurantId(restaurantId);
+      if (typeof checkRestId === "string") {
+        return handleClientError(res, checkRestId);
       }
 
       // Response
-      res.status(200).json(restaurant?.categories);
+      res.status(200).json(checkRestId?.categories);
     } catch (error: unknown) {
       handleServerError(res, error, "Failed to get restaurant categories");
     }
@@ -109,8 +105,10 @@ restaurantRouter.put("/", verifyAuth, async (req: Request, res: Response) => {
   const { restaurantId } = req.user;
 
   // Validate req body
-  let validationResult = validateRestaurantUpdate(req.body);
-  handleValidationError(res, validationResult);
+  let validationResult = validateCategories(req.body);
+  if (validationResult) {
+    return handleValidationError(res, validationResult);
+  }
 
   try {
     // Update restaurant
@@ -127,7 +125,9 @@ restaurantRouter.put("/", verifyAuth, async (req: Request, res: Response) => {
 restaurantRouter.put("/categories", async (req: Request, res: Response) => {
   // Validate req body
   let validationResult = validateCategories(req.body);
-  handleValidationError(res, validationResult);
+  if (validationResult) {
+    return handleValidationError(res, validationResult);
+  }
 
   try {
     // Update categories

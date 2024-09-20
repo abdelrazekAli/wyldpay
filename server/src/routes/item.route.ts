@@ -2,12 +2,12 @@ import ItemModel from "../models/item.model";
 import { ItemProps } from "../types/item.type";
 import { Request, Response, Router } from "express";
 import { handleClientError, handleServerError } from "../utils/error";
+import { validateItemData } from "../utils/validation/item.validation";
+import { handleValidationError } from "../utils/validation/helper.validation";
 import {
   validateRestaurantId,
   validateItemId,
 } from "../utils/validation/Id.validation";
-import { validateItemData } from "../utils/validation/item.validation";
-import { handleValidationError } from "../utils/validation/helper.validation";
 
 export const itemRouter = Router();
 

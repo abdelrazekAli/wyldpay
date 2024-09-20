@@ -1,8 +1,9 @@
 import logger from "../utils/logger";
 import { stripe } from "../utils/stripe";
-import UserModel from "../models/user.model";
-import { handleServerError } from "../utils/error";
+import { UserProps } from "../types/user.type";
 import { Request, Response, Router } from "express";
+import { validateUserId } from "../utils/validation/Id.validation";
+import { handleClientError, handleServerError } from "../utils/error";
 
 export const subscriptionRouter = Router();
 
@@ -21,11 +22,15 @@ subscriptionRouter.get("/prices", async (req: Request, res: Response) => {
 
 // Create Stripe payment session
 subscriptionRouter.post("/session", async (req: Request, res: Response) => {
+  let user: UserProps;
+  const { userId } = req.params;
+
   try {
-    const user = await UserModel.findOne({ _id: req.body.userId });
-    if (!user) {
-      logger.warn(`User not found: ${req.body.userId}`);
-      return res.status(404).json({ error: "User not found" });
+    const checkResult = await validateUserId(userId);
+    if (typeof checkResult === "string") {
+      return handleClientError(res, checkResult);
+    } else {
+      user = checkResult;
     }
 
     const session = await stripe.checkout.sessions.create(
@@ -60,11 +65,16 @@ subscriptionRouter.post("/session", async (req: Request, res: Response) => {
 
 // Check user subscription
 subscriptionRouter.post("/users/check", async (req: Request, res: Response) => {
+  let user: UserProps;
+  const { userId } = req.params;
+
   try {
-    const user = await UserModel.findOne({ _id: req.body.userId });
-    if (!user) {
-      logger.warn(`User not found: ${req.body.userId}`);
-      return res.status(404).json({ error: "User not found" });
+    // Check user id
+    const checkResult = await validateUserId(userId);
+    if (typeof checkResult === "string") {
+      return handleClientError(res, checkResult);
+    } else {
+      user = checkResult;
     }
 
     const subscriptions = await stripe.subscriptions.list(

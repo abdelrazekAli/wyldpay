@@ -1,6 +1,7 @@
 import logger from "../utils/logger";
 import { handleServerError } from "../utils/error";
 import { Request, Response, Router } from "express";
+import { handleValidationError } from "../utils/validation/helper.validation";
 import { validateStripePaymentIntent } from "../utils/validation/payment.validation";
 
 export const paymentRouter = Router();
@@ -12,10 +13,10 @@ paymentRouter.post(
     // Validate req body
     let validationResult = validateStripePaymentIntent(req.body);
     if (validationResult) {
-      logger.warn(
+      logger.error(
         `Invalid payment intent data: ${validationResult.details[0].message}`
       );
-      return res.status(400).send(validationResult.details[0].message);
+      return handleValidationError(res, validationResult);
     }
 
     const { currency, secretKey, amount } = req.body as {
