@@ -1,4 +1,4 @@
-import { stripe } from "../utils/stripe";
+import { stripe } from "../config/stripe.config";
 
 // Create a new Stripe customer
 export const createStripeCustomer = async (email: string): Promise<any> => {

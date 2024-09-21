@@ -1,5 +1,5 @@
-import logger from "./logger";
 import { Response } from "express";
+import logger from "../config/logger.config";
 
 // Utility function to handle server error response
 export const handleServerError = (

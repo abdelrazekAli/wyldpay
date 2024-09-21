@@ -1,23 +1,11 @@
 import { Response } from "express";
 import { ObjectId } from "mongoose";
-import logger from "../utils/logger";
+import logger from "../config/logger.config";
 import TokenModel from "../models/token.model";
 import { TokenProps } from "../types/token.type";
+import { generateToken } from "../utils/token.util";
+import { JsonWebTokenError, TokenExpiredError } from "jsonwebtoken";
 import { handleClientError, handleServerError } from "../utils/error";
-import jwt, { JsonWebTokenError, TokenExpiredError } from "jsonwebtoken";
-
-// Generate JWT token
-export const generateToken = (
-  data: { _id?: ObjectId; email?: string; restaurantId?: ObjectId },
-  expiresIn: string
-) => {
-  try {
-    return jwt.sign(data, process.env.JWT_TOKEN_SECRET!, { expiresIn });
-  } catch (error: unknown) {
-    logger.error(error);
-    throw new Error("Error generating token");
-  }
-};
 
 // Find token for a given user
 export const findToken = async (

@@ -1,5 +1,5 @@
-import logger from "../utils/logger";
-import { stripe } from "../utils/stripe";
+import logger from "../config/logger.config";
+import { stripe } from "../config/stripe.config";
 import { UserProps } from "../types/user.type";
 import { Request, Response, Router } from "express";
 import { validateUserId } from "../utils/validation/Id.validation";

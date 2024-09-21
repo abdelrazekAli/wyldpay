@@ -1,4 +1,4 @@
-import logger from "../utils/logger";
+import logger from "../config/logger.config";
 import { handleServerError } from "../utils/error";
 import { Request, Response, Router } from "express";
 import { handleValidationError } from "../utils/validation/helper.validation";

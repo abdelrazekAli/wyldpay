@@ -4,9 +4,9 @@ import winston from "winston";
 // Define the log directory
 const logDirectory = path.join(__dirname, "../..", "logs");
 
-// Create a Winston logger with separate transports for each log level
+// Create a Winston logger configuration
 const logger = winston.createLogger({
-  level: "info", // Default log level for the logger
+  level: "info",
   format: winston.format.combine(
     winston.format.timestamp(),
     winston.format.json()
@@ -14,7 +14,7 @@ const logger = winston.createLogger({
   transports: [
     // Console transport
     new winston.transports.Console({
-      level: "info", // Only show logs of level 'info' and higher
+      level: "info",
     }),
 
     // Info level logs
@@ -23,7 +23,11 @@ const logger = winston.createLogger({
       level: "info",
       format: winston.format.combine(
         winston.format.timestamp(),
-        winston.format.json()
+        winston.format.json(),
+        winston.format((info) => {
+          if (info.level === "error") return false; // Skip errors
+          return info;
+        })()
       ),
     }),
 

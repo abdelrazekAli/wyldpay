@@ -1,5 +1,5 @@
 import { Document } from "mongoose";
-import logger from "../utils/logger";
+import logger from "../config/logger.config";
 import UserModel from "../models/user.model";
 import { UserProps } from "../types/user.type";
 import { hashPassword } from "../utils/password";

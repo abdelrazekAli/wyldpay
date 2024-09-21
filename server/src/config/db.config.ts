@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
-import logger from "./logger";
+import logger from "../config/logger.config";
 
-async function connect() {
+const connectToDatabase = async () => {
   try {
     await mongoose.connect(process.env.DB_URL);
     logger.info("DB connected");
@@ -9,6 +9,6 @@ async function connect() {
     logger.error("Could not connect to DB", error.message);
     process.exit(1);
   }
-}
+};
 
-export default connect;
+export default connectToDatabase;

@@ -6,16 +6,17 @@ import {
   generateRegisterToken,
   generateResetPassToken,
 } from "../services/token.service";
-import {
-  sendRegistrationEmail,
-  sendResetPassEmail,
-} from "../utils/email/emailService";
+
 import {
   validateEmail,
   validateSendResetPass,
 } from "../utils/validation/user.validation";
 import { findUserByEmail } from "../services/user.service";
 import { handleValidationError } from "../utils/validation/helper.validation";
+import {
+  sendRegistrationEmail,
+  sendResetPassEmail,
+} from "../services/mail.service";
 
 export const emailRouter = Router();
 
@@ -35,7 +36,7 @@ emailRouter.post(
 
       // Generate register token
       const registerToken = generateRegisterToken({ email: req.body.email });
-      sendRegistrationEmail(req.body.email, registerToken);
+      await sendRegistrationEmail(req.body.email, registerToken);
 
       // Response
       res.status(200).send("Register Email sent successfully");
@@ -73,7 +74,7 @@ emailRouter.post("/send-reset-token", async (req: Request, res: Response) => {
     await newToken.save();
 
     // Send reset token to user email
-    sendResetPassEmail(String(user._id), user.email, resetToken);
+    await sendResetPassEmail(String(user._id), user.email, resetToken);
 
     // Response
     res.status(200).send("Reset password Email sent successfully");
