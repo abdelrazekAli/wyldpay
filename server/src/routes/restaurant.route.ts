@@ -1,14 +1,18 @@
 import { Request, Response, Router } from "express";
-import { verifyAuth } from "../services/auth.service";
 import RestaurantModel from "../models/restaurant.model";
 import { RestaurantProps } from "../types/restaurant.type";
-import { handleClientError, handleServerError } from "../utils/error";
+import { verifyAuth } from "../middlewares/verifyAuth.middleware";
+import { handleClientError, handleServerError } from "../utils/error.util";
 import { handleValidationError } from "../utils/validation/helper.validation";
-import { validateCategories } from "../utils/validation/restaurant.validation";
 import {
   validateRestaurantId,
   validateUserId,
 } from "../utils/validation/Id.validation";
+import {
+  validateCategories,
+  validateRestaurantData,
+  validateRestaurantUpdate,
+} from "../utils/validation/restaurant.validation";
 
 export const restaurantRouter = Router();
 
@@ -61,19 +65,17 @@ restaurantRouter.post(
   "/",
   async (req: Request, res: Response<RestaurantProps>) => {
     // Validate req body
-    let validationResult = validateCategories(req.body);
-    if (validationResult) {
-      return handleValidationError(res, validationResult);
-    }
+    const { error, value: restaurantData } = validateRestaurantData(req.body);
+    if (error) return handleValidationError(res, error);
 
     try {
       // Create new restaurant
-      const newRestaurant = new RestaurantModel(req.body);
+      const newRestaurant = new RestaurantModel(restaurantData);
       // Save restaurant
       const restaurant = await newRestaurant.save();
 
       // Response
-      res.status(201).json(restaurant);
+      res.status(200).json(restaurant);
     } catch (error: unknown) {
       handleServerError(res, error, "Failed to create new restaurant");
     }
@@ -105,7 +107,7 @@ restaurantRouter.put("/", verifyAuth, async (req: Request, res: Response) => {
   const { restaurantId } = req.user;
 
   // Validate req body
-  let validationResult = validateCategories(req.body);
+  let validationResult = validateRestaurantUpdate(req.body);
   if (validationResult) {
     return handleValidationError(res, validationResult);
   }

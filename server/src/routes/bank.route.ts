@@ -1,11 +1,11 @@
 import UserModel from "../models/user.model";
 import BankModel from "../models/bank.model";
 import { BankProps } from "../types/bank.type";
-import { handleServerError } from "../utils/error";
 import { Request, Response, Router } from "express";
-import { verifyAuth } from "../services/auth.service";
+import { handleServerError } from "../utils/error.util";
 import RestaurantModel from "../models/restaurant.model";
 import { generateAccessToken } from "../services/token.service";
+import { verifyAuth } from "../middlewares/verifyAuth.middleware";
 import { validateUserId } from "../utils/validation/Id.validation";
 import { validateBankData } from "../utils/validation/bank.validation";
 import { handleValidationError } from "../utils/validation/helper.validation";
@@ -47,16 +47,16 @@ bankRouter.get("/:userId", async (req: Request, res: Response) => {
 // Post new bank information
 bankRouter.post("/", async (req: Request, res: Response) => {
   // Validate req body
-  const validationResult = validateBankData(req.body);
-  if (validationResult) return handleValidationError(res, validationResult);
+  const { error, value: bankData } = validateBankData(req.body);
+  if (error) return handleValidationError(res, error);
 
   try {
     // Create new bank
-    const newBank = new BankModel(req.body);
+    const newBank = new BankModel(bankData);
 
     // Save bank
-    const bank = (await newBank.save()) as BankProps;
-    const user = await UserModel.findById(req.body.userId);
+    await newBank.save();
+    const user = await UserModel.findById(bankData.userId);
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
@@ -64,7 +64,7 @@ bankRouter.post("/", async (req: Request, res: Response) => {
 
     // Get user's restaurant information
     const restaurant = await RestaurantModel.findOne({
-      userId: req.body.userId,
+      userId: bankData.userId,
     }).select("_id currency");
 
     if (!restaurant) {
@@ -73,13 +73,13 @@ bankRouter.post("/", async (req: Request, res: Response) => {
 
     // Create and assign a token
     const accessToken = generateAccessToken({
-      _id: req.body.userId,
+      _id: bankData.userId,
       restaurantId: restaurant._id,
     });
 
     // Set headers and response
     return res.header("auth-token", accessToken).json({
-      _id: req.body.userId,
+      _id: bankData.userId,
       firstName: user.firstName,
       email: user.email,
       restaurantId: restaurant._id,
@@ -96,8 +96,8 @@ bankRouter.put("/", verifyAuth, async (req: Request, res: Response) => {
   const userId = req.user._id;
 
   // Validate req body
-  const validationResult = validateBankData(req.body);
-  if (validationResult) return handleValidationError(res, validationResult);
+  const { error, value: bankData } = validateBankData(req.body);
+  if (error) return handleValidationError(res, error);
 
   try {
     // Check user id
@@ -110,7 +110,7 @@ bankRouter.put("/", verifyAuth, async (req: Request, res: Response) => {
     const updateResult = await BankModel.updateOne(
       { userId },
       {
-        $set: req.body,
+        $set: bankData,
       }
     );
 
@@ -134,8 +134,8 @@ bankRouter.put("/methods", verifyAuth, async (req: Request, res: Response) => {
   const userId = req.user._id;
 
   // Validate req body
-  const validationResult = validatePaymentkeys(req.body);
-  if (validationResult) return handleValidationError(res, validationResult);
+  const { error, value: paymentsData } = validatePaymentkeys(req.body);
+  if (error) return handleValidationError(res, error);
 
   try {
     // Check user id
@@ -149,11 +149,11 @@ bankRouter.put("/methods", verifyAuth, async (req: Request, res: Response) => {
       { userId },
       {
         $set: {
-          "paymentsMethods.$[elem].publicKey": req.body.publicKey,
-          "paymentsMethods.$[elem].secretKey": req.body.secretKey,
+          "paymentsMethods.$[elem].publicKey": paymentsData.publicKey,
+          "paymentsMethods.$[elem].secretKey": paymentsData.secretKey,
         },
       },
-      { arrayFilters: [{ "elem.name": req.body.name }] }
+      { arrayFilters: [{ "elem.name": paymentsData.name }] }
     );
 
     if (updateResult.modifiedCount === 0) {

@@ -5,7 +5,7 @@ import TokenModel from "../models/token.model";
 import { TokenProps } from "../types/token.type";
 import { generateToken } from "../utils/token.util";
 import { JsonWebTokenError, TokenExpiredError } from "jsonwebtoken";
-import { handleClientError, handleServerError } from "../utils/error";
+import { handleClientError, handleServerError } from "../utils/error.util";
 
 // Find token for a given user
 export const findToken = async (

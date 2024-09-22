@@ -1,8 +1,8 @@
 import UserModel from "../models/user.model";
 import { UserProps } from "../types/user.type";
-import { handleServerError } from "../utils/error";
 import { Request, Response, Router } from "express";
-import { verifyAuth } from "../services/auth.service";
+import { handleServerError } from "../utils/error.util";
+import { verifyAuth } from "../middlewares/verifyAuth.middleware";
 import { validateUserId } from "../utils/validation/Id.validation";
 import { handleValidationError } from "../utils/validation/helper.validation";
 import {
@@ -77,8 +77,8 @@ userRouter.put("/links/", verifyAuth, async (req: Request, res: Response) => {
   const userId = req.user._id;
 
   // Validate req body
-  const validationResult = validateUpdateUserLinks(req.body);
-  if (validationResult) return handleValidationError(res, validationResult);
+  const { error, value: itemData } = validateUpdateUserLinks(req.body);
+  if (error) return handleValidationError(res, error);
 
   try {
     // Check user id

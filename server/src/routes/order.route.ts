@@ -1,9 +1,9 @@
 import OrderModel from "../models/order.model";
 import { Request, Response, Router } from "express";
-import { verifyAuth } from "../services/auth.service";
-import { handleClientError, handleServerError } from "../utils/error";
+import { verifyAuth } from "../middlewares/verifyAuth.middleware";
 import { validateOrderData } from "../utils/validation/order.validation";
 import { validateRestaurantId } from "../utils/validation/Id.validation";
+import { handleClientError, handleServerError } from "../utils/error.util";
 import { handleValidationError } from "../utils/validation/helper.validation";
 
 export const orderRouter = Router();
@@ -67,12 +67,12 @@ orderRouter.get("/", verifyAuth, async (req: Request, res: Response) => {
 // Post new order
 orderRouter.post("/", async (req: Request, res: Response) => {
   // Validate req body
-  let validationResult = validateOrderData(req.body);
-  if (validationResult) return handleValidationError(res, validationResult);
+  const { error, value: orderData } = validateOrderData(req.body);
+  if (error) return handleValidationError(res, error);
 
   try {
     // Create new order
-    const newOrder = new OrderModel(req.body);
+    const newOrder = new OrderModel(orderData);
 
     // Save order
     const order = await newOrder.save();

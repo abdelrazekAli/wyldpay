@@ -6,7 +6,7 @@ export const validatePaymentkeys = (data: object) => {
     publicKey: joi.string().required().allow("").max(1000),
     secretKey: joi.string().required().allow("").max(1000),
   });
-  return schema.validate(data).error;
+  return schema.validate(data);
 };
 
 export const validateStripePaymentIntent = (data: object) => {
@@ -18,5 +18,5 @@ export const validateStripePaymentIntent = (data: object) => {
       .required(),
     secretKey: joi.string().required().max(1000),
   });
-  return schema.validate(data).error;
+  return schema.validate(data);
 };

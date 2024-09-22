@@ -2,9 +2,9 @@ import { Request, Response, Router } from "express";
 import RestaurantModel from "../models/restaurant.model";
 import { generateAccessToken } from "../services/token.service";
 import { createStripeCustomer } from "../services/stripe.service";
-import { comparePassword, hashPassword } from "../utils/password";
 import { deleteToken, findToken } from "../services/token.service";
-import { handleClientError, handleServerError } from "../utils/error";
+import { comparePassword, hashPassword } from "../utils/password.util";
+import { handleClientError, handleServerError } from "../utils/error.util";
 import { handleValidationError } from "../utils/validation/helper.validation";
 import {
   validateUserData,
@@ -23,19 +23,19 @@ export const authRouter = Router();
 authRouter.post("/register", async (req: Request, res: Response) => {
   try {
     // Validate register data
-    let validationResult = validateUserData(req.body);
-    if (validationResult) return handleValidationError(res, validationResult);
+    const { error, value: userData } = validateUserData(req.body);
+    if (error) return handleValidationError(res, error);
 
     // Check if email already exists
-    const emailCheck = await findUserByEmail(req.body.email);
+    const emailCheck = await findUserByEmail(userData.email);
     if (emailCheck) return handleClientError(res, "Email is already used", 409);
 
     // Create Stripe Customer
-    const stripeCustomer = await createStripeCustomer(req.body.email);
+    const stripeCustomer = await createStripeCustomer(userData.email);
 
     // Create user
     const user = await createNewUser({
-      ...req.body,
+      ...userData,
       stripeCustomerId: stripeCustomer.id,
     });
 
@@ -50,16 +50,16 @@ authRouter.post("/register", async (req: Request, res: Response) => {
 authRouter.post("/login", async (req: Request, res: Response) => {
   try {
     // Validate login data
-    const validationResult = validateLoginData(req.body);
-    if (validationResult) return handleValidationError(res, validationResult);
+    const { error, value: userData } = validateLoginData(req.body);
+    if (error) return handleValidationError(res, error);
 
     // Find user by email
-    const user = await findUserByEmail(req.body.email);
+    const user = await findUserByEmail(userData.email);
     if (!user) return handleClientError(res, "Invalid email or password", 401);
 
     // Check password
     const validPassword = await comparePassword(
-      req.body.password,
+      userData.password,
       user.password
     );
     if (!validPassword)
@@ -96,8 +96,8 @@ authRouter.post(
   async (req: Request, res: Response) => {
     try {
       // Validate reset password data
-      const validationResult = validateResetPass(req.body);
-      if (validationResult) return handleValidationError(res, validationResult);
+      const { error, value: userData } = validateResetPass(req.body);
+      if (error) return handleValidationError(res, error);
 
       // Find user by ID
       const user = await findUserById(req.params.userId);
@@ -108,7 +108,7 @@ authRouter.post(
       if (!user) return handleClientError(res, "Invalid link or expired", 401);
 
       // Update user password
-      user.password = await hashPassword(req.body.password);
+      user.password = await hashPassword(userData.password);
       await user.save();
 
       // Remove token after reset

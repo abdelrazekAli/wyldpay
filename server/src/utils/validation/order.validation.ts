@@ -11,5 +11,5 @@ export const validateOrderData = (data: object) => {
     notes: joi.string().allow("").max(10000),
     paymentMethod: joi.string().required().valid("Visa", "PayPal", "Apple pay"),
   });
-  return schema.validate(data).error;
+  return schema.validate(data);
 };

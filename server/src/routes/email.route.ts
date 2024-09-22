@@ -1,7 +1,9 @@
 import UserModel from "../models/user.model";
 import TokenModel from "../models/token.model";
 import { Request, Response, Router } from "express";
-import { handleClientError, handleServerError } from "../utils/error";
+import { findUserByEmail } from "../services/user.service";
+import { handleClientError, handleServerError } from "../utils/error.util";
+import { handleValidationError } from "../utils/validation/helper.validation";
 import {
   generateRegisterToken,
   generateResetPassToken,
@@ -11,8 +13,6 @@ import {
   validateEmail,
   validateSendResetPass,
 } from "../utils/validation/user.validation";
-import { findUserByEmail } from "../services/user.service";
-import { handleValidationError } from "../utils/validation/helper.validation";
 import {
   sendRegistrationEmail,
   sendResetPassEmail,
@@ -26,17 +26,17 @@ emailRouter.post(
   async (req: Request, res: Response) => {
     try {
       // Validate req body
-      let validationResult = validateEmail(req.body);
-      if (validationResult) return handleValidationError(res, validationResult);
+      const { error, value: data } = validateEmail(req.body);
+      if (error) return handleValidationError(res, error);
 
       // Check if email already exists
-      const emailCheck = await findUserByEmail(req.body.email);
+      const emailCheck = await findUserByEmail(data.email);
       if (emailCheck)
         return handleClientError(res, "Email is already used", 409);
 
       // Generate register token
-      const registerToken = generateRegisterToken({ email: req.body.email });
-      await sendRegistrationEmail(req.body.email, registerToken);
+      const registerToken = generateRegisterToken({ email: data.email });
+      await sendRegistrationEmail(data.email, registerToken);
 
       // Response
       res.status(200).send("Register Email sent successfully");
@@ -50,17 +50,13 @@ emailRouter.post(
 emailRouter.post("/send-reset-token", async (req: Request, res: Response) => {
   try {
     // Validate req body
-    let validationResult = validateSendResetPass(req.body);
-    if (validationResult) return handleValidationError(res, validationResult);
+    const { error, value: data } = validateSendResetPass(req.body);
+    if (error) return handleValidationError(res, error);
 
     // Check if email exists
-    const user = await UserModel.findOne({ email: req.body.email });
+    const user = await UserModel.findOne({ email: data.email });
     if (!user) {
-      return handleClientError(
-        res,
-        `Email not registered: ${req.body.email}`,
-        401
-      );
+      return handleClientError(res, `Email not registered: ${data.email}`, 401);
     }
 
     // Create and assign a token

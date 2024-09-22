@@ -1,9 +1,9 @@
 import CouponModel from "../models/coupon.model";
 import { CouponProps } from "../types/coupon.type";
 import { Request, Response, Router } from "express";
-import { verifyAuth } from "../services/auth.service";
-import { handleClientError, handleServerError } from "../utils/error";
+import { verifyAuth } from "../middlewares/verifyAuth.middleware";
 import { validateRestaurantId } from "../utils/validation/Id.validation";
+import { handleClientError, handleServerError } from "../utils/error.util";
 import { handleValidationError } from "../utils/validation/helper.validation";
 import {
   validateCouponData,
@@ -44,31 +44,31 @@ couponRouter.post("/", verifyAuth, async (req: Request, res: Response) => {
   const { restaurantId } = req.user;
 
   // Validate req body
-  let validationResult = validateCouponData(req.body);
-  if (validationResult) return handleValidationError(res, validationResult);
+  const { error, value: couponData } = validateCouponData(req.body);
+  if (error) return handleValidationError(res, error);
 
   try {
     // Check if coupon already exists
     const couponCheck = await CouponModel.findOne({
       restId: restaurantId,
-      name: req.body.name,
+      name: couponData.name,
     });
     if (couponCheck) {
       return handleClientError(
         res,
-        `Coupon: ${req.body.name} already exists`,
+        `Coupon: ${couponData.name} already exists`,
         409
       );
     }
 
     // Create new coupon
-    const newCoupon = new CouponModel({ restId: restaurantId, ...req.body });
+    const newCoupon = new CouponModel({ restId: restaurantId, ...couponData });
 
     // Save coupon
-    const coupon = (await newCoupon.save()) as CouponProps;
+    const coupon = await newCoupon.save();
 
     // Response
-    res.status(201).json(coupon);
+    res.status(200).json(coupon);
   } catch (error: unknown) {
     return handleServerError(res, error, "Failed to create coupon");
   }
@@ -78,22 +78,29 @@ couponRouter.post("/", verifyAuth, async (req: Request, res: Response) => {
 couponRouter.post("/:restId", async (req: Request, res: Response) => {
   try {
     const { restId } = req.params;
-    const { couponCode } = req.body;
 
     // Validate req body
-    let validationResult = validateApplyCoupon(req.body);
-    if (validationResult) return handleValidationError(res, validationResult);
+    const { error, value: couponData } = validateApplyCoupon(req.body);
+    if (error) return handleValidationError(res, error);
 
     // Check coupon
     const coupon = await CouponModel.findOne({
       restId: restId,
-      name: couponCode,
+      name: couponData.code,
     });
 
     if (!coupon) {
-      return handleClientError(res, `Coupon: ${couponCode} not found`, 409);
+      return handleClientError(
+        res,
+        `Coupon: ${couponData.code} not found`,
+        409
+      );
     } else if (coupon.usage === coupon.limit) {
-      return handleClientError(res, `Coupon: ${couponCode} limit reached`, 409);
+      return handleClientError(
+        res,
+        `Coupon: ${couponData.code} limit reached`,
+        409
+      );
     }
 
     // Update coupon usage

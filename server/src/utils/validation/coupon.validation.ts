@@ -8,12 +8,12 @@ export const validateCouponData = (data: object) => {
     limit: joi.number().required().max(10000),
     usage: joi.number().max(10000),
   });
-  return schema.validate(data).error;
+  return schema.validate(data);
 };
 
 export const validateApplyCoupon = (data: object) => {
   const schema = joi.object({
-    couponCode: joi.string().required().max(255),
+    code: joi.string().required().max(255),
   });
-  return schema.validate(data).error;
+  return schema.validate(data);
 };

@@ -3,7 +3,7 @@ import { mailOptions, transporter } from "../config/mail.config";
 import {
   RegistrationEmailHTML,
   ResetPasswordEmailHTML,
-} from "../utils/emailTemplates";
+} from "../utils/emailTemplates.util";
 
 // Send registration email
 export const sendRegistrationEmail = async (email: string, token: string) => {

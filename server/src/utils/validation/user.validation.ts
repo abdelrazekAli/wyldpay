@@ -1,12 +1,21 @@
 import joi from "joi";
 
+// Common validation rules
+const emailRule = joi.string().required().email().max(255);
+const passwordRule = joi.string().required().min(5).max(255);
+
+// User Data Validation
 export const validateUserData = (data: object) => {
   const schema = joi.object({
-    email: joi.string().required().email().max(255),
-    password: joi.string().min(5).max(255),
+    email: emailRule,
+    password: passwordRule,
     firstName: joi.string().required(),
     lastName: joi.string().required(),
-    phone: joi.number().required(),
+    phone: joi
+      .string()
+      .required()
+      .pattern(/^[0-9]+$/)
+      .max(20),
     city: joi.string().required().max(255),
     state: joi.string().required().max(255),
     zip: joi.string().required().max(20),
@@ -15,16 +24,18 @@ export const validateUserData = (data: object) => {
     businessName: joi.string().required().min(2).max(255),
     businessAddress: joi.string().required().min(2).max(1000),
   });
-  return schema.validate(data).error;
+  return schema.validate(data);
 };
 
+// Email Validation
 export const validateEmail = (data: object) => {
   const schema = joi.object({
-    email: joi.string().required().email().max(255),
+    email: emailRule,
   });
-  return schema.validate(data).error;
+  return schema.validate(data);
 };
 
+// Social Links Update Validation
 export const validateUpdateUserLinks = (data: object) => {
   const link = joi.object().keys({
     name: joi
@@ -36,27 +47,30 @@ export const validateUpdateUserLinks = (data: object) => {
   const schema = joi.object({
     socialLinks: joi.array().required().items(link),
   });
-  return schema.validate(data).error;
+  return schema.validate(data);
 };
 
+// Login Data Validation
 export const validateLoginData = (data: object) => {
   const schema = joi.object({
-    email: joi.string().required().email().max(255),
-    password: joi.string().required().max(255),
+    email: emailRule,
+    password: passwordRule,
   });
-  return schema.validate(data).error;
+  return schema.validate(data);
 };
 
+// Send Reset Password Email Validation
 export const validateSendResetPass = (data: object) => {
   const schema = joi.object({
-    email: joi.string().required().email().max(255),
+    email: emailRule,
   });
-  return schema.validate(data).error;
+  return schema.validate(data);
 };
 
+// Reset Password Validation
 export const validateResetPass = (data: object) => {
   const schema = joi.object({
-    password: joi.string().required().min(5).max(255),
+    password: passwordRule,
   });
-  return schema.validate(data).error;
+  return schema.validate(data);
 };

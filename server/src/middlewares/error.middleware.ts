@@ -1,5 +1,5 @@
 import logger from "../config/logger.config";
-import { handleServerError } from "../utils/error";
+import { handleServerError } from "../utils/error.util";
 import { Request, Response, NextFunction } from "express";
 
 // Error handling middleware

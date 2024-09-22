@@ -1,8 +1,8 @@
 import ItemModel from "../models/item.model";
 import { ItemProps } from "../types/item.type";
 import { Request, Response, Router } from "express";
-import { handleClientError, handleServerError } from "../utils/error";
 import { validateItemData } from "../utils/validation/item.validation";
+import { handleClientError, handleServerError } from "../utils/error.util";
 import { handleValidationError } from "../utils/validation/helper.validation";
 import {
   validateRestaurantId,
@@ -59,11 +59,11 @@ itemRouter.get("/restaurant/:restId", async (req: Request, res: Response) => {
 itemRouter.post("/", async (req: Request, res: Response) => {
   try {
     // Validate req body
-    let validationResult = validateItemData(req.body);
-    if (validationResult) return handleValidationError(res, validationResult);
+    const { error, value: itemData } = validateItemData(req.body);
+    if (error) return handleValidationError(res, error);
 
     // Create new item
-    const newItem = new ItemModel(req.body);
+    const newItem = new ItemModel(itemData);
 
     // Save item
     const item = (await newItem.save()) as ItemProps;
@@ -80,8 +80,8 @@ itemRouter.put("/id/:itemId", async (req: Request, res: Response) => {
   const { itemId } = req.params;
   try {
     // Validate req body
-    let validationResult = validateItemData(req.body);
-    if (validationResult) return handleValidationError(res, validationResult);
+    const { error, value: itemData } = validateItemData(req.body);
+    if (error) return handleValidationError(res, error);
 
     // Check item id
     const checkResult = await validateItemId(itemId);
@@ -95,7 +95,7 @@ itemRouter.put("/id/:itemId", async (req: Request, res: Response) => {
     // Update item
     const updatedItem = (await ItemModel.findByIdAndUpdate(
       itemId,
-      { $set: req.body },
+      { $set: itemData },
       { new: true }
     )) as ItemProps;
 

@@ -1,6 +1,6 @@
 import logger from "../config/logger.config";
 import { verifyToken } from "../utils/token.util";
-import { handleClientError } from "../utils/error";
+import { handleClientError } from "../utils/error.util";
 import { Request, Response, NextFunction } from "express";
 import { catchTokenErrors } from "../services/token.service";
 
