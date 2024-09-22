@@ -3,7 +3,7 @@ import { CouponProps } from "../types/coupon.type";
 
 const couponSchema = new mongoose.Schema(
   {
-    name: { type: String, required: true, unique: true },
+    code: { type: String, required: true, unique: true },
     type: { type: String, enum: ["percentage", "amount"], required: true },
     value: { type: Number, required: true },
     limit: { type: Number, required: true },
