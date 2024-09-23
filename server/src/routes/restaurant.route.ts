@@ -1,8 +1,10 @@
 import { Request, Response, Router } from "express";
 import RestaurantModel from "../models/restaurant.model";
 import { RestaurantProps } from "../types/restaurant.type";
+import { findRestById } from "../services/restaurant.service";
 import { verifyAuth } from "../middlewares/verifyAuth.middleware";
 import { handleClientError, handleServerError } from "../utils/error.util";
+import { validateIdMiddleware } from "../middlewares/validateId.middleware";
 import { handleValidationError } from "../utils/validation/helper.validation";
 import {
   validateRestaurantId,
@@ -17,22 +19,28 @@ import {
 export const restaurantRouter = Router();
 
 // Get restaurant by restaurant id
-restaurantRouter.get("/:restaurantId", async (req: Request, res: Response) => {
-  const { restaurantId } = req.params;
+restaurantRouter.get(
+  "/:restaurantId",
+  validateIdMiddleware("restaurantId"),
+  async (req: Request, res: Response) => {
+    const { restaurantId } = req.params;
 
-  try {
-    // Check restaurant id
-    const checkRestId = await validateRestaurantId(restaurantId);
-    if (typeof checkRestId === "string") {
-      return handleClientError(res, checkRestId);
+    try {
+      const restaurant = await findRestById(restaurantId);
+      if (!restaurant)
+        return handleClientError(
+          res,
+          `restaurant with id ${restaurantId} not found`,
+          404
+        );
+
+      // Response
+      res.status(200).json(restaurant);
+    } catch (error: unknown) {
+      handleServerError(res, error, "Failed to get restaurant by ID");
     }
-
-    // Response
-    res.status(200).json(checkRestId);
-  } catch (error: unknown) {
-    handleServerError(res, error, "Failed to get restaurant by ID");
   }
-});
+);
 
 // Get restaurant by user id
 restaurantRouter.get("/user/:userId", async (req: Request, res: Response) => {

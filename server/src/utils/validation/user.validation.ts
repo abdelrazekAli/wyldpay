@@ -44,6 +44,7 @@ export const validateUpdateUserLinks = (data: object) => {
       .valid("google", "instagram", "telegram", "youtube", "twitter"),
     value: joi.string().required().max(1000),
   });
+
   const schema = joi.object({
     socialLinks: joi.array().required().items(link),
   });

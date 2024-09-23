@@ -1,9 +1,10 @@
 import UserModel from "../models/user.model";
 import { UserProps } from "../types/user.type";
 import { Request, Response, Router } from "express";
-import { handleServerError } from "../utils/error.util";
 import { verifyAuth } from "../middlewares/verifyAuth.middleware";
-import { validateUserId } from "../utils/validation/Id.validation";
+import { findUserByEmail, findUserById } from "../services/user.service";
+import { handleClientError, handleServerError } from "../utils/error.util";
+import { validateIdMiddleware } from "../middlewares/validateId.middleware";
 import { handleValidationError } from "../utils/validation/helper.validation";
 import {
   validateUserData,
@@ -13,48 +14,44 @@ import {
 export const userRouter = Router();
 
 // Get user by id
-userRouter.get("/:userId", async (req: Request, res: Response) => {
-  let user: UserProps;
-  const { userId } = req.params;
+userRouter.get(
+  "/:userId",
+  validateIdMiddleware("userId"),
+  async (req: Request, res: Response) => {
+    const { userId } = req.params;
 
-  try {
-    // Check user id
-    const checkResult = await validateUserId(userId);
-    if (typeof checkResult === "string") {
-      return res.status(400).send(checkResult);
-    } else {
-      user = checkResult;
+    try {
+      const user = await findUserById(userId);
+      if (!user)
+        return handleClientError(res, `User with id ${userId} not found`, 404);
+
+      // Response
+      return res.status(200).json(user);
+    } catch (error: unknown) {
+      return handleServerError(res, error, "Error fetching user by ID");
     }
-
-    // Response
-    return res.status(200).json(user);
-  } catch (error: unknown) {
-    return handleServerError(res, error, "Error fetching user by ID");
   }
-});
+);
 
 // Update user by id
 userRouter.put("/", verifyAuth, async (req: Request, res: Response) => {
-  let user: UserProps;
   const userId = req.user._id;
 
   // Validate req body
-  const validationResult = validateUserData(req.body);
-  if (validationResult) return handleValidationError(res, validationResult);
+  const { error, value: userData } = validateUserData(req.body);
+  if (error) return handleValidationError(res, error);
 
   try {
-    // Check user id
-    const checkResult = await validateUserId(userId);
-    if (typeof checkResult === "string") {
-      return res.status(400).send(checkResult);
-    } else {
-      user = checkResult;
-    }
+    // Check if user exists
+    const user = (await findUserById(userId)) as UserProps;
+    if (!user)
+      return handleClientError(res, `User with id ${userId} not found`, 404);
 
-    // Check email
+    // Check if the email is changing and if the new email is already in use
     if (user.email !== req.body.email) {
-      const emailCheck = await UserModel.findOne({ email: req.body.email });
-      if (emailCheck) return res.status(409).json("Email is already in use");
+      const emailCheck = await findUserByEmail(userData.email);
+      if (emailCheck)
+        return handleClientError(res, "Email is already used", 409);
     }
 
     // Update user
@@ -73,26 +70,17 @@ userRouter.put("/", verifyAuth, async (req: Request, res: Response) => {
 
 // Update user social links by id
 userRouter.put("/links/", verifyAuth, async (req: Request, res: Response) => {
-  let user: UserProps;
   const userId = req.user._id;
 
   // Validate req body
-  const { error, value: itemData } = validateUpdateUserLinks(req.body);
+  const { error, value: userData } = validateUpdateUserLinks(req.body);
   if (error) return handleValidationError(res, error);
 
   try {
-    // Check user id
-    const checkResult = await validateUserId(userId);
-    if (typeof checkResult === "string") {
-      return res.status(400).send(checkResult);
-    } else {
-      user = checkResult;
-    }
-
-    // Update user
+    // Update user social links
     const updatedLinks = await UserModel.findByIdAndUpdate(
       userId,
-      { socialLinks: req.body.socialLinks },
+      { socialLinks: userData.socialLinks },
       { new: true }
     ).select("socialLinks");
 

@@ -101,7 +101,7 @@ authRouter.post(
 
       // Find user by ID
       const user = await findUserById(req.params.userId);
-      if (!user) return handleClientError(res, "Invalid link or expired", 401);
+      if (!user) return handleClientError(res, "User not found", 404);
 
       // Check token validity
       const token = await findToken(user._id, req.params.token);
