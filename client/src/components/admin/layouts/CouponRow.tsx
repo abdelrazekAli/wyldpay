@@ -39,7 +39,7 @@ export const CouponRow = ({
   return (
     <Tr>
       <Td>{counter + 1}</Td>
-      <Td>{coupon.name}</Td>
+      <Td>{coupon.code}</Td>
       <Td className="capitalize">{coupon.type}</Td>
       <Td>
         {coupon.value}

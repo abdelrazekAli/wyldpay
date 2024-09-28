@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-import CouponModel from "../models/coupon.model";
 import { CouponProps } from "../types/coupon.type";
 import { handleClientError, handleServerError } from "../utils/error.util";
 import { handleValidationError } from "../utils/validation/helper.validation";
@@ -7,17 +6,22 @@ import {
   validateCouponData,
   validateApplyCoupon,
 } from "../utils/validation/coupon.validation";
+import {
+  checkCouponExists,
+  fetchCouponsByRestaurant,
+  removeCoupon,
+  saveNewCoupon,
+  updateCouponUsage,
+} from "../services/coupon.service";
 
 // Get all restaurant coupons by restaurant id
 export const getCouponsByRestaurant = async (req: Request, res: Response) => {
   const { restaurantId } = req.user;
 
   try {
-    const coupons = (await CouponModel.find(
-      {
-        restId: restaurantId,
-      },
-      { __v: 0 }
+    // Fetch all coupons by restaurant id
+    const coupons = (await fetchCouponsByRestaurant(
+      restaurantId
     )) as CouponProps[];
 
     // Response
@@ -37,26 +41,23 @@ export const createCoupon = async (req: Request, res: Response) => {
 
   try {
     // Check if coupon already exists
-    const couponCheck = await CouponModel.findOne({
-      restId: restaurantId,
-      name: couponData.name,
-    });
-    if (couponCheck) {
+    const coupon = await checkCouponExists(restaurantId, couponData.code);
+    if (coupon) {
       return handleClientError(
         res,
-        `Coupon: ${couponData.name} already exists`,
+        `Coupon: ${couponData.code} already exists`,
         409
       );
     }
 
-    // Create new coupon
-    const newCoupon = new CouponModel({ restId: restaurantId, ...couponData });
-
-    // Save coupon
-    const coupon = await newCoupon.save();
+    // Save new coupon
+    const newCoupon = await saveNewCoupon({
+      restId: restaurantId,
+      ...couponData,
+    });
 
     // Response
-    res.status(200).json(coupon);
+    res.status(200).json(newCoupon);
   } catch (error: unknown) {
     return handleServerError(res, error, "Failed to create coupon");
   }
@@ -72,10 +73,7 @@ export const applyCoupon = async (req: Request, res: Response) => {
     if (error) return handleValidationError(res, error);
 
     // Check coupon
-    const coupon = await CouponModel.findOne({
-      restId: restId,
-      name: couponData.code,
-    });
+    const coupon = await checkCouponExists(restId, couponData.code);
 
     if (!coupon) {
       return handleClientError(
@@ -92,11 +90,7 @@ export const applyCoupon = async (req: Request, res: Response) => {
     }
 
     // Update coupon usage
-    const updatedCoupon = (await CouponModel.findByIdAndUpdate(
-      coupon._id,
-      { usage: coupon.usage + 1 },
-      { new: true }
-    ).select("-_id -limit -usage -restId")) as CouponProps;
+    const updatedCoupon = await updateCouponUsage(coupon._id, coupon.usage);
 
     // Response
     res.status(200).json(updatedCoupon);
@@ -111,15 +105,7 @@ export const deleteCoupon = async (req: Request, res: Response) => {
     const { couponId } = req.params;
 
     // Delete coupon
-    const result = await CouponModel.deleteOne({ _id: couponId });
-
-    if (result.deletedCount === 0) {
-      return handleClientError(
-        res,
-        `Coupon not found for deletion: ${couponId}`,
-        404
-      );
-    }
+    await removeCoupon(couponId);
 
     // Response
     res.status(200).json("Coupon deleted successfully");

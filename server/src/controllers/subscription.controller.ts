@@ -1,7 +1,7 @@
+import { Request, Response } from "express";
 import logger from "../config/logger.config";
 import { UserProps } from "../types/user.type";
 import { stripe } from "../config/stripe.config";
-import { Request, Response } from "express";
 import { findUserById } from "../services/user.service";
 import { handleClientError, handleServerError } from "../utils/error.util";
 

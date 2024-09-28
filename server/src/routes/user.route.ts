@@ -4,8 +4,8 @@ import {
   updateUser,
   updateUserLinks,
 } from "../controllers/user.controller";
-import { validateIdMiddleware } from "../middlewares/validateId.middleware";
 import { verifyAuth } from "../middlewares/verifyAuth.middleware";
+import { validateIdMiddleware } from "../middlewares/validateId.middleware";
 
 export const userRouter = Router();
 

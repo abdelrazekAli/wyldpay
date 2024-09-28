@@ -1,5 +1,5 @@
 export type DiscountProps = {
-  name: string;
+  code: string;
   type: "percentage" | "amount";
   value: number;
 };

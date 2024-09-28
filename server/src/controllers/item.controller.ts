@@ -53,7 +53,7 @@ export const createItem = async (req: Request, res: Response) => {
     // Save the new item to the database
     const item = await saveNewItem(itemData);
     // Send response with the newly created item
-    res.status(201).json(item);
+    res.status(200).json(item);
   } catch (error: unknown) {
     return handleServerError(res, error, "Failed to create new item");
   }

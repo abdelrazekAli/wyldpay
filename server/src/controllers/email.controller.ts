@@ -1,11 +1,11 @@
 import { Request, Response } from "express";
-import TokenModel from "../models/token.model";
 import { findUserByEmail } from "../services/user.service";
 import { handleClientError, handleServerError } from "../utils/error.util";
 import { handleValidationError } from "../utils/validation/helper.validation";
 import {
   generateRegisterToken,
   generateResetPassToken,
+  saveResetToken,
 } from "../services/token.service";
 import {
   validateEmail,
@@ -55,11 +55,7 @@ export const sendResetToken = async (req: Request, res: Response) => {
     let resetToken = generateResetPassToken({ _id: user._id });
 
     // Save reset token to database
-    let newToken = new TokenModel({
-      userId: user._id,
-      token: resetToken,
-    });
-    await newToken.save();
+    await saveResetToken(user._id, resetToken);
 
     // Send reset token to user email
     await sendResetPassEmail(String(user._id), user.email, resetToken);

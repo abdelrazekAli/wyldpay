@@ -44,6 +44,15 @@ export const deleteToken = async (tokenId: ObjectId): Promise<void> => {
   }
 };
 
+// Save reset yoken
+export const saveResetToken = async (userId: ObjectId, resetToken: string) => {
+  const newToken = new TokenModel({
+    userId,
+    token: resetToken,
+  });
+  return await newToken.save();
+};
+
 // Check token errors
 export const catchTokenErrors = (res: Response, error: any) => {
   if (error instanceof TokenExpiredError) {

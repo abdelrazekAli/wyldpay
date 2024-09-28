@@ -1,22 +1,21 @@
-import OrderModel from "../models/order.model";
 import { Request, Response } from "express";
+import {
+  fetchOrderById,
+  fetchAllOrdersByRestaurant,
+  createOrder,
+} from "../services/order.service";
 import { validateOrderData } from "../utils/validation/order.validation";
 import { handleClientError, handleServerError } from "../utils/error.util";
 import { handleValidationError } from "../utils/validation/helper.validation";
 
-// Get order by id
 export const getOrderById = async (req: Request, res: Response) => {
   const { orderId } = req.params;
 
   try {
-    // Find order
-    const order = await OrderModel.findById(orderId);
-
+    const order = await fetchOrderById(orderId);
     if (!order) {
       return handleClientError(res, `Order not found with id: ${orderId}`, 404);
     }
-
-    // Response
     res.status(200).json(order);
   } catch (error: unknown) {
     return handleServerError(
@@ -27,7 +26,6 @@ export const getOrderById = async (req: Request, res: Response) => {
   }
 };
 
-// Get all orders by restaurant id
 export const getAllOrdersByRestaurantId = async (
   req: Request,
   res: Response
@@ -35,13 +33,7 @@ export const getAllOrdersByRestaurantId = async (
   const { restaurantId } = req.user;
 
   try {
-    // Find orders
-    const orders = await OrderModel.find(
-      { restId: restaurantId },
-      { __v: 0 }
-    ).sort({ createdAt: -1 });
-
-    // Response
+    const orders = await fetchAllOrdersByRestaurant(restaurantId);
     res.status(200).json(orders);
   } catch (error: unknown) {
     return handleServerError(
@@ -52,21 +44,14 @@ export const getAllOrdersByRestaurantId = async (
   }
 };
 
-// Post new order
 export const createNewOrder = async (req: Request, res: Response) => {
-  // Validate req body
-  const { error, value: orderData } = validateOrderData(req.body);
-  if (error) return handleValidationError(res, error);
-
   try {
-    // Create new order
-    const newOrder = new OrderModel(orderData);
+    // Validate req body
+    const { error, value: orderData } = validateOrderData(req.body);
+    if (error) throw handleValidationError(res, error);
 
-    // Save order
-    const order = await newOrder.save();
-
-    // Response
-    res.status(201).json(order);
+    const order = await createOrder(orderData);
+    res.status(200).json(order);
   } catch (error: unknown) {
     return handleServerError(res, error, `Failed to create new order`);
   }
