@@ -6,6 +6,7 @@ import {
   deleteCoupon,
 } from "../controllers/coupon.controller";
 import { verifyAuth } from "../middlewares/verifyAuth.middleware";
+import { validateIdMiddleware } from "../middlewares/validateId.middleware";
 
 export const couponRouter = Router();
 
@@ -16,7 +17,12 @@ couponRouter.get("/", verifyAuth, getCouponsByRestaurant);
 couponRouter.post("/", verifyAuth, createCoupon);
 
 // Apply coupon
-couponRouter.post("/:restId", applyCoupon);
+couponRouter.post("/:restId", validateIdMiddleware("restId"), applyCoupon);
 
 // Delete coupon
-couponRouter.delete("/:couponId", verifyAuth, deleteCoupon);
+couponRouter.delete(
+  "/:couponId",
+  validateIdMiddleware("couponId"),
+  verifyAuth,
+  deleteCoupon
+);

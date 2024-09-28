@@ -4,6 +4,7 @@ import {
   registerUser,
   resetPassword,
 } from "../controllers/auth.controller";
+import { validateIdMiddleware } from "../middlewares/validateId.middleware";
 
 export const authRouter = Router();
 
@@ -14,4 +15,8 @@ authRouter.post("/register", registerUser);
 authRouter.post("/login", loginUser);
 
 // Reset password route
-authRouter.post("/pass/reset/:userId/:token", resetPassword);
+authRouter.post(
+  "/pass/reset/:userId/:token",
+  validateIdMiddleware("userId"),
+  resetPassword
+);
