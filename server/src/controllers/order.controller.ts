@@ -51,7 +51,7 @@ export const createNewOrder = async (req: Request, res: Response) => {
     if (error) throw handleValidationError(res, error);
 
     const order = await createOrder(orderData);
-    res.status(200).json(order);
+    res.status(201).json(order);
   } catch (error: unknown) {
     return handleServerError(res, error, `Failed to create new order`);
   }

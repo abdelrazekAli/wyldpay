@@ -57,7 +57,7 @@ export const createCoupon = async (req: Request, res: Response) => {
     });
 
     // Response
-    res.status(200).json(newCoupon);
+    res.status(201).json(newCoupon);
   } catch (error: unknown) {
     return handleServerError(res, error, "Failed to create coupon");
   }
@@ -81,7 +81,7 @@ export const applyCoupon = async (req: Request, res: Response) => {
         `Coupon: ${couponData.code} not found`,
         409
       );
-    } else if (coupon.usage === coupon.limit) {
+    } else if (coupon.usage >= coupon.limit) {
       return handleClientError(
         res,
         `Coupon: ${couponData.code} limit reached`,

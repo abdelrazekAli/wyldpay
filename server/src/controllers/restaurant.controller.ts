@@ -54,7 +54,7 @@ export const postRestaurant = async (req: Request, res: Response) => {
 
   try {
     const restaurant = await createRestaurant(restaurantData);
-    return res.status(200).json(restaurant);
+    return res.status(201).json(restaurant);
   } catch (error: unknown) {
     handleServerError(res, error, "Failed to create new restaurant");
   }

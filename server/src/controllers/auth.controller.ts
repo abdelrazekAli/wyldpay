@@ -41,7 +41,7 @@ export const registerUser = async (req: Request, res: Response) => {
     });
 
     // Response
-    res.status(200).json(user);
+    res.status(201).json(user);
   } catch (error: unknown) {
     return handleServerError(res, error, "Failed to register user");
   }
