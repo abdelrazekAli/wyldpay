@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import logger from "../config/logger.config";
+import logger from "./logger.config";
 
 const connectToDatabase = async () => {
   try {
