@@ -67,7 +67,7 @@ export const loginUser = async (req: Request, res: Response) => {
       return handleClientError(res, "Invalid email or password", 401);
 
     // Get restaurant details
-    const restaurant = await findRestaurantByUserId(user._id);
+    const restaurant = await findRestaurantByUserId(user._id as any);
 
     // Generate Access Token
     const accessToken = generateAccessToken({

@@ -1,0 +1,26 @@
+export const userData = {
+  email: "test@example.com",
+  password: "securePassword123",
+  firstName: "abdelrazek",
+  lastName: "ali",
+  phone: "20109208531",
+  city: "cairo",
+  state: "egypt",
+  zip: "252154",
+  businessName: "wyld",
+  businessAddress: "67 cairo",
+};
+
+export const validLoginData = {
+  email: "test@example.com",
+  password: "securePassword123",
+};
+
+export const invalidLoginData = {
+  email: "test@example.com",
+  password: "wrongPassword",
+};
+
+export const incompleteLoginData = {
+  email: "test@example.com",
+};

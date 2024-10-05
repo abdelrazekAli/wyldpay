@@ -45,4 +45,5 @@ app.listen(port, async () => {
   logger.info(`listening on port ${port}`);
 });
 
-export default app; // Export app to use in testing
+// Export app for testing
+export default app;
