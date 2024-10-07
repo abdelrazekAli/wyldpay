@@ -1,3 +1,5 @@
+export const testUserId = "6123456789abcdef12345678";
+
 export const userData = {
   email: "test@example.com",
   password: "securePassword123",

@@ -40,10 +40,12 @@ app.use(errorHandler);
 
 // Start server
 const port = process.env.PORT;
-app.listen(port, async () => {
-  await connectToDatabase();
-  logger.info(`listening on port ${port}`);
-});
+if (process.env.NODE_ENV !== "test") {
+  app.listen(port, async () => {
+    await connectToDatabase();
+    logger.info(`listening on port ${port}`);
+  });
+}
 
 // Export app for testing
 export default app;

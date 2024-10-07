@@ -8,6 +8,9 @@ import {
   incompleteLoginData,
 } from "./fakeData/user.data";
 
+// Pass supertest agent for each test
+const agent = request.agent(app);
+
 // Test User Authentication
 describe("Authentication API Tests", () => {
   it("should register a new user successfully", async () => {
@@ -16,9 +19,7 @@ describe("Authentication API Tests", () => {
       id: "test_stripe_id",
     });
 
-    const response = await request(app)
-      .post("/api/v1/auth/register")
-      .send(userData);
+    const response = await agent.post("/api/v1/auth/register").send(userData);
 
     expect(response.status).toBe(201);
     expect(response.body).toHaveProperty("_id");
@@ -26,9 +27,7 @@ describe("Authentication API Tests", () => {
   });
 
   it("should return 409 if the email is already used", async () => {
-    const response = await request(app)
-      .post("/api/v1/auth/register")
-      .send(userData);
+    const response = await agent.post("/api/v1/auth/register").send(userData);
 
     expect(response.status).toBe(409);
     expect(response.body).toBe("Email is already used");
@@ -36,7 +35,7 @@ describe("Authentication API Tests", () => {
 
   // Test User Login
   it("should login a user and return a token", async () => {
-    const response = await request(app)
+    const response = await agent
       .post("/api/v1/auth/login")
       .send(validLoginData);
 
@@ -47,7 +46,7 @@ describe("Authentication API Tests", () => {
 
   // Test User Login - Invalid credentials
   it("should return 401 for invalid email or password", async () => {
-    const response = await request(app)
+    const response = await agent
       .post("/api/v1/auth/login")
       .send(invalidLoginData);
 
@@ -57,7 +56,7 @@ describe("Authentication API Tests", () => {
 
   // Check for Required Fields
   it("should return 400 for missing required fields", async () => {
-    const response = await request(app)
+    const response = await agent
       .post("/api/v1/auth/login")
       .send(incompleteLoginData);
 
