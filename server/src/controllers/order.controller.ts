@@ -8,6 +8,7 @@ import { validateOrderData } from "../utils/validation/order.validation";
 import { handleClientError, handleServerError } from "../utils/error.util";
 import { handleValidationError } from "../utils/validation/helper.validation";
 
+// Get order by id
 export const getOrderById = async (req: Request, res: Response) => {
   const { orderId } = req.params;
 
@@ -26,6 +27,7 @@ export const getOrderById = async (req: Request, res: Response) => {
   }
 };
 
+// Get all orders by restaurant id
 export const getAllOrdersByRestaurantId = async (
   req: Request,
   res: Response
@@ -44,12 +46,13 @@ export const getAllOrdersByRestaurantId = async (
   }
 };
 
+// Create a new order
 export const createNewOrder = async (req: Request, res: Response) => {
-  try {
-    // Validate req body
-    const { error, value: orderData } = validateOrderData(req.body);
-    if (error) throw handleValidationError(res, error);
+  // Validate req body
+  const { error, value: orderData } = validateOrderData(req.body);
+  if (error) return handleValidationError(res, error);
 
+  try {
     const order = await createOrder(orderData);
     res.status(201).json(order);
   } catch (error: unknown) {

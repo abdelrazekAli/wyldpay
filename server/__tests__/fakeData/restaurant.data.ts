@@ -16,3 +16,10 @@ export const updateRestaurantData = {
   vatNum: "654321",
   vatPercentage: 20,
 };
+
+export const invalidRestaurantData = {
+  name: "",
+  address: "123 Test St",
+  phone: "1234567890",
+  // Missing other required fields
+};

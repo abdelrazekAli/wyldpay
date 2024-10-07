@@ -3,6 +3,7 @@ import request from "supertest";
 import { testUserId } from "./fakeData/user.data";
 import { generateToken } from "../src/utils/token.util";
 import {
+  invalidRestaurantData,
   restaurantData,
   updateRestaurantData,
 } from "./fakeData/restaurant.data";
@@ -26,6 +27,15 @@ describe("Restaurant API Tests", () => {
     expect(response.status).toBe(201);
     expect(response.body).toHaveProperty("_id");
     testRestaurantId = response.body._id; // Store the restaurant ID for later tests
+  });
+
+  // Test creating a new restaurant with invalid data
+  it("should return a validation error for invalid restaurant data", async () => {
+    const response = await agent
+      .post("/api/v1/restaurants")
+      .send(invalidRestaurantData);
+
+    expect(response.status).toBe(400);
   });
 
   // Test getting restaurant by restaurant ID
