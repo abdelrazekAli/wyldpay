@@ -1,9 +1,7 @@
 import logger from "../config/logger.config";
 import { mailOptions, transporter } from "../config/mail.config";
-import {
-  RegistrationEmailHTML,
-  ResetPasswordEmailHTML,
-} from "../utils/emailTemplates.util";
+import { RegistrationEmailHTML } from "../utils/emailTemplates/registration";
+import { ResetPasswordEmailHTML } from "../utils/emailTemplates/passwordReset";
 
 // Send registration email
 export const sendRegistrationEmail = async (email: string, token: string) => {
