@@ -1,0 +1,24 @@
+# Node.js modules
+node_modules/
+
+# Logs
+logs/
+*.log
+
+# Build output
+dist/
+build/
+coverage/
+
+# Environment variables
+.env
+.env.local
+
+# Dependencies for IDEs/Editors
+.vscode/
+
+# Testing
+coverage/
+
+# Debugging
+debug/
