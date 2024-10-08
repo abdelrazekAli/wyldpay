@@ -1,5 +1,3 @@
-export const testUserId = "6123456789abcdef12345678";
-
 export const orderData = {
   items: [{ name: "Pizza", quantity: 1 }],
   totalPrice: 20,

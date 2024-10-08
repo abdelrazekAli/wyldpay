@@ -10,6 +10,5 @@ export const validateItemData = (data: object) => {
     ingredients: joi.string().required().max(1000),
     restId: joi.string().required().max(255),
   });
-  // joi.string().required().max(255)
   return schema.validate(data);
 };
