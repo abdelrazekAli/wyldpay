@@ -29,7 +29,7 @@ export const RegisterForm = ({ onClick }: StepperProps) => {
     try {
       let res = await axios.post("/api/v1/auth/register", {
         ...data,
-        phone: +phone,
+        phone,
       });
       localStorage.setItem("userId", res.data._id);
       onClick();
