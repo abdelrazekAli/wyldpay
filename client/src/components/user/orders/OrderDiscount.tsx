@@ -28,7 +28,7 @@ export const OrderDiscount = () => {
 
     try {
       setIsLoading(true);
-      const res = await axios.post(`/api/v1/coupons/${restId}`, {
+      const res = await axios.post(`/api/v1/coupons/apply/${restId}`, {
         code: String(discountCode.current.value).trim(),
       });
 

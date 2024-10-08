@@ -147,7 +147,7 @@ export const downloadReceipt = (order: Order, restaurant: RestaurantProps) => {
       [
         {
           content: `Discount${
-            order.discount ? " (" + order.discount.name + ")" : ""
+            order.discount ? " (" + order.discount.code + ")" : ""
           }:`,
           styles: {
             halign: "right",
