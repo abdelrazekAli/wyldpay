@@ -17,7 +17,11 @@ couponRouter.get("/", verifyAuth, getCouponsByRestaurant);
 couponRouter.post("/", verifyAuth, createCoupon);
 
 // Apply coupon
-couponRouter.post("/:restId", validateIdMiddleware("restId"), applyCoupon);
+couponRouter.post(
+  "/apply/:restId",
+  validateIdMiddleware("restId"),
+  applyCoupon
+);
 
 // Delete coupon
 couponRouter.delete(

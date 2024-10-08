@@ -2,7 +2,7 @@ import joi from "joi";
 
 export const validateCouponData = (data: object) => {
   const schema = joi.object({
-    name: joi.string().required().max(255),
+    code: joi.string().required().max(255),
     type: joi.string().valid("percentage", "amount").required(),
     value: joi.number().required().max(10000),
     limit: joi.number().required().max(10000),

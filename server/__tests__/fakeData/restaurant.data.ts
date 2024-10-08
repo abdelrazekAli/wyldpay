@@ -1,5 +1,7 @@
 import { testUserId } from "./user.data";
 
+export const testRestaurantId = "6704245be5d8ee4a0d127f9f";
+
 export const restaurantData = {
   logo: "logo_url.com",
   background: "background_url.com",

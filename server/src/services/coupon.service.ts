@@ -17,7 +17,7 @@ export const checkCouponExists = async (
 ) => {
   return (await CouponModel.findOne({
     restId: restaurantId,
-    name: couponName,
+    code: couponName,
   })) as CouponProps | null;
 };
 
