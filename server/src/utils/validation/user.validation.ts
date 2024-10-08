@@ -8,7 +8,7 @@ const passwordRule = joi.string().required().min(5).max(255);
 export const validateUserData = (data: object) => {
   const schema = joi.object({
     email: emailRule,
-    password: passwordRule,
+    password: joi.string().min(5).max(255),
     firstName: joi.string().required(),
     lastName: joi.string().required(),
     phone: joi

@@ -95,7 +95,7 @@ export const SettingsForms = () => {
         `/api/v1/users`,
         {
           ...data,
-          phone: +phoneNum,
+          phone: phoneNum,
         },
         {
           headers: {
