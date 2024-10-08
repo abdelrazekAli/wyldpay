@@ -30,7 +30,7 @@ export const AddCouponForm = ({
       const res = await axios.post(
         "/api/v1/coupons",
         {
-          name: couponCode,
+          code: couponCode,
           type: couponType,
           value: couponValue,
           limit: couponLimit,
