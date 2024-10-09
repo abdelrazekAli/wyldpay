@@ -4,8 +4,12 @@ import "../../../styles/forms/restaurantForm.sass";
 import { StepperProps } from "../../../types/StepperProps";
 import { faUpload } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { RegisteredUserProps } from "../../../types/UserProps";
+import { login } from "../../../redux/user.slice";
+import { useAppDispatch } from "../../../redux/store.hooks";
 
 export const RestForm = ({ onClick }: StepperProps) => {
+  const dispatch = useAppDispatch();
   const userId = localStorage.getItem("userId");
   const [logo, setLogo] = useState<null | File>(null);
   const [vatNum, setVatNum] = useState<string | null>("");
@@ -16,6 +20,11 @@ export const RestForm = ({ onClick }: StepperProps) => {
 
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  // Auth handler
+  const authHandler = (userData: RegisteredUserProps) => {
+    dispatch(login(userData));
+  };
 
   // Handle form submit
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -44,15 +53,14 @@ export const RestForm = ({ onClick }: StepperProps) => {
       );
       const { url: backgroundURL } = uploadBackgroundRes.data;
 
-      const restaurant = await axios.post("/api/v1/restaurants", {
+      const res = await axios.post("/api/v1/restaurants", {
         vatNum,
         currency,
         logo: logoURL,
         background: backgroundURL,
         userId,
       });
-
-      localStorage.setItem("restaurantId", restaurant.data._id);
+      authHandler(res.data);
     } catch (err) {
       console.log(err);
       setError("Somthing went wrong!");

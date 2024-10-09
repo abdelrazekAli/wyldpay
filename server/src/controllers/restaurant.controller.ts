@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { generateAccessToken } from "../services/token.service";
 import { handleClientError, handleServerError } from "../utils/error.util";
 import { handleValidationError } from "../utils/validation/helper.validation";
 import {
@@ -13,6 +14,7 @@ import {
   updateRestaurantCategories,
   findRestaurantById,
 } from "../services/restaurant.service";
+import { findUserById } from "../services/user.service";
 
 // Get restaurant by ID
 export const getRestaurantById = async (req: Request, res: Response) => {
@@ -53,8 +55,27 @@ export const postRestaurant = async (req: Request, res: Response) => {
   if (error) return handleValidationError(res, error);
 
   try {
+    const { userId } = restaurantData;
+    const user = await findUserById(userId);
+    if (!user)
+      return handleClientError(res, `User with id ${userId} not found`, 404);
+
     const restaurant = await createRestaurant(restaurantData);
-    return res.status(201).json(restaurant);
+    // Generate Access Token
+    const accessToken = generateAccessToken({
+      _id: userId,
+      restaurantId: restaurant?._id,
+    });
+
+    // Response
+    res.header("auth-token", accessToken).json({
+      _id: userId,
+      firstName: user.firstName,
+      email: user.email,
+      restaurantId: restaurant?._id,
+      currency: restaurant?.currency,
+      accessToken,
+    });
   } catch (error: unknown) {
     handleServerError(res, error, "Failed to create new restaurant");
   }

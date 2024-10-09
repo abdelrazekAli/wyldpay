@@ -65,6 +65,8 @@ function AppWraper() {
             path="/admin/reset-pass/:userId/:token"
             element={<ResetPass />}
           />
+          <Route path="/admin/signup/:token" element={<Signup />} />
+
           {user ? (
             <>
               <Route path="/admin/home" element={<Home />} />
@@ -79,7 +81,6 @@ function AppWraper() {
           ) : (
             <>
               <Route path="/admin/login" element={<Login />} />
-              <Route path="/admin/signup/:token" element={<Signup />} />
             </>
           )}
           <Route path="*" element={<Navigate to="/admin/login" replace />} />

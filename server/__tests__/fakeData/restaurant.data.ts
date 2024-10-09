@@ -1,5 +1,3 @@
-import { testUserId } from "./user.data";
-
 export const testRestaurantId = "6704245be5d8ee4a0d127f9f";
 
 export const restaurantData = {
@@ -9,7 +7,7 @@ export const restaurantData = {
   vatPercentage: 15,
   currency: "USD",
   categories: ["Italian", "Mexican"],
-  userId: testUserId,
+  userId: "60a2f2b5b8df4e001f8e4d44",
 };
 
 export const updateRestaurantData = {

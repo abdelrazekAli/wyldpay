@@ -4,15 +4,17 @@ import { AddItemForm } from "./AddItemForm";
 import { ItemBox } from "../layouts/ItemBox";
 import "../../../styles/forms/foodsForm.sass";
 import { Key, useEffect, useState } from "react";
-import { MainCategoryType } from "../../../types/Category";
+import { getUser } from "../../../redux/user.slice";
 import { StepperProps } from "../../../types/StepperProps";
+import { MainCategoryType } from "../../../types/Category";
+import { useAppSelector } from "../../../redux/store.hooks";
 
 export const ItemsForm = ({ onClick }: StepperProps) => {
   const [categorySelected, setCategorySelected] =
     useState<MainCategoryType | null>(null);
 
   const [items, setItems] = useState<Item[]>([]);
-  const restaurantId = localStorage.getItem("restaurantId")!;
+  const { restaurantId } = useAppSelector(getUser);
   const categories = JSON.parse(localStorage.getItem("categories")!);
 
   const [error, setError] = useState<string | null>(null);

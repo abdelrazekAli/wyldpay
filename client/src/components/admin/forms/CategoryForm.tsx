@@ -1,9 +1,11 @@
 import axios from "axios";
 import { useRef, useState } from "react";
 import "../../../styles/forms/categoryForm.sass";
+import { getUser } from "../../../redux/user.slice";
 import { CategoryBox } from "../layouts/CategoryBox";
 import { categories } from "../../../utils/foodCategories";
 import { StepperProps } from "../../../types/StepperProps";
+import { useAppSelector } from "../../../redux/store.hooks";
 
 export const CategoryForm = ({ onClick, onSkip }: StepperProps) => {
   const categoriesDestruct = [
@@ -13,6 +15,7 @@ export const CategoryForm = ({ onClick, onSkip }: StepperProps) => {
   ];
 
   const categoryName = useRef<HTMLInputElement>(null!);
+  const { accessToken, restaurantId } = useAppSelector(getUser);
   const [categoriesList, setCategoriesList] = useState(categoriesDestruct);
 
   const [error, setError] = useState<string | null>(null);
@@ -44,13 +47,20 @@ export const CategoryForm = ({ onClick, onSkip }: StepperProps) => {
   const handleSubmit = async () => {
     setError(null);
     setIsLoading(true);
-    const restaurantId = localStorage.getItem("restaurantId");
     localStorage.setItem("categories", JSON.stringify(filterCategories));
     try {
-      await axios.put("/api/v1/restaurants/categories", {
-        categories: filterCategories,
-        restaurantId,
-      });
+      await axios.put(
+        "/api/v1/restaurants/categories",
+        {
+          categories: filterCategories,
+          restaurantId,
+        },
+        {
+          headers: {
+            "auth-token": accessToken,
+          },
+        }
+      );
       onClick();
     } catch (err) {
       console.log(err);

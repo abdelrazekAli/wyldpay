@@ -1,6 +1,8 @@
 import axios from "axios";
 import { useState } from "react";
+import { getUser } from "../../../redux/user.slice";
 import { MainCategoryType } from "../../../types/Category";
+import { useAppSelector } from "../../../redux/store.hooks";
 
 export const AddCategoryForm = ({
   hideForm,
@@ -13,6 +15,8 @@ export const AddCategoryForm = ({
   setCategories: (newCategories: MainCategoryType[]) => void;
   restaurantId: string;
 }) => {
+  const { accessToken } = useAppSelector(getUser);
+
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [categoryName, setCategoryName] = useState<string | null>("");
@@ -29,10 +33,18 @@ export const AddCategoryForm = ({
     ];
 
     try {
-      await axios.put("/api/v1/restaurants/categories", {
-        categories: newCategories,
-        restaurantId,
-      });
+      await axios.put(
+        "/api/v1/restaurants/categories",
+        {
+          categories: newCategories,
+          restaurantId,
+        },
+        {
+          headers: {
+            "auth-token": accessToken,
+          },
+        }
+      );
       setCategories(newCategories);
       hideForm();
     } catch (err) {

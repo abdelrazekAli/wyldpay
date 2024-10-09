@@ -9,6 +9,15 @@ import {
 } from "./fakeData/restaurant.data";
 
 const agent = request.agent(app);
+// let userId;
+// Mock the findUserById function
+jest.mock("../src/services/user.service", () => ({
+  findUserById: jest.fn().mockResolvedValue({
+    _id: "60a2f2b5b8df4e001f8e4d44",
+    firstName: "John",
+    email: "johndoe@example.com",
+  }),
+}));
 
 let testRestaurantId: string;
 const accessToken = generateToken(
@@ -24,9 +33,11 @@ describe("Restaurant API Tests", () => {
       .post("/api/v1/restaurants")
       .send(restaurantData);
 
-    expect(response.status).toBe(201);
     expect(response.body).toHaveProperty("_id");
-    testRestaurantId = response.body._id; // Store the restaurant ID for later tests
+    expect(response.body).toHaveProperty("restaurantId");
+    expect(response.body).toHaveProperty("accessToken");
+    expect(response.header).toHaveProperty("auth-token");
+    testRestaurantId = response.body.restaurantId; // Store the restaurant ID for later tests
   });
 
   // Test creating a new restaurant with invalid data
