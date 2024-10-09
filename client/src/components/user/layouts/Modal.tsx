@@ -58,8 +58,8 @@ export const Modal = ({ status, enableHide }: ModalPropsType) => {
             <HashLoader color="#4479FB" />
             <h3>Payment done!</h3>
             <p>
-              You can login now to your dashboard from{" "}
-              <Link to={"/admin/login"} className="color-main font-bold">
+              You can go now to your dashboard from{" "}
+              <Link to={"/admin/home"} className="color-main font-bold">
                 here
               </Link>
             </p>

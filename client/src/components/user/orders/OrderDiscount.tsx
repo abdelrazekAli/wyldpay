@@ -86,7 +86,7 @@ export const OrderDiscount = () => {
       {discount ? (
         <div className="discount-wrapper border-none justify-content-center">
           <div className="text g-1">
-            <img src="assets/images/discount.svg" alt="" />
+            <img src="/assets/images/discount.svg" alt="" />
             Discount of {discount.value}
             {discount.type === "amount" ? getSymbol(currency) : "%"} is valid
           </div>
@@ -101,11 +101,11 @@ export const OrderDiscount = () => {
           }}
         >
           <div className="text">
-            <img src="assets/images/discount.svg" alt="" />
+            <img src="/assets/images/discount.svg" alt="" />
             Add discount code
           </div>
           <div className="icon">
-            <img src="assets/images/open-right.svg" alt="" />
+            <img src="/assets/images/open-right.svg" alt="" />
           </div>
         </div>
       )}
