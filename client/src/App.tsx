@@ -7,25 +7,31 @@ import { checkUser } from "./utils/checkUser";
 import { useAppSelector } from "../src/redux/store.hooks";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
-// Import pages
-import { QR } from "./pages/admin/QR";
-import { Home } from "./pages/admin/Home";
-import { Login } from "./pages/admin/Login";
-import { Signup } from "./pages/admin/Signup";
-import { Orders } from "./pages/admin/Orders";
-import { Coupons } from "./pages/admin/Coupons";
-import { MainMenu } from "./pages/user/MainMenu";
-import { Checkout } from "./pages/user/Checkout";
-import { EditMenu } from "./pages/admin/EditMenu";
-import { EditBank } from "./pages/admin/EditBank";
-import { Settings } from "./pages/admin/Settings";
-import { ResetPass } from "./pages/admin/ResetPass";
-import { ItemDetails } from "./pages/user/ItemDetails";
-import { OrderDetails } from "./pages/user/OrderDetails";
-import { OrderSuccess } from "./pages/user/OrderSuccess";
-import { SendResetPass } from "./pages/admin/SendResetPass";
-import { SubscriptionFailed } from "./pages/admin/SubscriptionFailed";
-import { SubscriptionSuccess } from "./pages/admin/SubscriptionSuccess";
+// Import admin pages
+import {
+  QR,
+  Home,
+  Login,
+  Signup,
+  Orders,
+  Coupons,
+  EditMenu,
+  EditBank,
+  Settings,
+  ResetPass,
+  SendResetPass,
+  SubscriptionFailed,
+  SubscriptionSuccess,
+} from "./pages/admin";
+
+// Import user pages
+import {
+  Checkout,
+  ItemDetails,
+  MainMenu,
+  OrderDetails,
+  OrderSuccess,
+} from "./pages/user";
 
 function AppWraper() {
   const App = () => {
@@ -79,9 +85,7 @@ function AppWraper() {
               <Route path="*" element={<Navigate to="/admin/home" replace />} />
             </>
           ) : (
-            <>
-              <Route path="/admin/login" element={<Login />} />
-            </>
+            <Route path="/admin/login" element={<Login />} />
           )}
           <Route path="*" element={<Navigate to="/admin/login" replace />} />
         </Routes>

@@ -1,0 +1,13 @@
+export { QR } from "./QR";
+export { Home } from "./Home";
+export { Login } from "./Login";
+export { Signup } from "./Signup";
+export { Orders } from "./Orders";
+export { Coupons } from "./Coupons";
+export { EditMenu } from "./EditMenu";
+export { EditBank } from "./EditBank";
+export { Settings } from "./Settings";
+export { ResetPass } from "./ResetPass";
+export { SendResetPass } from "./SendResetPass";
+export { SubscriptionFailed } from "./SubscriptionFailed";
+export { SubscriptionSuccess } from "./SubscriptionSuccess";
