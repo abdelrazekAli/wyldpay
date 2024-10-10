@@ -4,15 +4,16 @@ import {
   registerUser,
   resetPassword,
 } from "../controllers/auth.controller";
+import { authLimiter } from "../config/rateLimit.config";
 import { validateIdMiddleware } from "../middlewares/validateId.middleware";
 
 export const authRouter = Router();
 
 // User register route
-authRouter.post("/register", registerUser);
+authRouter.post("/register", authLimiter, registerUser);
 
 // User login route
-authRouter.post("/login", loginUser);
+authRouter.post("/login", authLimiter, loginUser);
 
 // Reset password route
 authRouter.post(
