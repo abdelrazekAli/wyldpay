@@ -46,38 +46,40 @@ export const SubscriptionsPlans = () => {
             Click buy plan button, <br /> it will redirect you to the payment
             page.
           </p>
-          {prices.map((price: any, i) => (
-            <div className="pricing-block" key={i}>
-              <div className="inner-box">
-                <div className="icon-box">
-                  <div className="icon-outer">
-                    <i className="fas fa-gem"></i>
+          <div className="row">
+            {prices.map((price: any, i) => (
+              <div className="pricing-block" key={i}>
+                <div className="inner-box">
+                  <div className="icon-box">
+                    <div className="icon-outer">
+                      <i className="fas fa-gem"></i>
+                    </div>
+                  </div>
+                  <div className="price-box">
+                    <div className="title">QR Menu Order</div>
+                    <h4 className="price">€{price.unit_amount / 100}</h4>
+                  </div>
+                  <ul className="features">
+                    <li className="true">Menu</li>
+                    <li className="true">QR code</li>
+                    <li className="true">Ordering</li>
+                    <li className="true">Payment</li>
+                    <li className="true">Discounts and tips</li>
+                    {/* <li className="false">Free Contacts</li>  */}
+                  </ul>
+                  <div className="btn-box">
+                    <button
+                      className="theme-btn"
+                      disabled={isLoading}
+                      onClick={() => createSession(price.id)}
+                    >
+                      {isLoading ? "...Loading" : "Buy plan"}
+                    </button>
                   </div>
                 </div>
-                <div className="price-box">
-                  <div className="title">QR Menu Order</div>
-                  <h4 className="price">€{price.unit_amount / 100}</h4>
-                </div>
-                <ul className="features">
-                  <li className="true">Menu</li>
-                  <li className="true">QR code</li>
-                  <li className="true">Ordering</li>
-                  <li className="true">Payment</li>
-                  <li className="true">Discounts and tips</li>
-                  {/* <li className="false">Free Contacts</li>  */}
-                </ul>
-                <div className="btn-box">
-                  <button
-                    className="theme-btn"
-                    disabled={isLoading}
-                    onClick={() => createSession(price.id)}
-                  >
-                    {isLoading ? "...Loading" : "Buy plan"}
-                  </button>
-                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </section>
       <div className="d-flex justify-content-center">

@@ -14,7 +14,7 @@ export const getBankByUserId = async (userId: string) => {
 };
 
 // create new bank
-export const createBank = async (bankData: BankProps) => {
+export const createBank = async (bankData: BankProps | {}) => {
   const newBank = new BankModel(bankData);
   await newBank.save();
   return newBank;

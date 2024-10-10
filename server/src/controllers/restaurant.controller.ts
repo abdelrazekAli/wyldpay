@@ -15,6 +15,7 @@ import {
   findRestaurantById,
 } from "../services/restaurant.service";
 import { findUserById } from "../services/user.service";
+import { createBank } from "../services/bank.service";
 
 // Get restaurant by ID
 export const getRestaurantById = async (req: Request, res: Response) => {
@@ -60,7 +61,12 @@ export const postRestaurant = async (req: Request, res: Response) => {
     if (!user)
       return handleClientError(res, `User with id ${userId} not found`, 404);
 
+    // Create user bank
+    await createBank({ userId });
+
+    // Create user restaurant
     const restaurant = await createRestaurant(restaurantData);
+
     // Generate Access Token
     const accessToken = generateAccessToken({
       _id: userId,

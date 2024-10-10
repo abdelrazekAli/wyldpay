@@ -3,10 +3,10 @@ import { BankProps } from "../types/bank.type";
 
 const bankSchema = new mongoose.Schema(
   {
-    name: { type: String, required: true },
-    iban: { type: String, required: true },
-    bic: { type: String, required: true },
-    customerFees: { type: Boolean, required: true, default: false },
+    name: { type: String, default: "" },
+    iban: { type: String, default: "" },
+    bic: { type: String, default: "" },
+    customerFees: { type: Boolean, default: false },
     paymentsMethods: {
       type: [{ name: String, publicKey: String, secretKey: String }],
       default: [
