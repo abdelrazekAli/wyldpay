@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 import { Item } from "../../../types/Item";
+import { uploadImage } from "../../../utils/uploadImage";
 import { MainCategoryType } from "../../../types/Category";
 import { faUpload } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -17,7 +18,7 @@ export const AddItemForm = ({
   restaurantId: string;
 }) => {
   const [name, setName] = useState<string | null>("");
-  const [file, setFile] = useState<string | Blob>("");
+  const [image, setImage] = useState<string | Blob>("");
   const [price, setPrice] = useState<number | null>(null);
   const [itemImg, setItemImg] = useState<null | File>(null);
   const [description, setDescription] = useState<string | null>("");
@@ -31,20 +32,13 @@ export const AddItemForm = ({
     setError(null);
     setIsLoading(true);
 
-    let data = new FormData();
-    data.append("file", file);
-    data.append("upload_preset", "uploads");
     try {
-      const uploadRes = await axios.post(
-        process.env.REACT_APP_CLOUDINARY_LINK!,
-        data
-      );
-      const { url } = uploadRes.data;
+      const imageURL = await uploadImage(image);
 
       const res = await axios.post("/api/v1/items", {
         name,
         price,
-        img: url,
+        img: imageURL,
         category: category?.value,
         desc: description,
         ingredients,
@@ -98,7 +92,7 @@ export const AddItemForm = ({
                 name="image"
                 onChange={(e) => {
                   setItemImg(e.target.files![0]);
-                  setFile(e.target.files![0]);
+                  setImage(e.target.files![0]);
                 }}
               />
               <span>Upload image</span>

@@ -1,12 +1,13 @@
 import axios from "axios";
 import { useState } from "react";
-import "../../../styles/forms/restaurantForm.sass";
-import { StepperProps } from "../../../types/StepperProps";
-import { faUpload } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { RegisteredUserProps } from "../../../types/UserProps";
 import { login } from "../../../redux/user.slice";
+import "../../../styles/forms/restaurantForm.sass";
+import { uploadImage } from "../../../utils/uploadImage";
+import { StepperProps } from "../../../types/StepperProps";
 import { useAppDispatch } from "../../../redux/store.hooks";
+import { faUpload } from "@fortawesome/free-solid-svg-icons";
+import { RegisteredUserProps } from "../../../types/UserProps";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export const RestForm = ({ onClick }: StepperProps) => {
   const dispatch = useAppDispatch();
@@ -32,26 +33,9 @@ export const RestForm = ({ onClick }: StepperProps) => {
     setError(null);
     setIsLoading(true);
 
-    let logoForm = new FormData();
-    logoForm.append("file", logoBlob);
-    logoForm.append("upload_preset", "uploads");
-
-    let backgroundForm = new FormData();
-    backgroundForm.append("file", backgroundBlob);
-    backgroundForm.append("upload_preset", "uploads");
-
     try {
-      const uploadLogoRes = await axios.post(
-        process.env.REACT_APP_CLOUDINARY_LINK!,
-        logoForm
-      );
-      const { url: logoURL } = uploadLogoRes.data;
-
-      const uploadBackgroundRes = await axios.post(
-        process.env.REACT_APP_CLOUDINARY_LINK!,
-        backgroundForm
-      );
-      const { url: backgroundURL } = uploadBackgroundRes.data;
+      const logoURL = await uploadImage(logoBlob);
+      const backgroundURL = await uploadImage(backgroundBlob);
 
       const res = await axios.post("/api/v1/restaurants", {
         vatNum,

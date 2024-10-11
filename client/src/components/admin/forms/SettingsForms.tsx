@@ -106,13 +106,10 @@ export const SettingsForms = () => {
       );
 
       // Update restaurant data
-      const logoURL = logoBlob
-        ? await uploadImage(logoBlob, "uploads")
-        : undefined;
+      const logoURL = logoBlob ? await uploadImage(logoBlob) : restaurant?.logo;
       const backgroundURL = backgroundBlob
-        ? await uploadImage(backgroundBlob, "uploads")
-        : undefined;
-      console.log(logoURL);
+        ? await uploadImage(backgroundBlob)
+        : restaurant?.background;
 
       await axios.put(
         `/api/v1/restaurants`,
