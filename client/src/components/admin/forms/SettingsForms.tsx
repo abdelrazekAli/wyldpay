@@ -11,6 +11,7 @@ import { StripeKeysForm } from "./StripeKeysForm";
 import { SocialLinksForm } from "./SocialLinksForm";
 import { UserProps } from "../../../types/UserProps";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { uploadImage } from "../../../utils/uploadImage";
 import { faPen } from "@fortawesome/free-solid-svg-icons";
 import { RestaurantProps } from "../../../types/Restaurant";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -105,37 +106,21 @@ export const SettingsForms = () => {
       );
 
       // Update restaurant data
-      let logoUploadRes, backgroundUploadRes;
-      if (logoBlob) {
-        let logoFormData = new FormData();
-        logoFormData.append("file", logoBlob);
-        logoFormData.append("upload_preset", "uploads");
+      const logoURL = logoBlob
+        ? await uploadImage(logoBlob, "uploads")
+        : undefined;
+      const backgroundURL = backgroundBlob
+        ? await uploadImage(backgroundBlob, "uploads")
+        : undefined;
+      console.log(logoURL);
 
-        logoUploadRes = await axios.post(
-          process.env.REACT_APP_CLOUDINARY_LINK!,
-          logoFormData
-        );
-      }
-
-      if (backgroundBlob) {
-        let backgroundFormData = new FormData();
-        backgroundFormData.append("file", backgroundBlob);
-        backgroundFormData.append("upload_preset", "uploads");
-
-        backgroundUploadRes = await axios.post(
-          process.env.REACT_APP_CLOUDINARY_LINK!,
-          backgroundFormData
-        );
-      }
-
-      // Update restaurant data
       await axios.put(
         `/api/v1/restaurants`,
         {
           vatNum: data.vatNum,
           vatPercentage: data.vatPercentage,
-          logo: logoUploadRes?.data.url,
-          background: backgroundUploadRes?.data.url,
+          logo: logoURL,
+          background: backgroundURL,
         },
         {
           headers: {
