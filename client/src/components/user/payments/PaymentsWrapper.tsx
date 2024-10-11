@@ -27,9 +27,7 @@ export const PaymentsWrapper = ({
   useEffect(() => {
     const fetchMethods = async () => {
       try {
-        const res = await axios.get(
-          `/api/v1/banks/${restaurant.data?.userId._id}`
-        );
+        const res = await axios.get(`/api/v1/banks/${restaurant.data?.userId}`);
 
         setStripeKeys(
           res.data.paymentsMethods.filter(
