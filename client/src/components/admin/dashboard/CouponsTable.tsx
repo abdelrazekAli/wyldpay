@@ -1,9 +1,9 @@
-import axios from "axios";
 import "../../../styles/coupons.sass";
 import { useEffect, useState } from "react";
 import { CouponRow } from "../layouts/CouponRow";
 import { CouponType } from "../../../types/Coupon";
 import { getUser } from "../../../redux/user.slice";
+import { fetchData } from "../../../utils/fetchData";
 import { CircularProgress } from "@material-ui/core";
 import { AddCouponForm } from "../forms/AddCouponForm";
 import { useAppSelector } from "../../../redux/store.hooks";
@@ -20,23 +20,13 @@ export const CouponsTable = () => {
 
   useEffect(() => {
     // Fetch coupons
-    const fetchCoupons = async () => {
-      try {
-        const res = await axios.get(`/api/v1/coupons`, {
-          headers: {
-            "auth-token": accessToken,
-          },
-        });
-
-        setCoupons(res.data);
-      } catch (err) {
-        console.log(err);
-        setError("Somthing went wrong on fetch coupons!");
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    fetchCoupons();
+    fetchData<CouponType[]>(
+      `${process.env.REACT_APP_API_VERSION!}/coupons`,
+      accessToken,
+      setCoupons,
+      setError,
+      setIsLoading
+    );
   }, [accessToken]);
 
   // Handle on delete coupon

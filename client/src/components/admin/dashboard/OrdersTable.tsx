@@ -1,64 +1,57 @@
-import axios from "axios";
 import "../../../styles/orders.sass";
 import { useEffect, useState } from "react";
 import { Order } from "../../../types/Order";
 import { OrderRow } from "../layouts/OrderRow";
+import { Modal } from "../../user/layouts/Modal";
 import { getUser } from "../../../redux/user.slice";
 import { CircularProgress } from "@material-ui/core";
+import { fetchData } from "../../../utils/fetchData";
+import { Subscription } from "../../../types/Subscription";
 import { useAppSelector } from "../../../redux/store.hooks";
 import { RestaurantProps } from "../../../types/Restaurant";
 import { Table, Thead, Tbody, Tr, Th } from "react-super-responsive-table";
 import "react-super-responsive-table/dist/SuperResponsiveTableStyle.css";
-import { Modal } from "../../user/layouts/Modal";
 
 export const OrdersTable = () => {
   const [orders, setOrders] = useState<Order[]>([]);
   const { _id, accessToken } = useAppSelector(getUser);
-  const [subscriptions, setSubscriptions] = useState<[] | null>(null);
   const [restaurant, setRestaurant] = useState<RestaurantProps | null>(null);
+  const [subscriptions, setSubscriptions] = useState<Subscription[] | null>(
+    null
+  );
 
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    const checkSubscription = async () => {
-      try {
-        // Fetch user subscription
-        const res = await axios.post(`/api/v1/subscriptions/users/check/`, {
-          userId: _id,
-        });
-        // console.log(res.data.data[0].plan.nickname);
-        setSubscriptions(res.data.data);
-      } catch (err) {
-        console.log(err);
-        setError("Somthing went wrong!");
-      }
-    };
+    // Fetch subscriptions and orders
+    fetchData<Subscription[]>(
+      `${process.env.REACT_APP_API_VERSION!}/subscriptions/users/check/`,
+      accessToken,
+      setSubscriptions,
+      setError,
+      setIsLoading,
+      "POST",
+      { userId: _id }
+    );
 
-    const fetchData = async () => {
-      try {
-        // Fetch orders
-        const orderResponse = await axios.get(`/api/v1/orders`, {
-          headers: {
-            "auth-token": accessToken,
-          },
-        });
-        setOrders(orderResponse.data);
+    // Fetch orders
+    fetchData<Order[]>(
+      `${process.env.REACT_APP_API_VERSION!}/orders`,
+      accessToken,
+      setOrders,
+      setError,
+      setIsLoading
+    );
 
-        // Fetch restaurant
-        const res = await axios.get(`/api/v1/restaurants/user/${_id}`);
-
-        setRestaurant(res.data);
-      } catch (err) {
-        console.log(err);
-        setError("Somthing went wrong on fetch orders!");
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    checkSubscription();
-    fetchData();
+    // Fetch restaurant
+    fetchData<RestaurantProps>(
+      `${process.env.REACT_APP_API_VERSION!}/restaurants/user/${_id}`,
+      accessToken,
+      setRestaurant,
+      setError,
+      setIsLoading
+    );
   }, [_id, accessToken]);
 
   return (

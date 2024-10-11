@@ -47,6 +47,8 @@ export const LoginForm = () => {
       let statusCode = err.response.status;
       if (statusCode === 400 || statusCode === 401) {
         setError("Invalid email or password");
+      } else if (statusCode === 429) {
+        setError("Too many requests, please try again later");
       } else {
         setError("Somthing went wrong!");
       }
