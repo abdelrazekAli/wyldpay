@@ -1,6 +1,7 @@
 import axios from "axios";
 import "../../../styles/plans.sass";
 import { useEffect, useState } from "react";
+import { fetchData } from "../../../utils/fetchData";
 
 export const SubscriptionsPlans = () => {
   const userId = localStorage.getItem("userId");
@@ -9,25 +10,21 @@ export const SubscriptionsPlans = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
-    const fetchPrices = async () => {
-      try {
-        const { data: response } = await axios.get(
-          "/api/v1/subscriptions/prices"
-        );
-        setPrices(response.data);
-      } catch (err) {
-        setError("Failed to load plans");
-        console.log(err);
-      }
-    };
-    fetchPrices();
+    // Fetch subscription prices
+    fetchData<[]>(
+      `${process.env.REACT_APP_API_VERSION!}/subscriptions/prices`,
+      "",
+      setPrices,
+      setError,
+      setIsLoading
+    );
   }, []);
 
   const createSession = async (priceId: string) => {
     setIsLoading(true);
 
     const { data: response } = await axios.post(
-      "/api/v1/subscriptions/session",
+      `${process.env.REACT_APP_API_VERSION!}/subscriptions/session`,
       {
         userId,
         priceId,

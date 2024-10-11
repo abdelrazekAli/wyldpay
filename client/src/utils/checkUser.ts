@@ -5,7 +5,7 @@ export const checkUser = async (userId: string) => {
     await axios.get(`/api/v1/users/${userId}`);
   } catch (err: any) {
     let statusCode = err.response.status;
-    if (statusCode === 406) {
+    if (statusCode === 404) {
       localStorage.clear();
       window.location.replace("/admin/login");
     }

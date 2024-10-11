@@ -36,10 +36,6 @@ import {
 function AppWraper() {
   const App = () => {
     const user = useAppSelector(getUser);
-    useEffect(() => {
-      //check if user account is still activated or not
-      user && checkUser(user._id);
-    }, [user]);
 
     return (
       <BrowserRouter>

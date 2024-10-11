@@ -12,7 +12,7 @@ export const getSubscriptionPrices = async (req: Request, res: Response) => {
       apiKey: process.env.STRIPE_SECRET_KEY!,
     });
     logger.info("Fetched subscription prices from Stripe");
-    return res.json(prices);
+    return res.json(prices.data);
   } catch (error: unknown) {
     return handleServerError(res, error, "Failed to fetch subscription prices");
   }
