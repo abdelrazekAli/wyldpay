@@ -8,6 +8,7 @@ import { useAppDispatch } from "../../../redux/store.hooks";
 import { faUpload } from "@fortawesome/free-solid-svg-icons";
 import { RegisteredUserProps } from "../../../types/UserProps";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { CURRENCY_OPTIONS } from "../../../data/currencyOptions";
 
 export const RestForm = ({ onClick }: StepperProps) => {
   const dispatch = useAppDispatch();
@@ -77,14 +78,11 @@ export const RestForm = ({ onClick }: StepperProps) => {
               <option value="" disabled selected hidden>
                 Preferred currency
               </option>
-              <option value="eur">EUR</option>
-              <option value="usd">USD</option>
-              <option value="gbp">GBP</option>
-              <option value="aed">AED</option>
-              <option value="uah">UAH</option>
-              <option value="egp">EGP</option>
-              <option value="cad">CAD</option>
-              <option value="inr">INR</option>
+              {CURRENCY_OPTIONS.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
             </select>
             <label htmlFor="logo" className="img-label">
               <input

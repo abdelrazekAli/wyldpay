@@ -3,7 +3,7 @@ import { useRef, useState } from "react";
 import "../../../styles/forms/categoryForm.sass";
 import { getUser } from "../../../redux/user.slice";
 import { CategoryBox } from "../layouts/CategoryBox";
-import { categories } from "../../../utils/foodCategories";
+import { categories } from "../../../data/foodCategories";
 import { StepperProps } from "../../../types/StepperProps";
 import { useAppSelector } from "../../../redux/store.hooks";
 
