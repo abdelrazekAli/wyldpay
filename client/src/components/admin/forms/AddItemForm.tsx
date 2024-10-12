@@ -35,15 +35,18 @@ export const AddItemForm = ({
     try {
       const imageURL = await uploadImage(image);
 
-      const res = await axios.post("/api/v1/items", {
-        name,
-        price,
-        img: imageURL,
-        category: category?.value,
-        desc: description,
-        ingredients,
-        restId: restaurantId,
-      });
+      const res = await axios.post(
+        `${process.env.REACT_APP_API_VERSION!}/items`,
+        {
+          name,
+          price,
+          img: imageURL,
+          category: category?.value,
+          desc: description,
+          ingredients,
+          restId: restaurantId,
+        }
+      );
 
       setItems(res.data);
 

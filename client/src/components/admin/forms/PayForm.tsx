@@ -24,11 +24,14 @@ export const PayForm = () => {
     try {
       setError(null);
       const userId = localStorage.getItem("userId");
-      const res = await axios.post("/api/v1/banks", {
-        ...data,
-        userId,
-        customerFees: check,
-      });
+      const res = await axios.post(
+        `${process.env.REACT_APP_API_VERSION!}/banks`,
+        {
+          ...data,
+          userId,
+          customerFees: check,
+        }
+      );
       localStorage.clear();
       loginHandler(res.data);
     } catch (err) {

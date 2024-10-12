@@ -17,7 +17,9 @@ export const fetchRestaurant = createAsyncThunk(
   "restaurant/fetchByIdStatus",
   async (restaurantId: string) => {
     try {
-      const response = await axios.get(`/api/v1/restaurants/${restaurantId}`);
+      const response = await axios.get(
+        `${process.env.REACT_APP_API_VERSION!}/restaurants/${restaurantId}`
+      );
       return response.data;
     } catch (err) {
       console.log(err);

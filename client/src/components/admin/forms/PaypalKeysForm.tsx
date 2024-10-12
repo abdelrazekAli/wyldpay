@@ -21,7 +21,9 @@ export const PaypalKeysForm = ({ hideForm }: { hideForm: () => void }) => {
   useEffect(() => {
     const fetchMethods = async () => {
       try {
-        const res = await axios.get(`/api/v1/banks/${_id}`);
+        const res = await axios.get(
+          `${process.env.REACT_APP_API_VERSION!}/banks/${_id}`
+        );
         setPaymentsMethod(
           res.data.paymentsMethods.filter(
             (method: PaymentMethod) => method.name === "paypal"
@@ -43,7 +45,7 @@ export const PaypalKeysForm = ({ hideForm }: { hideForm: () => void }) => {
     setIsLoading(true);
     try {
       await axios.put(
-        "/api/v1/banks/methods",
+        `${process.env.REACT_APP_API_VERSION!}/banks/methods`,
         {
           name: "paypal",
           publicKey: paymentsMethod?.publicKey,

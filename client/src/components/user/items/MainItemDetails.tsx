@@ -35,7 +35,9 @@ export const MainItemDetails = () => {
       setError(false);
       setIsLoading(true);
       try {
-        const res = await axios.get(`/api/v1/items/${itemId}`);
+        const res = await axios.get(
+          `${process.env.REACT_APP_API_VERSION!}/items/${itemId}`
+        );
         setItem(res.data);
       } catch (err) {
         console.log(err);

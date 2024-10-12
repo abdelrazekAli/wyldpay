@@ -20,9 +20,11 @@ export const Success = () => {
     // Fetch order and restaurant data
     const fetchData = async () => {
       try {
-        const orderResponse = await axios.get(`/api/v1/orders/${orderId}`);
+        const orderResponse = await axios.get(
+          `${process.env.REACT_APP_API_VERSION!}/orders/${orderId}`
+        );
         const restaurantResponse = await axios.get(
-          `/api/v1/restaurants/${restId}`
+          `${process.env.REACT_APP_API_VERSION!}/restaurants/${restId}`
         );
         setOrder(orderResponse.data);
         setRestaurant(restaurantResponse.data);

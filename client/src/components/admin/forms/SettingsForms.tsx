@@ -44,7 +44,9 @@ export const SettingsForms = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get(`/api/v1/restaurants/user/${_id}`);
+        const res = await axios.get(
+          `${process.env.REACT_APP_API_VERSION!}/restaurants/user/${_id}`
+        );
         setRestaurant(res.data);
         setPhoneNum(res.data.userId.phone);
         setUserData({
@@ -93,7 +95,7 @@ export const SettingsForms = () => {
     try {
       // Update user data
       await axios.put(
-        `/api/v1/users`,
+        `${process.env.REACT_APP_API_VERSION!}/users`,
         {
           ...data,
           phone: phoneNum,
@@ -112,7 +114,7 @@ export const SettingsForms = () => {
         : restaurant?.background;
 
       await axios.put(
-        `/api/v1/restaurants`,
+        `${process.env.REACT_APP_API_VERSION!}/restaurants`,
         {
           vatNum: data.vatNum,
           vatPercentage: data.vatPercentage,

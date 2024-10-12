@@ -22,7 +22,9 @@ export const EditBankForm = () => {
     const fetchItems = async () => {
       // Fetch bank data
       try {
-        const res = await axios.get(`/api/v1/banks/${_id}`);
+        const res = await axios.get(
+          `${process.env.REACT_APP_API_VERSION!}/banks/${_id}`
+        );
 
         setBankData(res.data);
         setCheck(res.data.customerFees);
@@ -43,7 +45,7 @@ export const EditBankForm = () => {
       delete data.paymentsMethods;
 
       await axios.put(
-        "/api/v1/banks",
+        `${process.env.REACT_APP_API_VERSION!}/banks`,
         {
           ...data,
           customerFees: check,

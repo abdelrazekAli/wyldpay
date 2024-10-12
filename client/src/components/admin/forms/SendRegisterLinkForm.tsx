@@ -15,9 +15,12 @@ export const SendRegisterLinkForm = () => {
     if (!email) return setError("Please enter an email");
     setIsLoading(true);
     try {
-      await axios.post(`/api/v1/emails/send-register-token`, {
-        email,
-      });
+      await axios.post(
+        `${process.env.REACT_APP_API_VERSION!}/emails/send-register-token`,
+        {
+          email,
+        }
+      );
       setSuccess(true);
     } catch (err: any) {
       let statusCode = err.response.status;

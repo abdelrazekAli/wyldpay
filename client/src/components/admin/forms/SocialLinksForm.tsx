@@ -19,7 +19,9 @@ export const SocialLinksForm = ({ hideForm }: { hideForm: () => void }) => {
     // Fetch links
     const fetchLinks = async () => {
       try {
-        const res = await axios.get(`/api/v1/users/${_id}`);
+        const res = await axios.get(
+          `${process.env.REACT_APP_API_VERSION!}/users/${_id}`
+        );
         res.data.socialLinks?.map((link: { name: string; value: string }) => {
           link.name === "google" && setGoogle(link.value);
           link.name === "youtube" && setYoutube(link.value);
@@ -44,7 +46,7 @@ export const SocialLinksForm = ({ hideForm }: { hideForm: () => void }) => {
 
     try {
       await axios.put(
-        `/api/v1/users/links`,
+        `${process.env.REACT_APP_API_VERSION!}/users/links`,
         {
           socialLinks: [
             { name: "google", value: google },

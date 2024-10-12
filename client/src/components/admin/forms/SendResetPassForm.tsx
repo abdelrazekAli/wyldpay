@@ -30,7 +30,10 @@ export const SendResetPassForm = () => {
     setIsLoading(true);
 
     try {
-      await axios.post("/api/v1/emails/send-reset-token", data);
+      await axios.post(
+        `${process.env.REACT_APP_API_VERSION!}/emails/send-reset-token`,
+        data
+      );
 
       setHideModal(false);
       setError(null);

@@ -33,7 +33,9 @@ export const Menu = () => {
     const fetchItems = async () => {
       setError(false);
       try {
-        const res = await axios.get(`/api/v1/items/restaurant/${restId}`);
+        const res = await axios.get(
+          `${process.env.REACT_APP_API_VERSION!}/items/restaurant/${restId}`
+        );
         setItems(res.data);
       } catch (err) {
         console.log(err);

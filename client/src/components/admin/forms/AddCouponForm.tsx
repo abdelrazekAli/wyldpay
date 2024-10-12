@@ -28,7 +28,7 @@ export const AddCouponForm = ({
 
     try {
       const res = await axios.post(
-        "/api/v1/coupons",
+        `${process.env.REACT_APP_API_VERSION!}/coupons`,
         {
           code: couponCode,
           type: couponType,

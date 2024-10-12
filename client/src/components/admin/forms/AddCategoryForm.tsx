@@ -34,7 +34,7 @@ export const AddCategoryForm = ({
 
     try {
       await axios.put(
-        "/api/v1/restaurants/categories",
+        `${process.env.REACT_APP_API_VERSION!}/restaurants/categories`,
         {
           categories: newCategories,
           restaurantId,

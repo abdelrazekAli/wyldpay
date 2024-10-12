@@ -33,9 +33,13 @@ export const ResetPassForm = () => {
     setIsLoading(true);
 
     try {
-      await axios.post(`/api/v1/auth/pass/reset/${userId}/${token}`, {
-        password: data.password,
-      });
+      await axios.post(
+        `${process.env
+          .REACT_APP_API_VERSION!}/auth/pass/reset/${userId}/${token}`,
+        {
+          password: data.password,
+        }
+      );
       setError(null);
       setHideModal(false);
     } catch (err: any) {

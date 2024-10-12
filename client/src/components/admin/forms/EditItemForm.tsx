@@ -39,7 +39,10 @@ export const EditItemForm = ({
         ingredients,
         restId: item.restId,
       };
-      await axios.put(`/api/v1/items/id/${item._id}`, updatedItem);
+      await axios.put(
+        `${process.env.REACT_APP_API_VERSION!}/items/id/${item._id}`,
+        updatedItem
+      );
       onUpdate({ _id: item._id, ...updatedItem });
       hideForm();
     } catch (err) {

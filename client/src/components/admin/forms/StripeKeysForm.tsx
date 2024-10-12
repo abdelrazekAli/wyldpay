@@ -21,7 +21,9 @@ export const StripeKeysForm = ({ hideForm }: { hideForm: () => void }) => {
   useEffect(() => {
     const fetchMethods = async () => {
       try {
-        const res = await axios.get(`/api/v1/banks/${_id}`);
+        const res = await axios.get(
+          `${process.env.REACT_APP_API_VERSION!}/banks/${_id}`
+        );
         console.log(res);
         setPaymentsMethod(
           res.data.paymentsMethods.filter(
@@ -46,7 +48,7 @@ export const StripeKeysForm = ({ hideForm }: { hideForm: () => void }) => {
 
     try {
       await axios.put(
-        "/api/v1/banks/methods",
+        `${process.env.REACT_APP_API_VERSION!}/banks/methods`,
         {
           name: "stripe",
           publicKey: paymentsMethod?.publicKey,

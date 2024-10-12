@@ -28,9 +28,12 @@ export const OrderDiscount = () => {
 
     try {
       setIsLoading(true);
-      const res = await axios.post(`/api/v1/coupons/apply/${restId}`, {
-        code: String(discountCode.current.value).trim(),
-      });
+      const res = await axios.post(
+        `${process.env.REACT_APP_API_VERSION!}/coupons/apply/${restId}`,
+        {
+          code: String(discountCode.current.value).trim(),
+        }
+      );
 
       dispatch(addDiscount(res.data));
       setFormVisible(!isFormVisible);

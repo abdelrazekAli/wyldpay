@@ -23,11 +23,14 @@ export const CouponRow = ({
   const deleteCoupon = async (couponId: string) => {
     setIsLoading(true);
     try {
-      await axios.delete(`/api/v1/coupons/${couponId}`, {
-        headers: {
-          "auth-token": accessToken,
-        },
-      });
+      await axios.delete(
+        `${process.env.REACT_APP_API_VERSION!}/coupons/${couponId}`,
+        {
+          headers: {
+            "auth-token": accessToken,
+          },
+        }
+      );
       onDelete(coupon._id);
     } catch (err) {
       console.log(err);

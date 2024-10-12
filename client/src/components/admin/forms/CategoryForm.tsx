@@ -50,7 +50,7 @@ export const CategoryForm = ({ onClick, onSkip }: StepperProps) => {
     localStorage.setItem("categories", JSON.stringify(filterCategories));
     try {
       await axios.put(
-        "/api/v1/restaurants/categories",
+        `${process.env.REACT_APP_API_VERSION!}/restaurants/categories`,
         {
           categories: filterCategories,
           restaurantId,

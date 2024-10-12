@@ -60,16 +60,19 @@ export const StripePayment = ({
 
   const submitOrder = async (paymentMethod: string) => {
     try {
-      const res = await axios.post("/api/v1/orders", {
-        items: cartItems,
-        totalPrice,
-        notes: orderNote || "",
-        paymentMethod,
-        tableNum: tableId,
-        tip: tip || null,
-        discount: discount || null,
-        restId,
-      });
+      const res = await axios.post(
+        `${process.env.REACT_APP_API_VERSION!}/orders`,
+        {
+          items: cartItems,
+          totalPrice,
+          notes: orderNote || "",
+          paymentMethod,
+          tableNum: tableId,
+          tip: tip || null,
+          discount: discount || null,
+          restId,
+        }
+      );
       window.location.replace(`/orders/${restId}/${res.data._id}`);
     } catch (err) {
       console.log(err);
@@ -85,11 +88,15 @@ export const StripePayment = ({
     setPaymentFailed(false);
     setPaymentLoading(true);
     axios
-      .post("/api/v1/payments/stripe/create-payment-intent", {
-        amount: +totalPrice.toFixed(2),
-        currency,
-        secretKey: stripeKeys.secretKey,
-      })
+      .post(
+        `${process.env
+          .REACT_APP_API_VERSION!}/payments/stripe/create-payment-intent`,
+        {
+          amount: +totalPrice.toFixed(2),
+          currency,
+          secretKey: stripeKeys.secretKey,
+        }
+      )
       .then((res) => {
         return stripe?.confirmCardPayment(res.data.clientSecret, {
           payment_method: {
