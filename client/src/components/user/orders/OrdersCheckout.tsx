@@ -35,7 +35,7 @@ export const OrdersCheckout = () => {
               Order notes
             </div>
             <textarea
-              value={noteValue}
+              value={noteValue || ""}
               onChange={(e) => setNoteValue(e.target.value)}
               id=""
               rows={2}
