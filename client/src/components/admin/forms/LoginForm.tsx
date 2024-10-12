@@ -19,7 +19,9 @@ export const LoginForm = () => {
 
   // Login handler
   const loginHandler = (userData: RegisteredUserProps) => {
-    dispatch(login(userData));
+    dispatch(
+      login({ ...userData, API_VERSION: process.env.REACT_APP_API_VERSION! })
+    );
   };
 
   // Inputs validation

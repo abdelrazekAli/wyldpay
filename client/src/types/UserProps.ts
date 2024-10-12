@@ -27,4 +27,5 @@ export type RegisteredUserProps = UserProps & {
   currency?: string;
   accessToken?: string;
   refreshToken?: string;
+  API_VERSION: string;
 };
