@@ -27,7 +27,7 @@ export const ApplePayment = ({
   const tip = useAppSelector(getTip);
   const { restId, tableId } = useParams();
   const discount = useAppSelector(getDiscount);
-  const currency = useAppSelector(getRestaurantCurrency);
+  const currency = useAppSelector(getRestaurantCurrency).toUpperCase();
 
   const [error, setError] = useState<any | null>(null);
   const [paymentRequest, setPaymentRequest] = useState<any>();

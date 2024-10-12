@@ -26,7 +26,7 @@ export const StripePayment = ({
   const { restId, tableId } = useParams();
   const discount = useAppSelector(getDiscount);
 
-  const currency = useAppSelector(getRestaurantCurrency);
+  const currency = useAppSelector(getRestaurantCurrency).toUpperCase();
   const [error, setError] = useState<string | null>(null);
   const [cardValid, setCardValid] = useState<boolean>(false);
   const [paymentFailed, setPaymentFailed] = useState<boolean>(false);

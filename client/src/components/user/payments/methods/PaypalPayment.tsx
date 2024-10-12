@@ -21,7 +21,7 @@ export const PaypalPayment = ({
   const tip = useAppSelector(getTip);
   const { restId, tableId } = useParams();
   const discount = useAppSelector(getDiscount);
-  const currency = useAppSelector(getRestaurantCurrency);
+  const currency = useAppSelector(getRestaurantCurrency).toUpperCase();
   const [error, setError] = useState<string | null>(null);
 
   const cartProducts = useAppSelector(getCartProducts);
