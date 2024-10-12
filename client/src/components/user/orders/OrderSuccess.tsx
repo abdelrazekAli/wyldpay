@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { Order } from "../../../types/Order";
 import { useParams } from "react-router-dom";
 import "../../../styles/menu/orderSuccess.sass";
-import { CircularProgress } from "@material-ui/core";
+import { CircularProgress } from "@mui/material";
 import { RestaurantProps } from "../../../types/Restaurant";
 import { downloadReceipt } from "../../../utils/orderReceipt";
 

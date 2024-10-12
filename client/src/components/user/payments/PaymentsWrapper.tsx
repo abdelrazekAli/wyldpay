@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { CircularProgress } from "@material-ui/core";
+import { CircularProgress } from "@mui/material";
 import { getSymbol } from "../../../utils/currencySymbol";
 import { useAppSelector } from "../../../redux/store.hooks";
 import { PaymentMethod } from "../../../types/PaymentMethod";

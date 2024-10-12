@@ -6,9 +6,9 @@ import { MainHeader } from "./MainHeader";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { ViewOrderBtn } from "./ViewOrderBtn";
+import { CircularProgress } from "@mui/material";
 import { MainCategories } from "./MainCategories";
 import { ProductType } from "../../../types/Product";
-import { CircularProgress } from "@material-ui/core";
 import { useAppDispatch, useAppSelector } from "../../../redux/store.hooks";
 import {
   fetchRestaurant,

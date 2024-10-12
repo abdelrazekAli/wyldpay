@@ -4,7 +4,7 @@ import { Order } from "../../../types/Order";
 import { OrderRow } from "../layouts/OrderRow";
 import { Modal } from "../../user/layouts/Modal";
 import { getUser } from "../../../redux/user.slice";
-import { CircularProgress } from "@material-ui/core";
+import { CircularProgress } from "@mui/material";
 import { fetchData } from "../../../utils/fetchData";
 import { Subscription } from "../../../types/Subscription";
 import { useAppSelector } from "../../../redux/store.hooks";

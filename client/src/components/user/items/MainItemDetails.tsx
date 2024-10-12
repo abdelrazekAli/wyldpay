@@ -1,8 +1,8 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import "../../../styles/menu/itemDetails.sass";
+import { CircularProgress } from "@mui/material";
 import { ProductType } from "../../../types/Product";
-import { CircularProgress } from "@material-ui/core";
 import { addToCart } from "../../../redux/cart.slice";
 import { getSymbol } from "../../../utils/currencySymbol";
 import { useNavigate, useParams } from "react-router-dom";

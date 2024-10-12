@@ -4,7 +4,7 @@ import { CouponRow } from "../layouts/CouponRow";
 import { CouponType } from "../../../types/Coupon";
 import { getUser } from "../../../redux/user.slice";
 import { fetchData } from "../../../utils/fetchData";
-import { CircularProgress } from "@material-ui/core";
+import { CircularProgress } from "@mui/material";
 import { AddCouponForm } from "../forms/AddCouponForm";
 import { useAppSelector } from "../../../redux/store.hooks";
 import { Table, Thead, Tbody, Tr, Th } from "react-super-responsive-table";

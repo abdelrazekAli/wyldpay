@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useRef, useState } from "react";
 import { useParams } from "react-router-dom";
-import { CircularProgress } from "@material-ui/core";
+import { CircularProgress } from "@mui/material";
 import { getSymbol } from "../../../utils/currencySymbol";
 import { getRestaurantCurrency } from "../../../redux/restaurant.slice";
 import { addDiscount, getDiscount } from "../../../redux/discount.slice";
