@@ -236,7 +236,5 @@ export const downloadReceipt = (order: Order, restaurant: RestaurantProps) => {
     theme: "plain",
   });
 
-  return doc.save(
-    `${restaurant.userId.businessName}-invoice-${order._id.substring(0, 8)}`
-  );
+  return doc.save(`invoice-${order._id.substring(0, 8)}`);
 };
