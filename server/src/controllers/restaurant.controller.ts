@@ -1,4 +1,6 @@
 import { Request, Response } from "express";
+import { createBank } from "../services/bank.service";
+import { findUserById } from "../services/user.service";
 import { generateAccessToken } from "../services/token.service";
 import { handleClientError, handleServerError } from "../utils/error.util";
 import { handleValidationError } from "../utils/validation/helper.validation";
@@ -8,21 +10,18 @@ import {
   validateCategories,
 } from "../utils/validation/restaurant.validation";
 import {
-  findRestaurantByUserId,
+  findRestaurant,
   createRestaurant,
   updateRestaurantById,
   updateRestaurantCategories,
-  findRestaurantById,
 } from "../services/restaurant.service";
-import { findUserById } from "../services/user.service";
-import { createBank } from "../services/bank.service";
 
 // Get restaurant by ID
 export const getRestaurantById = async (req: Request, res: Response) => {
   const { restaurantId } = req.params;
 
   try {
-    const restaurant = await findRestaurantById(restaurantId);
+    const restaurant = await findRestaurant({ _id: restaurantId });
     if (!restaurant) {
       return handleClientError(
         res,
@@ -42,7 +41,7 @@ export const getRestaurantByUserId = async (req: Request, res: Response) => {
   const { userId } = req.params;
 
   try {
-    const restaurant = await findRestaurantByUserId(userId);
+    const restaurant = await findRestaurant({ userId });
     return res.status(200).json(restaurant);
   } catch (error: unknown) {
     handleServerError(res, error, "Failed to get restaurant by user ID");
@@ -92,7 +91,7 @@ export const getRestaurantCategories = async (req: Request, res: Response) => {
   const { restaurantId } = req.params;
 
   try {
-    const restaurant = await findRestaurantById(restaurantId);
+    const restaurant = await findRestaurant({ _id: restaurantId });
     if (!restaurant) {
       return handleClientError(
         res,

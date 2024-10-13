@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
+import { findRestaurant } from "../services/restaurant.service";
 import { createStripeCustomer } from "../services/stripe.service";
 import { comparePassword, hashPassword } from "../utils/password.util";
-import { findRestaurantByUserId } from "../services/restaurant.service";
 import { handleClientError, handleServerError } from "../utils/error.util";
 import { handleValidationError } from "../utils/validation/helper.validation";
 import {
@@ -67,7 +67,7 @@ export const loginUser = async (req: Request, res: Response) => {
       return handleClientError(res, "Invalid email or password", 401);
 
     // Get restaurant details
-    const restaurant = await findRestaurantByUserId(user._id as any);
+    const restaurant = await findRestaurant({ userId: user._id });
 
     // Generate Access Token
     const accessToken = generateAccessToken({

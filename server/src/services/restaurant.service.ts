@@ -1,19 +1,12 @@
 import RestaurantModel from "../models/restaurant.model";
 import { RestaurantProps } from "../types/restaurant.type";
 
-// Find restaurant by ID
-export const findRestaurantById = async (
-  id: string
-): Promise<(RestaurantProps & Document) | null> => {
-  return await RestaurantModel.findById(id);
-};
-
-// Find restaurant by user ID
-export const findRestaurantByUserId = async (userId: string) => {
-  return await RestaurantModel.findOne({ userId }, { __v: 0 }).populate({
-    path: "userId",
-    select: "-_id -password -updatedAt -createdAt -__v",
-  });
+// Find restaurant
+export const findRestaurant = async (filter: object) => {
+  return await RestaurantModel.findOne(filter).populate(
+    "userId",
+    "-password -createdAt -updatedAt -__v"
+  );
 };
 
 // Create a new restaurant

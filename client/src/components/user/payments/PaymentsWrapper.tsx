@@ -29,7 +29,7 @@ export const PaymentsWrapper = ({
       try {
         const res = await axios.get(
           `${process.env.REACT_APP_API_VERSION!}/banks/${
-            restaurant.data?.userId
+            restaurant.data?.userId._id
           }`
         );
 
