@@ -3,7 +3,7 @@ import { verifyAuth } from "../middlewares/verifyAuth.middleware";
 import { validateIdMiddleware } from "../middlewares/validateId.middleware";
 import {
   getOrderById,
-  getAllOrdersByRestaurantId,
+  getOrdersByRestaurantId,
   createNewOrder,
 } from "../controllers/order.controller";
 
@@ -13,7 +13,7 @@ export const orderRouter = Router();
 orderRouter.get("/:orderId", validateIdMiddleware("orderId"), getOrderById);
 
 // Get all orders by restaurant id
-orderRouter.get("/", verifyAuth, getAllOrdersByRestaurantId);
+orderRouter.get("/", verifyAuth, getOrdersByRestaurantId);
 
 // Post new order
 orderRouter.post("/", createNewOrder);

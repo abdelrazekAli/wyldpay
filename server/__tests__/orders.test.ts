@@ -30,14 +30,18 @@ describe("Order API Tests", () => {
     expect(response.body).toHaveProperty("_id", testOrderId);
   });
 
-  // Test getting all orders for a restaurant
-  it("should fetch all orders for the restaurant", async () => {
+  // Test getting orders for a restaurant
+  it("should fetch orders by restaurant id", async () => {
+    const page = 1;
+    const limit = 10;
     const response = await agent
-      .get("/api/v1/orders")
+      .get(`/api/v1/orders?page=${page}&limit=${limit}`)
       .set("auth-token", accessToken);
 
     expect(response.status).toBe(200);
-    expect(Array.isArray(response.body)).toBe(true);
+    expect(Array.isArray(response.body.orders)).toBe(true);
+    expect(response.body).toHaveProperty("orders");
+    expect(response.body).toHaveProperty("totalPages");
   });
 
   // Test handling not found for an order by ID

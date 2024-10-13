@@ -1,8 +1,9 @@
 import { Request, Response } from "express";
 import {
   fetchOrderById,
-  fetchAllOrdersByRestaurant,
+  fetchOrdersByRestaurantID,
   createOrder,
+  totalOrders,
 } from "../services/order.service";
 import { validateOrderData } from "../utils/validation/order.validation";
 import { handleClientError, handleServerError } from "../utils/error.util";
@@ -28,15 +29,19 @@ export const getOrderById = async (req: Request, res: Response) => {
 };
 
 // Get all orders by restaurant id
-export const getAllOrdersByRestaurantId = async (
-  req: Request,
-  res: Response
-) => {
+export const getOrdersByRestaurantId = async (req: Request, res: Response) => {
   const { restaurantId } = req.user;
+  const { page = 1, limit = 10 } = req.query; // For pagination
 
   try {
-    const orders = await fetchAllOrdersByRestaurant(restaurantId);
-    res.status(200).json(orders);
+    const orders = await fetchOrdersByRestaurantID(restaurantId, +page, +limit);
+    const totalRestaurantOrders = await totalOrders(restaurantId);
+    const totalPages = Math.ceil(+totalRestaurantOrders / +limit);
+
+    res.status(200).json({
+      orders,
+      totalPages,
+    });
   } catch (error: unknown) {
     return handleServerError(
       res,

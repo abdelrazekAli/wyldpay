@@ -4,11 +4,11 @@ import { Order } from "../../../types/Order";
 import { OrderRow } from "../layouts/OrderRow";
 import { Modal } from "../../user/layouts/Modal";
 import { getUser } from "../../../redux/user.slice";
-import { CircularProgress } from "@mui/material";
 import { fetchData } from "../../../utils/fetchData";
 import { Subscription } from "../../../types/Subscription";
 import { useAppSelector } from "../../../redux/store.hooks";
 import { RestaurantProps } from "../../../types/Restaurant";
+import { CircularProgress, Pagination } from "@mui/material";
 import { Table, Thead, Tbody, Tr, Th } from "react-super-responsive-table";
 import "react-super-responsive-table/dist/SuperResponsiveTableStyle.css";
 
@@ -20,11 +20,16 @@ export const OrdersTable = () => {
     null
   );
 
+  // Pagination states
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
+  const itemsPerPage = 10;
+
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    // Fetch subscriptions and orders
+    // Fetch subscriptions
     fetchData<Subscription[]>(
       `${process.env.REACT_APP_API_VERSION!}/subscriptions/users/check/`,
       accessToken,
@@ -36,10 +41,20 @@ export const OrdersTable = () => {
     );
 
     // Fetch orders
-    fetchData<Order[]>(
-      `${process.env.REACT_APP_API_VERSION!}/orders`,
+    fetchData<{
+      orders: Order[];
+      totalOrders: number;
+      currentPage: number;
+      totalPages: number;
+    }>(
+      `${process.env
+        .REACT_APP_API_VERSION!}/orders?page=${currentPage}&limit=${itemsPerPage}`,
       accessToken,
-      setOrders,
+      (data) => {
+        setOrders(data.orders);
+        setTotalPages(data.totalPages);
+        setIsLoading(false);
+      },
       setError,
       setIsLoading
     );
@@ -52,7 +67,15 @@ export const OrdersTable = () => {
       setError,
       setIsLoading
     );
-  }, [_id, accessToken]);
+  }, [_id, accessToken, currentPage]);
+
+  // handle page numer change for pagination
+  const handlePageChange = (
+    event: React.ChangeEvent<unknown>,
+    value: number
+  ) => {
+    setCurrentPage(value); // Update current page to the selected page
+  };
 
   return (
     <div className="orders-table w-100">
@@ -87,6 +110,18 @@ export const OrdersTable = () => {
                 ))}
               </Tbody>
             </Table>
+            <div className="justify-content-center">
+              <Pagination
+                count={totalPages}
+                page={currentPage}
+                onChange={handlePageChange}
+                variant="outlined"
+                shape="rounded"
+                sx={{ mt: 3 }}
+                size="large"
+              />
+            </div>
+
             {error ? (
               <span className="color-error text-center fs-3 my-2 w-100 d-block">
                 {error}
