@@ -7,6 +7,7 @@ import logger from "./config/logger.config";
 import express, { Application } from "express";
 import connectToDatabase from "./config/db.config";
 import { corsOptions } from "./config/cors.config";
+import { connectRedis } from "./config/redis.config";
 import { generalLimiter } from "./config/rateLimit.config";
 import { logRequest } from "./middlewares/logger.middleware";
 import { errorHandler } from "./middlewares/error.middleware";
@@ -43,6 +44,7 @@ const port = process.env.PORT;
 if (process.env.NODE_ENV !== "test") {
   app.listen(port, async () => {
     await connectToDatabase();
+    await connectRedis();
     logger.info(`listening on port ${port}`);
   });
 }
