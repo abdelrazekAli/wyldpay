@@ -88,6 +88,7 @@ export const SettingsForms = () => {
     if (!phoneNum) return setError("Phone number required");
 
     setIsLoading(true);
+    delete data._id;
     delete data.confirmPassword;
     delete data.socialLinks;
     delete data.stripeCustomerId;

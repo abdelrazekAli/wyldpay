@@ -1,4 +1,6 @@
 import { Router } from "express";
+import { verifyAuth } from "../middlewares/verifyAuth.middleware";
+import { validateIdMiddleware } from "../middlewares/validateId.middleware";
 import {
   getItem,
   getItemsByRestaurant,
@@ -6,7 +8,6 @@ import {
   updateItem,
   deleteItem,
 } from "../controllers/item.controller";
-import { validateIdMiddleware } from "../middlewares/validateId.middleware";
 
 export const itemRouter = Router();
 
@@ -21,10 +22,20 @@ itemRouter.get(
 );
 
 // Create new item
-itemRouter.post("/", createItem);
+itemRouter.post("/", verifyAuth, createItem);
 
 // Update item by id
-itemRouter.put("/id/:itemId", validateIdMiddleware("itemId"), updateItem);
+itemRouter.put(
+  "/id/:itemId",
+  verifyAuth,
+  validateIdMiddleware("itemId"),
+  updateItem
+);
 
 // Delete item by id
-itemRouter.delete("/id/:itemId", validateIdMiddleware("itemId"), deleteItem);
+itemRouter.delete(
+  "/id/:itemId",
+  verifyAuth,
+  validateIdMiddleware("itemId"),
+  deleteItem
+);

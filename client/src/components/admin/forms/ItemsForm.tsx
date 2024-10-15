@@ -10,12 +10,11 @@ import { MainCategoryType } from "../../../types/Category";
 import { useAppSelector } from "../../../redux/store.hooks";
 
 export const ItemsForm = ({ onClick }: StepperProps) => {
+  const [items, setItems] = useState<Item[]>([]);
+  const { restaurantId, accessToken } = useAppSelector(getUser);
+  const categories = JSON.parse(localStorage.getItem("categories")!);
   const [categorySelected, setCategorySelected] =
     useState<MainCategoryType | null>(null);
-
-  const [items, setItems] = useState<Item[]>([]);
-  const { restaurantId } = useAppSelector(getUser);
-  const categories = JSON.parse(localStorage.getItem("categories")!);
 
   const [error, setError] = useState<string | null>(null);
   const [isFormVisible, setFormVisible] = useState<boolean>(false);
@@ -43,7 +42,12 @@ export const ItemsForm = ({ onClick }: StepperProps) => {
     setItems(filterItems);
     try {
       await axios.delete(
-        `${process.env.REACT_APP_API_VERSION!}/items/id/${itemId}`
+        `${process.env.REACT_APP_API_VERSION!}/items/id/${itemId}`,
+        {
+          headers: {
+            "auth-token": accessToken,
+          },
+        }
       );
     } catch (err) {
       console.log(err);

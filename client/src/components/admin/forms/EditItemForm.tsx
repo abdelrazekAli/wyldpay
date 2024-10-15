@@ -1,7 +1,9 @@
 import axios from "axios";
 import { useState } from "react";
 import { Item } from "../../../types/Item";
+import { getUser } from "../../../redux/user.slice";
 import { uploadImage } from "../../../utils/uploadImage";
+import { useAppSelector } from "../../../redux/store.hooks";
 import { faUpload } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -14,6 +16,7 @@ export const EditItemForm = ({
   hideForm: () => void;
   onUpdate: (updatedItem: Item) => void;
 }) => {
+  const { accessToken } = useAppSelector(getUser);
   const [name, setName] = useState<string>(item.name);
   const [image, setImage] = useState<string | Blob>("");
   const [price, setPrice] = useState<number>(item.price);
@@ -41,7 +44,12 @@ export const EditItemForm = ({
       };
       await axios.put(
         `${process.env.REACT_APP_API_VERSION!}/items/id/${item._id}`,
-        updatedItem
+        updatedItem,
+        {
+          headers: {
+            "auth-token": accessToken,
+          },
+        }
       );
       onUpdate({ _id: item._id, ...updatedItem });
       hideForm();

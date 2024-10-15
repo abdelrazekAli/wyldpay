@@ -12,7 +12,7 @@ import { MainCategoryType } from "../../../types/Category";
 import { useAppSelector } from "../../../redux/store.hooks";
 
 export const MenuForm = () => {
-  const { restaurantId } = useAppSelector(getUser);
+  const { restaurantId, accessToken } = useAppSelector(getUser);
 
   const [items, setItems] = useState<Item[]>([]);
   const [categories, setCategories] = useState<MainCategoryType[] | null>();
@@ -50,7 +50,7 @@ export const MenuForm = () => {
   const handleDeleteItem = (itemId: string) => {
     fetchData(
       `${process.env.REACT_APP_API_VERSION!}/items/id/${itemId}`,
-      "",
+      accessToken,
       () => {},
       setError,
       setIsLoading,

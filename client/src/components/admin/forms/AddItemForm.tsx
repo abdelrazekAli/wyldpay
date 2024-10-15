@@ -1,10 +1,12 @@
 import axios from "axios";
 import { useState } from "react";
 import { Item } from "../../../types/Item";
+import { getUser } from "../../../redux/user.slice";
 import { uploadImage } from "../../../utils/uploadImage";
 import { MainCategoryType } from "../../../types/Category";
 import { faUpload } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useAppSelector } from "../../../redux/store.hooks";
 
 export const AddItemForm = ({
   hideForm,
@@ -17,6 +19,7 @@ export const AddItemForm = ({
   category: MainCategoryType;
   restaurantId: string;
 }) => {
+  const { accessToken } = useAppSelector(getUser);
   const [name, setName] = useState<string | null>("");
   const [image, setImage] = useState<string | Blob>("");
   const [price, setPrice] = useState<number | null>(null);
@@ -45,6 +48,11 @@ export const AddItemForm = ({
           desc: description,
           ingredients,
           restId: restaurantId,
+        },
+        {
+          headers: {
+            "auth-token": accessToken,
+          },
         }
       );
 
