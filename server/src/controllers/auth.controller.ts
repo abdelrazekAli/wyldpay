@@ -1,14 +1,11 @@
 import { Request, Response } from "express";
+import redisClient from "../config/redis.config";
 import { findRestaurant } from "../services/restaurant.service";
+import { generateAccessToken } from "../services/token.service";
 import { createStripeCustomer } from "../services/stripe.service";
 import { comparePassword, hashPassword } from "../utils/password.util";
 import { handleClientError, handleServerError } from "../utils/error.util";
 import { handleValidationError } from "../utils/validation/helper.validation";
-import {
-  generateAccessToken,
-  findToken,
-  deleteToken,
-} from "../services/token.service";
 import {
   createNewUser,
   findUserByEmail,
@@ -100,16 +97,18 @@ export const resetPassword = async (req: Request, res: Response) => {
     const user = await findUserById(req.params.userId);
     if (!user) return handleClientError(res, "User not found", 404);
 
-    // Check token validity
-    const token = await findToken(user._id, req.params.token);
-    if (!token) return handleClientError(res, "Invalid link or expired", 401);
+    // Check token validity in Redis
+    const cachedToken = await redisClient.get(`passwordResetToken:${user._id}`);
+    if (cachedToken !== req.params.token) {
+      return handleClientError(res, "Invalid link or expired", 401);
+    }
 
     // Update user password
     user.password = await hashPassword(userData.password);
     await user.save();
 
     // Remove token after reset
-    await deleteToken(token._id);
+    await redisClient.del(`passwordResetToken:${user._id}`);
 
     // Response
     res.status(200).send("Password reset successfully");

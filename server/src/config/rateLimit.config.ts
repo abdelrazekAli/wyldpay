@@ -11,7 +11,7 @@ export const generalLimiter = rateLimit({
 export const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 5, // limit each IP to 10 login attempts
-  message: "Too many login attempts. Please try again later.",
+  message: "Too many login attempts. Please try again later after 15 minutes",
 });
 
 // Email-specific rate limiter (for email actions like password resets)

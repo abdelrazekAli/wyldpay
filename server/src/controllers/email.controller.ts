@@ -5,7 +5,6 @@ import { handleValidationError } from "../utils/validation/helper.validation";
 import {
   generateRegisterToken,
   generateResetPassToken,
-  saveResetToken,
 } from "../services/token.service";
 import {
   validateEmail,
@@ -15,6 +14,7 @@ import {
   sendRegistrationEmail,
   sendResetPassEmail,
 } from "../services/mail.service";
+import redisClient from "../config/redis.config";
 
 // Send register token
 export const sendRegisterToken = async (req: Request, res: Response) => {
@@ -42,20 +42,26 @@ export const sendRegisterToken = async (req: Request, res: Response) => {
 export const sendResetToken = async (req: Request, res: Response) => {
   try {
     // Validate req body
-    const { error, value: data } = validateSendResetPass(req.body);
+    const { error, value: userData } = validateSendResetPass(req.body);
     if (error) return handleValidationError(res, error);
 
     // Check if email exists
-    const user = await findUserByEmail(data.email);
+    const user = await findUserByEmail(userData.email);
     if (!user) {
-      return handleClientError(res, `Email not registered: ${data.email}`, 401);
+      return handleClientError(
+        res,
+        `Email not registered: ${userData.email}`,
+        401
+      );
     }
 
     // Create and assign a token
     let resetToken = generateResetPassToken({ _id: user._id });
 
-    // Save reset token to database
-    await saveResetToken(user._id, resetToken);
+    // Store reset token in Redis
+    await redisClient.set(`passwordResetToken:${user._id}`, resetToken, {
+      EX: 60 * 60, // Token expires in 1 hour
+    });
 
     // Send reset token to user email
     await sendResetPassEmail(String(user._id), user.email, resetToken);
