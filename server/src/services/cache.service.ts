@@ -7,9 +7,6 @@ export const setCacheValue = async (
   expirationInSeconds?: number
 ): Promise<void> => {
   await redisClient.set(key, value, { EX: expirationInSeconds || 60 * 60 });
-  if (expirationInSeconds) {
-    await redisClient.expire(key, expirationInSeconds); // Set expiration if provided
-  }
 };
 
 // Get value from Cache
