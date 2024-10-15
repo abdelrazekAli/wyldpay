@@ -27,7 +27,7 @@ export const findItemsByRestaurantId = async (
   }
 
   // If not in cache, fetch from the database
-  const items = (await ItemModel.find({ restId })) as ItemProps[];
+  const items: ItemProps[] = await ItemModel.find({ restId });
 
   // Cache the items for future requests
   await setCacheValue(cacheKey, JSON.stringify(items));
