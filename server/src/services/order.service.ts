@@ -27,12 +27,15 @@ export const fetchOrdersByRestaurantID = async (
   }
 
   // If not in cache, fetch from the database
-  const orders = (await OrderModel.find({ restId: restaurantId }, { __v: 0 })
+  const orders: OrderProps[] | [] = await OrderModel.find(
+    { restId: restaurantId },
+    { __v: 0 }
+  )
     .sort({
       createdAt: -1,
     })
     .skip(skip)
-    .limit(limit)) as OrderProps[] | [];
+    .limit(limit);
 
   // Cache the items for future requests
   await setCacheValue(cacheKey, JSON.stringify(orders));
