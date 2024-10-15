@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { setCacheValue } from "../services/cache.service";
 import { findUserByEmail } from "../services/user.service";
 import { handleClientError, handleServerError } from "../utils/error.util";
 import { handleValidationError } from "../utils/validation/helper.validation";
@@ -14,7 +15,6 @@ import {
   sendRegistrationEmail,
   sendResetPassEmail,
 } from "../services/mail.service";
-import redisClient from "../config/redis.config";
 
 // Send register token
 export const sendRegisterToken = async (req: Request, res: Response) => {
@@ -58,10 +58,8 @@ export const sendResetToken = async (req: Request, res: Response) => {
     // Create and assign a token
     let resetToken = generateResetPassToken({ _id: user._id });
 
-    // Store reset token in Redis
-    await redisClient.set(`passwordResetToken:${user._id}`, resetToken, {
-      EX: 60 * 60, // Token expires in 1 hour
-    });
+    // Store reset token in Cache
+    await setCacheValue(`passwordResetToken:${user._id}`, resetToken);
 
     // Send reset token to user email
     await sendResetPassEmail(String(user._id), user.email, resetToken);

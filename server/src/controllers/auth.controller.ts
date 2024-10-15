@@ -16,6 +16,7 @@ import {
   validateLoginData,
   validateResetPass,
 } from "../utils/validation/user.validation";
+import { deleteCachedValue } from "../services/cache.service";
 
 // User register controller
 export const registerUser = async (req: Request, res: Response) => {
@@ -108,7 +109,7 @@ export const resetPassword = async (req: Request, res: Response) => {
     await user.save();
 
     // Remove token after reset
-    await redisClient.del(`passwordResetToken:${user._id}`);
+    await deleteCachedValue(`passwordResetToken:${user._id}`);
 
     // Response
     res.status(200).send("Password reset successfully");
