@@ -4,9 +4,9 @@ import redisClient from "../config/redis.config";
 export const setCacheValue = async (
   key: string,
   value: string,
-  expirationInSeconds?: number
+  expirationInSeconds: number = 60 * 60
 ): Promise<void> => {
-  await redisClient.set(key, value, { EX: expirationInSeconds || 60 * 60 });
+  await redisClient.set(key, value, { EX: expirationInSeconds });
 };
 
 // Get value from Cache

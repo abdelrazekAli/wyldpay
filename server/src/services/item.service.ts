@@ -36,12 +36,15 @@ export const findItemsByRestaurantId = async (
 
 // Save a new item to the database
 export const saveNewItem = async (itemData: ItemProps): Promise<ItemProps> => {
+  const cacheKey = `restaurant:${itemData.restId}:items`;
+
+  // Save Item to database
   const newItem = new ItemModel(itemData);
-  const item = (await newItem.save()) as ItemProps;
+  const item: ItemProps = await newItem.save();
 
   // Invalidate cache after adding new item
-  const cacheKey = ` restaurant:${item.restId}:items`;
   await deleteCachedValue(cacheKey);
+
   return item;
 };
 
