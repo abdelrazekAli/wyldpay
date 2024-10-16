@@ -1,3 +1,5 @@
+export const nonExistItemId = "507f1f77bcf86cd799439011";
+
 export const itemData = {
   name: "Margherita Pizza",
   img: "https://example.com/images/margherita-pizza.jpg",

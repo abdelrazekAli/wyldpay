@@ -1,4 +1,5 @@
 export const testUserId = "6123456789abcdef12345678";
+export const unauthorizedUserId = "67075cab2930a039854c6cda";
 
 export const userData = {
   email: "test@example.com",

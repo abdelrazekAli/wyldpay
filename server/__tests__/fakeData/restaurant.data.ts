@@ -1,4 +1,5 @@
 export const testRestaurantId = "6704245be5d8ee4a0d127f9f";
+export const testDiffRestaurantId = "67075cab2930a039854c6cda";
 
 export const restaurantData = {
   logo: "logo_url.com",

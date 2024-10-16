@@ -30,8 +30,9 @@ export const getItem = async (req: Request, res: Response) => {
 export const getItemsByRestaurant = async (req: Request, res: Response) => {
   const { restId } = req.params;
   try {
-    // Fetch items associated with the restaurant from the database
+    // Fetch restaurant items from the database
     const items = await findItemsByRestaurantId(restId);
+
     // Send response with the found items
     res.status(200).json(items);
   } catch (error: unknown) {
@@ -45,13 +46,16 @@ export const getItemsByRestaurant = async (req: Request, res: Response) => {
 
 // Create a new item
 export const createItem = async (req: Request, res: Response) => {
+  const { restaurantId } = req.user;
+
   try {
     // Validate the request body
     const { error, value: itemData } = validateItemData(req.body);
     if (error) return handleValidationError(res, error);
 
     // Save the new item to the database
-    const item = await saveNewItem(itemData);
+    const item = await saveNewItem({ ...itemData, restId: restaurantId });
+
     // Send response with the newly created item
     res.status(201).json(item);
   } catch (error: unknown) {
@@ -62,13 +66,31 @@ export const createItem = async (req: Request, res: Response) => {
 // Update an existing item by id
 export const updateItem = async (req: Request, res: Response) => {
   const { itemId } = req.params;
+  const { restaurantId } = req.user;
+
   try {
     // Validate the request body
     const { error, value: itemData } = validateItemData(req.body);
     if (error) return handleValidationError(res, error);
 
+    // Find the item by its ID
+    const item = await findItemById(itemId);
+    if (!item) {
+      return handleClientError(res, `Item not found: ${itemId}`, 404);
+    }
+
+    // Check if the item belongs to the user's restaurant
+    if (item.restId.toString() !== restaurantId) {
+      return handleClientError(
+        res,
+        "Unauthorized. You can only modify your own restaurant's items.",
+        403
+      );
+    }
+
     // Update the item in the database
     const updatedItem = await modifyItemById(itemId, itemData);
+
     // Send response with the updated item
     res.status(200).json(updatedItem);
   } catch (error: unknown) {
@@ -83,9 +105,26 @@ export const updateItem = async (req: Request, res: Response) => {
 // Delete an item by id
 export const deleteItem = async (req: Request, res: Response) => {
   const { itemId } = req.params;
+  const { restaurantId } = req.user;
+
   try {
+    // Find the item by its ID
+    const item = await findItemById(itemId);
+    if (!item) {
+      return handleClientError(res, `Item not found: ${itemId}`, 404);
+    }
+
+    // Check if the item belongs to the user's restaurant
+    if (item.restId.toString() !== restaurantId) {
+      return handleClientError(
+        res,
+        "Unauthorized. You can only modify your own restaurant's items.",
+        403
+      );
+    }
     // Remove the item from the database
     await removeItemById(itemId);
+
     // Send confirmation response
     res.status(200).json(`Successfully deleted item with id: ${itemId}`);
   } catch (error: unknown) {
