@@ -1,11 +1,12 @@
-import axios from "axios";
 import "../../../styles/plans.sass";
 import { useEffect, useState } from "react";
+import { CircularProgress } from "@mui/material";
 import { fetchData } from "../../../utils/fetchData";
+import { PricingCard } from "../layouts/PricingCard";
+import { StripePrice } from "../../../types/StripePrice";
 
 export const SubscriptionsPlans = () => {
-  const userId = localStorage.getItem("userId");
-  const [prices, setPrices] = useState<any[]>([]);
+  const [prices, setPrices] = useState<StripePrice[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -20,20 +21,6 @@ export const SubscriptionsPlans = () => {
     );
   }, []);
 
-  const createSession = async (priceId: string) => {
-    setIsLoading(true);
-
-    const { data: response } = await axios.post(
-      `${process.env.REACT_APP_API_VERSION!}/subscriptions/session`,
-      {
-        userId,
-        priceId,
-      }
-    );
-
-    window.location.href = response.url;
-  };
-
   return (
     <div>
       <section className="pricing-section">
@@ -44,38 +31,13 @@ export const SubscriptionsPlans = () => {
             page.
           </p>
           <div className="row">
-            {prices.map((price: any, i) => (
-              <div className="pricing-block" key={i}>
-                <div className="inner-box">
-                  <div className="icon-box">
-                    <div className="icon-outer">
-                      <i className="fas fa-gem"></i>
-                    </div>
-                  </div>
-                  <div className="price-box">
-                    <div className="title">QR Menu Order</div>
-                    <h4 className="price">€{price.unit_amount / 100}</h4>
-                  </div>
-                  <ul className="features">
-                    <li className="true">Menu</li>
-                    <li className="true">QR code</li>
-                    <li className="true">Ordering</li>
-                    <li className="true">Payment</li>
-                    <li className="true">Discounts and tips</li>
-                    {/* <li className="false">Free Contacts</li>  */}
-                  </ul>
-                  <div className="btn-box">
-                    <button
-                      className="theme-btn"
-                      disabled={isLoading}
-                      onClick={() => createSession(price.id)}
-                    >
-                      {isLoading ? "...Loading" : "Buy plan"}
-                    </button>
-                  </div>
-                </div>
+            {!isLoading ? (
+              prices.map((price, i) => <PricingCard price={price} key={i} />)
+            ) : (
+              <div className="p-5 text-center mt-5">
+                <CircularProgress color="inherit" size="25px" />
               </div>
-            ))}
+            )}
           </div>
         </div>
       </section>

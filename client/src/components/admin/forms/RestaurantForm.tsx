@@ -16,7 +16,7 @@ export const RestForm = ({ onClick }: StepperProps) => {
   const [logo, setLogo] = useState<null | File>(null);
   const [vatNum, setVatNum] = useState<string | null>("");
   const [logoBlob, setLogoBlob] = useState<string | Blob>("");
-  const [currency, setCurrency] = useState<string | null>("");
+  const [currency, setCurrency] = useState<string>("");
   const [background, setBackground] = useState<null | File>(null);
   const [backgroundBlob, setBackgroundBlob] = useState<string | Blob>("");
 
@@ -76,9 +76,10 @@ export const RestForm = ({ onClick }: StepperProps) => {
               name="currencies"
               id="currencies"
               className="custom-select select-minimal"
+              value={currency} // Set the value of the select to the state variable
               onChange={(e) => setCurrency(e.target.value)}
             >
-              <option value="" disabled selected hidden>
+              <option value="" disabled hidden>
                 Preferred currency
               </option>
               {CURRENCY_OPTIONS.map((option) => (
@@ -87,6 +88,7 @@ export const RestForm = ({ onClick }: StepperProps) => {
                 </option>
               ))}
             </select>
+
             <label htmlFor="logo" className="img-label">
               <input
                 type="file"
