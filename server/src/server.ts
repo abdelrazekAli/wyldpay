@@ -3,35 +3,32 @@ import cors from "cors";
 import helmet from "helmet";
 import allRoutes from "./routes";
 import responseTime from "response-time";
-import logger from "./config/logger.config";
-import express, { Application } from "express";
-import connectToDatabase from "./config/db.config";
 import { corsOptions } from "./config/cors.config";
-import { connectRedis } from "./config/redis.config";
+import { startServer } from "./utils/startServer.util";
 import { generalLimiter } from "./config/rateLimit.config";
-import { logRequest } from "./middlewares/logger.middleware";
+import { logRequests } from "./middlewares/logger.middleware";
 import { errorHandler } from "./middlewares/error.middleware";
+import express, { Application, Request, Response } from "express";
 
 // Initialize Express app
 const app: Application = express();
 
 // Middlewares
-app.use(express.json());
-app.use(generalLimiter);
-app.use(helmet());
-app.use(cors(corsOptions));
-app.use(responseTime());
+app.use(express.json()); // Parse incoming JSON requests
+app.use(generalLimiter); // Apply rate limiting
+app.use(helmet()); // Secure app by setting various HTTP headers
+app.use(cors(corsOptions)); // Enable Cross-Origin Resource Sharing
+app.use(responseTime()); // Track response performance
+app.use(logRequests); // Log incoming requests
 
-// Middleware to log each incoming request
-app.use(logRequest);
-
-// API routes
+// API Routes
 app.use("/api/v1", allRoutes);
 
 // Serve static files for production
-if (process.env.NODE_ENV === "production") {
+const { NODE_ENV } = process.env;
+if (NODE_ENV === "production") {
   app.use(express.static("./client/build"));
-  app.get("*", (req, res) => {
+  app.get("*", (req: Request, res: Response) => {
     res.sendFile("index.html", { root: __dirname + "/client/build" });
   });
 }
@@ -39,14 +36,9 @@ if (process.env.NODE_ENV === "production") {
 // Error handling middleware
 app.use(errorHandler);
 
-// Start server
-const port = process.env.PORT;
-if (process.env.NODE_ENV !== "test") {
-  app.listen(port, async () => {
-    await connectToDatabase();
-    await connectRedis();
-    logger.info(`listening on port ${port}`);
-  });
+// Start the server unless running in test mode
+if (NODE_ENV !== "test") {
+  startServer(app);
 }
 
 // Export app for testing

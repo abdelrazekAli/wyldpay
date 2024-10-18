@@ -1,4 +1,3 @@
-import logger from "../config/logger.config";
 import { handleServerError } from "../utils/error.util";
 import { Request, Response, NextFunction } from "express";
 
@@ -10,9 +9,6 @@ export const errorHandler = (
   next: NextFunction
 ) => {
   const { method, url } = req;
-
-  // Log the error with request details
-  logger.error(`Error occurred in ${method} ${url}: ${error}`);
 
   // Handle the error response
   return handleServerError(res, error, `Error in ${method} ${url}`);

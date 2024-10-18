@@ -1,8 +1,12 @@
 import { Request, Response, NextFunction } from "express";
 import logger from "../config/logger.config";
 
-// Middleware to log each incoming request and the response
-export const logRequest = (req: Request, res: Response, next: NextFunction) => {
+// Middleware to log each incoming requests and the responses
+export const logRequests = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const { method, url, headers } = req;
   const clientIP = req.ip;
 

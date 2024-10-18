@@ -1,10 +1,10 @@
 const mongoose = require("mongoose");
 import connectToDatabase from "../src/config/db.config";
-import { connectRedis } from "../src/config/redis.config";
+import { connectToRedis } from "../src/config/redis.config";
 
 beforeAll(async () => {
   await connectToDatabase();
-  await connectRedis();
+  await connectToRedis();
   await mongoose.connection.dropDatabase();
 });
 
