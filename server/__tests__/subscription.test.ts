@@ -14,6 +14,11 @@ import {
   invalidStripeUserData,
 } from "./fakeData/subscription.data";
 
+const { API_VERSION } = process.env;
+
+// Pass supertest agent for each test
+const agent = request.agent(app);
+
 jest.mock("../src/services/stripe.service");
 jest.mock("../src/services/user.service");
 
@@ -24,7 +29,7 @@ describe("Subscriptions API Tests", () => {
     it("should return subscription prices", async () => {
       (fetchSubscriptionPrices as jest.Mock).mockResolvedValue(prices);
 
-      const response = await request(app).get("/api/v1/subscriptions/prices");
+      const response = await agent.get(`${API_VERSION}/subscriptions/prices`);
 
       expect(response.status).toBe(200);
       expect(response.body).toEqual(prices.data);
@@ -35,7 +40,7 @@ describe("Subscriptions API Tests", () => {
         new Error("Stripe error")
       );
 
-      const response = await request(app).get("/api/v1/subscriptions/prices");
+      const response = await agent.get(`${API_VERSION}/subscriptions/prices`);
 
       expect(response.status).toBe(500);
     });
@@ -50,8 +55,8 @@ describe("Subscriptions API Tests", () => {
       // Mock payment session creation
       (initiatePaymentSession as jest.Mock).mockResolvedValue(paymentSession);
 
-      const response = await request(app)
-        .post("/api/v1/subscriptions/session")
+      const response = await agent
+        .post(`${API_VERSION}/subscriptions/session`)
         .send(stripeUserData);
 
       expect(response.status).toBe(200);
@@ -62,8 +67,8 @@ describe("Subscriptions API Tests", () => {
       // Mock no user found
       (findUserById as jest.Mock).mockResolvedValue(null);
 
-      const response = await request(app)
-        .post("/api/v1/subscriptions/session")
+      const response = await agent
+        .post(`${API_VERSION}/subscriptions/session`)
         .send(invalidStripeUserData);
 
       expect(response.status).toBe(404);
@@ -76,8 +81,8 @@ describe("Subscriptions API Tests", () => {
         new Error(errorMessage)
       );
 
-      const response = await request(app)
-        .post("/api/v1/subscriptions/session")
+      const response = await agent
+        .post(`${API_VERSION}/subscriptions/session`)
         .send(stripeUserData);
 
       expect(response.status).toBe(500);
@@ -93,8 +98,8 @@ describe("Subscriptions API Tests", () => {
       // Mock subscription check
       (checkSubscriptions as jest.Mock).mockResolvedValue(userSubscription);
 
-      const response = await request(app)
-        .post("/api/v1/subscriptions/users/check")
+      const response = await agent
+        .post(`${API_VERSION}/subscriptions/users/check`)
         .send({ userId: stripeUserData._id });
 
       expect(response.status).toBe(200);
@@ -105,8 +110,8 @@ describe("Subscriptions API Tests", () => {
       // Mock no user found
       (findUserById as jest.Mock).mockResolvedValue(null);
 
-      const response = await request(app)
-        .post("/api/v1/subscriptions/users/check")
+      const response = await agent
+        .post(`${API_VERSION}/subscriptions/users/check`)
         .send({ userId: invalidStripeUserData.userId });
 
       expect(response.status).toBe(404);
@@ -119,8 +124,8 @@ describe("Subscriptions API Tests", () => {
         new Error(errorMessage)
       );
 
-      const response = await request(app)
-        .post("/api/v1/subscriptions/users/check")
+      const response = await agent
+        .post(`${API_VERSION}/subscriptions/users/check`)
         .send({ userId: stripeUserData._id });
 
       expect(response.status).toBe(500);

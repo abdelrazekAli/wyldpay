@@ -5,6 +5,9 @@ import { generateToken } from "../src/utils/token.util";
 import { testRestaurantId } from "./fakeData/restaurant.data";
 import { couponData, invalidCouponData } from "./fakeData/coupon.data";
 
+const { API_VERSION } = process.env;
+
+// Pass supertest agent for each test
 const agent = request.agent(app);
 
 let testCouponId;
@@ -18,7 +21,7 @@ describe("Coupon API Tests", () => {
   // Test creating a new coupon
   it("should create a new coupon", async () => {
     const response = await agent
-      .post("/api/v1/coupons")
+      .post(`${API_VERSION}/coupons`)
       .set("auth-token", accessToken)
       .send(couponData);
     console.log(response.body);
@@ -30,7 +33,7 @@ describe("Coupon API Tests", () => {
   // Test fetching coupons by restaurant ID
   it("should fetch coupons by restaurant ID", async () => {
     const response = await agent
-      .get("/api/v1/coupons")
+      .get(`${API_VERSION}/coupons`)
       .set("auth-token", accessToken);
 
     expect(response.status).toBe(200);
@@ -43,7 +46,7 @@ describe("Coupon API Tests", () => {
   // Test applying a coupon
   it("should apply the coupon", async () => {
     const response = await agent
-      .post(`/api/v1/coupons/apply/${testRestaurantId}`)
+      .post(`${API_VERSION}/coupons/apply/${testRestaurantId}`)
       .set("auth-token", accessToken)
       .send({ code: couponData.code });
     console.log(couponData.code, response.body);
@@ -54,7 +57,7 @@ describe("Coupon API Tests", () => {
   // Test applying an invalid coupon
   it("should return 409 when coupon is invalid", async () => {
     const response = await agent
-      .post(`/api/v1/coupons/apply/${testRestaurantId}`)
+      .post(`${API_VERSION}/coupons/apply/${testRestaurantId}`)
       .send(invalidCouponData);
 
     expect(response.status).toBe(409);
@@ -64,7 +67,7 @@ describe("Coupon API Tests", () => {
   // Test deleting a coupon
   it("should delete the coupon", async () => {
     const response = await agent
-      .delete(`/api/v1/coupons/${testCouponId}`)
+      .delete(`${API_VERSION}/coupons/${testCouponId}`)
       .set("auth-token", accessToken);
 
     expect(response.status).toBe(200);

@@ -8,6 +8,8 @@ import {
   updateRestaurantData,
 } from "./fakeData/restaurant.data";
 
+const { API_VERSION } = process.env;
+
 const agent = request.agent(app);
 // let userId;
 // Mock the findUserById function
@@ -30,7 +32,7 @@ describe("Restaurant API Tests", () => {
   // Test creating a new restaurant
   it("should create a new restaurant", async () => {
     const response = await agent
-      .post("/api/v1/restaurants")
+      .post(`${API_VERSION}/restaurants`)
       .send(restaurantData);
 
     expect(response.body).toHaveProperty("_id");
@@ -43,7 +45,7 @@ describe("Restaurant API Tests", () => {
   // Test creating a new restaurant with invalid data
   it("should return a validation error for invalid restaurant data", async () => {
     const response = await agent
-      .post("/api/v1/restaurants")
+      .post(`${API_VERSION}/restaurants`)
       .send(invalidRestaurantData);
 
     expect(response.status).toBe(400);
@@ -51,7 +53,9 @@ describe("Restaurant API Tests", () => {
 
   // Test getting restaurant by restaurant ID
   it("should fetch a restaurant by ID", async () => {
-    const response = await agent.get(`/api/v1/restaurants/${testRestaurantId}`);
+    const response = await agent.get(
+      `${API_VERSION}/restaurants/${testRestaurantId}`
+    );
     expect(response.status).toBe(200);
     expect(response.body).toHaveProperty("_id", testRestaurantId);
   });
@@ -59,7 +63,7 @@ describe("Restaurant API Tests", () => {
   // Test updating restaurant data
   it("should update the restaurant data", async () => {
     const response = await agent
-      .put("/api/v1/restaurants")
+      .put(`${API_VERSION}/restaurants`)
       .set("auth-token", accessToken)
       .send(updateRestaurantData);
 
@@ -70,7 +74,7 @@ describe("Restaurant API Tests", () => {
   // Test fetching restaurant categories
   it("should fetch restaurant categories", async () => {
     const response = await agent.get(
-      `/api/v1/restaurants/categories/${testRestaurantId}`
+      `${API_VERSION}/restaurants/categories/${testRestaurantId}`
     );
     expect(response.status).toBe(200);
     expect(response.body).toEqual(["Italian", "Mexican"]);
@@ -84,7 +88,7 @@ describe("Restaurant API Tests", () => {
     };
 
     const response = await agent
-      .put("/api/v1/restaurants/categories")
+      .put(`${API_VERSION}/restaurants/categories`)
       .set("auth-token", accessToken)
       .send(updatedCategories);
 

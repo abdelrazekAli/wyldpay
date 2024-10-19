@@ -13,6 +13,7 @@ import express, { Application, Request, Response } from "express";
 
 // Initialize Express app
 const app: Application = express();
+const { API_VERSION, NODE_ENV } = process.env;
 
 // Middlewares
 app.use(helmet()); // Secure app by setting various HTTP headers
@@ -24,10 +25,9 @@ app.use(logRequests); // Log incoming requests
 app.use(responseTime()); // Track response performance
 
 // API Routes
-app.use("/api/v1", allRoutes);
+app.use(API_VERSION, allRoutes);
 
 // Serve static files for production
-const { NODE_ENV } = process.env;
 if (NODE_ENV === "production") {
   app.use(express.static("./client/build"));
   app.get("*", (req: Request, res: Response) => {

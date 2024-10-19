@@ -4,6 +4,9 @@ import { testUserId } from "./fakeData/user.data";
 import { generateToken } from "../src/utils/token.util";
 import { invalidOrderData, orderData } from "./fakeData/order.data";
 
+const { API_VERSION } = process.env;
+
+// Pass supertest agent for each test
 const agent = request.agent(app);
 
 let testOrderId: string;
@@ -14,7 +17,7 @@ describe("Order API Tests", () => {
   // Test creating a new order
   it("should create a new order", async () => {
     const response = await agent
-      .post("/api/v1/orders")
+      .post(`${API_VERSION}/orders`)
       .set("auth-token", accessToken)
       .send(orderData);
 
@@ -25,7 +28,7 @@ describe("Order API Tests", () => {
 
   // Test fetching an order by ID
   it("should fetch an order by ID", async () => {
-    const response = await agent.get(`/api/v1/orders/${testOrderId}`);
+    const response = await agent.get(`${API_VERSION}/orders/${testOrderId}`);
     expect(response.status).toBe(200);
     expect(response.body).toHaveProperty("_id", testOrderId);
   });
@@ -35,7 +38,7 @@ describe("Order API Tests", () => {
     const page = 1;
     const limit = 10;
     const response = await agent
-      .get(`/api/v1/orders?page=${page}&limit=${limit}`)
+      .get(`${API_VERSION}/orders?page=${page}&limit=${limit}`)
       .set("auth-token", accessToken);
 
     expect(response.status).toBe(200);
@@ -47,7 +50,7 @@ describe("Order API Tests", () => {
   // Test handling not found for an order by ID
   it("should return 404 if order not found", async () => {
     const invalidOrderId = "670432a5fe5547ad58b8e762";
-    const response = await agent.get(`/api/v1/orders/${invalidOrderId}`);
+    const response = await agent.get(`${API_VERSION}/orders/${invalidOrderId}`);
 
     expect(response.status).toBe(404);
     expect(response.body).toBe(`Order not found with id: ${invalidOrderId}`);
@@ -56,7 +59,7 @@ describe("Order API Tests", () => {
   // Test validation error when creating an order with invalid data
   it("should return validation error if order data is invalid", async () => {
     const response = await agent
-      .post("/api/v1/orders")
+      .post(`${API_VERSION}/orders`)
       .set("auth-token", accessToken)
       .send(invalidOrderData);
     expect(response.status).toBe(400);

@@ -8,6 +8,9 @@ import {
   updatedItemData,
 } from "./fakeData/item.data";
 
+const { API_VERSION } = process.env;
+
+// Pass supertest agent for each test
 const agent = request.agent(app);
 
 let testItemId: string;
@@ -29,7 +32,7 @@ describe("Item API Tests", () => {
   // Test creating a new item
   it("should create a new item", async () => {
     const response = await agent
-      .post("/api/v1/items")
+      .post(`${API_VERSION}/items`)
       .set("auth-token", accessToken)
       .send(itemData);
 
@@ -42,7 +45,7 @@ describe("Item API Tests", () => {
   it("should return validation error when creating item with invalid data", async () => {
     const invalidItemData = { ...itemData, price: -100 };
     const response = await agent
-      .post("/api/v1/items")
+      .post(`${API_VERSION}/items`)
       .set("auth-token", accessToken)
       .send(invalidItemData);
 
@@ -51,7 +54,7 @@ describe("Item API Tests", () => {
 
   // Test fetching an item by item ID
   it("should fetch an item by ID", async () => {
-    const response = await agent.get(`/api/v1/items/${testItemId}`);
+    const response = await agent.get(`${API_VERSION}/items/${testItemId}`);
     expect(response.status).toBe(200);
     expect(response.body).toHaveProperty("_id", testItemId);
   });
@@ -59,7 +62,7 @@ describe("Item API Tests", () => {
   // Test fetching items by restaurant ID
   it("should fetch all items for a restaurant", async () => {
     const response = await agent.get(
-      `/api/v1/items/restaurant/${itemData.restId}`
+      `${API_VERSION}/items/restaurant/${itemData.restId}`
     );
     expect(response.status).toBe(200);
     expect(Array.isArray(response.body)).toBe(true);
@@ -68,7 +71,7 @@ describe("Item API Tests", () => {
   // Test updating an item by ID
   it("should update an item by ID", async () => {
     const response = await agent
-      .put(`/api/v1/items/id/${testItemId}`)
+      .put(`${API_VERSION}/items/id/${testItemId}`)
       .set("auth-token", accessToken)
       .send(updatedItemData);
 
@@ -80,7 +83,7 @@ describe("Item API Tests", () => {
   // Test updating an item by ID (unauthorized user)
   it("should return 403 when trying to update an item not owned by the user", async () => {
     const response = await agent
-      .put(`/api/v1/items/id/${testItemId}`)
+      .put(`${API_VERSION}/items/id/${testItemId}`)
       .set("auth-token", unauthorizedToken)
       .send(updatedItemData);
 
@@ -93,7 +96,7 @@ describe("Item API Tests", () => {
   // Test updating a non-existent item
   it("should return 404 when trying to update a non-existent item", async () => {
     const response = await agent
-      .put(`/api/v1/items/id/${nonExistItemId}`)
+      .put(`${API_VERSION}/items/id/${nonExistItemId}`)
       .set("auth-token", accessToken)
       .send(updatedItemData);
 
@@ -104,7 +107,7 @@ describe("Item API Tests", () => {
   // Test deleting an item by ID
   it("should delete an item by ID", async () => {
     const response = await agent
-      .delete(`/api/v1/items/id/${testItemId}`)
+      .delete(`${API_VERSION}/items/id/${testItemId}`)
       .set("auth-token", accessToken);
 
     expect(response.status).toBe(200);
@@ -116,7 +119,7 @@ describe("Item API Tests", () => {
   // Test deleting a non-existent item
   it("should return 404 when trying to delete a non-existent item", async () => {
     const response = await agent
-      .delete(`/api/v1/items/id/${nonExistItemId}`)
+      .delete(`${API_VERSION}/items/id/${nonExistItemId}`)
       .set("auth-token", accessToken);
 
     expect(response.status).toBe(404);
