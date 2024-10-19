@@ -9,7 +9,6 @@ export const verifyAuth = (req: Request, res: Response, next: NextFunction) => {
 
   // Check if no token
   if (!token) {
-    console.log(req.header("auth-token"));
     return handleClientError(res, "Access Denied. No token provided.", 403);
   }
 
