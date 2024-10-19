@@ -1,11 +1,11 @@
 import { Request, Response } from "express";
-import redisClient from "../config/redis.config";
 import { findRestaurant } from "../services/restaurant.service";
 import { generateAccessToken } from "../services/token.service";
 import { createStripeCustomer } from "../services/stripe.service";
 import { comparePassword, hashPassword } from "../utils/password.util";
 import { handleClientError, handleServerError } from "../utils/error.util";
 import { handleValidationError } from "../utils/validation/helper.validation";
+import { deleteCachedValue, getCachedValue } from "../services/cache.service";
 import {
   createNewUser,
   findUserByEmail,
@@ -16,7 +16,6 @@ import {
   validateLoginData,
   validateResetPass,
 } from "../utils/validation/user.validation";
-import { deleteCachedValue } from "../services/cache.service";
 
 // User register controller
 export const registerUser = async (req: Request, res: Response) => {
@@ -98,8 +97,9 @@ export const resetPassword = async (req: Request, res: Response) => {
     const user = await findUserById(req.params.userId);
     if (!user) return handleClientError(res, "User not found", 404);
 
-    // Check token validity in Redis
-    const cachedToken = await redisClient.get(`passwordResetToken:${user._id}`);
+    // Check token validity in cache
+    const cacheKey = `passwordResetToken:${user._id}`;
+    const cachedToken = await getCachedValue(cacheKey);
     if (cachedToken !== req.params.token) {
       return handleClientError(res, "Invalid link or expired", 401);
     }
