@@ -45,7 +45,7 @@ describe("Auth API Tests", () => {
       const response = await agent
         .post(`${API_VERSION}/auth/register`)
         .send(invalidRegisterData);
-      console.log(response.body);
+
       expect(response.status).toBe(400);
     });
   });
