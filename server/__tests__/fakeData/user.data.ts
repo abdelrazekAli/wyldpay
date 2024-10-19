@@ -14,6 +14,16 @@ export const userData = {
   businessAddress: "67 cairo",
 };
 
+export const invalidRegisterData = {
+  firstName: "",
+  lastName: "ali",
+  phone: 12,
+  city: "cairo",
+  state: "E",
+  zip: "252154",
+  businessName: "",
+};
+
 export const validLoginData = {
   email: "test@example.com",
   password: "securePassword123",
