@@ -3,6 +3,7 @@ import cors from "cors";
 import helmet from "helmet";
 import allRoutes from "./routes";
 import responseTime from "response-time";
+import mongoSanitize from "express-mongo-sanitize";
 import { corsOptions } from "./config/cors.config";
 import { startServer } from "./utils/startServer.util";
 import { generalLimiter } from "./config/rateLimit.config";
@@ -14,12 +15,13 @@ import express, { Application, Request, Response } from "express";
 const app: Application = express();
 
 // Middlewares
-app.use(express.json()); // Parse incoming JSON requests
-app.use(generalLimiter); // Apply rate limiting
 app.use(helmet()); // Secure app by setting various HTTP headers
 app.use(cors(corsOptions)); // Enable Cross-Origin Resource Sharing
-app.use(responseTime()); // Track response performance
+app.use(express.json()); // Parse incoming JSON requests
+app.use(mongoSanitize()); // Sanitize data against NoSQL injection
+app.use(generalLimiter); // Apply rate limiting
 app.use(logRequests); // Log incoming requests
+app.use(responseTime()); // Track response performance
 
 // API Routes
 app.use("/api/v1", allRoutes);
