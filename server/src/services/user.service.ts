@@ -10,6 +10,13 @@ export const findUserById = async (
   return await UserModel.findById(id).select("-password");
 };
 
+// Find user by email
+export const findUserByEmail = async (
+  email: string
+): Promise<(UserProps & Document) | null> => {
+  return await UserModel.findOne({ email });
+};
+
 // Create new user
 export const createNewUser = async (
   data: UserProps
@@ -19,9 +26,16 @@ export const createNewUser = async (
   return newUser.save(); // Save user to database
 };
 
-// Find user by email
-export const findUserByEmail = async (
-  email: string
-): Promise<(UserProps & Document) | null> => {
-  return await UserModel.findOne({ email });
+// Update user by ID
+export const modifyUserById = async (
+  userId: string,
+  userData: UserProps
+): Promise<UserProps | null> => {
+  const updatedUser = (await UserModel.findByIdAndUpdate(
+    userId,
+    { $set: userData },
+    { runValidators: true, new: true }
+  ).select("-password -createdAt -updatedAt")) as UserProps | null;
+
+  return updatedUser;
 };

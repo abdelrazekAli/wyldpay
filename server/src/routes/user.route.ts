@@ -1,9 +1,5 @@
 import { Router } from "express";
-import {
-  getUserById,
-  updateUser,
-  updateUserLinks,
-} from "../controllers/user.controller";
+import { getUserById, updateUser } from "../controllers/user.controller";
 import { verifyAuth } from "../middlewares/verifyAuth.middleware";
 import { validateIdMiddleware } from "../middlewares/validateId.middleware";
 
@@ -13,7 +9,4 @@ export const userRouter = Router();
 userRouter.get("/:userId", validateIdMiddleware("userId"), getUserById);
 
 // Update user by id
-userRouter.put("/", verifyAuth, updateUser);
-
-// Update user social links by id
-userRouter.put("/links/", verifyAuth, updateUserLinks);
+userRouter.patch("/", verifyAuth, updateUser);

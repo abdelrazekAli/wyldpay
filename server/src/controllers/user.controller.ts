@@ -1,13 +1,12 @@
 import { Request, Response } from "express";
-import UserModel from "../models/user.model";
-import { UserProps } from "../types/user.type";
-import { findUserByEmail, findUserById } from "../services/user.service";
+import { validateUserData } from "../utils/validation/user.validation";
 import { handleClientError, handleServerError } from "../utils/error.util";
 import { handleValidationError } from "../utils/validation/helper.validation";
 import {
-  validateUserData,
-  validateUpdateUserLinks,
-} from "../utils/validation/user.validation";
+  findUserByEmail,
+  findUserById,
+  modifyUserById,
+} from "../services/user.service";
 
 // Get user by id
 export const getUserById = async (req: Request, res: Response) => {
@@ -30,7 +29,7 @@ export const updateUser = async (req: Request, res: Response) => {
   const userId = req.user._id;
 
   // Validate req body
-  const { error, value: userData } = validateUserData(req.body);
+  const { error, value: userData } = validateUserData(req.body, true);
   if (error) return handleValidationError(res, error);
 
   try {
@@ -39,46 +38,20 @@ export const updateUser = async (req: Request, res: Response) => {
     if (!user)
       return handleClientError(res, `User with id ${userId} not found`, 404);
 
-    // Check if the email is changing and if the new email is already in use
-    if (user.email !== req.body.email) {
+    // Check if the email is being updated
+    const { email } = userData;
+    if (email && email !== user.email) {
       const emailCheck = await findUserByEmail(userData.email);
       if (emailCheck)
         return handleClientError(res, "Email is already used", 409);
     }
 
     // Update user
-    const updatedUser = (await UserModel.findByIdAndUpdate(
-      userId,
-      { $set: req.body },
-      { new: true }
-    ).select("-password -createdAt -updatedAt")) as UserProps;
+    const updatedUser = await modifyUserById(userId, userData);
 
     // Response
     return res.status(200).json(updatedUser);
   } catch (error: unknown) {
     return handleServerError(res, error, "Error updating user by ID");
-  }
-};
-
-// Update user social links by id
-export const updateUserLinks = async (req: Request, res: Response) => {
-  const userId = req.user._id;
-
-  // Validate req body
-  const { error, value: userData } = validateUpdateUserLinks(req.body);
-  if (error) return handleValidationError(res, error);
-
-  try {
-    // Update user social links
-    const updatedLinks = await UserModel.findByIdAndUpdate(
-      userId,
-      { socialLinks: userData.socialLinks },
-      { new: true }
-    ).select("socialLinks");
-
-    // Response
-    return res.status(200).json(updatedLinks);
-  } catch (error: unknown) {
-    return handleServerError(res, error, "Error updating user social links");
   }
 };
