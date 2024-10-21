@@ -30,3 +30,11 @@ export type RegisteredUserProps = UserProps & {
   refreshToken?: string;
   API_VERSION: string;
 };
+
+export type socialLinksProps = {
+  google: string;
+  youtube: string;
+  twitter: string;
+  telegram: string;
+  instagram: string;
+};

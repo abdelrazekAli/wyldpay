@@ -95,7 +95,7 @@ export const SettingsForms = () => {
 
     try {
       // Update user data
-      await axios.put(
+      await axios.patch(
         `${process.env.REACT_APP_API_VERSION!}/users`,
         {
           ...data,
