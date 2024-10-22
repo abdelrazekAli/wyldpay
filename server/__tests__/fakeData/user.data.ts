@@ -37,3 +37,11 @@ export const invalidLoginData = {
 export const incompleteLoginData = {
   email: "test@example.com",
 };
+
+export const updatedUserData = {
+  email: "updateduser@example.com",
+  firstName: "John",
+  lastName: "Smith",
+};
+
+export const invalidUserEmail = { email: "invalidEmail" };
