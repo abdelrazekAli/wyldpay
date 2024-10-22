@@ -1,3 +1,4 @@
+export const fakeCouponId = "670f92bd99ca516b5c7300ee";
 export const couponData = {
   code: "DISCOUNT10",
   type: "percentage",
