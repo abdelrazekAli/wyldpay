@@ -8,6 +8,7 @@ import {
 } from "../utils/validation/coupon.validation";
 import {
   checkCouponExists,
+  fetchCouponById,
   fetchCouponsByRestaurant,
   removeCoupon,
   saveNewCoupon,
@@ -79,13 +80,13 @@ export const applyCoupon = async (req: Request, res: Response) => {
       return handleClientError(
         res,
         `Coupon: ${couponData.code} not found`,
-        409
+        404
       );
     } else if (coupon.usage >= coupon.limit) {
       return handleClientError(
         res,
         `Coupon: ${couponData.code} limit reached`,
-        409
+        400
       );
     }
 
@@ -103,6 +104,23 @@ export const applyCoupon = async (req: Request, res: Response) => {
 export const deleteCoupon = async (req: Request, res: Response) => {
   try {
     const { couponId } = req.params;
+    const { restaurantId } = req.user;
+
+    // Fetch the coupon to check its ownership
+    const coupon = await fetchCouponById(couponId);
+
+    if (!coupon) {
+      return handleClientError(res, `Coupon not found`, 404);
+    }
+
+    // Check if the coupon belongs to the user's restaurant
+    if (coupon.restId.toString() !== restaurantId) {
+      return handleClientError(
+        res,
+        "Unauthorized. You can only delete your own restaurant's coupons.",
+        403
+      );
+    }
 
     // Delete coupon
     await removeCoupon(couponId);

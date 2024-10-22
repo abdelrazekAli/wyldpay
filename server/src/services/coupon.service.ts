@@ -10,6 +10,10 @@ export const fetchCouponsByRestaurant = async (restaurantId: string) => {
   )) as CouponProps[];
 };
 
+export const fetchCouponById = async (couponId: string) => {
+  return (await CouponModel.findById(couponId)) as CouponProps;
+};
+
 // Check if a coupon already exists
 export const checkCouponExists = async (
   restaurantId: string,
