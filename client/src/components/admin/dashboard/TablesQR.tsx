@@ -1,5 +1,5 @@
 import { useState } from "react";
-import QRcode from "qrcode.react";
+import { QRCodeSVG } from "qrcode.react";
 import "../../../styles/tablesQR.sass";
 import { downloadQR } from "../../../utils/QR";
 import { getUser } from "../../../redux/user.slice";
@@ -63,7 +63,7 @@ export const TablesQR = () => {
             {tableNum && (
               <>
                 <h4>Table {tableNum}</h4>
-                <QRcode
+                <QRCodeSVG
                   id="myqr"
                   value={`${process.env.REACT_APP_BASE_URL}/menu/${restaurantId}/${tableNum}`}
                   size={320}
