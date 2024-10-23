@@ -62,17 +62,19 @@ export const PaypalPayment = ({
         <div className="error">{error}</div>
         <PayPalScriptProvider
           options={{
-            "client-id": paypalKeys.publicKey,
-            "disable-funding": "card",
+            clientId: paypalKeys.publicKey,
+            disableFunding: "card",
             currency,
           }}
         >
           <PayPalButtons
             createOrder={(data, actions) => {
               return actions.order.create({
+                intent: "CAPTURE",
                 purchase_units: [
                   {
                     amount: {
+                      currency_code: currency,
                       value: String(totalPrice),
                     },
                   },
