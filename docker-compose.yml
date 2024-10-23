@@ -10,8 +10,10 @@ services:
       - "5000:5000"
     depends_on:
       - mongodb
+      - redis
     environment:
       - MONGO_URI=mongodb://mongodb:27017/mern-ts-db
+      - REDIS_URL=redis://redis:6379
     networks:
       - mern-network
     volumes:
@@ -30,7 +32,7 @@ services:
     depends_on:
       - server
     environment:
-      - REACT_APP_API_URL=http://localhost:8000 # Link React to the backend API
+      - REACT_APP_API_URL=http://localhost:5000 # Link React to the backend API
 
   # MongoDB Service
   mongodb:
@@ -55,6 +57,15 @@ services:
       - ME_CONFIG_MONGODB_SERVER=mongodb # Connect to the MongoDB container
       - ME_CONFIG_BASICAUTH_USERNAME=mongoadmin # Set up basic auth username
       - ME_CONFIG_BASICAUTH_PASSWORD=secret # Set up basic auth password
+    networks:
+      - mern-network
+
+  # Redis service
+  redis:
+    image: "redis:alpine"
+    container_name: redis
+    ports:
+      - "6379:6379"
     networks:
       - mern-network
 
