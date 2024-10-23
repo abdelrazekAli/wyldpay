@@ -8,7 +8,7 @@ export const connectToRedis = async () => {
     await redisClient.connect();
     logger.info("Connected to Redis");
   } catch (err) {
-    logger.error("Could not connect to DB", err);
+    logger.error("Could not connect to Redis cache", err);
   }
 };
 
