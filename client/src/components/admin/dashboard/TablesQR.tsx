@@ -18,6 +18,7 @@ export const TablesQR = () => {
             <span
               onClick={() => setFormVisible(!isFormVisible)}
               className="modal-close"
+              aria-label="Close modal"
             >
               &times;
             </span>
@@ -72,7 +73,7 @@ export const TablesQR = () => {
                 />
                 <div className="btn-container">
                   <button
-                    type="submit"
+                    type="button"
                     className="btn"
                     onClick={() => downloadQR(tableNum!)}
                   >
