@@ -1,13 +1,15 @@
 export const downloadQR = (tableNum: number) => {
-  const canvas: any = document.getElementById("myqr")!;
-  const pngUrl = canvas
-    ?.toDataURL("image/png")
-    .replace("image/png", "image/octet-stream");
+  const svg = document.getElementById("myqr") as HTMLElement;
+  const svgData = new XMLSerializer().serializeToString(svg);
+  const svgBlob = new Blob([svgData], { type: "image/svg+xml;charset=utf-8" });
+  const svgUrl = URL.createObjectURL(svgBlob);
 
-  let downloadLink = document.createElement("a");
-  downloadLink.href = pngUrl;
-  downloadLink.download = `table-${tableNum}-QR.png`;
+  const downloadLink = document.createElement("a");
+  downloadLink.href = svgUrl;
+  downloadLink.download = `table-${tableNum}-QR.svg`;
   document.body.appendChild(downloadLink);
   downloadLink.click();
   document.body.removeChild(downloadLink);
+
+  URL.revokeObjectURL(svgUrl);
 };
