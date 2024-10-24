@@ -1,4 +1,3 @@
-import "./utils/axiosInterceptor";
 import { store } from "./redux/store";
 import { Provider } from "react-redux";
 import { getUser } from "./redux/user.slice";
@@ -31,7 +30,7 @@ import {
   OrderSuccess,
 } from "./pages/user";
 
-function AppWraper() {
+function AppWrapper() {
   const App = () => {
     const user = useAppSelector(getUser);
 
@@ -94,4 +93,4 @@ function AppWraper() {
   );
 }
 
-export default AppWraper;
+export default AppWrapper;

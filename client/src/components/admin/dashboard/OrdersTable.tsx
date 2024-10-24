@@ -29,9 +29,9 @@ export const OrdersTable = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    // Fetch subscriptions
+    // Check user subscription
     fetchData<Subscription[]>(
-      `${process.env.REACT_APP_API_VERSION!}/subscriptions/users/check/`,
+      `/subscriptions/users/check/`,
       accessToken,
       setSubscriptions,
       setError,
@@ -47,8 +47,7 @@ export const OrdersTable = () => {
       currentPage: number;
       totalPages: number;
     }>(
-      `${process.env
-        .REACT_APP_API_VERSION!}/orders?page=${currentPage}&limit=${itemsPerPage}`,
+      `/orders?page=${currentPage}&limit=${itemsPerPage}`,
       accessToken,
       (data) => {
         setOrders(data.orders);
@@ -61,7 +60,7 @@ export const OrdersTable = () => {
 
     // Fetch restaurant
     fetchData<RestaurantProps>(
-      `${process.env.REACT_APP_API_VERSION!}/restaurants/user/${_id}`,
+      `/restaurants/user/${_id}`,
       accessToken,
       setRestaurant,
       setError,
@@ -69,7 +68,7 @@ export const OrdersTable = () => {
     );
   }, [_id, accessToken, currentPage]);
 
-  // handle page numer change for pagination
+  // handle page number change for pagination
   const handlePageChange = (
     event: React.ChangeEvent<unknown>,
     value: number
@@ -110,17 +109,19 @@ export const OrdersTable = () => {
                 ))}
               </Tbody>
             </Table>
-            <div className="justify-content-center">
-              <Pagination
-                count={totalPages}
-                page={currentPage}
-                onChange={handlePageChange}
-                variant="outlined"
-                shape="rounded"
-                sx={{ mt: 3 }}
-                size="large"
-              />
-            </div>
+            {orders?.length !== 0 && (
+              <div className="justify-content-center">
+                <Pagination
+                  count={totalPages}
+                  page={currentPage}
+                  onChange={handlePageChange}
+                  variant="outlined"
+                  shape="rounded"
+                  sx={{ mt: 3 }}
+                  size="large"
+                />
+              </div>
+            )}
 
             {error ? (
               <span className="color-error text-center fs-3 my-2 w-100 d-block">

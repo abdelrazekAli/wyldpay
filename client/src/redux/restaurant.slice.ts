@@ -1,4 +1,4 @@
-import axios from "axios";
+import api from "../utils/API";
 import { RootState } from "./store";
 import { RestaurantProps } from "../types/Restaurant";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
@@ -17,9 +17,7 @@ export const fetchRestaurant = createAsyncThunk(
   "restaurant/fetchByIdStatus",
   async (restaurantId: string) => {
     try {
-      const response = await axios.get(
-        `${process.env.REACT_APP_API_VERSION!}/restaurants/${restaurantId}`
-      );
+      const response = await api.get(`/restaurants/${restaurantId}`);
       return response.data;
     } catch (err) {
       console.log(err);

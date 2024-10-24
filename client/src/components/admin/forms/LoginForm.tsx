@@ -1,6 +1,6 @@
-import axios from "axios";
 import * as yup from "yup";
 import { useState } from "react";
+import api from "../../../utils/API";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { login } from "../../../redux/user.slice";
@@ -42,20 +42,17 @@ export const LoginForm = () => {
     localStorage.clear();
 
     try {
-      let res = await axios.post(
-        `${process.env.REACT_APP_API_VERSION!}/auth/login`,
-        data
-      );
+      let res = await api.post(`/auth/login`, data);
       loginHandler(res.data);
       setError(null);
     } catch (err: any) {
-      let statusCode = err.response.status;
+      let statusCode = err.response?.status;
       if (statusCode === 400 || statusCode === 401) {
         setError("Invalid email or password");
       } else if (statusCode === 429) {
         setError("Too many requests, please try again later");
       } else {
-        setError("Somthing went wrong!");
+        setError("Something went wrong!");
       }
       console.log(err);
     } finally {

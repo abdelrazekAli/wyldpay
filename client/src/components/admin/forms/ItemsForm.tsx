@@ -1,4 +1,4 @@
-import axios from "axios";
+import api from "../../../utils/API";
 import { Item } from "../../../types/Item";
 import { AddItemForm } from "./AddItemForm";
 import { ItemBox } from "../layouts/ItemBox";
@@ -23,10 +23,7 @@ export const ItemsForm = ({ onClick }: StepperProps) => {
   useEffect(() => {
     const fetchItems = async () => {
       try {
-        const res = await axios.get(
-          `${process.env
-            .REACT_APP_API_VERSION!}/items/restaurant/${restaurantId}`
-        );
+        const res = await api.get(`/items/restaurant/${restaurantId}`);
         setItems(res.data);
       } catch (err) {
         console.log(err);
@@ -41,17 +38,14 @@ export const ItemsForm = ({ onClick }: StepperProps) => {
     const filterItems = items.filter((i) => i._id !== itemId);
     setItems(filterItems);
     try {
-      await axios.delete(
-        `${process.env.REACT_APP_API_VERSION!}/items/id/${itemId}`,
-        {
-          headers: {
-            "auth-token": accessToken,
-          },
-        }
-      );
+      await api.delete(`/items/id/${itemId}`, {
+        headers: {
+          "auth-token": accessToken,
+        },
+      });
     } catch (err) {
       console.log(err);
-      setError("Somthing went wrong!");
+      setError("Something went wrong!");
     }
   };
 

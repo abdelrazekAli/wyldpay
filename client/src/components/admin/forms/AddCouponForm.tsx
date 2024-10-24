@@ -1,5 +1,5 @@
-import axios from "axios";
 import { useState } from "react";
+import api from "../../../utils/API";
 import { CouponType } from "../../../types/Coupon";
 import { getUser } from "../../../redux/user.slice";
 import { useAppSelector } from "../../../redux/store.hooks";
@@ -12,6 +12,7 @@ export const AddCouponForm = ({
   setCoupons: (newItem: CouponType) => void;
 }) => {
   const { accessToken } = useAppSelector(getUser);
+
   const [couponCode, setCouponCode] = useState<string | null>(null);
   const [couponType, setCouponType] = useState<string | null>(null);
   const [couponValue, setCouponValue] = useState<number | null>(null);
@@ -27,8 +28,8 @@ export const AddCouponForm = ({
     setIsLoading(true);
 
     try {
-      const res = await axios.post(
-        `${process.env.REACT_APP_API_VERSION!}/coupons`,
+      const res = await api.post(
+        `/coupons`,
         {
           code: couponCode,
           type: couponType,
@@ -45,10 +46,10 @@ export const AddCouponForm = ({
       hideForm();
       setCoupons(res.data);
     } catch (err: any) {
-      if (err.response.status === 409) {
+      if (err.response?.status === 409) {
         setError("Coupon name is already used.");
       } else {
-        setError("Somthing went wrong!");
+        setError("Something went wrong!");
       }
     } finally {
       setIsLoading(false);

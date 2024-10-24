@@ -1,4 +1,5 @@
-import axios, { Method } from "axios";
+import api from "./API";
+import { Method } from "axios";
 
 export const fetchData = async <T>(
   url: string,
@@ -17,7 +18,7 @@ export const fetchData = async <T>(
       headers: { "auth-token": accessToken },
       data: body ? body : undefined,
     };
-    const res = await axios(config);
+    const res = await api(config);
     setData(res.data);
   } catch (err) {
     console.error(`Error during ${method} request to ${url}:`, err);

@@ -1,4 +1,4 @@
-import axios from "axios";
+import api from "../../../utils/API";
 import { useRef, useState } from "react";
 import "../../../styles/forms/categoryForm.sass";
 import { getUser } from "../../../redux/user.slice";
@@ -49,8 +49,8 @@ export const CategoryForm = ({ onClick, onSkip }: StepperProps) => {
     setIsLoading(true);
     localStorage.setItem("categories", JSON.stringify(filterCategories));
     try {
-      await axios.put(
-        `${process.env.REACT_APP_API_VERSION!}/restaurants/categories`,
+      await api.put(
+        `/restaurants/categories`,
         {
           categories: filterCategories,
           restaurantId,
@@ -65,7 +65,7 @@ export const CategoryForm = ({ onClick, onSkip }: StepperProps) => {
     } catch (err) {
       console.log(err);
       setIsLoading(false);
-      setError("Somthing went wrong!");
+      setError("Something went wrong!");
     }
   };
 

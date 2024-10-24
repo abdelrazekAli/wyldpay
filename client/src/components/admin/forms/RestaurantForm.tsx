@@ -1,5 +1,5 @@
-import axios from "axios";
 import { useState } from "react";
+import api from "../../../utils/API";
 import { login } from "../../../redux/user.slice";
 import "../../../styles/forms/restaurantForm.sass";
 import { uploadImage } from "../../../utils/uploadImage";
@@ -13,6 +13,7 @@ import { CURRENCY_OPTIONS } from "../../../data/currencyOptions";
 export const RestForm = ({ onClick }: StepperProps) => {
   const dispatch = useAppDispatch();
   const userId = localStorage.getItem("userId");
+
   const [logo, setLogo] = useState<null | File>(null);
   const [vatNum, setVatNum] = useState<string | null>("");
   const [logoBlob, setLogoBlob] = useState<string | Blob>("");
@@ -38,20 +39,17 @@ export const RestForm = ({ onClick }: StepperProps) => {
       const logoURL = await uploadImage(logoBlob);
       const backgroundURL = await uploadImage(backgroundBlob);
 
-      const res = await axios.post(
-        `${process.env.REACT_APP_API_VERSION!}/restaurants`,
-        {
-          vatNum,
-          currency,
-          logo: logoURL,
-          background: backgroundURL,
-          userId,
-        }
-      );
+      const res = await api.post(`/restaurants`, {
+        vatNum,
+        currency,
+        logo: logoURL,
+        background: backgroundURL,
+        userId,
+      });
       authHandler(res.data);
     } catch (err) {
       console.log(err);
-      setError("Somthing went wrong!");
+      setError("Something went wrong!");
     } finally {
       setIsLoading(false);
     }

@@ -20,7 +20,7 @@ const cartSlice = createSlice({
       }
     },
 
-    decreseFromCart: (state, action: PayloadAction<number>) => {
+    decreaseFromCart: (state, action: PayloadAction<number>) => {
       const product = state?.find((product) => product._id === action.payload);
 
       const productIndex = state.findIndex(
@@ -49,9 +49,10 @@ export const getCartProducts = (state: RootState) => state.cart;
 export const getTotalPrice = (state: RootState) =>
   state.cart?.reduce((acc, next) => (acc += next.quantity * next.price), 0);
 
-export const getTotalQuantiy = (state: RootState) =>
+export const getTotalQuantity = (state: RootState) =>
   state.cart?.reduce((acc, next) => (acc += next.quantity), 0);
 
-export const { addToCart, decreseFromCart, removeFromCart } = cartSlice.actions;
+export const { addToCart, decreaseFromCart, removeFromCart } =
+  cartSlice.actions;
 
 export default cartSlice.reducer;

@@ -13,7 +13,7 @@ export const SubscriptionsPlans = () => {
   useEffect(() => {
     // Fetch subscription prices
     fetchData<[]>(
-      `${process.env.REACT_APP_API_VERSION!}/subscriptions/prices`,
+      `/subscriptions/prices`,
       "",
       setPrices,
       setError,

@@ -1,6 +1,6 @@
-import axios from "axios";
 import * as yup from "yup";
 import { useState } from "react";
+import api from "../../../utils/API";
 import { useForm } from "react-hook-form";
 import "../../../styles/forms/loginFrom.sass";
 import { Modal } from "../../user/layouts/Modal";
@@ -33,7 +33,7 @@ export const ResetPassForm = () => {
     setIsLoading(true);
 
     try {
-      await axios.post(
+      await api.post(
         `${process.env
           .REACT_APP_API_VERSION!}/auth/pass/reset/${userId}/${token}`,
         {
@@ -43,11 +43,11 @@ export const ResetPassForm = () => {
       setError(null);
       setHideModal(false);
     } catch (err: any) {
-      let statusCode = err.response.status;
+      let statusCode = err.response?.status;
       if (statusCode === 401) {
         setError("Invalid link or expired");
       } else {
-        setError("Somthing went wrong!");
+        setError("Something went wrong!");
       }
       console.log(err);
     } finally {

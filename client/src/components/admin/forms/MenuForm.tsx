@@ -28,7 +28,7 @@ export const MenuForm = () => {
   useEffect(() => {
     // Fetch items
     fetchData<Item[]>(
-      `${process.env.REACT_APP_API_VERSION!}/items/restaurant/${restaurantId}`,
+      `/items/restaurant/${restaurantId}`,
       "",
       setItems,
       setError,
@@ -37,8 +37,7 @@ export const MenuForm = () => {
 
     // Fetch categories
     fetchData<MainCategoryType[]>(
-      `${process.env
-        .REACT_APP_API_VERSION!}/restaurants/categories/${restaurantId}`,
+      `/restaurants/categories/${restaurantId}`,
       "",
       setCategories,
       setError,
@@ -49,7 +48,7 @@ export const MenuForm = () => {
   // Handle delete item
   const handleDeleteItem = (itemId: string) => {
     fetchData(
-      `${process.env.REACT_APP_API_VERSION!}/items/id/${itemId}`,
+      `/items/id/${itemId}`,
       accessToken,
       () => {},
       setError,

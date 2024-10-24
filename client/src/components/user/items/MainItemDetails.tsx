@@ -1,4 +1,4 @@
-import axios from "axios";
+import api from "../../../utils/API";
 import { useEffect, useState } from "react";
 import "../../../styles/menu/itemDetails.sass";
 import { CircularProgress } from "@mui/material";
@@ -35,9 +35,7 @@ export const MainItemDetails = () => {
       setError(false);
       setIsLoading(true);
       try {
-        const res = await axios.get(
-          `${process.env.REACT_APP_API_VERSION!}/items/${itemId}`
-        );
+        const res = await api.get(`/items/${itemId}`);
         setItem(res.data);
       } catch (err) {
         console.log(err);

@@ -1,5 +1,5 @@
-import axios from "axios";
 import { useState } from "react";
+import api from "../../../utils/API";
 import { StripePrice } from "../../../types/StripePrice";
 
 export const PricingCard = ({ price }: { price: StripePrice }) => {
@@ -11,13 +11,10 @@ export const PricingCard = ({ price }: { price: StripePrice }) => {
     setIsLoading(true);
 
     // Create Stripe payment session
-    const { data: response } = await axios.post(
-      `${process.env.REACT_APP_API_VERSION!}/subscriptions/session`,
-      {
-        userId,
-        priceId,
-      }
-    );
+    const { data: response } = await api.post(`/subscriptions/session`, {
+      userId,
+      priceId,
+    });
 
     setIsLoading(false);
     window.location.href = response.url;

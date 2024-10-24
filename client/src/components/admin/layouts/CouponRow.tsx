@@ -1,5 +1,5 @@
-import axios from "axios";
 import { useState } from "react";
+import api from "../../../utils/API";
 import { CouponType } from "../../../types/Coupon";
 import { getUser } from "../../../redux/user.slice";
 import { Tr, Td } from "react-super-responsive-table";
@@ -23,18 +23,15 @@ export const CouponRow = ({
   const deleteCoupon = async (couponId: string) => {
     setIsLoading(true);
     try {
-      await axios.delete(
-        `${process.env.REACT_APP_API_VERSION!}/coupons/${couponId}`,
-        {
-          headers: {
-            "auth-token": accessToken,
-          },
-        }
-      );
+      await api.delete(`/coupons/${couponId}`, {
+        headers: {
+          "auth-token": accessToken,
+        },
+      });
       onDelete(coupon._id);
     } catch (err) {
       console.log(err);
-      setError("Somthing went wrong!");
+      setError("Something went wrong!");
     } finally {
       setIsLoading(false);
     }

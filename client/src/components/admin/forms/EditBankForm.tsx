@@ -1,5 +1,5 @@
-import axios from "axios";
 import * as yup from "yup";
+import api from "../../../utils/API";
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import "../../../styles/forms/editBank.sass";
@@ -22,9 +22,7 @@ export const EditBankForm = () => {
     const fetchItems = async () => {
       // Fetch bank data
       try {
-        const res = await axios.get(
-          `${process.env.REACT_APP_API_VERSION!}/banks/${_id}`
-        );
+        const res = await api.get(`/banks/${_id}`);
 
         setBankData(res.data);
         setCheck(res.data.customerFees);
@@ -44,8 +42,8 @@ export const EditBankForm = () => {
 
       delete data.paymentsMethods;
 
-      await axios.put(
-        `${process.env.REACT_APP_API_VERSION!}/banks`,
+      await api.put(
+        `/banks`,
         {
           ...data,
           customerFees: check,
@@ -61,7 +59,7 @@ export const EditBankForm = () => {
     } catch (err) {
       console.log(err);
       setSuccess(null);
-      setError("Somthing went wrong!");
+      setError("Something went wrong!");
     } finally {
       setIsLoading(false);
     }

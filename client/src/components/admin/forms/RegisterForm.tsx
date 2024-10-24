@@ -1,6 +1,6 @@
-import axios from "axios";
 import * as yup from "yup";
 import { useState } from "react";
+import api from "../../../utils/API";
 import { jwtDecode } from "jwt-decode";
 import { useForm } from "react-hook-form";
 import "react-phone-input-2/lib/style.css";
@@ -27,21 +27,18 @@ export const RegisterForm = ({ onClick }: StepperProps) => {
     delete data.confirmPassword;
 
     try {
-      let res = await axios.post(
-        `${process.env.REACT_APP_API_VERSION!}/auth/register`,
-        {
-          ...data,
-          phone,
-        }
-      );
+      let res = await api.post(`/auth/register`, {
+        ...data,
+        phone,
+      });
       localStorage.setItem("userId", res.data._id);
       onClick();
     } catch (err: any) {
       setIsLoading(false);
-      if (err.response.status === 409) {
+      if (err.response?.status === 409) {
         setError("Email is already used");
       } else {
-        setError("Somthing went wrong!");
+        setError("Something went wrong!");
       }
       console.log(err);
     }

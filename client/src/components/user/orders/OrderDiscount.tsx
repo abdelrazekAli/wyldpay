@@ -1,4 +1,4 @@
-import axios from "axios";
+import api from "../../../utils/API";
 import { useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { CircularProgress } from "@mui/material";
@@ -28,19 +28,16 @@ export const OrderDiscount = () => {
 
     try {
       setIsLoading(true);
-      const res = await axios.post(
-        `${process.env.REACT_APP_API_VERSION!}/coupons/apply/${restId}`,
-        {
-          code: String(discountCode.current.value).trim(),
-        }
-      );
+      const res = await api.post(`/coupons/apply/${restId}`, {
+        code: String(discountCode.current.value).trim(),
+      });
 
       dispatch(addDiscount(res.data));
       setFormVisible(!isFormVisible);
     } catch (err: any) {
       console.log(err);
       setIsLoading(false);
-      if (err.response.status === 409) {
+      if (err.response?.status === 409) {
         return setError("Discount code is not valid");
       }
       setError("Something went wrong!");

@@ -1,4 +1,4 @@
-import axios from "axios";
+import api from "../../../../utils/API";
 import "../../../../styles/payments.sass";
 import { Modal } from "../../layouts/Modal";
 import { useEffect, useState } from "react";
@@ -60,19 +60,16 @@ export const StripePayment = ({
 
   const submitOrder = async (paymentMethod: string) => {
     try {
-      const res = await axios.post(
-        `${process.env.REACT_APP_API_VERSION!}/orders`,
-        {
-          items: cartItems,
-          totalPrice,
-          notes: orderNote || "",
-          paymentMethod,
-          tableNum: tableId,
-          tip: tip || null,
-          discount: discount || null,
-          restId,
-        }
-      );
+      const res = await api.post(`/orders`, {
+        items: cartItems,
+        totalPrice,
+        notes: orderNote || "",
+        paymentMethod,
+        tableNum: tableId,
+        tip: tip || null,
+        discount: discount || null,
+        restId,
+      });
       window.location.replace(`/orders/${restId}/${res.data._id}`);
     } catch (err) {
       console.log(err);
@@ -87,7 +84,7 @@ export const StripePayment = ({
     setError(null);
     setPaymentFailed(false);
     setPaymentLoading(true);
-    axios
+    api
       .post(
         `${process.env
           .REACT_APP_API_VERSION!}/payments/stripe/create-payment-intent`,

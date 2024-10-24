@@ -1,4 +1,4 @@
-import axios from "axios";
+import api from "../../../utils/API";
 import { useEffect, useState } from "react";
 import { CircularProgress } from "@mui/material";
 import { getSymbol } from "../../../utils/currencySymbol";
@@ -27,11 +27,7 @@ export const PaymentsWrapper = ({
   useEffect(() => {
     const fetchMethods = async () => {
       try {
-        const res = await axios.get(
-          `${process.env.REACT_APP_API_VERSION!}/banks/${
-            restaurant.data?.userId._id
-          }`
-        );
+        const res = await api.get(`/banks/${restaurant.data?.userId._id}`);
 
         setStripeKeys(
           res.data.paymentsMethods.filter(

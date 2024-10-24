@@ -1,4 +1,4 @@
-import axios from "axios";
+import api from "../../../utils/API";
 import { useEffect, useState } from "react";
 import { CircularProgress } from "@mui/material";
 import { getUser } from "../../../redux/user.slice";
@@ -21,9 +21,7 @@ export const StripeKeysForm = ({ hideForm }: { hideForm: () => void }) => {
   useEffect(() => {
     const fetchMethods = async () => {
       try {
-        const res = await axios.get(
-          `${process.env.REACT_APP_API_VERSION!}/banks/${_id}`
-        );
+        const res = await api.get(`/banks/${_id}`);
         console.log(res);
         setPaymentsMethod(
           res.data.paymentsMethods.filter(
@@ -47,8 +45,8 @@ export const StripeKeysForm = ({ hideForm }: { hideForm: () => void }) => {
     setIsLoading(true);
 
     try {
-      await axios.put(
-        `${process.env.REACT_APP_API_VERSION!}/banks/methods`,
+      await api.put(
+        `/banks/methods`,
         {
           name: "stripe",
           publicKey: paymentsMethod?.publicKey,
@@ -65,7 +63,7 @@ export const StripeKeysForm = ({ hideForm }: { hideForm: () => void }) => {
     } catch (err) {
       console.log(err);
       setIsLoading(false);
-      setError("Somthing went wrong!");
+      setError("Something went wrong!");
     }
   };
 

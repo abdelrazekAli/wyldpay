@@ -1,10 +1,10 @@
 import { useNavigate } from "react-router-dom";
-import { getTotalQuantiy } from "../../../redux/cart.slice";
+import { getTotalQuantity } from "../../../redux/cart.slice";
 import { useAppSelector } from "../../../redux/store.hooks";
 
 export const ViewOrderBtn = () => {
   const navigate = useNavigate(),
-    cartTotalQuantity = useAppSelector(getTotalQuantiy);
+    cartTotalQuantity = useAppSelector(getTotalQuantity);
   return (
     <>
       {cartTotalQuantity > 0 && (

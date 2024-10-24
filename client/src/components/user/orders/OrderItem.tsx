@@ -2,31 +2,30 @@ import { useState } from "react";
 import { truncate } from "../../../utils/stringTruncate";
 import { getSymbol } from "../../../utils/currencySymbol";
 import { ProductPropType, ProductType } from "../../../types/Product";
+import { getRestaurantCurrency } from "../../../redux/restaurant.slice";
 import { useAppDispatch, useAppSelector } from "../../../redux/store.hooks";
 import {
   addToCart,
-  decreseFromCart,
+  decreaseFromCart,
   removeFromCart,
 } from "../../../redux/cart.slice";
-import { getRestaurantCurrency } from "../../../redux/restaurant.slice";
 
 export const OrderItem = ({ product }: ProductPropType) => {
   const dispatch = useAppDispatch();
   const currency = useAppSelector(getRestaurantCurrency);
 
   const [counter, setCounter] = useState<number>(product.quantity!);
-
   const [decreaseCounter, setDecreaseCounter] = useState<boolean>(false);
 
   const addToCartHandler = (product: ProductType) => {
     dispatch(addToCart(product));
   };
 
-  const decreseFromCartHandler = (productId: number) => {
-    dispatch(decreseFromCart(productId));
+  const decreaseFromCartHandler = (productId: number) => {
+    dispatch(decreaseFromCart(productId));
   };
 
-  const incrementHanldler = () => {
+  const incrementHandler = () => {
     if (counter < 99) {
       setCounter(counter + 1);
       addToCartHandler(product);
@@ -34,10 +33,10 @@ export const OrderItem = ({ product }: ProductPropType) => {
     }
   };
 
-  const decrementHanldler = () => {
+  const decrementHandler = () => {
     if (counter === 1) return dispatch(removeFromCart(product._id));
     setCounter(counter - 1);
-    decreseFromCartHandler(product._id);
+    decreaseFromCartHandler(product._id);
   };
   return (
     <div className="order-item">
@@ -57,7 +56,7 @@ export const OrderItem = ({ product }: ProductPropType) => {
         <div className="counters-container">
           <div className="counters-wrapper">
             <>
-              <button className="counter" onClick={decrementHanldler}>
+              <button className="counter" onClick={decrementHandler}>
                 <img
                   className="counter-img"
                   src={`../../../../assets/images/minus.svg`}
@@ -68,7 +67,7 @@ export const OrderItem = ({ product }: ProductPropType) => {
             </>
             <button
               className="counter"
-              onClick={incrementHanldler}
+              onClick={incrementHandler}
               disabled={counter >= 99}
             >
               <img

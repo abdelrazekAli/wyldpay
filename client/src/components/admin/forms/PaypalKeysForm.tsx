@@ -1,4 +1,4 @@
-import axios from "axios";
+import api from "../../../utils/API";
 import { useEffect, useState } from "react";
 import { CircularProgress } from "@mui/material";
 import { getUser } from "../../../redux/user.slice";
@@ -21,9 +21,7 @@ export const PaypalKeysForm = ({ hideForm }: { hideForm: () => void }) => {
   useEffect(() => {
     const fetchMethods = async () => {
       try {
-        const res = await axios.get(
-          `${process.env.REACT_APP_API_VERSION!}/banks/${_id}`
-        );
+        const res = await api.get(`/banks/${_id}`);
         setPaymentsMethod(
           res.data.paymentsMethods.filter(
             (method: PaymentMethod) => method.name === "paypal"
@@ -44,8 +42,8 @@ export const PaypalKeysForm = ({ hideForm }: { hideForm: () => void }) => {
     setError(null);
     setIsLoading(true);
     try {
-      await axios.put(
-        `${process.env.REACT_APP_API_VERSION!}/banks/methods`,
+      await api.put(
+        `/banks/methods`,
         {
           name: "paypal",
           publicKey: paymentsMethod?.publicKey,
@@ -60,7 +58,7 @@ export const PaypalKeysForm = ({ hideForm }: { hideForm: () => void }) => {
       setSuccess("key updated successfully");
     } catch (err) {
       console.log(err);
-      setError("Somthing went wrong!");
+      setError("Something went wrong!");
     } finally {
       setIsLoading(false);
     }

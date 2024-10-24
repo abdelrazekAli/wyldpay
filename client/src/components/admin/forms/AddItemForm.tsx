@@ -1,5 +1,5 @@
-import axios from "axios";
 import { useState } from "react";
+import api from "../../../utils/API";
 import { Item } from "../../../types/Item";
 import { getUser } from "../../../redux/user.slice";
 import { uploadImage } from "../../../utils/uploadImage";
@@ -38,8 +38,8 @@ export const AddItemForm = ({
     try {
       const imageURL = await uploadImage(image);
 
-      const res = await axios.post(
-        `${process.env.REACT_APP_API_VERSION!}/items`,
+      const res = await api.post(
+        `/items`,
         {
           name,
           price,
@@ -61,7 +61,7 @@ export const AddItemForm = ({
       hideForm();
     } catch (err) {
       console.log(err);
-      setError("Somthing went wrong!");
+      setError("Something went wrong!");
     } finally {
       setIsLoading(false);
     }

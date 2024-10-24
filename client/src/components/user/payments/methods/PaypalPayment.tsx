@@ -1,5 +1,5 @@
-import axios from "axios";
 import { useState } from "react";
+import api from "../../../../utils/API";
 import { useParams } from "react-router-dom";
 import { getTip } from "../../../../redux/tip.slice";
 import { useAppSelector } from "../../../../redux/store.hooks";
@@ -36,19 +36,16 @@ export const PaypalPayment = ({
 
   const submitOrder = async (paymentMethod: string) => {
     try {
-      const res = await axios.post(
-        `${process.env.REACT_APP_API_VERSION!}/orders`,
-        {
-          items: cartItems,
-          totalPrice,
-          notes: orderNote || "",
-          paymentMethod,
-          tableNum: tableId,
-          tip: tip || null,
-          discount: discount || null,
-          restId,
-        }
-      );
+      const res = await api.post(`/orders`, {
+        items: cartItems,
+        totalPrice,
+        notes: orderNote || "",
+        paymentMethod,
+        tableNum: tableId,
+        tip: tip || null,
+        discount: discount || null,
+        restId,
+      });
       window.location.replace(`/orders/${restId}/${res.data._id}`);
     } catch (err) {
       console.log(err);

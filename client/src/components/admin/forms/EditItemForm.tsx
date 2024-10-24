@@ -1,5 +1,5 @@
-import axios from "axios";
 import { useState } from "react";
+import api from "../../../utils/API";
 import { Item } from "../../../types/Item";
 import { getUser } from "../../../redux/user.slice";
 import { uploadImage } from "../../../utils/uploadImage";
@@ -17,6 +17,7 @@ export const EditItemForm = ({
   onUpdate: (updatedItem: Item) => void;
 }) => {
   const { accessToken } = useAppSelector(getUser);
+
   const [name, setName] = useState<string>(item.name);
   const [image, setImage] = useState<string | Blob>("");
   const [price, setPrice] = useState<number>(item.price);
@@ -42,20 +43,16 @@ export const EditItemForm = ({
         ingredients,
         restId: item.restId,
       };
-      await axios.put(
-        `${process.env.REACT_APP_API_VERSION!}/items/id/${item._id}`,
-        updatedItem,
-        {
-          headers: {
-            "auth-token": accessToken,
-          },
-        }
-      );
+      await api.put(`/items/id/${item._id}`, updatedItem, {
+        headers: {
+          "auth-token": accessToken,
+        },
+      });
       onUpdate({ _id: item._id, ...updatedItem });
       hideForm();
     } catch (err) {
       console.log(err);
-      setError("Somthing went wrong!");
+      setError("Something went wrong!");
     } finally {
       setIsLoading(false);
     }

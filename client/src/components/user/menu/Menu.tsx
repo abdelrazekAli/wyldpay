@@ -1,5 +1,5 @@
-import axios from "axios";
 import { Footer } from "./Footer";
+import api from "../../../utils/API";
 import { Items } from "../items/Items";
 import "../../../styles/menu/menu.sass";
 import { MainHeader } from "./MainHeader";
@@ -33,9 +33,7 @@ export const Menu = () => {
     const fetchItems = async () => {
       setError(false);
       try {
-        const res = await axios.get(
-          `${process.env.REACT_APP_API_VERSION!}/items/restaurant/${restId}`
-        );
+        const res = await api.get(`/items/restaurant/${restId}`);
         setItems(res.data);
       } catch (err) {
         console.log(err);

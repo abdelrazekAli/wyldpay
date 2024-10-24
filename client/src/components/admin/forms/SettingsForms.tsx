@@ -1,5 +1,5 @@
-import axios from "axios";
 import * as yup from "yup";
+import api from "../../../utils/API";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import "react-phone-input-2/lib/style.css";
@@ -44,9 +44,7 @@ export const SettingsForms = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get(
-          `${process.env.REACT_APP_API_VERSION!}/restaurants/user/${_id}`
-        );
+        const res = await api.get(`/restaurants/user/${_id}`);
         setRestaurant(res.data);
         setPhoneNum(res.data.userId.phone);
         setUserData({
@@ -95,8 +93,8 @@ export const SettingsForms = () => {
 
     try {
       // Update user data
-      await axios.patch(
-        `${process.env.REACT_APP_API_VERSION!}/users`,
+      await api.patch(
+        `/users`,
         {
           ...data,
           phone: phoneNum,
@@ -114,8 +112,8 @@ export const SettingsForms = () => {
         ? await uploadImage(backgroundBlob)
         : restaurant?.background;
 
-      await axios.put(
-        `${process.env.REACT_APP_API_VERSION!}/restaurants`,
+      await api.put(
+        `/restaurants`,
         {
           vatNum: data.vatNum,
           vatPercentage: data.vatPercentage,
@@ -135,7 +133,7 @@ export const SettingsForms = () => {
       console.log(err);
       setSuccess(null);
 
-      if (err.response.status === 409) {
+      if (err.response?.status === 409) {
         setError("Email is already used");
       } else {
         setError("Something went wrong!");

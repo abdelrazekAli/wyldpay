@@ -1,4 +1,4 @@
-import axios from "axios";
+import api from "../../../utils/API";
 import { useEffect, useState } from "react";
 import { Order } from "../../../types/Order";
 import { useParams } from "react-router-dom";
@@ -20,12 +20,8 @@ export const Success = () => {
     // Fetch order and restaurant data
     const fetchData = async () => {
       try {
-        const orderResponse = await axios.get(
-          `${process.env.REACT_APP_API_VERSION!}/orders/${orderId}`
-        );
-        const restaurantResponse = await axios.get(
-          `${process.env.REACT_APP_API_VERSION!}/restaurants/${restId}`
-        );
+        const orderResponse = await api.get(`/orders/${orderId}`);
+        const restaurantResponse = await api.get(`/restaurants/${restId}`);
         setOrder(orderResponse.data);
         setRestaurant(restaurantResponse.data);
       } catch (err) {

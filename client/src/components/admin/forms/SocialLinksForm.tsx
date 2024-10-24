@@ -1,4 +1,4 @@
-import axios from "axios";
+import api from "../../../utils/API";
 import { useState, useEffect } from "react";
 import { getUser } from "../../../redux/user.slice";
 import { useAppSelector } from "../../../redux/store.hooks";
@@ -21,9 +21,7 @@ export const SocialLinksForm = ({ hideForm }: { hideForm: () => void }) => {
   useEffect(() => {
     const fetchLinks = async () => {
       try {
-        const res = await axios.get(
-          `${process.env.REACT_APP_API_VERSION!}/users/${_id}`
-        );
+        const res = await api.get(`/users/${_id}`);
         const links = res.data.socialLinks || [];
         console.log(links);
         const updatedLinks = Object.fromEntries(
@@ -50,8 +48,8 @@ export const SocialLinksForm = ({ hideForm }: { hideForm: () => void }) => {
     setIsLoading(true);
 
     try {
-      await axios.patch(
-        `${process.env.REACT_APP_API_VERSION!}/users`,
+      await api.patch(
+        `/users`,
         {
           socialLinks: Object.entries(socialLinks).map(([name, value]) => ({
             name,

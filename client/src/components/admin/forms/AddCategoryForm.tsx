@@ -1,5 +1,5 @@
-import axios from "axios";
 import { useState } from "react";
+import api from "../../../utils/API";
 import { getUser } from "../../../redux/user.slice";
 import { MainCategoryType } from "../../../types/Category";
 import { useAppSelector } from "../../../redux/store.hooks";
@@ -33,8 +33,8 @@ export const AddCategoryForm = ({
     ];
 
     try {
-      await axios.put(
-        `${process.env.REACT_APP_API_VERSION!}/restaurants/categories`,
+      await api.put(
+        `/restaurants/categories`,
         {
           categories: newCategories,
           restaurantId,
@@ -49,7 +49,7 @@ export const AddCategoryForm = ({
       hideForm();
     } catch (err) {
       console.log(err);
-      setError("Somthing went wrong on fetch categories!");
+      setError("Something went wrong on fetch categories!");
     } finally {
       setIsLoading(false);
     }

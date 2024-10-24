@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from "../../../redux/store.hooks";
 import {
   getCartProducts,
   addToCart,
-  decreseFromCart,
+  decreaseFromCart,
 } from "../../../redux/cart.slice";
 
 export const ItemCounters = ({ product }: ProductPropType) => {
@@ -23,7 +23,7 @@ export const ItemCounters = ({ product }: ProductPropType) => {
   };
 
   const decreseFromCartHandler = (productId: number) => {
-    dispatch(decreseFromCart(productId));
+    dispatch(decreaseFromCart(productId));
   };
 
   const incrementHanldler = () => {

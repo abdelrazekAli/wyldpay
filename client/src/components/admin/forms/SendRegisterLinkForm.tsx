@@ -1,5 +1,5 @@
-import axios from "axios";
 import { useState } from "react";
+import api from "../../../utils/API";
 
 export const SendRegisterLinkForm = () => {
   const [email, setEmail] = useState<string | null>(null);
@@ -12,22 +12,21 @@ export const SendRegisterLinkForm = () => {
   const sendingEmail = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError(null);
+
     if (!email) return setError("Please enter an email");
+
     setIsLoading(true);
     try {
-      await axios.post(
-        `${process.env.REACT_APP_API_VERSION!}/emails/send-register-token`,
-        {
-          email,
-        }
-      );
+      await api.post(`/emails/send-register-token`, {
+        email,
+      });
       setSuccess(true);
     } catch (err: any) {
-      let statusCode = err.response.status;
+      let statusCode = err.response?.status;
       if (statusCode === 409) {
         setError("Email is already used");
       } else {
-        setError("Somthing went wrong!");
+        setError("Something went wrong!");
       }
       console.log(err);
     } finally {

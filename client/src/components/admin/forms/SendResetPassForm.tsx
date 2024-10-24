@@ -1,6 +1,6 @@
-import axios from "axios";
 import * as yup from "yup";
 import { useState } from "react";
+import api from "../../../utils/API";
 import { useForm } from "react-hook-form";
 import "../../../styles/forms/loginFrom.sass";
 import { Modal } from "../../user/layouts/Modal";
@@ -10,6 +10,7 @@ import { sendResetPassSchema } from "../../../validations/sendResetPassSchema";
 
 export const SendResetPassForm = () => {
   const email = useLocation().state;
+
   const [error, setError] = useState<string | null>(null);
   const [hideModal, setHideModal] = useState<boolean>(true);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -30,10 +31,7 @@ export const SendResetPassForm = () => {
     setIsLoading(true);
 
     try {
-      await axios.post(
-        `${process.env.REACT_APP_API_VERSION!}/emails/send-reset-token`,
-        data
-      );
+      await api.post(`/emails/send-reset-token`, data);
 
       setHideModal(false);
       setError(null);
@@ -42,7 +40,7 @@ export const SendResetPassForm = () => {
       if (statusCode === 401) {
         setError("Email is not registered yet");
       } else {
-        setError("Somthing went wrong!");
+        setError("Something went wrong!");
       }
       console.log(err);
     } finally {
