@@ -14,19 +14,19 @@
   - Developed responsive interfaces for a dynamic and seamless experience across all devices.
 
 - **Payment integration**  
-  - Integrated multiple payment gateways including Stripe, PayPal, and Apple Pay for secure and flexible payments.
+  - Integrated payment gateways including Stripe, PayPal, and Apple Pay for secure and flexible payments.
 
 - **Caching and Pagination**  
-  - Implemented Redis caching and Pagination to improve performance, speed up data retrieval, and reduce load times.
+  - Implemented Redis caching and Pagination to boost performance, and reduce load times.
   
 - **Containerization with Docker**  
   - Containerized the application using Docker for streamlined deployment and environment consistency.
 
 - **Security best practices**  
-  - Applied security standards like rate limiting, CORS, data encryption, JWT tokens, input validation, and sanitization.
+  - Applied security standards like rate limiting, CORS, encryption, JWT tokens, input validation, and sanitization.
 
 - **Additional features**  
-  - Developed additional features such as discount coupons, tips, invoices, emails, subscription plans, and more.
+  - Developed additional features such as discount coupons, tips, invoices, subscription plans, and more.
 <br><br>
 
 ## Screenshots
@@ -65,11 +65,12 @@
 ### Discount coupons management
 <img src="https://github.com/abdelrazekAli/kids-social/assets/78452508/5eef0434-8f35-4774-ad64-b6228c661670"/>
 
+### Tables QR generator
+<img src="https://github.com/abdelrazekAli/kids-social/assets/78452508/b547f1c4-c0f0-4590-9431-c535df011519"/>
+
 ### Settings
 <img src="https://github.com/abdelrazekAli/kids-social/assets/78452508/f5b1effc-7416-44d9-a41e-a10359f6e296"/>
 
-### Tables QR generator
-<img src="https://github.com/abdelrazekAli/kids-social/assets/78452508/b547f1c4-c0f0-4590-9431-c535df011519"/>
 
 ### Customer Interfaces
 
