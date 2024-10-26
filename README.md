@@ -17,13 +17,13 @@
   - Integrated payment gateways including Stripe, PayPal, and Apple Pay for secure and flexible payments.
 
 - **Caching and Pagination**  
-  - Implemented Redis caching and Pagination to boost performance, and reduce load times.
+  - Implemented Redis caching and Pagination to speed up data retrieval, and reduce load times.
   
 - **Containerization with Docker**  
   - Containerized the application using Docker for streamlined deployment and environment consistency.
 
 - **Security best practices**  
-  - Applied security standards like rate limiting, CORS, encryption, JWT tokens, input validation, and sanitization.
+  - Applied security standards like rate limiting, CORS, JWT, encryption, input validation, and sanitization.
 
 - **Additional features**  
   - Developed additional features such as discount coupons, tips, invoices, subscription plans, and more.
