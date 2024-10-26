@@ -1,10 +1,10 @@
 # WyldPay
 
-> QR Food Ordering solution designed to enhance the experience for restaurant owners and customers through a web interface.
+> QR Food Ordering solution designed to enhance the experience for restaurant owners and customers.
 
-> It allows customers to access menus, place orders, and complete payments directly from their smartphones using unique QR codes for each table.
+> It allows customers to access menus, place orders, and complete payments directly from their smartphones.
 
-> This solution boosts efficiency, reduces wait times, minimizes physical contact, and increases sales, making it ideal for today’s restaurants.
+> This solution boosts efficiency, reduces wait times, minimizes physical contact, and increases restaurants sales.
 ## Highlights
 
 - **REST APIs**  
@@ -17,13 +17,13 @@
   - Integrated multiple payment gateways including Stripe, PayPal, and Apple Pay for secure and flexible payments.
 
 - **Caching and Pagination**  
-  - Implemented Redis caching and pagination to improve performance, speed up data retrieval, and reduce load times.
+  - Implemented Redis caching and Pagination to improve performance, speed up data retrieval, and reduce load times.
   
 - **Containerization with Docker**  
-  - Containerized the application using Docker for consistency and easy deployment.
+  - Containerized the application using Docker for streamlined deployment and environment consistency.
 
 - **Security best practices**  
-  - Applied security standards like rate limiting, CORS, data encryption, JWT authentication, input validation, and sanitization.
+  - Applied security standards like rate limiting, CORS, data encryption, JWT tokens, input validation, and sanitization.
 
 - **Additional features**  
   - Developed additional features such as discount coupons, tips, invoices, emails, subscription plans, and more.
@@ -31,7 +31,7 @@
 
 ## Screenshots
 
-### Restaurant owner signup process
+### Restaurant owner signup steps
 ![User Interface](https://github.com/abdelrazekAli/kids-social/assets/78452508/75f2d90d-7176-4602-b30c-c5cb448532fc)  
  *Admin will receive an email with a Registration link.*
 
@@ -71,7 +71,7 @@
 ### Tables QR generator
 <img src="https://github.com/abdelrazekAli/kids-social/assets/78452508/b547f1c4-c0f0-4590-9431-c535df011519"/>
 
-### User Menu
+### Customer Interfaces
 
 <table width="100%">
   <tr>
@@ -110,3 +110,10 @@
   <td width="33.3%"><img src="https://github.com/abdelrazekAli/IoT-Smart-City/assets/78452508/26ac74c8-942d-4a6d-9bca-3df680a2bae7"/></td>
   </tr>
 </table>
+<br>
+
+## Thanks
+
+Thank you for exploring **WyldPay**!<br>
+If you have any questions or suggestions, feel free to reach out.<br>
+[![Linkedin Badge](https://img.shields.io/badge/-Abdelrazek-0e76a8?style=flat&labelColor=0e76a8&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/abdelrazek-ali) [![Mail Badge](https://img.shields.io/badge/-dev.abdelrazek-c0392b?style=flat&labelColor=c0392b&logo=gmail&logoColor=white)](mailto:dev.abdelrazek@gmail.com)   [![Whats Badge](https://img.shields.io/badge/-+201092018531-57ab51?style=flat&labelColor=57ab51&logo=whatsapp&logoColor=white)](https://wa.me/+201092018531)
