@@ -1,4 +1,4 @@
-import createRedisClient from "../config/redis.config";
+import { createRedisClient } from "../config/redis.config";
 
 // Check environment
 const isTestEnv = process.env.NODE_ENV === "test";
