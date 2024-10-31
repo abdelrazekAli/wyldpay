@@ -1,4 +1,10 @@
-import redisClient from "../config/redis.config";
+import createRedisClient from "../config/redis.config";
+
+// Check environment
+const isTestEnv = process.env.NODE_ENV === "test";
+const redisClient = isTestEnv
+  ? require("redis-mock").createClient() // Use redis-mock in test environment
+  : createRedisClient; // Real Redis client in other environments
 
 // Set value in Cache
 export const setCacheValue = async (
