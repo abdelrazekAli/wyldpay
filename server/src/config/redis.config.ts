@@ -24,11 +24,13 @@ const RedisClient = (() => {
     return client;
   };
 
+  const getClient = (): RedisClientType | null => client;
+
   return {
     connect: connectToRedis,
-    getClient: client,
+    getClient,
   };
 })();
 
 export const connectToRedis = RedisClient.connect; // Connect function to call
-export const createRedisClient = RedisClient.getClient; // Getter to access redis client
+export const getRedisClient = RedisClient.getClient; // Getter to access Redis client
